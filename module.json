@@ -1,0 +1,10 @@
+{
+    "name": "swade-statblock-parser",
+    "title": "SWADE Stat Block Parser",
+    "description": "SWADE Stat Block Parser",
+    "systems": ["swade"],
+    "author": "Arnon Ram",
+    "version": "0.1.0",
+    "minimumCoreVersion": "0.7.5",
+    "esmodules": ["scripts/swadeActorImporter.js"]
+  }

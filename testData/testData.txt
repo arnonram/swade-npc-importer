@@ -1,0 +1,30 @@
+Irina “The Sorcerer“ Gregorovna
+Irina is a Russian mob enforcer whose magical
+powers are only rivaled by her capacity for revenge.
+Attributes: Agility d8, Smarts d12+1, Spirit d8, Strength d6-1,
+Vigor d6
+Skills: Athletics d4, Common Knowledge d4,
+Driving d4, Fighting d8, Intimidation d6, Language
+(English d6), Language (Russian d8), Notice d6,
+Persuasion d8, Research d6, Shooting d8, Spellcasting
+d8, Stealth d8, Taunt d8, Thievery d6
+Pace: 6; Parry: 8; Toughness: 5
+Hindrances: Loyal (To family and friends), Outsider
+(Russian), Vengeful (Minor)
+Edges: Arcane Background (Magic), Block (Imp),
+Combat Reflexes, Strong Willed, Streetwise
+Powers: Bolt, deflection, quickness. Power Points: 10
+Gear: 9mm pistol (Range 12/24/48, Damage 2d6, RoF 1,
+AP 1), Desert Eagle (Range 12/24/48, Damage 2d6+1, RoF 1,
+AP 1), 2 extra clips, Leather armor (+1), 
+scimitar (Str+d8), Laser Sword (Str+d8+5), backpack
+Special Abilities:
+• Armor +4: Scaly hide.
+• Claws/Bite: Str+d8.
+• Fear (–2): A dragon spurs a Fear check at –2.
+• Size 1: Common gators are about 6 to 7′ long, thick, heavy, and weigh just under 500 lbs.
+Super Powers:
+•Attack, Melee (6): Damage Str+3d6. (Bear
+claws.)
+•Awareness (5): Ignores obscurement
+penalties and Gang Up bonus.

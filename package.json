@@ -1,0 +1,16 @@
+{
+  "name": "swade-statblock-parser",
+  "version": "0.0.1",
+  "description": "SWADE Stat-block Parser for Foundry VTT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update": "npm uninstall foundry-pc-types && npm install --save-dev gitlab:foundry-projects/foundry-pc/foundry-pc-types"
+  },
+  "author": "Arnon Ram",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "foundry-pc-types": "gitlab:foundry-projects/foundry-pc/foundry-pc-types"
+  }
+}
