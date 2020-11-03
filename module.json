@@ -6,5 +6,8 @@
     "author": "Arnon Ram",
     "version": "0.1.0",
     "minimumCoreVersion": "0.7.5",
-    "esmodules": ["scripts/swadeActorImporter.js"]
+    "esmodules": ["scripts/swadeActorImporter.js"],
+    "url": "https://github.com/arnonram/swade-statblock-parser",
+    "manifest": "https://github.com/arnonram/swade-statblock-parser/releases/download/0.1.0/module.json",
+    "download": "https://github.com/arnonram/swade-statblock-parser/releases/download/0.1.0/module.zip"
   }

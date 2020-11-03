@@ -79,7 +79,7 @@ export const PowerBuilder = function (powers) {
     return allPowers;
 }
 
-export const WeaponBuilder = function (weaponName) {
+export const WeaponBuilder = function (weaponName, damage, description, rangeWeaponData) {
     let weapon = GetItem(SwadeItems.WEAPON, weaponName);
     if (weapon != undefined) {
         return weapon;
@@ -87,13 +87,19 @@ export const WeaponBuilder = function (weaponName) {
         weapon.name = weaponName;
         weapon.type = SwadeItems.weapon
         weapon.data = {
-
+            description: description != undefined ? description : `${weaponName} ${damage}`,
+            equiped: true,
+            damage: damage ?? rangeWeaponData.Damage,
+            range: rangeWeaponData.range ?? "",
+            rof: rangeWeaponData.RoF ?? "1",
+            ap: rangeWeaponData.ap ?? "0"
         };
         edge.img = "systems/swade/assets/icons/weapon.svg";
         return weapon;
     }
 
 }
+
 export const ShieldBuilder = function (ShieldName) {
     let Shield = GetItem(SwadeItems.SHIELD, ShieldName);
     if (Shield != undefined) {
@@ -109,7 +115,8 @@ export const ShieldBuilder = function (ShieldName) {
     }
 
 }
-export const ArmorBuilder = function (ArmorName) {
+
+export const ArmorBuilder = function (ArmorName, armorBonus, armorDescription) {
     let Armor = GetItem(SwadeItems.ARMOR, ArmorName);
     if (Armor != undefined) {
         return Armor;
@@ -117,13 +124,15 @@ export const ArmorBuilder = function (ArmorName) {
         Armor.name = ArmorName;
         Armor.type = SwadeItems.Armor
         Armor.data = {
-
+            description: armorDescription != undefined ? armorDescription : `${ArmorName} ${armorBonus}`,
+            armor: armorBonus > 0 ? `+${armorBonus}` : armorBonus.toString()
         };
         edge.img = "systems/swade/assets/icons/armor.svg";
         return Armor;
     }
 
 }
+
 export const GearBuilder = function (GearName) {
     let Gear = GetItem(SwadeItems.GEAR, GearName);
     if (Gear != undefined) {

@@ -1,3 +1,5 @@
+import { diceRegex, newLineRegex } from "./global";
+
 const statBlockParser = async function (charToImport) {
     const attributesAndSkills = ["Attributes:", "Skills:"];
     const supportedListStats = ["Hindrances:", "Edges:", "Powers:", "Gear:"];
@@ -9,9 +11,6 @@ const statBlockParser = async function (charToImport) {
             .concat(baseStats
                 .concat(supportedBulletListStats
                     .concat(additionalStats))));
-
-    const newLineRegex = /\r\n/gi;
-    const diceRegex = /(\d+)?d(\d+)([\+\-]\d+)?/gi
 
     const inData = charToImport;
     let sections = [];

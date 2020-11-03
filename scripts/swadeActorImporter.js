@@ -1,4 +1,5 @@
 import { BuildActor } from "./actorBuilder.js";
+import { fs } from "fs";
 
 Hooks.on("renderActorDirectory", (app, html, data) => {
     const importStatblockButton = $(
@@ -6,28 +7,28 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
     );
     html.find(".directory-footer").append(importButton);
 
-    const importWindowDialogue = `
-        <h3>Actor Importer</h3>
-        <p>Imports stats block from clipboard</p>
-        <form>
-            <p>Actor Type:</p>
-            <input type="radio" id="npc" name="actorType" value="npc">
-            <label for="NPC">NPC</lable><br>
-            <input type="radio" id="character" name="actorType" value="character">
-            <label for="character">Character</lable><br>
-            <br>
-            <p>Wildcard?</p>
-            <input type="radio" id="yes" name="isWildcar" value="true">
-            <label for="yes">Yes</lable><br>
-            <input type="radio" id="no" name="isWildcar" value="false">
-            <label for="no">No</lable><br>
-        </form>
-    `
+    // const importWindowDialogue = `
+    //     <h3>Actor Importer</h3>
+    //     <p>Imports stats block from clipboard</p>
+    //     <form>
+    //         <p>Actor Type:</p>
+    //         <input type="radio" id="npc" name="actorType" value="npc">
+    //         <label for="NPC">NPC</lable><br>
+    //         <input type="radio" id="character" name="actorType" value="character">
+    //         <label for="character">Character</lable><br>
+    //         <br>
+    //         <p>Wildcard?</p>
+    //         <input type="radio" id="yes" name="isWildcar" value="true">
+    //         <label for="yes">Yes</lable><br>
+    //         <input type="radio" id="no" name="isWildcar" value="false">
+    //         <label for="no">No</lable><br>
+    //     </form>
+    // `
     importStatblockButton.click((ev) => {
         logger("Starting Actor Import");
         new Dialog({
             title: "Import Statblock",
-            content: "../tempaltes/ImportWindowDialogue.html",
+            content: fs.readFileSync('../tempaltes/ImportWindowDialogue.html', 'utf8'),
             buttons: {
                 Import: {
                     label: "Import!",

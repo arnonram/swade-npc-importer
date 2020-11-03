@@ -58,6 +58,7 @@ function BuildActorItems(parsedData) {
     items.push(EdgeBuilder(parsedData.Edges))
     items.push(HindranceBuilder(parsedData.Hindrances))
     items.push(PowerBuilder(parsedData.Powers))
+    items.push(SpecialAbilitiesParser(parsedData.SpecialAbilities))
 
     return items;
 }
