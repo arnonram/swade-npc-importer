@@ -1,6 +1,6 @@
-import { module } from "./global";
+import { module } from "./global.js";
 
-export const GetItem = function (itemType, itemName) {
+export const GetItem = async function (itemType, itemName) {
     let itemPack = GetItemCompendium(itemType);
     let packIndex = await itemPack.getIndex();
     let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];

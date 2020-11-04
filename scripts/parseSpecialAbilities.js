@@ -1,5 +1,5 @@
-import { ArmorBuilder, WeaponBuilder } from "./itemBuilder";
-import { diceRegex } from "./global";
+import { ArmorBuilder, WeaponBuilder } from "./itemBuilder.js";
+import { diceRegex } from "./global.js";
 
 export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     let specialAbitlitiesItems = {};

@@ -1,22 +1,31 @@
-
-import { statBlockParser } from "./parserStatBlock"
-import "./itemBuilder"
-import { EdgeBuilder, HindranceBuilder, PowerBuilder, SkillBuilder } from "./itemBuilder";
+import { StatBlockParser } from "./parseStatBlock.js";
+import "./itemBuilder.js";
+import { EdgeBuilder, HindranceBuilder, PowerBuilder, SkillBuilder } from "./itemBuilder.js";
+import { log } from "./global.js";
 
 export const BuildActor = async function (isPc, isWildCard) {
-    let data = await navigator.clipboard.readText()
-    let parsedData = await statBlockParser(data);
+    let data = GetClipboard();
+    if (data != undefined){
+        let parsedData = await StatBlockParser(data);
 
-    var finalActor = {}
-    finalActor.name = parsedData.name;
-    finalActor.type = isPc;
-    finalActor.data = BuildActorData(parsedData, isWildCard);
-    finalActor.items = BuildActorItems(parsedData);
-    finalActor.token = BuildActorToken(parsedData);
-
-    importActor(JSON.stringify(finalActor))
+        var finalActor = {}
+        finalActor.name = parsedData.name;
+        finalActor.type = isPc;
+        finalActor.data = BuildActorData(parsedData, isWildCard);
+        finalActor.items = BuildActorItems(parsedData);
+        finalActor.token = BuildActorToken(parsedData);
+        
+        log(JSON.stringify(finalActor));
+        importActor(JSON.stringify(finalActor))
+    } else {
+        ui.notification.error("Clipboard empty")
+    }
 }
 
+async function GetClipboard(){
+    log("Reading clipboard data...")
+    return await navigator.clipboard.readText()
+}
 
 function BuildActorData(parsedData, isWildCard) {
     var data = {};

@@ -1,5 +1,5 @@
-import { GetItem } from "./compendiumActions"
-import { SwadeItems } from "./global"
+import { GetItem } from "./compendiumActions.js";
+import { SwadeItems } from "./global.js";
 
 export const SkillBuilder = function (skills) {
     let allSkills = [];

@@ -1,16 +1,18 @@
-import { diceRegex, newLineRegex } from "./global";
+import { log } from "./global.js";
+import { closingParenthesis, diceRegex, newLineRegex } from "./global.js"
 
-const statBlockParser = async function (charToImport) {
+export const StatBlockParser = async function (charToImport) {
     const attributesAndSkills = ["Attributes:", "Skills:"];
     const supportedListStats = ["Hindrances:", "Edges:", "Powers:", "Gear:"];
     const baseStats = ["Pace:", "Parry:", "Toughness:", "Power Points:"]
     const additionalStats = ["Sanity:", "Conviction:", "Strain:"];
     const supportedBulletListStats = ["Special Abilities:", "Super Powers:"];
-    const allStatBlockEntities = attributesAndSkills
-        .concat(supportedListStats
-            .concat(baseStats
-                .concat(supportedBulletListStats
-                    .concat(additionalStats))));
+    const allStatBlockEntities =
+        attributesAndSkills
+            .concat(supportedListStats
+                .concat(baseStats
+                    .concat(supportedBulletListStats
+                        .concat(additionalStats))));
 
     const inData = charToImport;
     let sections = [];
@@ -51,8 +53,8 @@ const statBlockParser = async function (charToImport) {
         importedActor.name = lines[0];
         lines.shift();
         importedActor.biography = {
-                value: lines.join(" ")
-            }
+            value: lines.join(" ")
+        }
         sections.shift();
     }
 
@@ -135,7 +137,7 @@ const statBlockParser = async function (charToImport) {
     function GetGear() {
         let characterGear = []
         let gearLine = sections.find(x => x.includes("Gear:")).replace(newLineRegex, '').replace("Gear: ", '');
-        let numberOfClosingParenthesis = gearLine.match(/\)/g || []).length;
+        let numberOfClosingParenthesis = gearLine.match(closingParenthesis || []).length;
         for (let i = 0; i < numberOfClosingParenthesis; i++) {
             let firstOpeningParenthesis = gearLine.indexOf('(');
             let firstClosingParenthesis = gearLine.indexOf(')');
@@ -210,19 +212,23 @@ const statBlockParser = async function (charToImport) {
         });
     }
 
-    sections = GetSections();
-    GetNameAndDescription();
-    GetAttributes();
-    GetSkills();
-    GetBaseStats();
-    GetListsStats(["Edges", "Hindrances", "Powers"]);
-    GetBulletListStats();
-    GetGear();
-    GetSize();
+    try {
+        sections = GetSections();
+        GetNameAndDescription();
+        GetAttributes();
+        GetSkills();
+        GetBaseStats();
+        GetListsStats(["Edges", "Hindrances", "Powers"]);
+        GetBulletListStats();
+        GetGear();
+        GetSize();
+    } catch (error) {
+        ui.notification.error("Invalid stat block")
+    }
 
-    console.log(importedActor);
+    log(importedActor);
     return importedActor;
 }
-const fs = require('fs');
-let charToImport = fs.readFileSync('../testData/testData.txt', 'utf8');
-statBlockParser(charToImport)
+// // const fs = require('fs');
+// let charToImport = fs.readFileSync('../testData/testData.txt', 'utf8');
+// StatBlockParser(charToImport)

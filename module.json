@@ -1,13 +1,13 @@
 {
-    "name": "swade-statblock-parser",
-    "title": "SWADE Stat Block Parser",
-    "description": "SWADE Stat Block Parser",
+    "name": "swade-npc-importer",
+    "title": "SWADE NPC Importer",
+    "description": "Import NPC statblocks for SWADE",
     "systems": ["swade"],
     "author": "Arnon Ram",
     "version": "0.1.0",
     "minimumCoreVersion": "0.7.5",
-    "esmodules": ["scripts/swadeActorImporter.js"],
-    "url": "https://github.com/arnonram/swade-statblock-parser",
-    "manifest": "https://github.com/arnonram/swade-statblock-parser/releases/download/0.1.0/module.json",
-    "download": "https://github.com/arnonram/swade-statblock-parser/releases/download/0.1.0/module.zip"
+    "esmodules": ["scripts/swadeNpcImporter.js"],
+    "url": "https://github.com/arnonram/swade-npc-importer",
+    "manifest": "https://github.com/arnonram/swade-npc-importer/releases/download/0.1.0/module.json",
+    "download": "https://github.com/arnonram/swade-npc-importer/releases/download/0.1.0/module.zip"
   }

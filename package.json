@@ -1,16 +1,25 @@
 {
-  "name": "swade-statblock-parser",
+  "name": "swade-npc-importer",
   "version": "0.0.1",
-  "description": "SWADE Stat-block Parser for Foundry VTT",
+  "description": "Import NPC statblocks for SWADE",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "update": "npm uninstall foundry-pc-types && npm install --save-dev gitlab:foundry-projects/foundry-pc/foundry-pc-types"
   },
+  "type": "module",
   "author": "Arnon Ram",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
     "foundry-pc-types": "gitlab:foundry-projects/foundry-pc/foundry-pc-types"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnonram/swade-npc-importer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/arnonram/swade-npc-importer/issues"
+  },
+  "homepage": "https://github.com/arnonram/swade-npc-importer#readme"
 }
