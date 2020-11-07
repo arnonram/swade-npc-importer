@@ -21,7 +21,7 @@ export const SkillBuilder = function (skills) {
                 attribute: GetAttribute(element),
                 die: die
             }
-            skill.img = "modules/swade-statblock-parser/assets/skills.svg"
+            skill.img = "modules/swade-npc-importer/assets/skills.svg"
             skills.push(skill);
         }
     });

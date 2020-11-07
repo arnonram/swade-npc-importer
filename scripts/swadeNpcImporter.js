@@ -12,13 +12,13 @@ Hooks.once("ready", async () => {
   log("NPC Importer Initialized!");
 });
 
-Hooks.on("renderActorDirectory", (app, html, data) => {
+Hooks.on("renderActorDirectory", async (app, html, data) => {
     const npcImporterButton = $(
         '<button style="min-width: 96%; margin: 10px 6px;">Actor Importer</button>'
     );
     html.find(".directory-footer").append(npcImporterButton);
 
-    const npcImporterDialog = `
+    let npcImporterDialog = `
         <h3>Actor Importer</h3>
         <p>Imports stats block from clipboard</p>
         <div style="width: 100%; display: table;">
@@ -37,19 +37,21 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
                 <label for="no">No</lable><br>
             </div>
         </div>
-    `
-    npcImporterButton.click((ev) => {
-        log("NPC Importer button clicked");
+    `;
+
+    npcImporterButton.click(() => {
         new Dialog({
-            title: "Import NPC",
+            title: "NPC Importer",
             content:  npcImporterDialog,
             buttons: {
                 Import: {
                     label: "Import!",
-                    callback: (html) => {
-                        await BuildActor(
-                            html.find("#actorType")[0].value,
-                            html.find("#isWildcard")[0].value);
+                    callback: () => {
+                        let radios = document.querySelectorAll('input[type="radio"]:checked');
+                        BuildActor(
+                            GetClipboard(),
+                            radios[0].value,
+                            radios[1].value);
                     },
                 },
                 Cancel: {
@@ -60,3 +62,8 @@ Hooks.on("renderActorDirectory", (app, html, data) => {
         }).render(true);
     });
 });
+
+async function GetClipboard() {
+    log("Reading clipboard data...");
+    return navigator.clipboard.readText();
+}

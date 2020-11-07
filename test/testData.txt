@@ -23,6 +23,7 @@ Special Abilities:
 • Claws/Bite: Str+d8.
 • Fear (–2): A dragon spurs a Fear check at –2.
 • Size 1: Common gators are about 6 to 7′ long, thick, heavy, and weigh just under 500 lbs.
+• Speed: d10 running dice
 Super Powers:
 •Attack, Melee (6): Damage Str+3d6. (Bear
 claws.)

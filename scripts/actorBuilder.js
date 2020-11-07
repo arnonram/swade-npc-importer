@@ -1,51 +1,46 @@
+import { log } from "./global.js"
+import * as global from "./global.js"
+import * as itemBuilder from "./itemBuilder.js";
 import { StatBlockParser } from "./parseStatBlock.js";
-import "./itemBuilder.js";
-import { EdgeBuilder, HindranceBuilder, PowerBuilder, SkillBuilder } from "./itemBuilder.js";
-import { log } from "./global.js";
+import { SpecialAbilitiesParser } from "./parseSpecialAbilities.js"
 
-export const BuildActor = async function (isPc, isWildCard) {
-    let data = GetClipboard();
-    if (data != undefined){
-        let parsedData = await StatBlockParser(data);
-
+export const BuildActor = async function (clipboardText, actorType, isWildCard) {
+    log(`BuildActor initiated: actorType=${actorType}, isWildCard=${isWildCard}`)
+    if (clipboardText != undefined) {
+        let parsedData = StatBlockParser(clipboardText);
+        log(JSON.stringify(parsedData));
         var finalActor = {}
-        finalActor.name = parsedData.name;
-        finalActor.type = isPc;
+        finalActor.name = parsedData.Name;
+        finalActor.type = actorType;
         finalActor.data = BuildActorData(parsedData, isWildCard);
         finalActor.items = BuildActorItems(parsedData);
         finalActor.token = BuildActorToken(parsedData);
-        
-        log(JSON.stringify(finalActor));
-        importActor(JSON.stringify(finalActor))
+
+        log(`Actor to import: ${JSON.stringify(finalActor)}`);
+        ImportActor(JSON.stringify(finalActor))
     } else {
         ui.notification.error("Clipboard empty")
     }
 }
 
-async function GetClipboard(){
-    log("Reading clipboard data...")
-    return await navigator.clipboard.readText()
-}
-
 function BuildActorData(parsedData, isWildCard) {
     var data = {};
 
-    data.attributes = parsedData.attributes,
+    data.attributes = parsedData.Attributes,
         data.stats = {
             speed: {
-                runningDie: FindRunningDie(),
+                runningDie: FindRunningDie(parsedData.SpecialAbilities),
                 value: parsedData.Pace
             },
             toughness: {
                 value: parsedData.Toughness,
-                armor: FindArmor(parsedData),
-                modifier: 0
+                armor: FindArmor(parsedData.SpecialAbilities)
             },
             parry: { value: parsedData.Parry },
-            size: parsedData.size
+            size: parsedData.Size
         }
     data.details = {
-        biography: parsedData.biography,
+        biography: parsedData.Biography,
         autoCalcToughness: true
     }
     data.powerPoints = {
@@ -53,9 +48,9 @@ function BuildActorData(parsedData, isWildCard) {
         max: parsedData['Power Points']
     }
     data.wounds = {
-        max: (isWildCard ? 3 : 1) + CalculateWoundMod(actorData.Size)
+        max: CalculateWoundMod(parsedData.Size, isWildCard)
     }
-    data.initiative = InitiativeMod(actorData.Edges);
+    data.initiative = InitiativeMod(parsedData.Edges);
     data.wildcard = isWildCard;
 
     return data;
@@ -63,10 +58,10 @@ function BuildActorData(parsedData, isWildCard) {
 
 function BuildActorItems(parsedData) {
     let items = [];
-    items.push(SkillBuilder(parsedData.skills))
-    items.push(EdgeBuilder(parsedData.Edges))
-    items.push(HindranceBuilder(parsedData.Hindrances))
-    items.push(PowerBuilder(parsedData.Powers))
+    items.push(itemBuilder.SkillBuilder(parsedData.skills))
+    items.push(itemBuilder.EdgeBuilder(parsedData.Edges))
+    items.push(itemBuilder.HindranceBuilder(parsedData.Hindrances))
+    items.push(itemBuilder.PowerBuilder(parsedData.Powers))
     items.push(SpecialAbilitiesParser(parsedData.SpecialAbilities))
 
     return items;
@@ -99,17 +94,20 @@ function GetWidthHight(size) {
     }
 }
 
-function CalculateWoundMod(size) {
+function CalculateWoundMod(size, isWildCard) {
+    var baseWounds = isWildCard ? 3 : 1;
     switch (size) {
-        case (size <= 3):
-            return 0;
         case (size <= 7 && size >= 4):
-            return 1;
+            baseWounds = baseWounds + 1;
+            break;
         case (size <= 8 && size >= 11):
-            return 2;
+            baseWounds = baseWounds + 2;
+            break;
         case (size >= 12):
-            return 3;
+            baseWounds = baseWounds + 3;
+            break;
     }
+    return baseWounds;
 }
 
 function CalculateScale(size) {
@@ -141,10 +139,25 @@ function InitiativeMod(edges) {
         }
     });
 
-    return `{
-        "hasHesitant": ${hasHesitant},
-        "hasLevelHeaded": ${hasLevelHeaded},
-        "hasImpLevelHeaded": ${hasImpLevelHeaded}
-    }`
+    return {
+        "hasHesitant": hasHesitant,
+        "hasLevelHeaded": hasLevelHeaded,
+        "hasImpLevelHeaded": hasImpLevelHeaded
+    }
 }
 
+function FindRunningDie(abilities) {
+    for (const ability in abilities) {
+        if (ability.toLowerCase().includes("speed")){
+            return parseInt(abilities[ability].match(global.diceRegex)[0].replace('d', ''))
+        }
+    }
+}
+
+function FindArmor(abilities) {
+    for (const ability in abilities) {
+        if (ability.toLowerCase().includes("armor")){
+            return ability.split(" ")[1].toString();
+        }
+    }
+}
