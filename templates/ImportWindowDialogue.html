@@ -1,15 +1,48 @@
-<h2>Actor Importer</h2>
-<p><i>Imports stats block from clipboard</i></p>
-<form>
-    <h4>Actor Type:</h4>
-    <input type="radio" id="npc" name="actorType" value="npc">
-    <label for="NPC">NPC</lable><br>
-    <input type="radio" id="character" name="actorType" value="character">
-    <label for="character">Character</lable>
-    <br>
-    <h4>Wildcard?</h4>
-    <input type="radio" id="yes" name="isWildcar" value="true">
-    <label for="yes">Yes</lable><br>
-    <input type="radio" id="no" name="isWildcar" value="false">
-    <label for="no">No</lable><br>
-</form>
+<head>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .column {
+            float: left;
+            width: 33.33%;
+        }
+
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Actor Importer</h3>
+    <p>Imports stats block from clipboard</p>
+    <div class="row">
+        <div class="column">
+            <p>Actor Type:</p>
+            <input type="radio" id="npc" name="actorType" value="npc" checked="checked">
+            <label for="NPC">NPC</lable><br>
+                <input type="radio" id="character" name="actorType" value="character">
+                <label for="character">Character</lable>
+        </div>
+        <div class="column">
+            <p>Wildcard?</p>
+            <input type="radio" id="yes" name="isWildcard" value="true">
+            <label for="yes">Yes</lable><br>
+                <input type="radio" id="no" name="isWildcard" value="false" checked="checked" >
+                <label for="no">No</lable>
+        </div>
+        <div class="column">
+            <p>Disposition:</p>
+            <input type="radio" id="hostile" name="disposition" value="-1">
+            <label for="hostile">Hostile</lable><br>
+                <input type="radio" id="neutral" name="disposition" value="0" checked="checked">
+                <label for="neutral">Neutral</lable><br>
+                    <input type="radio" id="friendly" name="disposition" value="1">
+                    <label for="friendly">Friendly</lable>
+        </div>
+    </div>
+</body>

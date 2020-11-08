@@ -1,150 +1,176 @@
-import { GetItem } from "./compendiumActions.js";
-import { SwadeItems } from "./global.js";
+import { GetItemFromCompendium } from "./compendiumActions.js";
+import { log, SwadeItems, armorModRegex } from "./global.js";
 
-export const SkillBuilder = function (skills) {
-    let allSkills = [];
-    Object.entries(skills).forEach(([key, value]) => {
-        let skill = GetItem(SwadeItems.SKILLS, key)
-        if (skill != undefined) {
-            skill.data.die = value.sides;
-            skill.data.modifier = value.modifier;
-            allSkills.push(skill);
-        } else {
-            let die = {
-                sides: value.sides,
-                modifier: value.modifier
-            };
-
-            skill.name = key.capitalize();
-            skill.type = SwadeItems.SKILLS;
-            skill.data = {
-                attribute: GetAttribute(element),
-                die: die
+export const SkillBuilder = async function (skillsDict) {
+    if (skillsDict != undefined){
+        var allSkills = [];
+        for (const elem in skillsDict) {
+            var skillFromComp = await GetItemFromCompendium(SwadeItems.SKILL, elem);
+            if (skillFromComp === undefined) {
+                let skill = {};
+                let die = {
+                    sides: skillsDict[elem].sides,
+                    modifier: skillsDict[elem].modifier
+                };
+    
+                skill.name = elem.capitalize();
+                skill.type = SwadeItems.SKILL;
+                skill.img = "modules/swade-npc-importer/assets/skills.svg"
+                skill.data = {
+                    die: die,
+                    // attribute: GetAttribute(element) 
+                }
+                allSkills.push(skill);
+            } else {
+                skillFromComp.data.die.sides = skillsDict[elem].sides;
+                skillFromComp.data.die.modifier = skillsDict[elem].modifier;
+                allSkills.push(skillFromComp);
             }
-            skill.img = "modules/swade-npc-importer/assets/skills.svg"
-            skills.push(skill);
         }
-    });
-    return allSkills;
+    
+        return allSkills;
+    }    
 }
 
-export const EdgeBuilder = function (edges) {
-    let allEdes = [];
-    edges.forEach(element => {
-        let edge = GetItem(SwadeItems.EDGE, element);
-        if (edge != undefined) {
-            allEdes.push(edge);
-        } else {
-            edge.name = element.capitalize();
-            edge.type = SwadeItems.EDGE;
-            edge.data = {
-                isArcaneBackground: element.includes("Arcane") ? true : false
+export const EdgeBuilder = async function (edges) {
+    if (edges != undefined) {
+        var allEdges = [];
+        edges.forEach(async (element) => {
+            var edgeFromCompendium = await GetItemFromCompendium(SwadeItems.EDGE, element);
+            if (edgeFromCompendium != undefined) {
+                allEdges.push(edgeFromCompendium);
+            } else {
+                let edge = {};
+                edge.name = element.capitalize();
+                edge.type = SwadeItems.EDGE;
+                edge.data = {
+                    isArcaneBackground: element.includes("Arcane") ? true : false
+                }
+                edge.img = "systems/swade/assets/icons/edge.svg";
+                allEdges.push(edge);
             }
-            edge.img = "systems/swade/assets/icons/edge.svg";
-            allEdes.push(edge);
-        }
-    });
-    return allEdes;
+        });
+        return allEdges;
+    }
 }
 
-export const HindranceBuilder = function (hindrances) {
-    let allHindrances = [];
-    hindrances.forEach(element => {
-        let hindrance = GetItem(SwadeItems.HINDRANCE, element);
-        if (hindranceName != undefined) {
-            return allHindrances.push(hindrance);
-        } else {
-            hindrance.name = element.capitalize();
-            hindrance.type = SwadeItems.HINDRANCE;
-            edge.img = "systems/swade/assets/icons/hindrance.svg";
-            return allHindrances.push(hindrance);
-        }
-    });
-    return allHindrances;
+export const HindranceBuilder = async function (hindrances) {
+    if (hindrances != undefined) {
+        var allHindrances = [];
+        hindrances.forEach(async (element) => {
+            var hindranceFromCompendium = await GetItemFromCompendium(SwadeItems.HINDRANCE, element);
+            if (hindranceName != undefined) {
+                return allHindrances.push(hindranceFromCompendium);
+            } else {
+                let hindrance = {};
+                hindrance.name = element.capitalize();
+                hindrance.type = SwadeItems.HINDRANCE;
+                hindrance.img = "systems/swade/assets/icons/hindrance.svg";
+                return allHindrances.push(hindrance);
+            }
+        });
+        return allHindrances;
+    }
 }
 
-export const PowerBuilder = function (powers) {
-    let allPowers = [];
-    powers.forEach(element => {
-        let power = GetItem(SwadeItems.POWER, element);
-        if (power != undefined) {
-            return allPowers.push(power);
-        } else {
-            power.name = element.capitalize();
-            power.type = SwadeItems.POWER
-            edge.img = "systems/swade/assets/icons/power.svg";
-            return allPowers.push(power);
-        }
-    });
-    return allPowers;
+export const PowerBuilder = async function (powers) {
+    if (powers != undefined) {
+        var allPowers = [];
+        powers.forEach(async (element) => {
+            var powerFromCompendium = await GetItemFromCompendium(SwadeItems.POWER, element);
+            if (powerFromCompendium != undefined) {
+                return allPowers.push(powerFromCompendium);
+            } else {
+                let power = {};
+                power.name = element.capitalize();
+                power.type = SwadeItems.POWER
+                power.img = "systems/swade/assets/icons/power.svg";
+                return allPowers.push(power);
+            }
+        });
+        return allPowers;
+    }
 }
 
-export const WeaponBuilder = function (weaponName, damage, description, rangeWeaponData) {
-    let weapon = GetItem(SwadeItems.WEAPON, weaponName);
-    if (weapon != undefined) {
-        return weapon;
+export const WeaponBuilder = async function (weaponName, description, weaponDamage, range='', rof='', ap='') {
+    var weaponFromCompendium = await GetItemFromCompendium(SwadeItems.WEAPON, weaponName);
+    if (weaponFromCompendium != undefined) {
+        return weaponFromCompendium;
     } else {
+        let weapon = {};
         weapon.name = weaponName;
-        weapon.type = SwadeItems.weapon
+        weapon.type = SwadeItems.WEAPON
         weapon.data = {
-            description: description != undefined ? description : `${weaponName} ${damage}`,
-            equiped: true,
-            damage: damage ?? rangeWeaponData.Damage,
-            range: rangeWeaponData.range ?? "",
-            rof: rangeWeaponData.RoF ?? "1",
-            ap: rangeWeaponData.ap ?? "0"
+            description: description,
+            equippable: true,
+            equipped: true,
+            damage: weaponDamage,
+            range: range,
+            rof: rof,
+            ap: ap
         };
-        edge.img = "systems/swade/assets/icons/weapon.svg";
+        weapon.img = "systems/swade/assets/icons/weapon.svg";
         return weapon;
     }
 
 }
 
-export const ShieldBuilder = function (ShieldName) {
-    let Shield = GetItem(SwadeItems.SHIELD, ShieldName);
-    if (Shield != undefined) {
-        return Shield;
+export const ShieldBuilder = async function (shieldName, description, parry, cover) {
+    var shieldFromCompendium = await GetItemFromCompendium(SwadeItems.SHIELD, shieldName);
+    if (shieldFromCompendium != undefined) {
+        return shieldFromCompendium;
     } else {
-        Shield.name = ShieldName;
-        Shield.type = SwadeItems.Shield
-        Shield.data = {
-
+        let shield = {};
+        shield.name = shieldName;
+        shield.type = SwadeItems.SHIELD
+        shield.data = {
+            description: description,
+            equipped: true,
+            equippable: true,
+            parry: 0,
+            cover: 0
         };
-        edge.img = "systems/swade/assets/icons/shield.svg";
-        return Shield;
+        shield.img = "systems/swade/assets/icons/shield.svg";
+        return shield;
     }
 
 }
 
-export const ArmorBuilder = function (ArmorName, armorBonus, armorDescription) {
-    let Armor = GetItem(SwadeItems.ARMOR, ArmorName);
-    if (Armor != undefined) {
-        return Armor;
+export const ArmorBuilder = async function (armorNameAndBonus, armorDescription) {
+    var armorFromCompendium = await GetItemFromCompendium(SwadeItems.ARMOR, armorNameAndBonus);
+    if (armorFromCompendium != undefined) {
+        return armorFromCompendium;
     } else {
-        Armor.name = ArmorName;
-        Armor.type = SwadeItems.Armor
-        Armor.data = {
-            description: armorDescription != undefined ? armorDescription : `${ArmorName} ${armorBonus}`,
-            armor: armorBonus > 0 ? `+${armorBonus}` : armorBonus.toString()
+        let armor = {};
+        armor.name = armorNameAndBonus;
+        armor.type = SwadeItems.ARMOR
+        armor.data = {
+            description: armorDescription,
+            armor: parseInt(armorNameAndBonus.match(armorModRegex)),
+            equipped: true,
+            equippable: true,
         };
-        edge.img = "systems/swade/assets/icons/armor.svg";
-        return Armor;
+        armor.img = "systems/swade/assets/icons/armor.svg";
+        return armor;
     }
 
 }
 
-export const GearBuilder = function (GearName) {
-    let Gear = GetItem(SwadeItems.GEAR, GearName);
-    if (Gear != undefined) {
-        return Gear;
+export const GearBuilder = async function (gearName, description) {
+    var gearFromCompendium = await GetItemFromCompendium(SwadeItems.GEAR, gearName);
+    if (gearFromCompendium != undefined) {
+        return gearFromCompendium;
     } else {
-        Gear.name = GearName;
-        Gear.type = SwadeItems.Gear
-        Gear.data = {
-
+        let gear = {};
+        gear.name = gearName;
+        gear.type = SwadeItems.GEAR
+        gear.data = {
+            description: description,
+            equipped: true,
+            equippable: true,
         };
-        edge.img = "systems/swade/assets/icons/gear.svg";
-        return Gear;
+        gear.img = "systems/swade/assets/icons/gear.svg";
+        return gear;
     }
 
 }

@@ -1,25 +1,28 @@
 import { log } from "./global.js"
 import * as global from "./global.js"
 
-export const StatBlockParser = function (inData) {
-    var importedActor = {};
-    log("Starting statblock parsing...")
+export const StatBlockParser = function (clipData) {
+    // var inData = clipData;
     try {
-        let sections = GetSections(inData);
-        Object.assign(importedActor, GetNameAndDescription(sections));
+        log(`Starting statblock parsing For data:\n ${clipData}`);
+        let sections = GetSections(clipData);
+        var importedActor = {};
+        Object.assign(importedActor, GetNameAndDescription(sections[0]));
         Object.assign(importedActor, GetAttributes(sections));
         Object.assign(importedActor, GetSkills(sections));
-        Object.assign(importedActor, GetBaseStats(sections), GetListsStats(sections), GetBulletListStats(sections));
+        Object.assign(importedActor, GetBaseStats(sections));
+        Object.assign(importedActor, GetListsStats(sections));
+        Object.assign(importedActor, GetBulletListStats(sections));
         Object.assign(importedActor, GetGear(sections));
-        importedActor.Size = GetSize(importedActor.SpecialAbilities);
-        log(JSON.stringify(importedActor, null, 4))
-    } catch (er) {
-        ui.notifications.error(`Failed to prase: ${er}`)
+        importedActor.Size = GetSize(importedActor["Special Abilities"]);
+        log(`Prased data: ${JSON.stringify(importedActor, null, 4)}`)
+
+        return importedActor;
+    } catch (error) {
+        log(`Failed to prase: ${error}`);
+        ui.notifications.error(`Failed to prase (see console for error)`)
     }
-
-    return importedActor;
 }
-
 
 
 function GetSections(inData) {
@@ -27,7 +30,7 @@ function GetSections(inData) {
     if (indexes.length === 0) {
         throw "Not a valid statblcok"
     }
-    let sections = [];
+    var sections = [];
     for (let i = 0; i < indexes.length; i++) {
         if (i === 0) {
             sections.push(inData.substring(0, indexes[i]).trim())
@@ -55,15 +58,17 @@ function GetSectionsIndex(inData) {
     });
 }
 
-function GetNameAndDescription(sections) {
+function GetNameAndDescription(nameAndDescription) {
     let nameDesc = {}
-    let lines = sections[0].split(global.newLineRegex);
+    let lines = nameAndDescription.split(global.newLineRegex);
     nameDesc.Name = lines[0];
     lines.shift();
-    nameDesc.Biography = {
-        value: lines.join(" ")
+    let bio = lines.join(" ").replace(global.newLineRegex, "").trim();
+    if (lines.length > 0) {
+        nameDesc.Biography = {
+            value: bio
+        }
     }
-    sections.shift();
     return nameDesc;
 }
 
@@ -85,8 +90,10 @@ function GetAttributes(sections) {
             : (diceAndMode.includes("-") ? `-${diceAndMode.split("-")[1]}` : "0");
 
         attributesDict[traitName.toLowerCase()] = {
-            sides: parseInt(traitDice.trim().replace('d', '')),
-            modifier: parseInt(traitMod.trim())
+            die: {
+                sides: parseInt(traitDice.trim().replace('d', '')),
+                modifier: parseInt(traitMod.trim())
+            }            
         }
     });
     return { Attributes: attributesDict };
@@ -128,44 +135,60 @@ function GetBaseStats(sections) {
 function GetListsStats(sections) {
     let listStats = {};
     global.supportedListStats.forEach(element => {
-        let line = sections.find(x => x.includes(element)).replace(global.newLineRegex, ' ').replace('.', '');
-        line = line.split(':');
-        listStats[line[0]] = line[1].split(',').map(s => s.trim());
+        var line = sections.find(x => x.includes(element));
+        if (line != undefined){
+            line = line.replace(global.newLineRegex, ' ').replace('.', '');
+            line = line.split(':');
+            if (line[1].length > 1){
+                listStats[line[0]] = line[1].split(',').map(s => s.trim());
+            }
+        } else {
+            log(`Actor has no ${element}`)
+        }
     });
     return listStats;
 }
 
 function GetBulletListStats(sections) {
-    let bulletListStats = {};
+    var bulletListStats = {};
     global.supportedBulletListStats.forEach(bulletList => {
         let abilities = {}
-        let line = SplitAndTrim(sections.find(x => x.includes(bulletList)), '•');
-        line.shift();
-        line.forEach(element => {
-            let ability = element.split(':');
-            abilities[ability[0].trim()] = ability[1].replace().trim();
-        })
-        bulletListStats[bulletList.slice(0, -1).replace(' ', '')] = abilities;
+        var line = sections.find(x => x.includes(bulletList));
+        if (line != undefined) {
+            line = SplitAndTrim(line, global.bulletRegex);
+            line.shift();
+            line.forEach(element => {
+                let ability = element.split(':');
+                abilities[ability[0].trim()] = ability.length ==2 ? ability[1].replace(global.newLineRegex).trim() : ability[0];
+            });
+            bulletListStats[bulletList.replace(':', '')] = abilities;
+        } else {
+            log(`Actor has no ${bulletList}`)
+        }
     });
     return bulletListStats;
 }
 
 function GetGear(sections) {
-    let characterGear = []
-    let gearLine = sections.find(x => x.includes("Gear:")).replace(global.newLineRegex, '').replace("Gear: ", '');
-    let numberOfClosingParenthesis = gearLine.match(global.closingParenthesis || []).length;
-    for (let i = 0; i < numberOfClosingParenthesis; i++) {
-        let firstOpeningParenthesis = gearLine.indexOf('(');
-        let firstClosingParenthesis = gearLine.indexOf(')');
-        let firstComma = gearLine.indexOf(',');
-        let gearSubstring = gearLine.substring(StartOfGearEntity(firstComma, firstOpeningParenthesis), firstClosingParenthesis + 1).trim();
-        characterGear.push(CleanGearEntry(gearSubstring));
-        gearLine = gearLine.replace(gearSubstring, '');
-        gearLine = CleanGearEntry(gearLine);
-    };
-    let restOfGear = SplitAndTrim(gearLine, ",");
-    characterGear = characterGear.concat(restOfGear)
-    return { Gear: ParseGear(characterGear) };
+    try {
+        let characterGear = []
+        let gearLine = sections.find(x => x.includes("Gear:")).replace(global.newLineRegex, '').replace("Gear: ", '');
+        let numberOfClosingParenthesis = gearLine.match(global.closingParenthesis || []).length;
+        for (let i = 0; i < numberOfClosingParenthesis; i++) {
+            let firstOpeningParenthesis = gearLine.indexOf('(');
+            let firstClosingParenthesis = gearLine.indexOf(')');
+            let firstComma = gearLine.indexOf(',');
+            let gearSubstring = gearLine.substring(StartOfGearEntity(firstComma, firstOpeningParenthesis), firstClosingParenthesis + 1).trim();
+            characterGear.push(CleanGearEntry(gearSubstring));
+            gearLine = gearLine.replace(gearSubstring, '');
+            gearLine = CleanGearEntry(gearLine);
+        };
+        let restOfGear = SplitAndTrim(gearLine, ",");
+        characterGear = characterGear.concat(restOfGear)
+        return { Gear: ParseGear(characterGear) };
+    } catch (error) {
+        log("Actor has no Gear")
+    }
 }
 
 function ParseGear(gearArray) {
@@ -221,8 +244,10 @@ function CleanGearEntry(gearLine) {
 
 function GetSize(abilities) {
     for (const ability in abilities) {
-        if (ability.toLowerCase().includes("size")){
+        if (ability.toLowerCase().includes("size")) {
+            log(ability);
             return parseInt(ability.split(" ")[1]);
         }
     }
+    return 1;
 }

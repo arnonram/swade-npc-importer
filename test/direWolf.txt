@@ -1,0 +1,13 @@
+Dire Wolf
+Dire wolves are very large and feral canines
+often used by orcs as attack dogs. They may
+also be found roaming in packs in the deepest,
+darkest woods.
+Attributes: Agility d8, Smarts d4 (A), Spirit d6,
+Strength d8, Vigor d8
+Skills: Athletics d8, Fighting d8, Intimidation d8, Notice d6, Stealth d8
+Pace: 10; Parry: 6; Toughness: 6
+Edges: Alertness
+Special Abilities:
+ Bite: Str+d6.
+ Speed: d10 running die
