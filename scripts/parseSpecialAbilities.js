@@ -1,11 +1,12 @@
 import { ArmorBuilder, WeaponBuilder } from "./itemBuilder.js";
-import { meleeDamageRegex, diceRegex, log } from "./global.js";
+import { meleeDamageRegex, diceRegex, GetMeleeDamage, GetArmorBonus } from "./global.js";
 
 export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     let specialAbitlitiesItems = [];
     for (const elem in specialAbilitiesData) {
         if (elem.toLocaleLowerCase().startsWith("armor")) {
-            specialAbitlitiesItems.push(await ArmorBuilder(elem, specialAbilitiesData[elem]))
+            let armorBonus = GetArmorBonus(elem);
+            specialAbitlitiesItems.push(await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem]))
         }
         if (specialAbilitiesData[elem].toLocaleLowerCase().includes("str")){
             let meleeDamage = GetMeleeDamage(specialAbilitiesData[elem]);
@@ -37,9 +38,4 @@ function CreateHtmlList(text) {
     });
     html.concat(`</ul>`)
     return html;
-}
-
-function GetMeleeDamage(abilityDescription){
-    let damage = abilityDescription.match(meleeDamageRegex).join('').replace('.', '').toLowerCase();
-    return `@${damage}`;
 }

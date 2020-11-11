@@ -4,16 +4,16 @@ import { log, SwadeItems, armorModRegex } from "./global.js";
 export const SkillBuilder = async function (skillsDict) {
     if (skillsDict != undefined){
         var allSkills = [];
-        for (const elem in skillsDict) {
-            var skillFromComp = await GetItemFromCompendium(SwadeItems.SKILL, elem);
-            if (skillFromComp === undefined) {
+        for (const element in skillsDict) {
+            var skillFromComp = await GetItemFromCompendium(SwadeItems.SKILL, element);
+            if (skillFromComp == undefined) {
                 let skill = {};
                 let die = {
-                    sides: skillsDict[elem].sides,
-                    modifier: skillsDict[elem].modifier
+                    sides: skillsDict[element].sides,
+                    modifier: skillsDict[element].modifier
                 };
     
-                skill.name = elem.capitalize();
+                skill.name = element.capitalize();
                 skill.type = SwadeItems.SKILL;
                 skill.img = "modules/swade-npc-importer/assets/skills.svg"
                 skill.data = {
@@ -22,8 +22,8 @@ export const SkillBuilder = async function (skillsDict) {
                 }
                 allSkills.push(skill);
             } else {
-                skillFromComp.data.die.sides = skillsDict[elem].sides;
-                skillFromComp.data.die.modifier = skillsDict[elem].modifier;
+                skillFromComp.data.die.sides = skillsDict[element].sides;
+                skillFromComp.data.die.modifier = skillsDict[element].modifier;
                 allSkills.push(skillFromComp);
             }
         }
@@ -59,7 +59,7 @@ export const HindranceBuilder = async function (hindrances) {
         var allHindrances = [];
         hindrances.forEach(async (element) => {
             var hindranceFromCompendium = await GetItemFromCompendium(SwadeItems.HINDRANCE, element);
-            if (hindranceName != undefined) {
+            if (hindranceFromCompendium != undefined) {
                 return allHindrances.push(hindranceFromCompendium);
             } else {
                 let hindrance = {};
@@ -136,17 +136,17 @@ export const ShieldBuilder = async function (shieldName, description, parry, cov
 
 }
 
-export const ArmorBuilder = async function (armorNameAndBonus, armorDescription) {
-    var armorFromCompendium = await GetItemFromCompendium(SwadeItems.ARMOR, armorNameAndBonus);
+export const ArmorBuilder = async function (armorName, armorBonus, armorDescription) {
+    var armorFromCompendium = await GetItemFromCompendium(SwadeItems.ARMOR, armorName);
     if (armorFromCompendium != undefined) {
         return armorFromCompendium;
     } else {
         let armor = {};
-        armor.name = armorNameAndBonus;
+        armor.name = armorName;
         armor.type = SwadeItems.ARMOR
         armor.data = {
             description: armorDescription,
-            armor: parseInt(armorNameAndBonus.match(armorModRegex)),
+            armor: armorBonus,
             equipped: true,
             equippable: true,
         };
@@ -166,8 +166,8 @@ export const GearBuilder = async function (gearName, description) {
         gear.type = SwadeItems.GEAR
         gear.data = {
             description: description,
-            equipped: true,
-            equippable: true,
+            equipped: false,
+            equippable: false,
         };
         gear.img = "systems/swade/assets/icons/gear.svg";
         return gear;

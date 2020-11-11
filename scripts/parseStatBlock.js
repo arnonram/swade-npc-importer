@@ -63,7 +63,7 @@ function GetNameAndDescription(nameAndDescription) {
     let lines = nameAndDescription.split(global.newLineRegex);
     nameDesc.Name = lines[0];
     lines.shift();
-    let bio = lines.join(" ").replace(global.newLineRegex, "").trim();
+    let bio = lines.join(" ").replace(global.newLineRegex, " ").trim();
     if (lines.length > 0) {
         nameDesc.Biography = {
             value: bio
@@ -159,7 +159,7 @@ function GetBulletListStats(sections) {
             line.shift();
             line.forEach(element => {
                 let ability = element.split(':');
-                abilities[ability[0].trim()] = ability.length ==2 ? ability[1].replace(global.newLineRegex).trim() : ability[0];
+                abilities[ability[0].trim()] = ability.length ==2 ? ability[1].replace(global.newLineRegex, " ").trim() : ability[0];
             });
             bulletListStats[bulletList.replace(':', '')] = abilities;
         } else {
@@ -172,19 +172,21 @@ function GetBulletListStats(sections) {
 function GetGear(sections) {
     try {
         let characterGear = []
-        let gearLine = sections.find(x => x.includes("Gear:")).replace(global.newLineRegex, '').replace("Gear: ", '');
+        let gearLine = sections.find(x => x.includes("Gear:")).replace(global.newLineRegex, ' ').replace("Gear: ", '');
         let numberOfClosingParenthesis = gearLine.match(global.closingParenthesis || []).length;
         for (let i = 0; i < numberOfClosingParenthesis; i++) {
-            let firstOpeningParenthesis = gearLine.indexOf('(');
+            // let firstOpeningParenthesis = gearLine.indexOf('(');
             let firstClosingParenthesis = gearLine.indexOf(')');
-            let firstComma = gearLine.indexOf(',');
-            let gearSubstring = gearLine.substring(StartOfGearEntity(firstComma, firstOpeningParenthesis), firstClosingParenthesis + 1).trim();
+            // let firstComma = gearLine.indexOf(',');
+            let gearSubstring = gearLine.substring(0, firstClosingParenthesis + 1).trim();
             characterGear.push(CleanGearEntry(gearSubstring));
             gearLine = gearLine.replace(gearSubstring, '');
             gearLine = CleanGearEntry(gearLine);
         };
-        let restOfGear = SplitAndTrim(gearLine, ",");
-        characterGear = characterGear.concat(restOfGear)
+        if(gearLine.length > 0){
+            let restOfGear = SplitAndTrim(gearLine, ",");
+            characterGear = characterGear.concat(restOfGear)
+        }        
         return { Gear: ParseGear(characterGear) };
     } catch (error) {
         log("Actor has no Gear")
@@ -195,7 +197,7 @@ function ParseGear(gearArray) {
     let gearDict = {}
     gearArray.forEach(gear => {
         let splitGear = gear.replace(')', '').split('(');
-        if (splitGear.length === 2) {
+        if (splitGear.length == 2) {
             gearDict[splitGear[0].trim()] = SplitAndTrim(splitGear[1], ',')
         } else {
             gearDict[gear] = null;
@@ -236,7 +238,7 @@ function SplitAndTrim(stringToSplit, separator) {
 }
 
 function CleanGearEntry(gearLine) {
-    if (gearLine.indexOf(', ') === 0) {
+    if (gearLine.indexOf(',') == 0 || gearLine.indexOf('.') == 0) {
         gearLine = gearLine.slice(1).trim();
     }
     return gearLine.trim();

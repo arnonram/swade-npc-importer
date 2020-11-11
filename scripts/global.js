@@ -9,7 +9,7 @@ export const newLineAndBullet = /\r\n\W|\n\W|\r\W/g;
 export const bulletRegex = /•|/g;
 export const diceRegex = /(\d+)?d(\d+)([\+\-]\d+)?/gi;
 export const closingParenthesis = /\)/g;
-export const meleeDamageRegex = /Str.|(Str)?[\+\-]?(\d+)?d?(\d+)?[\+\-]?(\d+)?d?(\d+)/g
+export const meleeDamageRegex = /Str\.|Str[\+\-](\d+)?d?(\d+)?[\+\-]?(\d+)?d?(\d+)/g
 export const armorModRegex = /\+\d|\-\d/
 
 export const attributesAndSkills = ["Attributes:", "Skills:"];
@@ -40,4 +40,13 @@ export const Traits = {
     SPIRIT: 'spirit',
     STRENGTH: 'strength',
     VIGOR: 'vigor'
+}
+
+export const GetMeleeDamage = function(abilityDescription){
+    let damage = abilityDescription.match(meleeDamageRegex).toString().replace('.', '').toLowerCase();
+    return `@${damage}`;
+}
+
+export const GetArmorBonus = function(data){
+    return parseInt(data.match(armorModRegex)[0])
 }

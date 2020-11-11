@@ -1,10 +1,11 @@
-import {BuildActor} from "../scripts/actorBuilder.js"
+import { BuildActor } from "../scripts/actorBuilder.js"
 import * as fs from 'fs';
 import { StatBlockParser } from "../scripts/parseStatBlock.js";
-import {SpecialAbilitiesParser} from "../scripts/parseSpecialAbilities.js"
+import { SpecialAbilitiesParser } from "../scripts/parseSpecialAbilities.js"
+import { ItemGearBuilder } from "../scripts/buildActorGear.js";
 
+let charToImport = fs.readFileSync('./goblin.txt', 'utf8');
 // let charToImport = fs.readFileSync('./testData.txt', 'utf8');
-let charToImport = fs.readFileSync('./testData.txt', 'utf8');
 // navigator.clipboard.writeText(charToImport);
 BuildActor("npc", false, 0, charToImport);
 // StatBlockParser(charToImport)
@@ -24,3 +25,25 @@ BuildActor("npc", false, 0, charToImport);
 //     "Puff" : "Str."
 // }
 // SpecialAbilitiesParser(s);
+
+
+// let gear = {
+//     "9mm pistol": {
+//         "Range": "12/24/48",
+//         "Damage": "2d6",
+//         "RoF": "1",
+//         "AP": "1"
+//     },
+//     "Desert Eagle": {
+//         "Range": "12/24/48",
+//         "Damage": "2d6+1",
+//         "RoF": "1",
+//         "AP": "1"
+//     },
+//     "Leather armor": "+1",
+//     "scimitar": "Str+d8",
+//     "Laser Sword": "Str+d8+5",
+//     "2 extra clips": null,
+//     "backpack": null
+// }
+// await ItemGearBuilder(gear);

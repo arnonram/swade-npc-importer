@@ -1,0 +1,26 @@
+Goblin
+Goblins of myth and legend are far more sinister creatures than some games and fiction
+portray. In the original tales, they were
+terrifying creatures that stole into homes
+in the middle of the night to steal and eat
+unruly children. The statistics here work
+for both dark “fairy tale” goblins as well as
+those found alongside orcs in contemporary
+roleplaying games.
+Attributes: Agility d8, Smarts d6, Spirit d6,
+Strength d4, Vigor d6
+Skills: Athletics d6, Common Knowledge d10,
+Fighting d6, Notice d6, Persuasion d4,
+Shooting d8, Stealth d10, Taunt d6
+Pace: 5; Parry: 5; Toughness: 4
+Hindrances: Greedy (Major)
+Edges: —
+Gear: Short spears (Str+d4),
+bows (Range 12/24/48, Damage
+2d6).
+Special Abilities:
+ Infravision: Halve penalties for
+Illumination when attacking warm
+targets.
+ Size −1: Goblins stand 3–4′
+tall.
