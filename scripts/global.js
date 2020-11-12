@@ -11,6 +11,8 @@ export const diceRegex = /(\d+)?d(\d+)([\+\-]\d+)?/gi;
 export const closingParenthesis = /\)/g;
 export const meleeDamageRegex = /Str\.|Str[\+\-](\d+)?d?(\d+)?[\+\-]?(\d+)?d?(\d+)/g
 export const armorModRegex = /\+\d|\-\d/
+export const parryModRegex = /(\+\d|\-\d) Parry/
+export const coverModRegex = /(\+\d|\-\d) Cover/
 
 export const attributesAndSkills = ["Attributes:", "Skills:"];
 export const supportedListStats = ["Hindrances:", "Edges:", "Powers:"];
@@ -49,4 +51,12 @@ export const GetMeleeDamage = function(abilityDescription){
 
 export const GetArmorBonus = function(data){
     return parseInt(data.match(armorModRegex)[0])
+}
+
+export const GetParryBonus = function(data){
+    return parseInt(data.match(parryModRegex)[0])
+}
+
+export const GetCoverBonus = function(data){
+    return parseInt(data.match(coverModRegex)[0])
 }

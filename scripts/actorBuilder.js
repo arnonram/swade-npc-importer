@@ -3,8 +3,6 @@ import { StatBlockParser } from "./parseStatBlock.js";
 import { ActorImporter } from "./actorImporter.js";
 import { BuildActorData} from "./buildActorData.js";
 import { BuildActorItems} from "./buildActorItems.js";
-import { BuildActorToken} from "./BuildActorToken.js";
-
 
 export const BuildActor = async function (actorType, isWildCard, disposition, data) {
     log(`BuildActor initiated: actorType=${actorType}, isWildCard=${isWildCard}, disposition=${disposition}`)
