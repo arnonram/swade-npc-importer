@@ -1,0 +1,10 @@
+<form autocomplete="off" onsubmit="event.preventDefault()">
+    <h1 class="module-header">Compendiums to use</h1>
+    {{#each comps}}
+    <p class="form-group">
+        <label>{{this}}</label>
+        <input type="checkbox" style="float: right" name="{{this}}" value="{{this}}"/>
+    </p>
+    {{/each}}
+    <button type="submit" name="submit"><i class="fas fa-save"></i>Save</button>
+</form>

@@ -1,5 +1,5 @@
-import { GetItemFromCompendium } from "./compendiumActions.js";
-import { SwadeItems } from "./global.js";
+import { GetItemFromCompendium } from "../compendiumActions.js";
+import { SwadeItems } from "../global.js";
 
 export const SkillBuilder = async function (skillsDict) {
     if (skillsDict != undefined) {

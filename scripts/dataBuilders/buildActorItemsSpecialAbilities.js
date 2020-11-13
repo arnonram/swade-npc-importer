@@ -1,5 +1,5 @@
 import { ArmorBuilder, WeaponBuilder } from "./itemBuilder.js";
-import { diceRegex, GetMeleeDamage, GetArmorBonus } from "./global.js";
+import { diceRegex, GetMeleeDamage, GetArmorBonus } from "../global.js";
 
 export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     let specialAbitlitiesItems = [];

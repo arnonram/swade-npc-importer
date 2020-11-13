@@ -1,5 +1,5 @@
-import * as global from "./global.js";
-import { SpecialAbilitiesForDescription } from "./parseSpecialAbilities.js"
+import * as global from "../global.js";
+import { SpecialAbilitiesForDescription } from "./buildActorItemsSpecialAbilities.js"
 
 export const BuildActorData = async function (parsedData, isWildCard) {
     var data = {};

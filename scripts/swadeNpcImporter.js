@@ -1,15 +1,12 @@
-import { BuildActor } from "./actorBuilder.js"
+import { BuildActor } from "./actorBuilder.js";
 import { log } from "./global.js";
+import { NpcImporterSettings } from "./npcImporterSettings.js";
 
-Hooks.once("init", async () => {
-    log("Starting NPC Importer");
-});
-Hooks.once("setup", () => {});
+// Hooks.once("init", async () => {});
+// Hooks.once("setup", () => {});
 Hooks.once("ready", async () => {
-  //game.packs isn't ready til ready
-  log("Initalizing SWADE NPC Importer...");
-//   await Settings.registerSettings();
-  log("NPC Importer Initialized!");
+    log("Setting up settings...")
+    await NpcImporterSettings.register()
 });
 
 Hooks.on("renderActorDirectory", async (app, html, data) => {

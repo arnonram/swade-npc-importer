@@ -1,14 +1,26 @@
-import { BuildActor } from "../scripts/actorBuilder.js"
-import * as fs from 'fs';
-import { StatBlockParser } from "../scripts/parseStatBlock.js";
-import { SpecialAbilitiesParser } from "../scripts/parseSpecialAbilities.js"
-import { ItemGearBuilder } from "../scripts/buildActorGear.js";
+// import { BuildActor } from "../scripts/actorBuilder.js"
+// import * as fs from 'fs';
+// import { StatBlockParser } from "../scripts/parseStatBlock.js";
+// import { SpecialAbilitiesParser } from "../scripts/parseSpecialAbilities.js"
+// import { ItemGearBuilder } from "../scripts/buildActorGear.js";
+import {GetAllPackageNames} from "../scripts/compendiumActions.js";
 
-let charToImport = fs.readFileSync('./goblin.txt', 'utf8');
+
+
+let packsArray = ['swade', 'official'];    
+let packDict = {};
+for (let i = 0; i < packsArray.length; i++) {
+packDict[i] = packsArray[i];
+};    
+
+
+
+// let charToImport = fs.readFileSync('./goblin.txt', 'utf8');
 // let charToImport = fs.readFileSync('./testData.txt', 'utf8');
 // navigator.clipboard.writeText(charToImport);
-BuildActor("npc", false, 0, charToImport);
+// BuildActor("npc", false, 0, charToImport);
 // StatBlockParser(charToImport)
+
 
 
 
