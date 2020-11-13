@@ -1,5 +1,5 @@
 import { GetItemFromCompendium } from "../compendiumActions.js";
-import { SwadeItems } from "../global.js";
+import { SwadeItems, log, capitalize } from "../global.js";
 
 export const SkillBuilder = async function (skillsDict) {
     if (skillsDict != undefined) {
@@ -14,9 +14,9 @@ export const SkillBuilder = async function (skillsDict) {
                         modifier: skillsDict[element].modifier
                     };
 
-                    skill.name = element.capitalize();
+                    skill.name = capitalize(element);
                     skill.type = SwadeItems.SKILL;
-                    skill.img = "systems/swade/assets/icons/skills.svg"
+                    skill.img = "systems/swade/assets/icons/skill.svg"
                     skill.data = {
                         die: die,
                     }
@@ -37,14 +37,15 @@ export const SkillBuilder = async function (skillsDict) {
 export const EdgeBuilder = async function (edges) {
     if (edges != undefined) {
         var allEdges = [];
-        edges.forEach(async (element) => {
+        for (let i = 0; i < edges.length; i++) {
+            const element = edges[i];
             var edgeFromCompendium = await GetItemFromCompendium(SwadeItems.EDGE, element);
             try {
                 if (edgeFromCompendium != undefined) {
                     allEdges.push(edgeFromCompendium);
                 } else {
                     let edge = {};
-                    edge.name = element.capitalize();
+                    edge.name = capitalize(element)
                     edge.type = SwadeItems.EDGE;
                     edge.data = {
                         isArcaneBackground: element.includes("Arcane") ? true : false
@@ -55,7 +56,7 @@ export const EdgeBuilder = async function (edges) {
             } catch (error) {
                 log(`Could not build edge: ${error}`)
             }
-        });
+        }
         return allEdges;
     }
 }
@@ -63,14 +64,15 @@ export const EdgeBuilder = async function (edges) {
 export const HindranceBuilder = async function (hindrances) {
     if (hindrances != undefined) {
         var allHindrances = [];
-        hindrances.forEach(async (element) => {
+        for (let i = 0; i < hindrances.length; i++) {
+            const element = hindrances[i];
             var hindranceFromCompendium = await GetItemFromCompendium(SwadeItems.HINDRANCE, element);
             try {
                 if (hindranceFromCompendium != undefined) {
                     allHindrances.push(hindranceFromCompendium);
                 } else {
                     let hindrance = {};
-                    hindrance.name = element.capitalize();
+                    hindrance.name = capitalize(element);
                     hindrance.type = SwadeItems.HINDRANCE;
                     hindrance.img = "systems/swade/assets/icons/hindrance.svg";
                     allHindrances.push(hindrance);
@@ -78,7 +80,8 @@ export const HindranceBuilder = async function (hindrances) {
             } catch (error) {
                 log(`Could not build hindrance: ${error}`)
             }
-        });
+        }
+
         return allHindrances;
     }
 }
@@ -86,14 +89,15 @@ export const HindranceBuilder = async function (hindrances) {
 export const PowerBuilder = async function (powers) {
     if (powers != undefined) {
         var allPowers = [];
-        powers.forEach(async (element) => {
+        for (let i = 0; i < powers.length; i++) {
+            const element = powers[i];
             var powerFromCompendium = await GetItemFromCompendium(SwadeItems.POWER, element);
             try {
                 if (powerFromCompendium != undefined) {
                     allPowers.push(powerFromCompendium);
                 } else {
                     let power = {};
-                    power.name = element.capitalize();
+                    power.name = capitalize(element);
                     power.type = SwadeItems.POWER
                     power.img = "systems/swade/assets/icons/power.svg";
                     allPowers.push(power);
@@ -101,7 +105,8 @@ export const PowerBuilder = async function (powers) {
             } catch (error) {
                 log(`Could not build power: ${error}`)
             }
-        });
+        }
+
         return allPowers;
     }
 }

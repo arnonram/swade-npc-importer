@@ -63,3 +63,9 @@ export const GetParryBonus = function(data){
 export const GetCoverBonus = function(data){
     return parseInt(data.match(coverModRegex)[0]);
 }
+
+export const capitalize = function(string){
+    return string.replace(/(?:^|\s)\S/g, function(a) { 
+        return a.toUpperCase(); 
+    });
+}

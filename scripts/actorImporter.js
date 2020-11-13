@@ -2,31 +2,22 @@ import { log } from "./global.js";
 
 export const ActorImporter = async function (actorDataToImport) {
     let actorId = GetActorId(actorDataToImport.name);
-
+    log(`actorId: ${actorId}`)
     if (actorId == false) {
         await Import(actorDataToImport);
     } else {
-        let response = await WhatToDo(actorDataToImport.name);
-        if (typeof response == "string"){
-            actorDataToImport.name = response;
-            await Import(actorDataToImport);
-        } else if (response == true) {
-            await DeleteActor(actorId);
-            await Import(actorName);
-        } else {
-            ui.notifications.info("Actor not imported by user request")
-        }
+        await WhatToDo(actorDataToImport, actorId);
     }
 }
 
-async function WhatToDo(actorName) {
+async function WhatToDo(actorData, actorId) {
     let actorExists = `
     <h3>Actor Exists!</h3>
     <p>This actor already exists in your game!</p>
     <p>How would you like to proceed?</p>
     <div class="form-group-dialog newName" >
         <label for="newName">Import with different name (current name displayed):</label>
-        <input type="text" id="newName" name="newName" value="${actorName}">
+        <input type="text" id="newName" name="newName" value="${actorData.name}">
     </dev>
     `
 
@@ -36,21 +27,26 @@ async function WhatToDo(actorName) {
         buttons: {
             Import: {
                 label: "Rename",
-                callback: () => {
-                    return document.querySelector("#newName").value;
+                callback: async () => {
+                    let newName = document.querySelector("#newName").value;
+                    log(`Import with new name: ${newName}`);
+                    actorData.name = newName;
+                    await Import(actorData);
                 },
             },
             Override: {
                 label: "Override",
-                callback: () => {
-                    return true;
+                callback: async () => {
+                    log("Overriding existing Actor")
+                    await DeleteActor(actorId);
+                    await Import(actorData);
                 },
             },
             Cancel: {
                 label: "Cancel",
                 callback: () => {
-                    return false;
-                }
+                    ui.notifications.info("Actor not imported by user request");
+                },
             },
         },
     }).render(true);
@@ -67,7 +63,7 @@ async function Import(actorData) {
 }
 
 function GetActorId(actorName) {
-    try {
+    try {        
         return game.actors.getName(actorName).data._id;
     } catch (error) {
         log(`Actor not found`);
