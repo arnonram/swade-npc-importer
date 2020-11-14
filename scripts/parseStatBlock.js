@@ -1,11 +1,13 @@
-import { log } from "./global.js"
-import * as global from "./global.js"
+import { log } from "./global.js";
+import * as global from "./global.js";
 
 export const StatBlockParser = function (clipData) {
-    // var inData = clipData;
+    const additionalStats = game.settings.get(global.thisModule, global.settingForceDisposition);
+    let allStats = global.allStatBlockEntities.concat(additionalStats);
+
     try {
         log(`Starting statblock parsing For data:\n ${clipData}`);
-        let sections = GetSections(clipData);
+        let sections = GetSections(clipData, allStats);
         var importedActor = {};
         Object.assign(importedActor, GetNameAndDescription(sections[0]));
         Object.assign(importedActor, GetAttributes(sections));
@@ -93,7 +95,7 @@ function GetAttributes(sections) {
             die: {
                 sides: parseInt(traitDice.trim().replace('d', '')),
                 modifier: parseInt(traitMod.trim())
-            }            
+            }
         }
     });
     return { Attributes: attributesDict };
@@ -136,10 +138,10 @@ function GetListsStats(sections) {
     let listStats = {};
     global.supportedListStats.forEach(element => {
         var line = sections.find(x => x.includes(element));
-        if (line != undefined){
+        if (line != undefined) {
             line = line.replace(global.newLineRegex, ' ').replace('.', '');
             line = line.split(':');
-            if (line[1].length > 1){
+            if (line[1].length > 1) {
                 listStats[line[0]] = line[1].split(',').map(s => s.trim());
             }
         } else {
@@ -159,7 +161,7 @@ function GetBulletListStats(sections) {
             line.shift();
             line.forEach(element => {
                 let ability = element.split(':');
-                abilities[ability[0].trim()] = ability.length ==2 ? ability[1].replace(global.newLineRegex, " ").trim() : ability[0];
+                abilities[ability[0].trim()] = ability.length == 2 ? ability[1].replace(global.newLineRegex, " ").trim() : ability[0];
             });
             bulletListStats[bulletList.replace(':', '')] = abilities;
         } else {
@@ -183,10 +185,10 @@ function GetGear(sections) {
             gearLine = gearLine.replace(gearSubstring, '');
             gearLine = CleanGearEntry(gearLine);
         };
-        if(gearLine.length > 0){
+        if (gearLine.length > 0) {
             let restOfGear = SplitAndTrim(gearLine, ",");
             characterGear = characterGear.concat(restOfGear)
-        }        
+        }
         return { Gear: ParseGear(characterGear) };
     } catch (error) {
         log("Actor has no Gear")

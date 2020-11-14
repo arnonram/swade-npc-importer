@@ -6,6 +6,9 @@ import { StatBlockParser } from "../scripts/parseStatBlock.js";
 import {GetAllPackageNames} from "../scripts/compendiumActions.js";
 
 
+var parser = new DOMParser();
+var html = parser.parseFromString("/templates/ImportWindowDialogue.html");
+
 
 // let charToImport = fs.readFileSync('./goblin.txt', 'utf8');
 let charToImport = fs.readFileSync('./testData.txt', 'utf8');

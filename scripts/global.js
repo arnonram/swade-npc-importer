@@ -1,12 +1,19 @@
 export const thisModule = "swade-npc-importer";
+
+// module default and registered settings
 export const defaultPackage = "swade-compendium";
 export const settingPackageToUse = "packageToUse"
+export const settingAdditionalTraits = "additionalStats"
+export const settingDefaultDisposition = "defaultDisposition"
+export const settingDefaultActorType = "defaultActorType"
+export const settingDefaultIsWildcard = "defaultIsWildcard"
 
-
+// global logger
 export const log = function (msg) {
     console.log(`SWADE NPC Importer | ${msg}`)
 }
 
+// regex
 export const newLineRegex = /\r\n|\n|\r/g;
 export const newLineAndBullet = /\r\n\W|\n\W|\r\W/g;
 export const bulletRegex = /•|/g;
@@ -17,13 +24,14 @@ export const armorModRegex = /\+\d|\-\d/;
 export const parryModRegex = /(\+\d|\-\d) Parry/;
 export const coverModRegex = /(\+\d|\-\d) Cover/;
 
+// traits to use
 export const attributesAndSkills = ["Attributes:", "Skills:"];
 export const supportedListStats = ["Hindrances:", "Edges:", "Powers:"];
 export const baseStats = ["Pace:", "Parry:", "Toughness:", "Power Points:"];
-export const additionalStats = ["Sanity:", "Conviction:", "Strain:"];
+// export const additionalStats = ["Sanity:", "Conviction:", "Strain:"];
 export const gear = ["Gear:"];
 export const supportedBulletListStats = ["Special Abilities:", "Super Powers:"];
-export const allStatBlockEntities = attributesAndSkills.concat(supportedListStats, baseStats, supportedBulletListStats, gear, additionalStats);
+export const allStatBlockEntities = attributesAndSkills.concat(supportedListStats, baseStats, supportedBulletListStats, gear);
 
 export const UnshakeBonus = ['undead', 'construct', 'combat reflexes'];
 export const IgnoreWound = ['undead', 'construct', 'elemental'];
@@ -68,4 +76,9 @@ export const capitalize = function(string){
     return string.replace(/(?:^|\s)\S/g, function(a) { 
         return a.toUpperCase(); 
     });
+}
+
+export const getModuleSettings = function(settingKey) {
+    // log(game.settings.get(module, settingKey));
+    return game.settings.get(thisModule, settingKey);
 }
