@@ -2,7 +2,7 @@ import { log } from "./global.js";
 import * as global from "./global.js";
 
 export const StatBlockParser = function (clipData) {
-    const additionalStats = game.settings.get(global.thisModule, global.settingForceDisposition);
+    const additionalStats = game.settings.get(global.thisModule, global.settingDefaultDisposition);
     let allStats = global.allStatBlockEntities.concat(additionalStats);
 
     try {
@@ -227,10 +227,6 @@ function RangeWeaponMapping(gearDict) {
         }
     }
     return returnedDict;
-}
-
-function StartOfGearEntity(comma, firstParenthesis) {
-    return comma < firstParenthesis ? comma : 0;
 }
 
 function SplitAndTrim(stringToSplit, separator) {

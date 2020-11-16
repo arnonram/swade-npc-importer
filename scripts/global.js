@@ -1,6 +1,7 @@
+// this module... obviously
 export const thisModule = "swade-npc-importer";
 
-// module default and registered settings
+// module defaults and registered settings
 export const defaultPackage = "swade-compendium";
 export const settingPackageToUse = "packageToUse"
 export const settingAdditionalTraits = "additionalStats"
@@ -28,7 +29,6 @@ export const coverModRegex = /(\+\d|\-\d) Cover/;
 export const attributesAndSkills = ["Attributes:", "Skills:"];
 export const supportedListStats = ["Hindrances:", "Edges:", "Powers:"];
 export const baseStats = ["Pace:", "Parry:", "Toughness:", "Power Points:"];
-// export const additionalStats = ["Sanity:", "Conviction:", "Strain:"];
 export const gear = ["Gear:"];
 export const supportedBulletListStats = ["Special Abilities:", "Super Powers:"];
 export const allStatBlockEntities = attributesAndSkills.concat(supportedListStats, baseStats, supportedBulletListStats, gear);
@@ -76,9 +76,4 @@ export const capitalize = function(string){
     return string.replace(/(?:^|\s)\S/g, function(a) { 
         return a.toUpperCase(); 
     });
-}
-
-export const getModuleSettings = function(settingKey) {
-    // log(game.settings.get(module, settingKey));
-    return game.settings.get(thisModule, settingKey);
 }

@@ -54,6 +54,51 @@ export const GetAllPackageNames = function () {
     uniquePackages.forEach((comp) => {
         packDict[comp] = comp;
     })
-    
+
     return packDict;
+}
+
+export const getSpecificAdditionalStat = function (additionalStatName) {
+    let additionalStats = getActorAddtiionalStats();
+    for (const stat in additionalStats) {
+        if (additionalStats[stat].label.toLowerCase() == additionalStatName.toLowerCase()) {
+            return stat;
+        }
+    }
+}
+
+export const getActorAddtiionalStats = function () {
+    return game.settings.get("swade", "settingFields").actor;
+}
+
+export const getModuleSettings = function(settingKey) {
+    return game.settings.get(thisModule, settingKey);
+}
+
+export const Import = async function (actorData) {
+    try {
+        await Actor.create(actorData);
+        ui.notifications.info(`${actorData.name} created successfully`)
+    } catch (error) {
+        log(`Failed to import: ${error}`)
+        ui.notifications.error("Failed to import actor (see console for errors)")
+    }
+}
+
+export const GetActorId = function (actorName) {
+    try {        
+        return game.actors.getName(actorName).data._id;
+    } catch (error) {
+        log(`Actor not found`);
+        return false;
+    }
+}
+
+export const DeleteActor = async function (actorId) {
+    try {
+        await Actor.delete(actorId);
+        ui.notifications.info(`Delete Actor with id ${actorId}`)    
+    } catch (error) {
+        log(`Failed to delet actor: ${error}`)
+    }    
 }

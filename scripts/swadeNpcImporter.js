@@ -1,7 +1,7 @@
 import { BuildActor } from "./actorBuilder.js";
-import { getModuleSettings, log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard, thisModule } from "./global.js";
+import { log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard, thisModule } from "./global.js";
 import { NpcImporterSettings } from "./npcImporterSettings.js";
-
+import { getModuleSettings } from "./foundryActions.js";
 
 // Hooks.once("init", async () => {});
 // Hooks.once("setup", () => {});
@@ -43,9 +43,9 @@ Hooks.on("renderActorDirectory", async (app, html, data) => {
 
 function importerDialogue() {
     let defaultData = {
-        actorType: game.settings.get(thisModule, settingDefaultActorType),
-        isWildcard: game.settings.get(thisModule, settingDefaultIsWildcard),
-        disposition: game.settings.get(thisModule, settingDefaultDisposition)
+        actorType: getModuleSettings(thisModule, settingDefaultActorType),
+        isWildcard: getModuleSettings(thisModule, settingDefaultIsWildcard),
+        disposition: getModuleSettings(thisModule, settingDefaultDisposition)
     };
 
     let npcImporterDialog = `
@@ -101,7 +101,6 @@ function importerDialogue() {
             `;
     return npcImporterDialog;
 }
-
 
 function is_checked(setValue, html_value) {
     if (setValue == html_value) {

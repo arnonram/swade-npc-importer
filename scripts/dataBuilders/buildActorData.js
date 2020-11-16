@@ -31,6 +31,7 @@ export const BuildActorData = async function (parsedData, isWildCard) {
         ignored: CalculateIgnoredWounds(parsedData)
     }
     data.initiative = InitiativeMod(parsedData.Edges);
+    data.additionalStats = getAdditionalStats(parsedData);
     data.wildcard = isWildCard;
 
     return data;
@@ -53,6 +54,10 @@ function GenerateAttributes(parsedData) {
 
 function BuildBioAndSpecialAbilities(parsedData) {
     return parsedData.Biography.value.concat(SpecialAbilitiesForDescription(parsedData['Special Abilities']));
+}
+
+function getAdditionalStats(parsedData){
+    
 }
 
 function CalculateWoundMod(size, isWildCard) {

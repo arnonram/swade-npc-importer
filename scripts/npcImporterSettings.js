@@ -24,7 +24,7 @@ export class NpcImporterSettings {
             default: ''
         });
         game.settings.register(thisModule, settingDefaultDisposition, {
-            name: "Set the default disposition",
+            name: "Set the default Disposition",
             config: true,
             scope: "world",
             type: String,
@@ -32,7 +32,7 @@ export class NpcImporterSettings {
             default: "-1"
         });
         game.settings.register(thisModule, settingDefaultActorType, {
-            name: "Set the default actor type",
+            name: "Set the default Actor Type",
             config: true,
             scope: "world",
             type: String,
@@ -40,7 +40,7 @@ export class NpcImporterSettings {
             default: "npc"
         });
         game.settings.register(thisModule, settingDefaultIsWildcard, {
-            name: "Set the default select for 'Wildcard'",
+            name: "Set the default for Wildcard",
             config: true,
             scope: "world",
             type: Boolean,

@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { StatBlockParser } from "../scripts/parseStatBlock.js";
 // import { SpecialAbilitiesParser } from "../scripts/parseSpecialAbilities.js"
 // import { ItemGearBuilder } from "../scripts/buildActorGear.js";
-import {GetAllPackageNames} from "../scripts/compendiumActions.js";
+import {GetAllPackageNames} from "../scripts/foundryActions.js";
 
 
 var parser = new DOMParser();

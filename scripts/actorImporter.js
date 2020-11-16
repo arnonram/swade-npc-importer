@@ -1,4 +1,5 @@
 import { log } from "./global.js";
+import { Import, GetActorId, DeleteActor } from "./foundryActions.js";
 
 export const ActorImporter = async function (actorDataToImport) {
     let actorId = GetActorId(actorDataToImport.name);
@@ -52,31 +53,4 @@ async function WhatToDo(actorData, actorId) {
     }).render(true);
 }
 
-async function Import(actorData) {
-    try {
-        await Actor.create(actorData);
-        ui.notifications.info(`${actorData.name} created successfully`)
-    } catch (error) {
-        log(`Failed to import: ${error}`)
-        ui.notifications.error("Failed to import actor (see console for errors)")
-    }
-}
-
-function GetActorId(actorName) {
-    try {        
-        return game.actors.getName(actorName).data._id;
-    } catch (error) {
-        log(`Actor not found`);
-        return false;
-    }
-}
-
-async function DeleteActor(actorId) {
-    try {
-        await Actor.delete(actorId);
-        ui.notifications.info(`Delete Actor with id ${actorId}`)    
-    } catch (error) {
-        log(`Failed to delet actor: ${error}`)
-    }    
-}
 

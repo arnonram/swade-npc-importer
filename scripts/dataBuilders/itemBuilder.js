@@ -1,4 +1,4 @@
-import { GetItemFromCompendium } from "../compendiumActions.js";
+import { GetItemFromCompendium, getSpecificAdditionalStat } from "../foundryActions.js";
 import { SwadeItems, log, capitalize } from "../global.js";
 
 export const SkillBuilder = async function (skillsDict) {
@@ -206,3 +206,12 @@ export const GearBuilder = async function (gearName, description) {
         log(`Could not build gear: ${error}`)
     }
 }
+
+export const AdditionalStatsBuilder = async function(additionalStatName, additionalStatValue){
+    let gameAditionalStat = getSpecificAdditionalStat(additionalStatName);
+    if (gameAditionalStat != undefined) {
+        gameAditionalStat.value = additionalStatValue;
+        return gameAditionalStat;
+    }
+}
+
