@@ -8,6 +8,7 @@ export const settingAdditionalTraits = "additionalStats"
 export const settingDefaultDisposition = "defaultDisposition"
 export const settingDefaultActorType = "defaultActorType"
 export const settingDefaultIsWildcard = "defaultIsWildcard"
+export const settingBulletPointIcons = "bulletPointIcons"
 
 // global logger
 export const log = function (msg) {

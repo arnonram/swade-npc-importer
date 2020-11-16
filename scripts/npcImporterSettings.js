@@ -1,4 +1,4 @@
-import { GetAllItemCompendiums, GetAllPackageNames } from "./compendiumActions.js";
+import { GetAllItemCompendiums, GetAllPackageNames } from "./foundryActions.js";
 import {
     defaultPackage, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard
@@ -46,7 +46,14 @@ export class NpcImporterSettings {
             type: Boolean,
             default: true
         });
-
+        game.settings.register(thisModule, settingBulletPointIcons, {
+            name: "Bullet point icons",
+            hint: "Paste here the bullet-point icon used by the statblock, seperated by a pipe '|'. For example: •|  (which are the default values in theis module",
+            config: true,
+            scope: "world",
+            type: String,
+            default: '•|'
+        });
         // game.settings.registerMenu(thisModule, "compsToUse", {
         //     name: "Compendiums to use",
         //     lable: "Compendiums",
