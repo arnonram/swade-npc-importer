@@ -1,7 +1,8 @@
 import { GetAllItemCompendiums, GetAllPackageNames } from "./foundryActions.js";
 import {
     defaultPackage, thisModule, settingPackageToUse, settingAdditionalTraits,
-    settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard
+    settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
+    settingBulletPointIcons
 } from "./global.js";
 
 export class NpcImporterSettings {
@@ -14,14 +15,6 @@ export class NpcImporterSettings {
             type: String,
             choices: GetAllPackageNames(),
             default: defaultPackage,
-        });
-        game.settings.register(thisModule, settingAdditionalTraits, {
-            name: "Additional Traits",
-            hint: 'A comma seperated list of custom stats to use, each entry should be followed by a colon (eg. "Sanity:, Strain:")',
-            config: true,
-            scope: "world",
-            type: String,
-            default: ''
         });
         game.settings.register(thisModule, settingDefaultDisposition, {
             name: "Set the default Disposition",
@@ -46,48 +39,21 @@ export class NpcImporterSettings {
             type: Boolean,
             default: true
         });
-        game.settings.register(thisModule, settingBulletPointIcons, {
-            name: "Bullet point icons",
-            hint: "Paste here the bullet-point icon used by the statblock, seperated by a pipe '|'. For example: •|  (which are the default values in theis module",
+        game.settings.register(thisModule, settingAdditionalTraits, {
+            name: "Additional Traits",
+            hint: 'A comma seperated list of custom stats to use, each entry should be followed by a colon (eg. "Sanity:, Strain:")\nThe SWADE System actor additional stats are added by default',
             config: true,
             scope: "world",
             type: String,
-            default: '•|'
+            default: ''
         });
-        // game.settings.registerMenu(thisModule, "compsToUse", {
-        //     name: "Compendiums to use",
-        //     lable: "Compendiums",
-        //     icon: "fas fa-book",
-        //     type: CompSelector,
-        //     restricted: true,
-        // });
+        game.settings.register(thisModule, settingBulletPointIcons, {
+            name: "Bullet point icons",
+            hint: "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\nFor example: •||/*  (Special character mmust be escaped with a /, such as: /*",
+            config: true,
+            scope: "world",
+            type: String,
+            default: '•||/*'
+        });
     }
 }
-
-
-// class CompSelector extends FormApplication {
-//     constructor(object, options = {}) {
-//         super(object, options);
-//     }
-//     static get defaultOptions() {
-//         return mergeObject(super.defaultOptions, {
-//             id: `${thisModule}.compendiumsToUse`,
-//             title: "Compendiums to use",
-//             template: `modules/${thisModule}/templates/CompSelector.html`,
-//             classes: ["sheet"],
-//             width: 350,
-//             closeOnSubmit: false,
-//         });
-//     }
-
-//     getData(){
-//         return {
-//             comps: GetAllItemCompendiums()
-//         };
-//     }
-
-//     async _updateObject(event, data){
-
-//     }
-// }
-

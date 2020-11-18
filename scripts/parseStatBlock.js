@@ -157,7 +157,7 @@ function GetBulletListStats(sections) {
         let abilities = {}
         var line = sections.find(x => x.includes(bulletList));
         if (line != undefined) {
-            line = SplitAndTrim(line, global.bulletRegex);
+            line = SplitAndTrim(line, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
             line.shift();
             line.forEach(element => {
                 let ability = element.split(':');

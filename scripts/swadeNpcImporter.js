@@ -43,9 +43,9 @@ Hooks.on("renderActorDirectory", async (app, html, data) => {
 
 function importerDialogue() {
     let defaultData = {
-        actorType: getModuleSettings(thisModule, settingDefaultActorType),
-        isWildcard: getModuleSettings(thisModule, settingDefaultIsWildcard),
-        disposition: getModuleSettings(thisModule, settingDefaultDisposition)
+        actorType: getModuleSettings(settingDefaultActorType),
+        isWildcard: getModuleSettings(settingDefaultIsWildcard),
+        disposition: getModuleSettings(settingDefaultDisposition)
     };
 
     let npcImporterDialog = `

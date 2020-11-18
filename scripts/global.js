@@ -3,12 +3,12 @@ export const thisModule = "swade-npc-importer";
 
 // module defaults and registered settings
 export const defaultPackage = "swade-compendium";
-export const settingPackageToUse = "packageToUse"
-export const settingAdditionalTraits = "additionalStats"
-export const settingDefaultDisposition = "defaultDisposition"
-export const settingDefaultActorType = "defaultActorType"
-export const settingDefaultIsWildcard = "defaultIsWildcard"
-export const settingBulletPointIcons = "bulletPointIcons"
+export const settingPackageToUse = "packageToUse";
+export const settingAdditionalTraits = "additionalStats";
+export const settingDefaultDisposition = "defaultDisposition";
+export const settingDefaultActorType = "defaultActorType";
+export const settingDefaultIsWildcard = "defaultIsWildcard";
+export const settingBulletPointIcons = "bulletPointIcons";
 
 // global logger
 export const log = function (msg) {
@@ -18,7 +18,6 @@ export const log = function (msg) {
 // regex
 export const newLineRegex = /\r\n|\n|\r/g;
 export const newLineAndBullet = /\r\n\W|\n\W|\r\W/g;
-export const bulletRegex = /•|/g;
 export const diceRegex = /(\d+)?d(\d+)([\+\-]\d+)?/gi;
 export const closingParenthesis = /\)/g;
 export const meleeDamageRegex = /Str\.|Str[\+\-](\d+)?d?(\d+)?[\+\-]?(\d+)?d?(\d+)/g;

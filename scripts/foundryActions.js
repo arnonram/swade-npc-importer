@@ -72,6 +72,7 @@ export const getActorAddtiionalStats = function () {
 }
 
 export const getModuleSettings = function(settingKey) {
+    log(`Getting settings for: ${settingKey}`)
     return game.settings.get(thisModule, settingKey);
 }
 
