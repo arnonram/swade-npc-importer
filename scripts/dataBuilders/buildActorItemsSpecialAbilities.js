@@ -30,10 +30,10 @@ export const SpecialAbilitiesForDescription = function (specialAbilitiesData) {
 function CreateHtmlList(text) {
     let html = `<h4>Special Abilities</h4><ul>`
     text.forEach(element => {
-        let die = element.match(diceRegex)
-        if (die != null){
-            element = element.replace(die[0], `[[/r ${die}]]`);
-        }
+        // let die = element.match(diceRegex)
+        // if (die != null){
+        //     element = element.replace(die[0], `[[/r ${die}]]`);
+        // }
         html = html.concat(`<li>${element}</li>`);
     });
     html.concat(`</ul>`)

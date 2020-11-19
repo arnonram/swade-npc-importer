@@ -1,5 +1,6 @@
 import { log } from "./global.js";
 import * as global from "./global.js";
+import { getModuleSettings } from "./foundryActions.js";
 
 export const StatBlockParser = function (clipData) {
     const additionalStats = game.settings.get(global.thisModule, global.settingDefaultDisposition);
@@ -249,5 +250,5 @@ function GetSize(abilities) {
             return parseInt(ability.split(" ")[1]);
         }
     }
-    return 1;
+    return 0;
 }

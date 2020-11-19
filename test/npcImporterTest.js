@@ -1,20 +1,16 @@
 import { BuildActor } from "../scripts/actorBuilder.js"
 import * as fs from 'fs';
 import { StatBlockParser } from "../scripts/parseStatBlock.js";
-// import { SpecialAbilitiesParser } from "../scripts/parseSpecialAbilities.js"
+import { SpecialAbilitiesParser, SpecialAbilitiesForDescription } from "../scripts/dataBuilders/buildActorItemsSpecialAbilities.js"
 // import { ItemGearBuilder } from "../scripts/buildActorGear.js";
-import {GetAllPackageNames} from "../scripts/foundryActions.js";
-
-
-var parser = new DOMParser();
-var html = parser.parseFromString("/templates/ImportWindowDialogue.html");
+// import {GetAllPackageNames} from "../scripts/foundryActions.js";
 
 
 // let charToImport = fs.readFileSync('./goblin.txt', 'utf8');
-let charToImport = fs.readFileSync('./testData.txt', 'utf8');
+let charToImport = fs.readFileSync('./dragon.txt', 'utf8');
 // navigator.clipboard.writeText(charToImport);
-BuildActor("npc", false, 0, charToImport);
-// StatBlockParser(charToImport)
+// BuildActor("npc", false, 0, charToImport);
+StatBlockParser(charToImport)
 
 
 
@@ -31,7 +27,7 @@ BuildActor("npc", false, 0, charToImport);
 //     "Tail Lash": "Str+d4. The creature may make a free attack against up to two foes to its side or rear at no penalty.",
 //     "Puff" : "Str."
 // }
-// SpecialAbilitiesParser(s);
+// console.log(SpecialAbilitiesForDescription(s));
 
 
 // let gear = {

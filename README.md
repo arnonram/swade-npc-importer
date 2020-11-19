@@ -49,5 +49,6 @@ On first use (or, you know, whenever), it is recommended to look at the default 
   - Size
     - Size influences the tokens' size (bigger than medium) and scale (for smaller than medium)
   - Ignore wounds & Unshake bonuses from: construct, undead, elemental, combat reflexes
-  - List them all inthe actors' description, adding in-line roll macros where found
+  - List them all in the actors' description
+    <!-- , adding in-line roll macros where found -->
 
