@@ -1,5 +1,5 @@
 import { ArmorBuilder, WeaponBuilder } from "./itemBuilder.js";
-import { diceRegex, GetMeleeDamage, GetArmorBonus } from "../global.js";
+import { diceRegex, meleeDamageRegex, GetMeleeDamage, GetArmorBonus } from "../global.js";
 
 export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     let specialAbitlitiesItems = [];
@@ -8,7 +8,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
             let armorBonus = GetArmorBonus(elem);
             specialAbitlitiesItems.push(await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem]))
         }
-        if (specialAbilitiesData[elem].toLocaleLowerCase().includes("str")){
+        if (specialAbilitiesData[elem].match(meleeDamageRegex)){
             let meleeDamage = GetMeleeDamage(specialAbilitiesData[elem]);
             specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage));
         }
@@ -30,10 +30,10 @@ export const SpecialAbilitiesForDescription = function (specialAbilitiesData) {
 function CreateHtmlList(text) {
     let html = `<h4>Special Abilities</h4><ul>`
     text.forEach(element => {
-        // let die = element.match(diceRegex)
-        // if (die != null){
-        //     element = element.replace(die[0], `[[/r ${die}]]`);
-        // }
+        let die = element.match(diceRegex)
+        if (die != null){
+            element = element.replace(die[0], `[[/r ${die}]]`);
+        }
         html = html.concat(`<li>${element}</li>`);
     });
     html.concat(`</ul>`)

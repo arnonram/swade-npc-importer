@@ -126,11 +126,14 @@ function FindUnshakeBonus(parsedData) {
         }
     }
 
-    parsedData.Edges.forEach(edge => {
-        if (global.UnshakeBonus.includes((edge.toLowerCase()))) {
-            bonusTotal += 2;
-        }
-    })
+    if (parsedData.Edges != undefined){
+        parsedData.Edges.forEach(edge => {
+            if (global.UnshakeBonus.includes((edge.toLowerCase()))) {
+                bonusTotal += 2;
+            }
+        });
+    }
+    
 
     return bonusTotal;
 }

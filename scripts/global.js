@@ -9,6 +9,7 @@ export const settingDefaultDisposition = "defaultDisposition";
 export const settingDefaultActorType = "defaultActorType";
 export const settingDefaultIsWildcard = "defaultIsWildcard";
 export const settingBulletPointIcons = "bulletPointIcons";
+export const settingDefaultSaveFolder = "defaultSaveFolder";
 
 // global logger
 export const log = function (msg) {
@@ -18,12 +19,15 @@ export const log = function (msg) {
 // regex
 export const newLineRegex = /\r\n|\n|\r/g;
 export const newLineAndBullet = /\r\n\W|\n\W|\r\W/g;
-export const diceRegex = /(\d+)?d(\d+)([\+\-]\d+)?/gi;
+export const diceRegex = /(\d+)?d(\d+)([\+\-]\d+)?/g;
 export const closingParenthesis = /\)/g;
+export const gearParsingRegex = /^([\w(\s)?]+)(\(([^)]+)\))?,/gi;
 export const meleeDamageRegex = /Str\.|Str[\+\-](\d+)?d?(\d+)?[\+\-]?(\d+)?d?(\d+)/g;
-export const armorModRegex = /\+\d|\-\d/;
-export const parryModRegex = /(\+\d|\-\d) Parry/;
-export const coverModRegex = /(\+\d|\-\d) Cover/;
+export const weaponRangeRegex = /\d+\/\d+\/\d+/g;
+// export const armorModRegex = /\+\d|\-\d/;
+export const armorModRegex = /\(\+\d+\)/;
+export const parryModRegex = /(\+\d|\-\d) Parry/gi;
+export const coverModRegex = /(\+\d|\-\d) Cover/gi;
 
 // traits to use
 export const attributesAndSkills = ["Attributes:", "Skills:"];

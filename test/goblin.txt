@@ -15,7 +15,8 @@ Shooting d8, Stealth d10, Taunt d6
 Pace: 5; Parry: 5; Toughness: 4
 Hindrances: Greedy (Major)
 Edges: —
-Gear: Short spears (Str+d4),
+Gear: Short spears (Str+d4),spear (Str+d6,
+Reach 1, Parry+1),
 bows (Range 12/24/48, Damage
 2d6).
 Special Abilities:

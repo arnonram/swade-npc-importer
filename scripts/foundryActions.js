@@ -1,4 +1,4 @@
-import { log, thisModule, settingPackageToUse } from "./global.js";
+import { log, thisModule, settingPackageToUse, settingDefaultSaveFolder } from "./global.js";
 
 export const GetItemFromCompendium = async function (itemType, itemName) {
     let itemPack = GetItemCompendium(itemType);
@@ -71,12 +71,13 @@ export const getActorAddtiionalStats = function () {
     return game.settings.get("swade", "settingFields").actor;
 }
 
-export const getModuleSettings = function(settingKey) {
+export const getModuleSettings = function (settingKey) {
     log(`Getting settings for: ${settingKey}`)
     return game.settings.get(thisModule, settingKey);
 }
 
 export const Import = async function (actorData) {
+    actorData.folder = getModuleSettings(settingDefaultSaveFolder)
     try {
         await Actor.create(actorData);
         ui.notifications.info(`${actorData.name} created successfully`)
@@ -87,7 +88,7 @@ export const Import = async function (actorData) {
 }
 
 export const GetActorId = function (actorName) {
-    try {        
+    try {
         return game.actors.getName(actorName).data._id;
     } catch (error) {
         log(`Actor not found`);
@@ -98,8 +99,19 @@ export const GetActorId = function (actorName) {
 export const DeleteActor = async function (actorId) {
     try {
         await Actor.delete(actorId);
-        ui.notifications.info(`Delete Actor with id ${actorId}`)    
+        ui.notifications.info(`Delete Actor with id ${actorId}`)
     } catch (error) {
         log(`Failed to delet actor: ${error}`)
-    }    
+    }
+}
+
+export const getAllActorFolders = function () {
+    let folders = game.folders.filter(x => x.data.type === "Actor");
+
+    let folderDict = {};
+    folderDict[''] = "root";
+    folders.forEach(folder => {
+        folderDict[folder.data._id] = folder.data.name;
+    });
+    return folderDict;
 }

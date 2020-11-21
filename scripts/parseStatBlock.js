@@ -27,7 +27,6 @@ export const StatBlockParser = function (clipData) {
     }
 }
 
-
 function GetSections(inData) {
     let indexes = GetSectionsIndex(inData);
     if (indexes.length === 0) {
@@ -142,7 +141,7 @@ function GetListsStats(sections) {
         if (line != undefined) {
             line = line.replace(global.newLineRegex, ' ').replace('.', '');
             line = line.split(':');
-            if (line[1].length > 1) {
+            if (line[1].match(new RegExp(/\w+/gi))) {
                 listStats[line[0]] = line[1].split(',').map(s => s.trim());
             }
         } else {
@@ -158,7 +157,7 @@ function GetBulletListStats(sections) {
         let abilities = {}
         var line = sections.find(x => x.includes(bulletList));
         if (line != undefined) {
-            line = SplitAndTrim(line, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
+            line = SplitAndTrim(line, getModuleSettings(global.settingBulletPointIcons));
             line.shift();
             line.forEach(element => {
                 let ability = element.split(':');
@@ -176,20 +175,17 @@ function GetGear(sections) {
     try {
         let characterGear = []
         let gearLine = sections.find(x => x.includes("Gear:")).replace(global.newLineRegex, ' ').replace("Gear: ", '');
-        let numberOfClosingParenthesis = gearLine.match(global.closingParenthesis || []).length;
-        for (let i = 0; i < numberOfClosingParenthesis; i++) {
-            // let firstOpeningParenthesis = gearLine.indexOf('(');
-            let firstClosingParenthesis = gearLine.indexOf(')');
-            // let firstComma = gearLine.indexOf(',');
-            let gearSubstring = gearLine.substring(0, firstClosingParenthesis + 1).trim();
-            characterGear.push(CleanGearEntry(gearSubstring));
-            gearLine = gearLine.replace(gearSubstring, '');
-            gearLine = CleanGearEntry(gearLine);
-        };
-        if (gearLine.length > 0) {
-            let restOfGear = SplitAndTrim(gearLine, ",");
-            characterGear = characterGear.concat(restOfGear)
+        while (gearLine.length > 0) {
+            if (global.gearParsingRegex.test(gearLine)) {
+                let match = gearLine.match(global.gearParsingRegex)[0];
+                characterGear.push(match.trim());
+                gearLine = gearLine.replace(match, '');
+            } else {
+                characterGear.push(gearLine.trim());
+                break;
+            }
         }
+
         return { Gear: ParseGear(characterGear) };
     } catch (error) {
         log("Actor has no Gear")
@@ -200,47 +196,47 @@ function ParseGear(gearArray) {
     let gearDict = {}
     gearArray.forEach(gear => {
         let splitGear = gear.replace(')', '').split('(');
-        if (splitGear.length == 2) {
-            gearDict[splitGear[0].trim()] = SplitAndTrim(splitGear[1], ',')
-        } else {
+
+        // normal gear
+        if (splitGear.length == 1) {
             gearDict[gear] = null;
         }
+        // check if armor
+        else if (global.armorModRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes('armor')) {
+            gearDict[splitGear[0]] = { armorBonus: splitGear[1] }
+        }
+        // check if shield
+        else if (global.parryModRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes('shield')) {
+            let parry = global.GetParryBonus(splitGear[1]);
+            let cover = global.GetCoverBonus(splitGear[1]);            
+            gearDict[splitGear[0]] = { parry: parry, cover: cover }
+        }
+        // parse weapon
+        else {
+            gearDict[splitGear[0]] = weaponParser(splitGear[1].split(',').filter(n => n).map(function (x) { return x.trim() }));
+        }
     });
-    return RangeWeaponMapping(gearDict);
+    return gearDict;
 }
 
-function RangeWeaponMapping(gearDict) {
-    let returnedDict = {};
-    for (const [weaponName, weaponStats] of Object.entries(gearDict)) {
-        if (weaponStats === null) {
-            returnedDict[weaponName] = null;
+function weaponParser(weapon) {
+    let weaponStats = {};
+
+    weapon.forEach(stat => {
+        if (new RegExp('^Str', 'i').test(stat)) {
+            weaponStats.damage = stat;
+        } else {
+            let statName = stat.match(new RegExp('^[A-Za-z]+'))[0];
+            weaponStats[statName.toLowerCase().trim()] = stat.replace(statName, '').trim();
         }
-        else if (weaponStats.length === 1) {
-            returnedDict[weaponName] = weaponStats.toString();
-        }
-        else {
-            let weaponStatsDict = {};
-            weaponStats.forEach(element => {
-                let s = element.split(' ');
-                weaponStatsDict[s[0]] = s[1];
-            });
-            returnedDict[weaponName] = weaponStatsDict;
-        }
-    }
-    return returnedDict;
+    });
+    return weaponStats;
 }
 
 function SplitAndTrim(stringToSplit, separator) {
     return stringToSplit.split(separator).map(function (item) {
         return item.replace(global.newLineRegex, ' ').trim();
     });
-}
-
-function CleanGearEntry(gearLine) {
-    if (gearLine.indexOf(',') == 0 || gearLine.indexOf('.') == 0) {
-        gearLine = gearLine.slice(1).trim();
-    }
-    return gearLine.trim();
 }
 
 function GetSize(abilities) {

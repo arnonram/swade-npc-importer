@@ -16,8 +16,8 @@ Combat Reflexes, Strong Willed, Streetwise
 Powers: Bolt, deflection, quickness. Power Points: 10
 Gear: 9mm pistol (Range 12/24/48, Damage 2d6, RoF 1,
 AP 1), Desert Eagle (Range 12/24/48, Damage 2d6+1, RoF 1,
-AP 1), 2 extra clips, Leather armor (+1), 
-scimitar (Str+d8), Laser Sword (Str+d8+5), backpack
+AP 1),spear (Str+d6, Reach 1, Parry+1), 2 extra clips, Leather armor (+1), 
+scimitar (Str+d8), Laser Sword (Str+d8+5), backpack, small shield (+1 Parry, +2 Cover)
 Special Abilities:
 • Armor +4: Scaly hide.
 • Claws/Bite: Str+d8.

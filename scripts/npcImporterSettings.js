@@ -1,8 +1,8 @@
-import { GetAllItemCompendiums, GetAllPackageNames } from "./foundryActions.js";
+import { getAllActorFolders, GetAllPackageNames } from "./foundryActions.js";
 import {
     defaultPackage, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
-    settingBulletPointIcons
+    settingBulletPointIcons, settingDefaultSaveFolder
 } from "./global.js";
 
 export class NpcImporterSettings {
@@ -16,8 +16,15 @@ export class NpcImporterSettings {
             choices: GetAllPackageNames(),
             default: defaultPackage,
         });
+        game.settings.register(thisModule, settingDefaultSaveFolder, {
+            name: "Set the default save folder",
+            config: true,
+            scope: "world",
+            type: String,
+            choices: getAllActorFolders()
+        });
         game.settings.register(thisModule, settingDefaultDisposition, {
-            name: "Set the default Disposition",
+            name: "Set the default save",
             config: true,
             scope: "world",
             type: String,
@@ -37,7 +44,7 @@ export class NpcImporterSettings {
             config: true,
             scope: "world",
             type: Boolean,
-            default: true
+            default: false
         });
         game.settings.register(thisModule, settingAdditionalTraits, {
             name: "Additional Traits",
@@ -49,11 +56,11 @@ export class NpcImporterSettings {
         });
         game.settings.register(thisModule, settingBulletPointIcons, {
             name: "Bullet point icons",
-            hint: "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\nFor example: •||/*  (Special character mmust be escaped with a /, such as: /*",
+            hint: "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\nFor example: •||\\*  (Special character mmust be escaped with a \\, such as: \\*",
             config: true,
             scope: "world",
             type: String,
-            default: '•||/*'
+            default: '•|'
         });
     }
 }
