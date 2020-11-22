@@ -118,13 +118,13 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
             return weaponFromCompendium;
         } else {
             let weapon = {};
-            weapon.name = weaponName;
+            weapon.name = capitalize(weaponName);
             weapon.type = SwadeItems.WEAPON
             weapon.data = {
                 description: description,
                 equippable: true,
                 equipped: true,
-                damage: weaponDamage,
+                damage: weaponDamage.replace(new RegExp('Str\.|Str',"gi"), '@str+'),
                 range: range,
                 rof: rof,
                 ap: ap
@@ -144,7 +144,7 @@ export const ShieldBuilder = async function (shieldName, description, parry = 0,
             return shieldFromCompendium;
         } else {
             let shield = {};
-            shield.name = shieldName;
+            shield.name = capitalize(shieldName);
             shield.type = SwadeItems.SHIELD
             shield.data = {
                 description: description,
@@ -169,11 +169,11 @@ export const ArmorBuilder = async function (armorName, armorBonus, armorDescript
             return armorFromCompendium;
         } else {
             let armor = {};
-            armor.name = armorName;
+            armor.name = capitalize(armorName);
             armor.type = SwadeItems.ARMOR
             armor.data = {
                 description: armorDescription,
-                armor: armorBonus,
+                armor: parseInt(armorBonus),
                 equipped: true,
                 equippable: true,
             };
@@ -192,7 +192,7 @@ export const GearBuilder = async function (gearName, description) {
             return gearFromCompendium;
         } else {
             let gear = {};
-            gear.name = gearName;
+            gear.name = capitalize(gearName);
             gear.type = SwadeItems.GEAR
             gear.data = {
                 description: description,
@@ -214,4 +214,3 @@ export const AdditionalStatsBuilder = async function(additionalStatName, additio
         return gameAditionalStat;
     }
 }
-

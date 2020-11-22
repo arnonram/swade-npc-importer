@@ -45,7 +45,7 @@ On first use (or, you know, whenever), it is recommended to look at the default 
   - Shields
   - Gear
 - **Special Abilities**
-  - Searching for "Armor" and/or any damage attack (lines with Str. or Str+d*)
+  - Searching for "Armor" and/or any damage attack (lines with Str., Str+d*, or dice formulas)
   - Size
     - Size influences the tokens' size (bigger than medium) and scale (for smaller than medium)
   - Ignore wounds & Unshake bonuses from: construct, undead, elemental, combat reflexes

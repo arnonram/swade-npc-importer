@@ -8,9 +8,9 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
             let armorBonus = GetArmorBonus(elem);
             specialAbitlitiesItems.push(await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem]))
         }
-        if (specialAbilitiesData[elem].match(meleeDamageRegex)){
-            let meleeDamage = GetMeleeDamage(specialAbilitiesData[elem]);
-            specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage));
+        if (meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem])){
+            let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
+            specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage[0]));
         }
     }
 

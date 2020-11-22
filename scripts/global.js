@@ -24,8 +24,8 @@ export const closingParenthesis = /\)/g;
 export const gearParsingRegex = /^([\w(\s)?]+)(\(([^)]+)\))?,/gi;
 export const meleeDamageRegex = /Str\.|Str[\+\-](\d+)?d?(\d+)?[\+\-]?(\d+)?d?(\d+)/g;
 export const weaponRangeRegex = /\d+\/\d+\/\d+/g;
-// export const armorModRegex = /\+\d|\-\d/;
-export const armorModRegex = /\(\+\d+\)/;
+export const armorModRegex = /\+\d+/;
+export const armorGearRegex = /\(\+\d+\)/;
 export const parryModRegex = /(\+\d|\-\d) Parry/gi;
 export const coverModRegex = /(\+\d|\-\d) Cover/gi;
 

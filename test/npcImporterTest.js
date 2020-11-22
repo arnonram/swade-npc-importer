@@ -1,13 +1,13 @@
 import { BuildActor } from "../scripts/actorBuilder.js"
 import * as fs from 'fs';
 import { StatBlockParser } from "../scripts/parseStatBlock.js";
-import { SpecialAbilitiesParser, SpecialAbilitiesForDescription } from "../scripts/dataBuilders/buildActorItemsSpecialAbilities.js"
+import { SpecialAbilitiesForDescription, SpecialAbilitiesParser } from "../scripts/dataBuilders/buildActorItemsSpecialAbilities.js"
 import{BuildActorItems} from "../scripts/dataBuilders/buildActorItems.js";
-// import { ItemGearBuilder } from "../scripts/buildActorGear.js";
+import { ItemGearBuilder } from "../scripts/dataBuilders/buildActorGear.js";
 // import {GetAllPackageNames} from "../scripts/foundryActions.js";
 
 
-let charToImport = fs.readFileSync('./testData.txt', 'utf8');
+let charToImport = fs.readFileSync('./goblin.txt', 'utf8');
 // let charToImport = fs.readFileSync('./dragon.txt', 'utf8');
 // navigator.clipboard.writeText(charToImport);
 // BuildActor("npc", false, 0, charToImport);
@@ -17,41 +17,56 @@ StatBlockParser(charToImport)
 
 
 // let s = {
-    // "Armor +4": "Scaly hide.",
-    // "Bite/Claws": "Str+d8.",
-    // "Fear (−2)": "Anyone who sees a mighty dragon must make a Fear check at −2.",
-    // "Fiery Breath": "Dragons breathe fire for 3d6 damage (see Breath Weapons, page 175).",
-    // "Flight": "Dragons have a Flying Pace of 24″.",
-    // "Hardy": "The creature does not suffer a Wound from being Shaken twice.",
-    // "Size 8 (Huge)": "Dragons are massive creatures, over 40′ long from nose to tail and weighing over 30,000 pounds.",
-    // "Swat": "Dragons ignore up to 4 points of Scale penalties when attacking with their claws.",
-    // "Tail Lash": "Str+d4. The creature may make a free attack against up to two foes to its side or rear at no penalty.",
+//     "Armor +4": "Scaly hide.",
+//     "Bite/Claws": "Str+d8.",
+//     "Fear (−2)": "Anyone who sees a mighty dragon must make a Fear check at −2.",
+//     "Fiery Breath": "Dragons breathe fire for 3d6 damage (see Breath Weapons, page 175).",
+//     "Flight": "Dragons have a Flying Pace of 24″.",
+//     "Hardy": "The creature does not suffer a Wound from being Shaken twice.",
+//     "Size 8 (Huge)": "Dragons are massive creatures, over 40′ long from nose to tail and weighing over 30,000 pounds.",
+//     "Swat": "Dragons ignore up to 4 points of Scale penalties when attacking with their claws.",
+//     "Tail Lash": "Str+d4. The creature may make a free attack against up to two foes to its side or rear at no penalty.",
 //     "Bite": "Str.",
 //     "Constrict": "+2 to Athletics and Strength rolls made to grapple.",
 //     "Poison (−4)": "Usually Mild or Lethal. See page 128.",
 //     "Size −1": "These spiders are dog-sized."
 // }
-// console.log(SpecialAbilitiesForDescription(s));
+// console.log(SpecialAbilitiesParser(s));
 
 
 // let gear = {
-//     "9mm pistol": {
-//         "Range": "12/24/48",
-//         "Damage": "2d6",
-//         "RoF": "1",
-//         "AP": "1"
+//     "9mm pistol ": {
+//         "range": "12/24/48",
+//         "damage": "2d6",
+//         "rof": "1",
+//         "ap": "1"
 //     },
-//     "Desert Eagle": {
-//         "Range": "12/24/48",
-//         "Damage": "2d6+1",
-//         "RoF": "1",
-//         "AP": "1"
+//     "Desert Eagle ": {
+//         "range": "12/24/48",
+//         "damage": "2d6+1",
+//         "rof": "1",
+//         "ap": "1"
 //     },
-//     "Leather armor": "+1",
-//     "scimitar": "Str+d8",
-//     "Laser Sword": "Str+d8+5",
-//     "2 extra clips": null,
-//     "backpack": null
+//     "spear ": {
+//         "damage": "Str+d6",
+//         "reach": 1,
+//         "parry": 1
+//     },
+//     "2 extra clips,": null,
+//     "Leather armor ": {
+//         "armorBonus": 1
+//     },
+//     "scimitar ": {
+//         "damage": "Str+d8"
+//     },
+//     "Laser Sword ": {
+//         "damage": "Str+d8+5"
+//     },
+//     "backpack,": null,
+//     "small shield ": {
+//         "parry": 1,
+//         "cover": 2
+//     }
 // }
 // await ItemGearBuilder(gear);
 

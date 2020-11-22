@@ -1,4 +1,4 @@
-import { getAllActorFolders, GetAllPackageNames } from "./foundryActions.js";
+import { getAllActorFolders, GetAllPackageNames, getActorAddtionalStats } from "./foundryActions.js";
 import {
     defaultPackage, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
@@ -52,7 +52,7 @@ export class NpcImporterSettings {
             config: true,
             scope: "world",
             type: String,
-            default: ''
+            default: getActorAddtionalStats()
         });
         game.settings.register(thisModule, settingBulletPointIcons, {
             name: "Bullet point icons",

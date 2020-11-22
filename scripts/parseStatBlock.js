@@ -2,10 +2,11 @@ import { log } from "./global.js";
 import * as global from "./global.js";
 import { getModuleSettings } from "./foundryActions.js";
 
-export const StatBlockParser = function (clipData) {
-    const additionalStats = game.settings.get(global.thisModule, global.settingDefaultDisposition);
-    let allStats = global.allStatBlockEntities.concat(additionalStats);
 
+export const StatBlockParser = async function (clipData) {
+    // const additionalStats = game.settings.get(global.thisModule, global.settingDefaultDisposition);
+    let allStats = global.allStatBlockEntities//.concat(additionalStats);
+    log(allStats);
     try {
         log(`Starting statblock parsing For data:\n ${clipData}`);
         let sections = GetSections(clipData, allStats);
@@ -16,14 +17,13 @@ export const StatBlockParser = function (clipData) {
         Object.assign(importedActor, GetBaseStats(sections));
         Object.assign(importedActor, GetListsStats(sections));
         Object.assign(importedActor, GetBulletListStats(sections));
-        Object.assign(importedActor, GetGear(sections));
+        Object.assign(importedActor, await GetGear(sections));
         importedActor.Size = GetSize(importedActor["Special Abilities"]);
         log(`Prased data: ${JSON.stringify(importedActor, null, 4)}`)
 
         return importedActor;
     } catch (error) {
         log(`Failed to prase: ${error}`);
-        ui.notifications.error(`Failed to prase (see console for error)`)
     }
 }
 
@@ -157,7 +157,8 @@ function GetBulletListStats(sections) {
         let abilities = {}
         var line = sections.find(x => x.includes(bulletList));
         if (line != undefined) {
-            line = SplitAndTrim(line, getModuleSettings(global.settingBulletPointIcons));
+            // line = SplitAndTrim(line, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
+            line = SplitAndTrim(line, new RegExp('•|','i'));
             line.shift();
             line.forEach(element => {
                 let ability = element.split(':');
@@ -171,7 +172,7 @@ function GetBulletListStats(sections) {
     return bulletListStats;
 }
 
-function GetGear(sections) {
+async function GetGear(sections) {
     try {
         let characterGear = []
         let gearLine = sections.find(x => x.includes("Gear:")).replace(global.newLineRegex, ' ').replace("Gear: ", '');
@@ -186,15 +187,15 @@ function GetGear(sections) {
             }
         }
 
-        return { Gear: ParseGear(characterGear) };
+        return { Gear: await ParseGear(characterGear) };
     } catch (error) {
         log("Actor has no Gear")
     }
 }
 
-function ParseGear(gearArray) {
-    let gearDict = {}
-    gearArray.forEach(gear => {
+async function ParseGear(gearArray) {
+    let gearDict = {};
+    gearArray.forEach(async(gear) => {
         let splitGear = gear.replace(')', '').split('(');
 
         // normal gear
@@ -202,8 +203,8 @@ function ParseGear(gearArray) {
             gearDict[gear] = null;
         }
         // check if armor
-        else if (global.armorModRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes('armor')) {
-            gearDict[splitGear[0]] = { armorBonus: splitGear[1] }
+        else if (global.armorGearRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes('armor')) {
+            gearDict[splitGear[0]] = { armorBonus: parseInt(splitGear[1].replace(',')) }
         }
         // check if shield
         else if (global.parryModRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes('shield')) {
@@ -242,8 +243,7 @@ function SplitAndTrim(stringToSplit, separator) {
 function GetSize(abilities) {
     for (const ability in abilities) {
         if (ability.toLowerCase().includes("size")) {
-            log(ability);
-            return parseInt(ability.split(" ")[1]);
+            return parseInt(ability.split(" ")[1].replace('−','-'));
         }
     }
     return 0;

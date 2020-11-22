@@ -9,7 +9,7 @@ export const BuildActor = async function (actorType, isWildCard, disposition, da
     log(`BuildActor initiated: actorType=${actorType}, isWildCard=${isWildCard}, disposition=${disposition}`)
     let clipboardText = data ?? await GetClipboardText();
     if (clipboardText != undefined) {
-        let parsedData = StatBlockParser(clipboardText);
+        let parsedData = await StatBlockParser(clipboardText);
         if (parsedData != undefined) {
             var finalActor = {}
             finalActor.name = parsedData.Name;
