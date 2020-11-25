@@ -1,7 +1,7 @@
 import { BuildActor } from "./actorBuilder.js";
-import { log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard, thisModule } from "./global.js";
+import { log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard, settingLastSaveFolder } from "./global.js";
 import { NpcImporterSettings } from "./npcImporterSettings.js";
-import { getModuleSettings } from "./foundryActions.js";
+import { getModuleSettings, getAllActorFolders } from "./foundryActions.js";
 
 // Hooks.once("init", async () => {});
 // Hooks.once("setup", () => {});
@@ -12,7 +12,7 @@ Hooks.on("ready", async () => {
 
 Hooks.on("renderActorDirectory", async (app, html, data) => {
     const npcImporterButton = $(
-        '<button style="min-width: 96%; margin: 10px 6px;"><i class="fas fa-file-import"> Actor Importer</i></button>'
+        '<button style="min-width: 90%; margin: 10px 6px;"><i class="fas fa-file-import"> Actor Importer</i></button>'
     );
     html.find(".directory-footer").append(npcImporterButton);
 
@@ -23,12 +23,13 @@ Hooks.on("renderActorDirectory", async (app, html, data) => {
             buttons: {
                 Import: {
                     label: "Import!",
-                    callback: () => {
+                    callback: (html) => {
                         let radios = document.querySelectorAll('input[type="radio"]:checked');
                         BuildActor(
                             radios[0].value,
                             radios[1].value,
-                            parseInt(radios[2].value));
+                            parseInt(radios[2].value),
+                            html.find('select[name="save-folder"]')[0].value);
                     },
                 },
                 Cancel: {
@@ -47,6 +48,8 @@ function importerDialogue() {
         isWildcard: getModuleSettings(settingDefaultIsWildcard),
         disposition: getModuleSettings(settingDefaultDisposition)
     };
+
+    let folderOptions = buildFolderOptions();
 
     let npcImporterDialog = `
         <head>
@@ -98,6 +101,10 @@ function importerDialogue() {
                 <label for="friendly">Friendly</lable>
                 </div>
             </div>
+            <div class="row">
+                <label>Save in folder...</label>
+                <select name="save-folder">${folderOptions}</select>
+            </div>
             `;
     return npcImporterDialog;
 }
@@ -108,5 +115,23 @@ function is_checked(setValue, html_value) {
     }
     else {
         return "";
+    }
+}
+
+function buildFolderOptions() {
+    let lastSave = getModuleSettings(settingLastSaveFolder);
+    let folders = getAllActorFolders();
+    let folderOptions = `<option value='' ${isLastSavedFolder(lastSave, '')}>--</option>`;
+    folders.forEach(folder => {
+        folderOptions += `<option value="${folder.trim()}" ${isLastSavedFolder(lastSave, folder.trim())}>${folder.trim()}</option>`
+    });
+    return folderOptions;
+}
+
+function isLastSavedFolder(lastFolder, folderName) {
+    if (lastFolder != undefined && lastFolder === folderName) {
+        return 'selected';
+    } else {
+        return '';
     }
 }

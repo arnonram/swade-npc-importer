@@ -2,7 +2,7 @@ import { getAllActorFolders, GetAllPackageNames, getActorAddtionalStats } from "
 import {
     defaultPackage, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
-    settingBulletPointIcons, settingDefaultSaveFolder
+    settingBulletPointIcons, settingLastSaveFolder
 } from "./global.js";
 
 export class NpcImporterSettings {
@@ -15,13 +15,6 @@ export class NpcImporterSettings {
             type: String,
             choices: GetAllPackageNames(),
             default: defaultPackage,
-        });
-        game.settings.register(thisModule, settingDefaultSaveFolder, {
-            name: "Set the default save folder",
-            config: true,
-            scope: "world",
-            type: String,
-            choices: getAllActorFolders()
         });
         game.settings.register(thisModule, settingDefaultDisposition, {
             name: "Set the default save",
@@ -61,6 +54,12 @@ export class NpcImporterSettings {
             scope: "world",
             type: String,
             default: '•|'
+        });
+        game.settings.register(thisModule, settingLastSaveFolder, {
+            name: "Set the last save folder",
+            config: false,
+            scope: "world",
+            type: String,            
         });
     }
 }

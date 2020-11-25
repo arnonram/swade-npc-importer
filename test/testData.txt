@@ -8,7 +8,7 @@ Driving d4, Fighting d8, Intimidation d6, Language
 (English d6), Language (Russian d8), Notice d6,
 Persuasion d8, Research d6, Shooting d8, Spellcasting
 d8, Stealth d8, Taunt d8, Thievery d6
-Pace: 6; Parry: 8; Toughness: 5
+Pace: 6; Parry: 8; Toughness: 5, Sanity: 1
 Hindrances: Loyal (To family and friends), Outsider
 (Russian), Vengeful (Minor)
 Edges: Arcane Background (Magic), Block (Imp),

@@ -1,12 +1,10 @@
 import { log } from "./global.js";
 import * as global from "./global.js";
-import { getModuleSettings } from "./foundryActions.js";
+import { getModuleSettings, getActorAddtionalStats} from "./foundryActions.js";
 
 
 export const StatBlockParser = async function (clipData) {
-    // const additionalStats = game.settings.get(global.thisModule, global.settingDefaultDisposition);
-    let allStats = global.allStatBlockEntities//.concat(additionalStats);
-    log(allStats);
+    let allStats = global.allStatBlockEntities.concat(getActorAddtionalStats());
     try {
         log(`Starting statblock parsing For data:\n ${clipData}`);
         let sections = GetSections(clipData, allStats);
@@ -157,8 +155,8 @@ function GetBulletListStats(sections) {
         let abilities = {}
         var line = sections.find(x => x.includes(bulletList));
         if (line != undefined) {
-            // line = SplitAndTrim(line, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
-            line = SplitAndTrim(line, new RegExp('•|','i'));
+            line = SplitAndTrim(line, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
+            // line = SplitAndTrim(line, new RegExp('•|','i'));
             line.shift();
             line.forEach(element => {
                 let ability = element.split(':');
@@ -232,6 +230,19 @@ function weaponParser(weapon) {
         }
     });
     return weaponStats;
+}
+
+function getAdditionalSettings(sections){
+    let additionalStats = getActorAddtionalStats();
+    additionalStats.forEach(element => {
+        let stat = sections.find(x => x.includes(element));
+        if (stat != undefined) {
+            stat = sections.find(x => x.includes(element)).split(':');
+            baseStats[stat[0]] = parseInt(stat[1].replace(';', '').trim());
+        }
+    });
+    return baseStats;
+
 }
 
 function SplitAndTrim(stringToSplit, separator) {

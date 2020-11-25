@@ -1,4 +1,4 @@
-import { log, thisModule, settingPackageToUse, settingDefaultSaveFolder } from "./global.js";
+import { log, thisModule, settingPackageToUse } from "./global.js";
 
 export const GetItemFromCompendium = async function (itemType, itemName) {
     let itemPack = GetItemCompendium(itemType);
@@ -69,10 +69,11 @@ export const getSpecificAdditionalStat = function (additionalStatName) {
 
 export const getActorAddtionalStats = function () {
     let actorAdditionalStats = game.settings.get("swade", "settingFields").actor;
-    let stats = {};
+    let stats = [];
     for (const key in actorAdditionalStats) {
-        stats[key] = key;
+        stats.push(`${key}:`);
     }
+    return stats;
 }
 
 export const getModuleSettings = function (settingKey) {
@@ -81,7 +82,6 @@ export const getModuleSettings = function (settingKey) {
 }
 
 export const Import = async function (actorData) {
-    actorData.folder = getModuleSettings(settingDefaultSaveFolder)
     try {
         await Actor.create(actorData);
         ui.notifications.info(`${actorData.name} created successfully`)
@@ -110,12 +110,16 @@ export const DeleteActor = async function (actorId) {
 }
 
 export const getAllActorFolders = function () {
-    let folders = game.folders.filter(x => x.data.type === "Actor");
+    return game.folders.filter(x => x.data.type === "Actor")
+        .map((comp) => {
+            return `${comp.data.name}`;
+        });
+}
 
-    let folderDict = {};
-    folderDict[''] = "root";
-    folders.forEach(folder => {
-        folderDict[folder.data._id] = folder.data.name;
-    });
-    return folderDict;
+export const getFolderId = function (folderName) {
+    return game.folders.getName(folderName)._id;
+}
+
+export const updateModuleSetting = async function (settingName, newValue) {
+    await game.settings.set(thisModule, settingName, newValue);
 }

@@ -9,7 +9,7 @@ export const settingDefaultDisposition = "defaultDisposition";
 export const settingDefaultActorType = "defaultActorType";
 export const settingDefaultIsWildcard = "defaultIsWildcard";
 export const settingBulletPointIcons = "bulletPointIcons";
-export const settingDefaultSaveFolder = "defaultSaveFolder";
+export const settingLastSaveFolder = "lastSaveFolder";
 
 // global logger
 export const log = function (msg) {
