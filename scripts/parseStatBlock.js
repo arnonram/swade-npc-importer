@@ -48,6 +48,7 @@ function GetSections(inData) {
 
 function GetSectionsIndex(inData) {
     let allStats = global.allStatBlockEntities.concat(getActorAddtionalStats());
+    // let allStats = global.allStatBlockEntities.concat([]);
     let sectionsIndex = [];
     allStats.forEach(element => {
         let index = inData.indexOf(element);
@@ -203,7 +204,7 @@ async function ParseGear(gearArray) {
             gearDict[gear] = null;
         }
         // check if armor
-        else if (global.armorGearRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes('armor')) {
+        else if (global.armorModRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes('armor')) {
             gearDict[splitGear[0]] = { armorBonus: parseInt(splitGear[1].replace(',')) }
         }
         // check if shield

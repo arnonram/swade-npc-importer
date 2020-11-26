@@ -30,10 +30,11 @@ On first use (or, you know, whenever), it is recommended to look at the default 
 
 ## How it does it and what's supported
 
-1. The statblock is prased by searching for all supported attributes/traits/etc..
+1. The statblock is prased by searching for all supported attributes/traits/items/etc..
     - Any _Additional Stats (Actors)_ which were added through the SWADE System Settings are: searched for, added, and enabled
-2. Every trait is searched for throughout all Item Compendiums in the selected Package ([see Settings -> Package for Imports](#some-configurations))
-3. If the triat is found in a Compendium then it is copied and updated to the Actor; If not found, then a new one will be created for the Actor only (no new compendium entry is created)
+    - Traits/Item means: skills, Edges, Hindrances, gear, Powers, etc..
+2. Every trait/item is searched for throughout all Item Compendiums in the selected Package ([see Settings -> Package for Imports](#some-configurations))
+3. If the triat/item is found in a Compendium then it is copied and updated to the Actor; If not found, then a new one will be created for the Actor only (no new compendium entry is created)
 
 ### Out-of-the-box supported Attributes & Traits
 
