@@ -7,7 +7,7 @@ import { ItemGearBuilder } from "../scripts/dataBuilders/buildActorGear.js";
 // import {GetAllPackageNames} from "../scripts/foundryActions.js";
 
 
-let charToImport = fs.readFileSync('./goblin.txt', 'utf8');
+let charToImport = fs.readFileSync('./testData.txt', 'utf8');
 // let charToImport = fs.readFileSync('./dragon.txt', 'utf8');
 // navigator.clipboard.writeText(charToImport);
 // BuildActor("npc", false, 0, charToImport);

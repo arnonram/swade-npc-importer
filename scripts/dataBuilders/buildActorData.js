@@ -1,13 +1,15 @@
+import { getActorAddtionalStats, getSpecificAdditionalStat } from "../foundryActions.js";
 import * as global from "../global.js";
 import { SpecialAbilitiesForDescription } from "./buildActorItemsSpecialAbilities.js"
+import { additionalStatsBuilder } from "./itemBuilder.js";
 
 export const BuildActorData = async function (parsedData, isWildCard) {
     var data = {};
 
-    data.attributes = GenerateAttributes(parsedData),
+    data.attributes = generateAttributes(parsedData),
         data.stats = {
             speed: {
-                runningDie: FindRunningDie(parsedData['Special Abilities']),
+                runningDie: findRunningDie(parsedData['Special Abilities']),
                 value: parsedData.Pace
             },
             toughness: {
@@ -18,7 +20,7 @@ export const BuildActorData = async function (parsedData, isWildCard) {
         }
     data.details = {
         biography: {
-            value: BuildBioAndSpecialAbilities(parsedData)
+            value: buildBioAndSpecialAbilities(parsedData)
         },
         autoCalcToughness: true
     }
@@ -27,24 +29,24 @@ export const BuildActorData = async function (parsedData, isWildCard) {
         max: parsedData['Power Points']
     }
     data.wounds = {
-        max: CalculateWoundMod(parsedData.Size, isWildCard),
-        ignored: CalculateIgnoredWounds(parsedData)
+        max: calculateWoundMod(parsedData.Size, isWildCard),
+        ignored: calculateIgnoredWounds(parsedData)
     }
-    data.initiative = InitiativeMod(parsedData.Edges);
-    data.additionalStats = getAdditionalStats(parsedData);
+    data.initiative = initiativeMod(parsedData.Edges);
     data.wildcard = isWildCard;
+    data.additionalStats = await buildAdditionalStats(parsedData)
 
     return data;
 }
 
-function GenerateAttributes(parsedData) {
+function generateAttributes(parsedData) {
     let attributesData = parsedData.Attributes;
 
     if (parsedData.Attributes.animalSmarts == true) {
         attributesData.smarts.animal = true;
     }
 
-    let unShakeBonus = FindUnshakeBonus(parsedData);
+    let unShakeBonus = findUnshakeBonus(parsedData);
     if (unShakeBonus != undefined) {
         attributesData.spirit.unShakeBonus = unShakeBonus;
     }
@@ -52,15 +54,24 @@ function GenerateAttributes(parsedData) {
     return attributesData;
 }
 
-function BuildBioAndSpecialAbilities(parsedData) {
+function buildBioAndSpecialAbilities(parsedData) {
     return parsedData.Biography.value.concat(SpecialAbilitiesForDescription(parsedData['Special Abilities']));
 }
 
-function getAdditionalStats(parsedData){
-    
+async function buildAdditionalStats(parsedData) {
+    let additionalStats = {};
+    let actorSystemStats = getActorAddtionalStats();
+    actorSystemStats.forEach(element => {
+        let statName = element.replace(':', '');
+        let statValue = parsedData[statName];
+        if (statValue !== undefined) {
+            additionalStats[statName] = additionalStatsBuilder(statName, statValue)
+        }
+    });
+    return additionalStats;
 }
 
-function CalculateWoundMod(size, isWildCard) {
+function calculateWoundMod(size, isWildCard) {
     var baseWounds = isWildCard ? 3 : 1;
     if (size >= 4 && size <= 7) {
         baseWounds += 1;
@@ -75,7 +86,7 @@ function CalculateWoundMod(size, isWildCard) {
     return baseWounds;
 }
 
-function InitiativeMod(edges) {
+function initiativeMod(edges) {
     if (edges != undefined) {
         let hasHesitant = false;
         let hasLevelHeaded = false;
@@ -100,7 +111,7 @@ function InitiativeMod(edges) {
     }
 }
 
-function FindRunningDie(abilities) {
+function findRunningDie(abilities) {
     for (const ability in abilities) {
         if (ability.toLowerCase().includes("speed")) {
             return parseInt(abilities[ability].match(global.diceRegex)[0].replace('d', ''))
@@ -108,7 +119,7 @@ function FindRunningDie(abilities) {
     }
 }
 
-function CalculateIgnoredWounds(parsedData) {
+function calculateIgnoredWounds(parsedData) {
     let bonusTotal = 0;
     for (const ability in parsedData['Special Abilities']) {
         if (global.IgnoreWound.includes((ability.toLowerCase()))) {
@@ -118,7 +129,7 @@ function CalculateIgnoredWounds(parsedData) {
     return bonusTotal;
 }
 
-function FindUnshakeBonus(parsedData) {
+function findUnshakeBonus(parsedData) {
     let bonusTotal = 0;
     for (const ability in parsedData['Special Abilities']) {
         if (global.UnshakeBonus.includes((ability.toLowerCase()))) {
@@ -126,14 +137,14 @@ function FindUnshakeBonus(parsedData) {
         }
     }
 
-    if (parsedData.Edges != undefined){
+    if (parsedData.Edges != undefined) {
         parsedData.Edges.forEach(edge => {
             if (global.UnshakeBonus.includes((edge.toLowerCase()))) {
                 bonusTotal += 2;
             }
         });
     }
-    
+
 
     return bonusTotal;
 }

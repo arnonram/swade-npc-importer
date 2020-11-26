@@ -6,7 +6,7 @@ export const GetItemFromCompendium = async function (itemType, itemName) {
     let item;
     if (itemPack != undefined) {
         try {
-            log(`Searching for ${itemName} in ${itemPack}`)
+            log(`Searching for ${itemName}`)
             let packIndex = await itemPack.getIndex();
             let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
             if (resultId != undefined) {
@@ -59,10 +59,10 @@ export const GetAllPackageNames = function () {
 }
 
 export const getSpecificAdditionalStat = function (additionalStatName) {
-    let additionalStats = getActorAddtiionalStats();
+    let additionalStats = game.settings.get("swade", "settingFields").actor
     for (const stat in additionalStats) {
         if (additionalStats[stat].label.toLowerCase() == additionalStatName.toLowerCase()) {
-            return stat;
+            return additionalStats[stat];
         }
     }
 }
@@ -75,6 +75,8 @@ export const getActorAddtionalStats = function () {
     }
     return stats;
 }
+
+
 
 export const getModuleSettings = function (settingKey) {
     log(`Getting settings for: ${settingKey}`)

@@ -207,10 +207,10 @@ export const GearBuilder = async function (gearName, description) {
     }
 }
 
-export const AdditionalStatsBuilder = async function(additionalStatName, additionalStatValue){
+export const additionalStatsBuilder = function(additionalStatName, additionalStatValue){
     let gameAditionalStat = getSpecificAdditionalStat(additionalStatName);
-    if (gameAditionalStat != undefined) {
-        gameAditionalStat.value = additionalStatValue;
+    if (gameAditionalStat !== undefined) {
+        gameAditionalStat['value'] = additionalStatValue;
         return gameAditionalStat;
     }
 }

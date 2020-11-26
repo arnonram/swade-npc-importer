@@ -4,10 +4,9 @@ import { getModuleSettings, getActorAddtionalStats} from "./foundryActions.js";
 
 
 export const StatBlockParser = async function (clipData) {
-    let allStats = global.allStatBlockEntities.concat(getActorAddtionalStats());
     try {
         log(`Starting statblock parsing For data:\n ${clipData}`);
-        let sections = GetSections(clipData, allStats);
+        let sections = GetSections(clipData);
         var importedActor = {};
         Object.assign(importedActor, GetNameAndDescription(sections[0]));
         Object.assign(importedActor, GetAttributes(sections));
@@ -16,6 +15,8 @@ export const StatBlockParser = async function (clipData) {
         Object.assign(importedActor, GetListsStats(sections));
         Object.assign(importedActor, GetBulletListStats(sections));
         Object.assign(importedActor, await GetGear(sections));
+        Object.assign(importedActor, getSystemDefinedStats(sections));
+
         importedActor.Size = GetSize(importedActor["Special Abilities"]);
         log(`Prased data: ${JSON.stringify(importedActor, null, 4)}`)
 
@@ -46,8 +47,9 @@ function GetSections(inData) {
 }
 
 function GetSectionsIndex(inData) {
+    let allStats = global.allStatBlockEntities.concat(getActorAddtionalStats());
     let sectionsIndex = [];
-    global.allStatBlockEntities.forEach(element => {
+    allStats.forEach(element => {
         let index = inData.indexOf(element);
         if (index > 0) {
             sectionsIndex.push(index);
@@ -232,17 +234,17 @@ function weaponParser(weapon) {
     return weaponStats;
 }
 
-function getAdditionalSettings(sections){
+function getSystemDefinedStats(sections){
     let additionalStats = getActorAddtionalStats();
+    let systemStats = {};
     additionalStats.forEach(element => {
         let stat = sections.find(x => x.includes(element));
         if (stat != undefined) {
             stat = sections.find(x => x.includes(element)).split(':');
-            baseStats[stat[0]] = parseInt(stat[1].replace(';', '').trim());
+            systemStats[stat[0]] = parseInt(stat[1].replace(';', '').trim());
         }
     });
-    return baseStats;
-
+    return systemStats;
 }
 
 function SplitAndTrim(stringToSplit, separator) {

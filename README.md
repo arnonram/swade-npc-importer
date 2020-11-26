@@ -1,5 +1,13 @@
 # SWADE NPC Importer
 
+I took this project in order to learn some JavaScript (my day job is C# and some Python; can't say I really like JS that much). <br/>
+Mostly, I did it for myself and my friends, but of course you're all welcome to enjoy and use.
+
+Cheers,<br/>
+-arnon
+
+---
+<br/>
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com/).
 
 ## How to use it...
@@ -23,6 +31,7 @@ On first use (or, you know, whenever), it is recommended to look at the default 
 ## How it does it and what's supported
 
 1. The statblock is prased by searching for all supported attributes/traits/etc..
+    - Any _Additional Stats (Actors)_ which were added through the SWADE System Settings are: searched for, added, and enabled
 2. Every trait is searched for throughout all Item Compendiums in the selected Package ([see Settings -> Package for Imports](#some-configurations))
 3. If the triat is found in a Compendium then it is copied and updated to the Actor; If not found, then a new one will be created for the Actor only (no new compendium entry is created)
 
