@@ -1,4 +1,4 @@
-import { getAllActorFolders, GetAllPackageNames, getActorAddtionalStats } from "./foundryActions.js";
+import { GetAllPackageNames, getActorAddtionalStats } from "./foundryActions.js";
 import {
     defaultPackage, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,

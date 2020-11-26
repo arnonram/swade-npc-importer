@@ -5,7 +5,7 @@ import { getModuleSettings, getActorAddtionalStats} from "./foundryActions.js";
 
 export const StatBlockParser = async function (clipData) {
     try {
-        log(`Starting statblock parsing For data:\n ${clipData}`);
+        log(`Starting statblock parsing`);
         let sections = GetSections(clipData);
         var importedActor = {};
         Object.assign(importedActor, GetNameAndDescription(sections[0]));
@@ -48,7 +48,6 @@ function GetSections(inData) {
 
 function GetSectionsIndex(inData) {
     let allStats = global.allStatBlockEntities.concat(getActorAddtionalStats());
-    // let allStats = global.allStatBlockEntities.concat([]);
     let sectionsIndex = [];
     allStats.forEach(element => {
         let index = inData.indexOf(element);
@@ -145,8 +144,6 @@ function GetListsStats(sections) {
             if (line[1].match(new RegExp(/\w+/gi))) {
                 listStats[line[0]] = line[1].split(',').map(s => s.trim());
             }
-        } else {
-            log(`Actor has no ${element}`)
         }
     });
     return listStats;
@@ -159,15 +156,12 @@ function GetBulletListStats(sections) {
         var line = sections.find(x => x.includes(bulletList));
         if (line != undefined) {
             line = SplitAndTrim(line, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
-            // line = SplitAndTrim(line, new RegExp('•|','i'));
             line.shift();
             line.forEach(element => {
                 let ability = element.split(':');
                 abilities[ability[0].trim()] = ability.length == 2 ? ability[1].replace(global.newLineRegex, " ").trim() : ability[0];
             });
             bulletListStats[bulletList.replace(':', '')] = abilities;
-        } else {
-            log(`Actor has no ${bulletList}`)
         }
     });
     return bulletListStats;
@@ -189,9 +183,7 @@ async function GetGear(sections) {
         }
 
         return { Gear: await ParseGear(characterGear) };
-    } catch (error) {
-        log("Actor has no Gear")
-    }
+    } catch {}
 }
 
 async function ParseGear(gearArray) {

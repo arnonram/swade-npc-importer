@@ -12,7 +12,7 @@ Hooks.on("ready", async () => {
 
 Hooks.on("renderActorDirectory", async (app, html, data) => {
     const npcImporterButton = $(
-        '<button style="min-width: 90%; margin: 10px 6px;"><i class="fas fa-file-import"> Actor Importer</i></button>'
+        '<button style="margin: 4px; padding: 1px 6px;"><i class="fas fa-file-import"> Actor Importer</i></button>'
     );
     html.find(".directory-footer").append(npcImporterButton);
 
@@ -65,7 +65,6 @@ function importerDialogue() {
                     height: 100px;
                 }
 
-                /* Clear floats after the columns */
                 .row:after {
                     content: "";
                     display: table;

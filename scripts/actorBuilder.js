@@ -30,6 +30,5 @@ export const BuildActor = async function (actorType, isWildCard, disposition, sa
 }
 
 async function GetClipboardText() {
-    log("Reading clipboard data...");
     return await navigator.clipboard.readText();
 }

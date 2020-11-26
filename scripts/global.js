@@ -50,14 +50,6 @@ export const SwadeItems = {
     GEAR: 'gear'
 }
 
-export const Traits = {
-    AGILITY: 'agility',
-    SMARTS: 'smarts',
-    SPIRIT: 'spirit',
-    STRENGTH: 'strength',
-    VIGOR: 'vigor'
-}
-
 export const GetMeleeDamage = function(abilityDescription){
     let damage = abilityDescription.match(meleeDamageRegex).toString().replace('.', '').toLowerCase();
     return `@${damage}`;

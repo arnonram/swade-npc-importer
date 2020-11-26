@@ -79,7 +79,6 @@ export const getActorAddtionalStats = function () {
 
 
 export const getModuleSettings = function (settingKey) {
-    log(`Getting settings for: ${settingKey}`)
     return game.settings.get(thisModule, settingKey);
 }
 
@@ -97,7 +96,6 @@ export const GetActorId = function (actorName) {
     try {
         return game.actors.getName(actorName).data._id;
     } catch (error) {
-        log(`Actor not found`);
         return false;
     }
 }

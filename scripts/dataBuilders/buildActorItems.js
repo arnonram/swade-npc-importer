@@ -13,6 +13,5 @@ export const BuildActorItems = async function(parsedData) {
     let gear = await ItemGearBuilder(parsedData.Gear) ?? [];
 
     items = items.concat(skills, edges, hindrances, powers, specialAbilities, gear);
-    log(`created items: ${items}`)
     return items;
 }

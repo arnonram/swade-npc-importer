@@ -3,7 +3,6 @@ import { Import, GetActorId, DeleteActor } from "./foundryActions.js";
 
 export const ActorImporter = async function (actorDataToImport) {
     let actorId = GetActorId(actorDataToImport.name);
-    log(`actorId: ${actorId}`)
     if (actorId == false) {
         await Import(actorDataToImport);
     } else {
