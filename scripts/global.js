@@ -72,3 +72,11 @@ export const capitalize = function(string){
         return a.toUpperCase(); 
     });
 }
+
+export const capitalizeEveryWord = function(string){
+    let capitalizedString = [];
+    string.split(' ').forEach( x => {
+        capitalizedString.push(capitalize(x.toLowerCase()));
+    });
+    return capitalizedString.join(' ');
+}

@@ -63,7 +63,7 @@ function GetSectionsIndex(inData) {
 function GetNameAndDescription(nameAndDescription) {
     let nameDesc = {}
     let lines = nameAndDescription.split(global.newLineRegex);
-    nameDesc.Name = lines[0];
+    nameDesc.Name = global.capitalizeEveryWord(lines[0]);
     lines.shift();
     let bio = lines.join(" ").replace(global.newLineRegex, " ").trim();
     if (lines.length > 0) {

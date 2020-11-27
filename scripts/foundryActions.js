@@ -50,7 +50,7 @@ export const GetAllPackageNames = function () {
         .map((comp) => {
             return `${comp.metadata.package}`;
         }));
-    let packDict = {};
+    let packDict = { None: "None" };    
     uniquePackages.forEach((comp) => {
         packDict[comp] = comp;
     })
