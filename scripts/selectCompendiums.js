@@ -1,0 +1,76 @@
+import { GetAllItemCompendiums, getAllPackageNames, getModuleSettings, updateModuleSetting } from "./foundryActions.js";
+import { log, settingPackageToUse, thisModule, settingCompsToUse } from "./global.js";
+
+export default class SelectCompendiums extends FormApplication {
+    constructor(object = {}, options = {}) {
+        super(object, options);
+    }
+
+    static get defaultOptions() {
+        return mergeObject(super.defaultOptions, {
+            id: `${thisModule}.compendiumsToUse`,
+            title: "Compendiums to Use",
+            template: "modules/swade-npc-importer/templates/CompendiumsToUse.html",
+            width: 300,
+            closeOnSubmit: true
+        });
+    }
+
+    getData() {
+        let data = {
+            packs: [],
+            comps: []
+        }
+
+        let allPackages = getAllPackageNames();
+        let settingsPackages = getModuleSettings(settingPackageToUse)
+        allPackages.forEach(pk => {
+            data.packs.push({
+                name: pk,
+                checked: isChecked(pk, settingsPackages)
+            })
+        });
+
+        let allComps = GetAllItemCompendiums();
+        let settingsComps = getModuleSettings(settingCompsToUse)
+        allComps.forEach(cmp => {
+            data.comps.push({
+                name: cmp,
+                checked: isChecked(cmp, settingsComps)
+            })
+        });
+        return data;
+    }
+
+    async _updateObject(event, formData) {
+        let keys = Object.keys(formData);
+
+        let packs = [];
+        let comps = [];
+        keys.forEach(element => {
+            if (element.startsWith('pack')) {
+                if (formData[element]) {
+                    packs.push(element.replace('pack.', ''));
+                }
+            }
+            if (element.startsWith('comp')) {
+                if (formData[element]) {
+                    comps.push(element.replace('comp.', ''));
+                }
+            }
+        });
+
+        updateModuleSetting(settingPackageToUse, packs);
+        updateModuleSetting(settingCompsToUse, comps);
+    }
+}
+
+function isChecked(item, settingsItems) {
+    if (settingsItems != undefined) {
+        return settingsItems.split(',').filter(x => x == item).length == 1
+            ? "checked"
+            : ""
+    } else {
+        return '';
+    }
+}

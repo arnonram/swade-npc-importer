@@ -1,0 +1,16 @@
+<form autocomplete="off">
+    <h1 class="modal-header">Select Packs</h1>
+    <p><em>Selecting a pack means that all associated compendiums will be used</em></p>
+    {{#each packs}}
+    <input type="checkbox" name="pack.{{this.name}}" value="{${this.name}}" {{this.checked}}/>
+    <label>{{this.name}}</label><br/>
+    {{/each}}
+
+    <h1 class="modal-header">Select Compendiums</h1>
+    {{#each comps}}
+    <input type="checkbox" name="comp.{{this.name}}" value="{{this.name}}" {{this.checked}}/>
+    <label>{{this.name}}</label><br/>
+    {{/each}}
+    <br/>
+    <button type="submit" name="submit"><i class="far fa-save"> Save</i></button>
+</form>
