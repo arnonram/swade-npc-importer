@@ -1,8 +1,14 @@
-import { log, thisModule, settingPackageToUse, settingCompsToUse } from "./global.js";
+import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums } from "./global.js";
 
 export const getItemFromCompendium = async function (itemName) {
-    let activeCompendiums = getAllActiveCompendiums();
+    let activeCompendiums = getModuleSettings(settingActiveCompendiums);
+    //TODO
+    let packs = [];
+    activeCompendiums.split(',').forEach(x => {
+        packs.push(game.packs.get(x));
+    });
 
+    log(`Comps to use: ${activeCompendiums}`);
     for (const comp in activeCompendiums) {
         if (activeCompendiums.hasOwnProperty(comp)) {
             const element = activeCompendiums[comp];
@@ -21,24 +27,24 @@ export const getItemFromCompendium = async function (itemName) {
 }
 
 
-export const GetItemFromCompendium = async function (itemType, itemName) {
-    let itemPack = GetItemCompendium(itemType);
+// export const GetItemFromCompendium = async function (itemType, itemName) {
+//     let itemPack = GetItemCompendium(itemType);
 
-    let item;
-    if (itemPack != undefined) {
-        try {
-            log(`Searching for ${itemName}`)
-            let packIndex = await itemPack.getIndex();
-            let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
-            if (resultId != undefined) {
-                item = itemPack.getEntry(resultId);
-            }
-        } catch (error) {
-            log(`Could not find ${itemName}: ${error}`)
-        }
-    }
-    return item;
-}
+//     let item;
+//     if (itemPack != undefined) {
+//         try {
+//             log(`Searching for ${itemName}`)
+//             let packIndex = await itemPack.getIndex();
+//             let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
+//             if (resultId != undefined) {
+//                 item = itemPack.getEntry(resultId);
+//             }
+//         } catch (error) {
+//             log(`Could not find ${itemName}: ${error}`)
+//         }
+//     }
+//     return item;
+// }
 
 export const GetItemCompendium = function (itemType) {
     try {
@@ -57,27 +63,28 @@ export const GetItemCompendium = function (itemType) {
     }
 };
 
-function getAllActiveCompendiums() {
+export const getAllActiveCompendiums = function () {
     let packs = getModuleSettings(settingPackageToUse);
-    let comps = getModuleSettings(settingCompsToUse);
+    let comps = getModuleSettings(settingCompsToUse).split(',');
 
-    let activeComps = [];
-
-    if (packs.length + comps.length == 0) {
-        activeComps = game.packs;
+    if (packs.length + comps.length === 0) {
+        return game.packs
+            .filter((comp) => comp.metadata.entity == "Item")
+            .map((comp) => {
+                return `${comp.metadata.package}.${comp.metadata.name}`;
+            });
     } else {
-        let compsFromPacks = packs.split(',').forEach(packName => {
+        let packArray = packs.split(',');
+        packArray.forEach(packName => {
             game.packs.filter((comp) =>
                 comp.metadata.entity == "Item" &&
                 comp.metadata.package == packName)
                 .map((comp) => {
-                    return `${comp.metadata.package}.${comp.metadata.name}`;
+                    comps.push(`${comp.metadata.package}.${comp.metadata.name}`);
                 })
         });
 
-        comps.split(',').concat(compsFromPacks).forEach(x => {
-            activeComps.push(game.packs.get(x));
-        });
+        return Array.from(new Set(comps));
     }
 }
 

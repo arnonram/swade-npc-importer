@@ -1,6 +1,6 @@
-import { getActorAddtionalStats } from "./foundryActions.js";
-import {
-    defaultPackage, thisModule, settingPackageToUse, settingAdditionalTraits,
+import { getActorAddtionalStats, getAllActiveCompendiums } from "./foundryActions.js";
+import {log,
+    settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
     settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse
 } from "./global.js";
@@ -75,6 +75,12 @@ export class NpcImporterSettings {
             config: false,
             scope: "world",
             type: String,            
+        });
+        game.settings.register(thisModule, settingActiveCompendiums, {
+            name: "Compendiums in use by Importer",
+            config: false,
+            scope: "world",
+            type: String
         });
     }
 }

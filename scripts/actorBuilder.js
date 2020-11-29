@@ -20,7 +20,7 @@ export const BuildActor = async function (actorType, isWildCard, disposition, sa
             finalActor.items = await BuildActorItems(parsedData);
             finalActor.token = await BuildActorToken(parsedData, disposition);            
             
-            updateModuleSetting(settingLastSaveFolder, saveFolder)
+            await updateModuleSetting(settingLastSaveFolder, saveFolder)
             log(`Actor to import: ${JSON.stringify(finalActor)}`);
             await ActorImporter(finalActor);
         }
