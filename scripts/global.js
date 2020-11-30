@@ -35,7 +35,7 @@ export const attributesAndSkills = ["Attributes:", "Skills:"];
 export const supportedListStats = ["Hindrances:", "Edges:", "Powers:"];
 export const baseStats = ["Pace:", "Parry:", "Toughness:", "Power Points:"];
 export const gear = ["Gear:"];
-export const supportedBulletListStats = ["Special Abilities:", "Super Powers:"];
+export const supportedBulletListStats = ["Special Abilities", "Super Powers"];
 export const allStatBlockEntities = attributesAndSkills.concat(supportedListStats, baseStats, supportedBulletListStats, gear);
 
 export const UnshakeBonus = ['undead', 'construct', 'combat reflexes'];

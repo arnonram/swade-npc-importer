@@ -23,6 +23,7 @@ export const StatBlockParser = async function (clipData) {
         return importedActor;
     } catch (error) {
         log(`Failed to prase: ${error}`);
+        ui.notification.error("Failed to parse. Not a valid statblock.")
     }
 }
 

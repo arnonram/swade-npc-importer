@@ -2,66 +2,23 @@ import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveC
 
 export const getItemFromCompendium = async function (itemName) {
     let activeCompendiums = getModuleSettings(settingActiveCompendiums);
-    //TODO
     let packs = [];
     activeCompendiums.split(',').forEach(x => {
         packs.push(game.packs.get(x));
     });
 
-    log(`Comps to use: ${activeCompendiums}`);
-    for (const comp in activeCompendiums) {
-        if (activeCompendiums.hasOwnProperty(comp)) {
-            const element = activeCompendiums[comp];
-            try {
-                log(`Searching for ${itemName}`)
-                let packIndex = await element.getIndex();
-                let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
-                if (resultId != undefined) {
-                    return element.getEntry(resultId);
-                }
-            } catch (error) {
-                log(`Could not find ${itemName}: ${error}`)
-            }
+    for (let i = 0; i < packs.length; i++) {
+        try {
+            const packIndex = await packs[i].getIndex();
+            let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
+            if (resultId != undefined) {
+                return packs[i].getEntry(resultId);
+            }            
+        } catch (error) {
+            log(`Could not find ${itemName}: ${error}`)
         }
     }
 }
-
-
-// export const GetItemFromCompendium = async function (itemType, itemName) {
-//     let itemPack = GetItemCompendium(itemType);
-
-//     let item;
-//     if (itemPack != undefined) {
-//         try {
-//             log(`Searching for ${itemName}`)
-//             let packIndex = await itemPack.getIndex();
-//             let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
-//             if (resultId != undefined) {
-//                 item = itemPack.getEntry(resultId);
-//             }
-//         } catch (error) {
-//             log(`Could not find ${itemName}: ${error}`)
-//         }
-//     }
-//     return item;
-// }
-
-export const GetItemCompendium = function (itemType) {
-    try {
-        const packageToUse = game.settings.get(thisModule, settingPackageToUse);
-        let compendiumName =
-            game.packs.filter((comp) =>
-                comp.metadata.entity == "Item" &&
-                comp.metadata.package == packageToUse &&
-                comp.metadata.name.includes(itemType))
-                .map((comp) => {
-                    return `${comp.metadata.package}.${comp.metadata.name}`;
-                });
-        return game.packs.get(compendiumName[0]);
-    } catch (error) {
-        log(`Could not find ${itemType} compendium: ${error}`)
-    }
-};
 
 export const getAllActiveCompendiums = function () {
     let packs = getModuleSettings(settingPackageToUse);
