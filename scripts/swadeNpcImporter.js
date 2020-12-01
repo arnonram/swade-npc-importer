@@ -1,6 +1,6 @@
 import { BuildActor } from "./actorBuilder.js";
 import { log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard, settingLastSaveFolder, settingActiveCompendiums } from "./global.js";
-import { NpcImporterSettings } from "./npcImporterSettings.js";
+import { NpcImporterSettings } from "./settings/npcImporterSettings.js";
 import { getModuleSettings, getAllActorFolders, updateModuleSetting, getAllActiveCompendiums } from "./foundryActions.js";
 
 Hooks.once("init", async () => {

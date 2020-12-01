@@ -8,8 +8,8 @@ export default class SelectCompendiums extends FormApplication {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            id: `${thisModule}.compendiumsToUse`,
-            title: "Compendiums to Use",
+            id: `${thisModule}.compendiumsSelector`,
+            title: "Compendiums Selector",
             template: "modules/swade-npc-importer/templates/CompendiumsToUse.html",
             width: 300,
             closeOnSubmit: true

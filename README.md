@@ -11,7 +11,7 @@ Cheers,<br/>
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com/).
 
 ## How to use it...
-
+0. Go to [Settings -> Select Item Compendiums](#some-configurations), and mark any Compendium you wish NPC Importer to use. No selecting anyting will cycle through all compendiums and use the first relevant entry.
 1. Copy the desired statblock (ctr+c, into the clipboard)
 2. Click on the NPC Importer button at the buttom of the **Actors Directory**
 
@@ -28,12 +28,15 @@ A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry 
 On first use (or, you know, whenever), it is recommended to look at the default settings
     ![NPC Importer Settings](./readme_images/NpcImporterSettings.png)
 
+You **should** select the Package and/or Item Compendiums you wish NPC Importer to use while importing
+    ![Compendiums Selector](./readme_images/NpcImporterSettingsCompendiumSelector.png)
+
 ## How it does it and what's supported
 
 1. The statblock is prased by searching for all supported attributes/traits/items/etc..
     - Any _Additional Stats (Actors)_ which were added through the SWADE System Settings are: searched for, added, and enabled
     - Traits/Item means: skills, Edges, Hindrances, gear, Powers, etc..
-2. Every trait/item is searched for throughout all Item Compendiums in the selected Package ([see Settings -> Package for Imports](#some-configurations))
+2. Every trait/item is searched for throughout all Item Compendiums in the selected Package ([see Settings](#some-configurations))
 3. If the triat/item is found in a Compendium then it is copied and updated to the Actor; If not found, then a new one will be created for the Actor only (no new compendium entry is created)
 
 ### Out-of-the-box supported Attributes & Traits

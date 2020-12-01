@@ -1,9 +1,9 @@
-import { getActorAddtionalStats, getAllActiveCompendiums } from "./foundryActions.js";
-import {log,
+import { getActorAddtionalStats } from "../foundryActions.js";
+import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
     settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse
-} from "./global.js";
+} from "../global.js";
 import SelectCompendiums from "./selectCompendiums.js";
 
 export class NpcImporterSettings {
@@ -64,7 +64,7 @@ export class NpcImporterSettings {
         });
         game.settings.register(thisModule, settingBulletPointIcons, {
             name: "Bullet point icons",
-            hint: "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\nFor example: •||\\*  (Special character mmust be escaped with a \\, such as: \\*",
+            hint: "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\n(There is currently a know issue with adding *)",
             config: true,
             scope: "world",
             type: String,
