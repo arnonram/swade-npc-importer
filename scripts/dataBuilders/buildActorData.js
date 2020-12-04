@@ -55,7 +55,11 @@ function generateAttributes(parsedData) {
 }
 
 function buildBioAndSpecialAbilities(parsedData) {
-    return parsedData.Biography.value.concat(SpecialAbilitiesForDescription(parsedData['Special Abilities']));
+    if (parsedData['Special Abilities'] != undefined) {
+        let specialAbsHtml = SpecialAbilitiesForDescription(parsedData['Special Abilities'])
+        return parsedData.Biography.value.concat(specialAbsHtml);
+    }
+    return parsedData.Biography.value;    
 }
 
 async function buildAdditionalStats(parsedData) {

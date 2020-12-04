@@ -47,8 +47,9 @@ function GetSections(inData) {
     return sections;
 }
 
-function GetSectionsIndex(inData) {
-    let allStats = global.allStatBlockEntities.concat([]);
+function GetSectionsIndex(inData) {    
+    let allStats = global.allStatBlockEntities.concat(getActorAddtionalStats());
+    // let allStats = global.allStatBlockEntities.concat([]);
     let sectionsIndex = [];
     allStats.forEach(element => {
         let index = inData.indexOf(element);
