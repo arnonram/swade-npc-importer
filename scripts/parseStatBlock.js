@@ -23,6 +23,7 @@ export const StatBlockParser = async function (clipData) {
         return importedActor;
     } catch (error) {
         log(`Failed to prase: ${error}`);
+        ui.notifications.error("Failed to parse. Not a valid statblock.")
     }
 }
 
@@ -46,7 +47,7 @@ function GetSections(inData) {
     return sections;
 }
 
-function GetSectionsIndex(inData) {
+function GetSectionsIndex(inData) {    
     let allStats = global.allStatBlockEntities.concat(getActorAddtionalStats());
     let sectionsIndex = [];
     allStats.forEach(element => {
@@ -63,7 +64,7 @@ function GetSectionsIndex(inData) {
 function GetNameAndDescription(nameAndDescription) {
     let nameDesc = {}
     let lines = nameAndDescription.split(global.newLineRegex);
-    nameDesc.Name = lines[0];
+    nameDesc.Name = global.capitalizeEveryWord(lines[0]);
     lines.shift();
     let bio = lines.join(" ").replace(global.newLineRegex, " ").trim();
     if (lines.length > 0) {
@@ -83,20 +84,32 @@ function GetAttributes(sections) {
             attributesDict['animalSmarts'] = true;
             singleTrait = singleTrait.replace('(A)', '')
         }
-        let diceAndMode = singleTrait.match(global.diceRegex)[0].toString();
 
-        let traitName = singleTrait.replace(diceAndMode, '').trim().replace(' )', ')');
-        let traitDice = diceAndMode.includes("+") ? diceAndMode.split("+")[0] : diceAndMode.split("-")[0];
-        let traitMod = diceAndMode.includes("+")
-            ? `+${diceAndMode.split("+")[1]}`
-            : (diceAndMode.includes("-") ? `-${diceAndMode.split("-")[1]}` : "0");
-
-        attributesDict[traitName.toLowerCase()] = {
-            die: {
-                sides: parseInt(traitDice.trim().replace('d', '')),
-                modifier: parseInt(traitMod.trim())
+        let diceAndMode = [];
+        if (global.diceRegex.test(singleTrait)){
+            diceAndMode = singleTrait.match(global.diceRegex)[0].toString();
+            let traitName = singleTrait.replace(diceAndMode, '').trim().replace(' )', ')');
+            let traitDice = diceAndMode.includes("+") ? diceAndMode.split("+")[0] : diceAndMode.split("-")[0];
+            let traitMod = diceAndMode.includes("+")
+                ? `+${diceAndMode.split("+")[1]}`
+                : (diceAndMode.includes("-") ? `-${diceAndMode.split("-")[1]}` : "0");
+    
+            attributesDict[traitName.toLowerCase()] = {
+                die: {
+                    sides: parseInt(traitDice.trim().replace('d', '')),
+                    modifier: parseInt(traitMod.trim())
+                }
             }
-        }
+        } else {
+            diceAndMode =singleTrait.split(' ');
+            attributesDict[diceAndMode[0].toLowerCase()] = {
+                die: {
+                    sides: parseInt(diceAndMode[1])
+                }
+            }
+        }        
+
+
     });
     return { Attributes: attributesDict };
 }

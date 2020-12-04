@@ -10,5 +10,6 @@
     "url": "https://github.com/arnonram/swade-npc-importer",
     "manifest": "https://raw.githubusercontent.com/arnonram/swade-npc-importer/v0.1.0/module.json",
     "download": "https://github.com/arnonram/swade-npc-importer/archive/v0.1.0.zip",
-    "bugs": "https://github.com/arnonram/swade-npc-importer/issues"
+    "bugs": "https://github.com/arnonram/swade-npc-importer/issues",
+    "readme": "https://raw.githubusercontent.com/arnonram/swade-npc-importer/v0.1.0/README.md"
   }

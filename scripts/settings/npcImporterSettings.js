@@ -1,21 +1,36 @@
-import { GetAllPackageNames, getActorAddtionalStats } from "./foundryActions.js";
+import { getActorAddtionalStats } from "../foundryActions.js";
 import {
-    defaultPackage, thisModule, settingPackageToUse, settingAdditionalTraits,
+    settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
-    settingBulletPointIcons, settingLastSaveFolder
-} from "./global.js";
+    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse
+} from "../global.js";
+import SelectCompendiums from "./selectCompendiums.js";
 
 export class NpcImporterSettings {
     static async register() {
+        game.settings.registerMenu(thisModule, settingCompsToUse, {
+            name: "Select Item Compendiums",
+            label: "Select Item Compendiums",
+            hint: "Allows for selecting individual compendiums for the Importer to search through",
+            icon: "fas fa-bars",
+            type: SelectCompendiums,
+            restricted: false
+        });
         game.settings.register(thisModule, settingPackageToUse, {
             name: "Package for imports",
             hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
-            config: true,
+            config: false,
             scope: "world",
-            type: String,
-            choices: GetAllPackageNames(),
-            default: defaultPackage,
+            type: String
         });
+        game.settings.register(thisModule, settingCompsToUse, {
+            name: "Package for imports",
+            hint: "NPC Importer will search through all selected Item compendiums for the correct item from the NPC statblock, and use it",
+            config: false,
+            scope: "world",
+            type: String
+        });
+
         game.settings.register(thisModule, settingDefaultDisposition, {
             name: "Set the default save",
             config: true,
@@ -49,7 +64,7 @@ export class NpcImporterSettings {
         });
         game.settings.register(thisModule, settingBulletPointIcons, {
             name: "Bullet point icons",
-            hint: "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\nFor example: •||\\*  (Special character mmust be escaped with a \\, such as: \\*",
+            hint: "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\n(There is currently a know issue with adding *)",
             config: true,
             scope: "world",
             type: String,
@@ -60,6 +75,12 @@ export class NpcImporterSettings {
             config: false,
             scope: "world",
             type: String,            
+        });
+        game.settings.register(thisModule, settingActiveCompendiums, {
+            name: "Compendiums in use by Importer",
+            config: false,
+            scope: "world",
+            type: String
         });
     }
 }

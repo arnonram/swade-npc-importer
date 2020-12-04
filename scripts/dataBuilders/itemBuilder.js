@@ -1,11 +1,11 @@
-import { GetItemFromCompendium, getSpecificAdditionalStat } from "../foundryActions.js";
+import { getItemFromCompendium, getSpecificAdditionalStat } from "../foundryActions.js";
 import { SwadeItems, log, capitalize } from "../global.js";
 
 export const SkillBuilder = async function (skillsDict) {
     if (skillsDict != undefined) {
         var allSkills = [];
         for (const element in skillsDict) {
-            var skillFromComp = await GetItemFromCompendium(SwadeItems.SKILL, element);
+            var skillFromComp = await getItemFromCompendium(element);
             try {
                 if (skillFromComp == undefined) {
                     let skill = {};
@@ -39,7 +39,7 @@ export const EdgeBuilder = async function (edges) {
         var allEdges = [];
         for (let i = 0; i < edges.length; i++) {
             const element = edges[i];
-            var edgeFromCompendium = await GetItemFromCompendium(SwadeItems.EDGE, element);
+            var edgeFromCompendium = await getItemFromCompendium(element);
             try {
                 if (edgeFromCompendium != undefined) {
                     allEdges.push(edgeFromCompendium);
@@ -66,7 +66,7 @@ export const HindranceBuilder = async function (hindrances) {
         var allHindrances = [];
         for (let i = 0; i < hindrances.length; i++) {
             const element = hindrances[i];
-            var hindranceFromCompendium = await GetItemFromCompendium(SwadeItems.HINDRANCE, element);
+            var hindranceFromCompendium = await getItemFromCompendium(element);
             try {
                 if (hindranceFromCompendium != undefined) {
                     allHindrances.push(hindranceFromCompendium);
@@ -91,7 +91,7 @@ export const PowerBuilder = async function (powers) {
         var allPowers = [];
         for (let i = 0; i < powers.length; i++) {
             const element = powers[i];
-            var powerFromCompendium = await GetItemFromCompendium(SwadeItems.POWER, element);
+            var powerFromCompendium = await getItemFromCompendium(element);
             try {
                 if (powerFromCompendium != undefined) {
                     allPowers.push(powerFromCompendium);
@@ -112,7 +112,7 @@ export const PowerBuilder = async function (powers) {
 }
 
 export const WeaponBuilder = async function (weaponName, description, weaponDamage, range = '', rof = '', ap = '') {
-    var weaponFromCompendium = await GetItemFromCompendium(SwadeItems.WEAPON, weaponName);
+    var weaponFromCompendium = await getItemFromCompendium(weaponName);
     try {
         if (weaponFromCompendium != undefined) {
             return weaponFromCompendium;
@@ -138,7 +138,7 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
 }
 
 export const ShieldBuilder = async function (shieldName, description, parry = 0, cover = 0) {
-    var shieldFromCompendium = await GetItemFromCompendium(SwadeItems.SHIELD, shieldName);
+    var shieldFromCompendium = await getItemFromCompendium(shieldName);
     try {
         if (shieldFromCompendium != undefined) {
             return shieldFromCompendium;
@@ -163,7 +163,7 @@ export const ShieldBuilder = async function (shieldName, description, parry = 0,
 }
 
 export const ArmorBuilder = async function (armorName, armorBonus, armorDescription) {
-    var armorFromCompendium = await GetItemFromCompendium(SwadeItems.ARMOR, armorName);
+    var armorFromCompendium = await getItemFromCompendium(armorName);
     try {
         if (armorFromCompendium != undefined) {
             return armorFromCompendium;
@@ -186,7 +186,7 @@ export const ArmorBuilder = async function (armorName, armorBonus, armorDescript
 }
 
 export const GearBuilder = async function (gearName, description) {
-    var gearFromCompendium = await GetItemFromCompendium(SwadeItems.GEAR, gearName);
+    var gearFromCompendium = await getItemFromCompendium(gearName);
     try {
         if (gearFromCompendium != undefined) {
             return gearFromCompendium;

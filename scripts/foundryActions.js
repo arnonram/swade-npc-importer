@@ -1,61 +1,66 @@
-import { log, thisModule, settingPackageToUse } from "./global.js";
+import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums } from "./global.js";
 
-export const GetItemFromCompendium = async function (itemType, itemName) {
-    let itemPack = GetItemCompendium(itemType);
+export const getItemFromCompendium = async function (itemName) {
+    let activeCompendiums = getModuleSettings(settingActiveCompendiums);
+    let packs = [];
+    activeCompendiums.split(',').forEach(x => {
+        packs.push(game.packs.get(x));
+    });
 
-    let item;
-    if (itemPack != undefined) {
+    for (let i = 0; i < packs.length; i++) {
         try {
-            log(`Searching for ${itemName}`)
-            let packIndex = await itemPack.getIndex();
+            const packIndex = await packs[i].getIndex();
             let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
             if (resultId != undefined) {
-                item = itemPack.getEntry(resultId);
-            }
+                return packs[i].getEntry(resultId);
+            }            
         } catch (error) {
             log(`Could not find ${itemName}: ${error}`)
         }
     }
-    return item;
 }
 
-export const GetItemCompendium = function (itemType) {
-    try {
-        const packageToUse = game.settings.get(thisModule, settingPackageToUse);
-        let compendiumName =
+export const getAllActiveCompendiums = function () {
+    let packs = getModuleSettings(settingPackageToUse);
+    let comps = getModuleSettings(settingCompsToUse).split(',');
+
+    if (packs.length + comps.length === 0) {
+        return game.packs
+            .filter((comp) => comp.metadata.entity == "Item")
+            .map((comp) => {
+                return `${comp.metadata.package}.${comp.metadata.name}`;
+            });
+    } else {
+        let packArray = packs.split(',');
+        packArray.forEach(packName => {
             game.packs.filter((comp) =>
                 comp.metadata.entity == "Item" &&
-                comp.metadata.package == packageToUse &&
-                comp.metadata.name.includes(itemType))
+                comp.metadata.package == packName)
                 .map((comp) => {
-                    return `${comp.metadata.package}.${comp.metadata.name}`;
-                });
-        return game.packs.get(compendiumName[0]);
-    } catch (error) {
-        log(`Could not find ${itemType} compendium: ${error}`)
+                    comps.push(`${comp.metadata.package}.${comp.metadata.name}`);
+                })
+        });
+
+        return Array.from(new Set(comps));
     }
-};
+}
 
 export const GetAllItemCompendiums = function () {
-    return game.packs
+    let comps = game.packs
         .filter((comp) => comp.metadata.entity == "Item")
         .map((comp) => {
             return `${comp.metadata.package}.${comp.metadata.name}`;
         });
+    return Array.from(comps);
 }
 
-export const GetAllPackageNames = function () {
+export const getAllPackageNames = function () {
     let uniquePackages = new Set(game.packs
         .filter((comp) => comp.metadata.package)
         .map((comp) => {
             return `${comp.metadata.package}`;
         }));
-    let packDict = {};
-    uniquePackages.forEach((comp) => {
-        packDict[comp] = comp;
-    })
-
-    return packDict;
+    return Array.from(uniquePackages);
 }
 
 export const getSpecificAdditionalStat = function (additionalStatName) {
@@ -75,8 +80,6 @@ export const getActorAddtionalStats = function () {
     }
     return stats;
 }
-
-
 
 export const getModuleSettings = function (settingKey) {
     return game.settings.get(thisModule, settingKey);

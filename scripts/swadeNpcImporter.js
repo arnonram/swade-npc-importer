@@ -1,13 +1,17 @@
 import { BuildActor } from "./actorBuilder.js";
-import { log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard, settingLastSaveFolder } from "./global.js";
-import { NpcImporterSettings } from "./npcImporterSettings.js";
-import { getModuleSettings, getAllActorFolders } from "./foundryActions.js";
+import { log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard, settingLastSaveFolder, settingActiveCompendiums } from "./global.js";
+import { NpcImporterSettings } from "./settings/npcImporterSettings.js";
+import { getModuleSettings, getAllActorFolders, updateModuleSetting, getAllActiveCompendiums } from "./foundryActions.js";
 
-// Hooks.once("init", async () => {});
+Hooks.once("init", async () => {
+
+});
 // Hooks.once("setup", () => {});
 Hooks.on("ready", async () => {
     log("Setting up settings...");
     await NpcImporterSettings.register();
+    // update Active Compendiums for Importer to use
+    await updateModuleSetting(settingActiveCompendiums, getAllActiveCompendiums())
 });
 
 Hooks.on("renderActorDirectory", async (app, html, data) => {
