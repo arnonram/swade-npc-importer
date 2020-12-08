@@ -25,7 +25,7 @@ export const BuildActor = async function (actorType, isWildCard, disposition, sa
             await ActorImporter(finalActor);
         }
     } else {
-        ui.notification.error("Clipboard empty")
+        ui.notification.error(game.i18n.localize("Parser.EmptyClipboard"))
     }
 }
 
