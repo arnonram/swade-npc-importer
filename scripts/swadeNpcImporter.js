@@ -3,9 +3,7 @@ import { log, settingDefaultActorType, settingDefaultDisposition, settingDefault
 import { NpcImporterSettings } from "./settings/npcImporterSettings.js";
 import { getModuleSettings, getAllActorFolders, updateModuleSetting, getAllActiveCompendiums } from "./foundryActions.js";
 
-Hooks.once("init", async () => {
-
-});
+// Hooks.once("init", async () => {});
 // Hooks.once("setup", () => {});
 Hooks.on("ready", async () => {
     log("Setting up settings...");
@@ -16,17 +14,17 @@ Hooks.on("ready", async () => {
 
 Hooks.on("renderActorDirectory", async (app, html, data) => {
     const npcImporterButton = $(
-        '<button style="margin: 4px; padding: 1px 6px;"><i class="fas fa-file-import"> Actor Importer</i></button>'
+        `<button style="margin: 4px; padding: 1px 6px;"><i class="fas fa-file-import"> ${game.i18n.localize("HTML.ActorImporter")}</i></button>`
     );
     html.find(".directory-footer").append(npcImporterButton);
 
     npcImporterButton.click(() => {
         new Dialog({
-            title: "NPC Importer",
+            title: game.i18n.localize("HTML.ImportTitle"),
             content: importerDialogue(),
             buttons: {
                 Import: {
-                    label: "Import!",
+                    label: game.i18n.localize("HTML.Import"),
                     callback: (html) => {
                         let radios = document.querySelectorAll('input[type="radio"]:checked');
                         BuildActor(
@@ -61,14 +59,12 @@ function importerDialogue() {
                 * {
                 box-sizing: border-box;
                 }
-
                 .column {
                     float: left;
                     width: 33.33%;
                     padding: 3px;
                     height: 100px;
                 }
-
                 .row:after {
                     content: "";
                     display: table;
@@ -77,25 +73,25 @@ function importerDialogue() {
             </style>
         </head>
         <body>
-        <h3>Actor Importer</h3>
-        <p>Imports stats block from clipboard</p>
+        <h3>${game.i18n.localize("HTML.ImportTitle")}</h3>
+        <p>${game.i18n.localize("HTML.ImportDesc")}</p>
         <div class = "row">
             <div class="column"> 
-                <p>Actor Type:</p>
+                <p>${game.i18n.localize("HTML.ActorType")}:</p>
                 <input type="radio" id="npc" name="actorType" value="npc" ${is_checked(defaultData.actorType, 'npc')}>
                 <label for="NPC">NPC</lable><br>
                 <input type="radio" id="character" name="actorType" value="character" ${is_checked(defaultData.actorType, 'character')}>
                 <label for="character">Character</lable>
             </div>
             <div class="column"> 
-                <p>Wildcard?</p>
+                <p>${game.i18n.localize("HTML.Wildcard")}?</p>
                 <input type="radio" id="yes" name="isWildcard" value="true" ${is_checked(defaultData.isWildcard, true)}>
                 <label for="yes">Yes</lable><br>
                 <input type="radio" id="no" name="isWildcard" value="false" ${is_checked(defaultData.isWildcard, false)}>
                 <label for="no">No</lable>
             </div>
             <div class="column"> 
-                <p>Disposition:</p>
+                <p>${game.i18n.localize("HTML.Disposition")}:</p>
                 <input type="radio" id="hostile" name="disposition" value="-1" ${is_checked(defaultData.disposition, '-1')}>
                 <label for="hostile">Hostile</lable><br>
                 <input type="radio" id="neutral" name="disposition" value="0" ${is_checked(defaultData.disposition, '0')}>
@@ -105,7 +101,7 @@ function importerDialogue() {
                 </div>
             </div>
             <div class="row">
-                <label>Save in folder...</label>
+                <label>${game.i18n.localize("HTML.SaveFolder")}...</label>
                 <select name="save-folder">${folderOptions}</select>
             </div>
             `;

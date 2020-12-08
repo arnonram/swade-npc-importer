@@ -12,21 +12,20 @@ export const ActorImporter = async function (actorDataToImport) {
 
 async function WhatToDo(actorData, actorId) {
     let actorExists = `
-    <h3>Actor Exists!</h3>
-    <p>This actor already exists in your game!</p>
-    <p>How would you like to proceed?</p>
+    ${game.i18n.localize("HTML.ActorExistText")}
     <div class="form-group-dialog newName" >
         <label for="newName">Import with different name (current name displayed):</label>
         <input type="text" id="newName" name="newName" value="${actorData.name}">
     </dev>
+    <br/>
     `
 
     new Dialog({
-        title: "NPC Importer",
+        title: game.i18n.localize("HTML.ActorImporter"),
         content: actorExists,
         buttons: {
             Import: {
-                label: "Rename",
+                label: game.i18n.localize("HTML.Rename"),
                 callback: async () => {
                     let newName = document.querySelector("#newName").value;
                     log(`Import with new name: ${newName}`);
@@ -35,7 +34,7 @@ async function WhatToDo(actorData, actorId) {
                 },
             },
             Override: {
-                label: "Override",
+                label: game.i18n.localize("HTML.Override"),
                 callback: async () => {
                     log("Overriding existing Actor")
                     await DeleteActor(actorId);
@@ -45,7 +44,7 @@ async function WhatToDo(actorData, actorId) {
             Cancel: {
                 label: "Cancel",
                 callback: () => {
-                    ui.notifications.info("Actor not imported by user request");
+                    ui.notifications.info(game.i18n.localize("HTML.ActorNotImportedMsg"));
                 },
             },
         },
