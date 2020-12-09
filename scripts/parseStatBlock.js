@@ -25,7 +25,7 @@ export const StatBlockParser = async function (clipData) {
         return importedActor;
     } catch (error) {
         log(`Failed to prase: ${error}`);
-        ui.notifications.error(game.i18n.localize("Parser.NotValidStablock"))
+        ui.notifications.error(game.i18n.localize("npcImporter.parser.NotValidStablock"))
     }
 }
 
@@ -51,18 +51,18 @@ function GetSections(inData) {
 
 function GetSectionsIndex(inData) {
     const allStatBlockEntities = [
-        `${game.i18n.localize("Parser.Attributes")}:`,
-        `${game.i18n.localize("Parser.Skills")}:`,
-        `${game.i18n.localize("Parser.Hindrances")}:`,
-        `${game.i18n.localize("Parser.Edges")}:`,
-        `${game.i18n.localize("Parser.Powers")}:`,
-        `${game.i18n.localize("Parser.Pace")}:`,
-        `${game.i18n.localize("Parser.Parry")}:`,
-        `${game.i18n.localize("Parser.Toughness")}:`,
-        `${game.i18n.localize("Parser.PowerPoints")}:`,
-        `${game.i18n.localize("Parser.Gear")}:`,
-        `${game.i18n.localize("Parser.SpecialAbilities")}:`,
-        `${game.i18n.localize("Parser.SuperPowers")}:`
+        `${game.i18n.localize("npcImporter.parser.Attributes")}:`,
+        `${game.i18n.localize("npcImporter.parser.Skills")}:`,
+        `${game.i18n.localize("npcImporter.parser.Hindrances")}:`,
+        `${game.i18n.localize("npcImporter.parser.Edges")}:`,
+        `${game.i18n.localize("npcImporter.parser.Powers")}:`,
+        `${game.i18n.localize("npcImporter.parser.Pace")}:`,
+        `${game.i18n.localize("npcImporter.parser.Parry")}:`,
+        `${game.i18n.localize("npcImporter.parser.Toughness")}:`,
+        `${game.i18n.localize("npcImporter.parser.PowerPoints")}:`,
+        `${game.i18n.localize("npcImporter.parser.Gear")}:`,
+        `${game.i18n.localize("npcImporter.parser.SpecialAbilities")}:`,
+        `${game.i18n.localize("npcImporter.parser.SuperPowers")}:`
     ];
 
     let allStats = allStatBlockEntities.concat(getActorAddtionalStats());
@@ -93,7 +93,7 @@ function GetNameAndDescription(nameAndDescription) {
 }
 
 function GetAttributes(sections) {
-    let trait = `${game.i18n.localize("Parser.Attributes")}:`;
+    let trait = `${game.i18n.localize("npcImporter.parser.Attributes")}:`;
     let attributes = SplitAndTrim(sections.find(x => x.includes(trait)).replace(trait, ''), ',');
     let attributesDict = {};
     attributes.forEach(singleTrait => {
@@ -132,7 +132,7 @@ function GetAttributes(sections) {
 }
 
 function GetSkills(sections) {
-    let trait = `${game.i18n.localize("Parser.Skills")}:`;
+    let trait = `${game.i18n.localize("npcImporter.parser.Skills")}:`;
     let skills = SplitAndTrim(sections.find(x => x.includes(trait)).replace(trait, ''), ',');
     let skillsDict = {};
     skills.forEach(singleTrait => {
@@ -154,10 +154,10 @@ function GetSkills(sections) {
 
 function GetBaseStats(sections) {
     let baseStats = [
-        `${game.i18n.localize("Parser.Pace")}:`,
-        `${game.i18n.localize("Parser.Parry")}:`,
-        `${game.i18n.localize("Parser.Toughness")}:`,
-        `${game.i18n.localize("Parser.PowerPoints")}:`
+        `${game.i18n.localize("npcImporter.parser.Pace")}:`,
+        `${game.i18n.localize("npcImporter.parser.Parry")}:`,
+        `${game.i18n.localize("npcImporter.parser.Toughness")}:`,
+        `${game.i18n.localize("npcImporter.parser.PowerPoints")}:`
     ];
 
     let retrievedStats = {}
@@ -173,9 +173,9 @@ function GetBaseStats(sections) {
 
 function GetListsStats(sections) {
     const supportedListStats = [
-        `${game.i18n.localize("Parser.Hindrances")}:`,
-        `${game.i18n.localize("Parser.Edges")}:`,
-        `${game.i18n.localize("Parser.Powers")}:`
+        `${game.i18n.localize("npcImporter.parser.Hindrances")}:`,
+        `${game.i18n.localize("npcImporter.parser.Edges")}:`,
+        `${game.i18n.localize("npcImporter.parser.Powers")}:`
     ];
 
     let retrievedListStats = {};
@@ -194,8 +194,8 @@ function GetListsStats(sections) {
 
 function GetBulletListStats(sections) {
     const supportedBulletListStats = [
-        `${game.i18n.localize("Parser.SpecialAbilities")}:`,
-        `${game.i18n.localize("Parser.SuperPowers")}:`
+        `${game.i18n.localize("npcImporter.parser.SpecialAbilities")}:`,
+        `${game.i18n.localize("npcImporter.parser.SuperPowers")}:`
     ];
 
     var retrievedBulletListStats = {};
@@ -216,7 +216,7 @@ function GetBulletListStats(sections) {
 }
 
 async function GetGear(sections) {
-    let gearString = `${game.i18n.localize("Parser.Gear")}:`
+    let gearString = `${game.i18n.localize("npcImporter.parser.Gear")}:`
     try {
         let characterGear = []
         let gearLine = sections.find(x => x.includes(gearString)).replace(global.newLineRegex, ' ').replace(`${gearString} `, '');
@@ -236,7 +236,7 @@ async function GetGear(sections) {
 }
 
 async function ParseGear(gearArray) {
-    let parryRegex = new RegExp(`(\\+\\+d|\\-\\d+) ${game.i18n.localize("Parser.Parry")}`);
+    let parryRegex = new RegExp(`(\\+\\+d|\\-\\d+) ${game.i18n.localize("npcImporter.parser.Parry")}`);
     let gearArmorRegex = /\(\+\d+\)/gi
 
     let gearDict = {};
@@ -250,11 +250,11 @@ async function ParseGear(gearArray) {
             }
         }
         // check if armor
-        else if (gearArmorRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("Parser.Armor"))) {
+        else if (gearArmorRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Armor"))) {
             gearDict[splitGear[0]] = { armorBonus: GetMeleeDamage.GetArmorBonus(splitGear[1].replace(',')) }
         }
         // check if shield
-        else if (parryRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("Parser.Shield"))) {
+        else if (parryRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Shield"))) {
             let parry = GetMeleeDamage.GetParryBonus(splitGear[1]);
             let cover = GetMeleeDamage.GetCoverBonus(splitGear[1]);
             gearDict[splitGear[0]] = { parry: parry, cover: cover }
@@ -302,7 +302,7 @@ function SplitAndTrim(stringToSplit, separator) {
 
 function GetSize(abilities) {
     for (const ability in abilities) {
-        if (ability.toLowerCase().includes(game.i18n.localize("Parser.Size"))) {
+        if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Size"))) {
             return parseInt(ability.split(" ")[1].replace('−', '-'));
         }
     }

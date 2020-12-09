@@ -1,17 +1,17 @@
-import { getActorAddtionalStats } from "../foundryActions.js";
+import { getActorAddtionalStats } from "../utils/foundryActions.js";
 import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
-    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse
+    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage
 } from "../global.js";
 import SelectCompendiums from "./selectCompendiums.js";
 
 export class NpcImporterSettings {
     static async register() {
         game.settings.registerMenu(thisModule, settingCompsToUse, {
-            name: game.i18n.localize("Settings.SelectItemCompendiums"),
-            label: game.i18n.localize("Settings.SelectItemCompendiums"),
-            hint: game.i18n.localize("Settings.SelectItemCompendiumsHints"),
+            name: game.i18n.localize("npcImporter.settings.SelectItemCompendiums"),
+            label: game.i18n.localize("npcImporter.settings.SelectItemCompendiums"),
+            hint: game.i18n.localize("npcImporter.settings.SelectItemCompendiumsHints"),
             icon: "fas fa-bars",
             type: SelectCompendiums,
             restricted: false
@@ -31,8 +31,17 @@ export class NpcImporterSettings {
             type: String
         });
 
+        game.settings.register(thisModule, settingParaeLanguage, {
+            name: game.i18n.localize("npcImporter.settings.parseLanguage"),
+            hint: game.i18n.localize("npcImporter.settings.parseLanguageHint"),
+            config: true,
+            scope: "world",
+            type: String,
+            choices: { "en": "English", "es": "Español" },
+            default: "en"
+        });
         game.settings.register(thisModule, settingDefaultDisposition, {
-            name: game.i18n.localize("Settings.DefaultDisposition"),
+            name: game.i18n.localize("npcImporter.settings.DefaultDisposition"),
             config: true,
             scope: "world",
             type: String,
@@ -40,7 +49,7 @@ export class NpcImporterSettings {
             default: "-1"
         });
         game.settings.register(thisModule, settingDefaultActorType, {
-            name: game.i18n.localize("Settings.DefaultActorType"),
+            name: game.i18n.localize("npcImporter.settings.DefaultActorType"),
             config: true,
             scope: "world",
             type: String,
@@ -48,22 +57,22 @@ export class NpcImporterSettings {
             default: "npc"
         });
         game.settings.register(thisModule, settingDefaultIsWildcard, {
-            name: game.i18n.localize("Settings.DefaultIsWildcard"),
+            name: game.i18n.localize("npcImporter.settings.DefaultIsWildcard"),
             config: true,
             scope: "world",
             type: Boolean,
             default: false
         });
         game.settings.register(thisModule, settingAdditionalTraits, {
-            name: game.i18n.localize("Settings.AdditionalTraits"),
-            hint: game.i18n.localize("Settings.AdditionalTraitsHint"),
+            name: game.i18n.localize("npcImporter.settings.AdditionalTraits"),
+            hint: game.i18n.localize("npcImporter.settings.AdditionalTraitsHint"),
             config: true,
             scope: "world",
             type: String,
             default: getActorAddtionalStats()
         });
         game.settings.register(thisModule, settingBulletPointIcons, {
-            name: game.i18n.localize("Settings.BulletPointIcons"),
+            name: game.i18n.localize("npcImporter.settings.BulletPointIcons"),
             hint: game.i18n.localize("BulletPointIconsHint.AdditionalTraitsHint"),
             config: true,
             scope: "world",

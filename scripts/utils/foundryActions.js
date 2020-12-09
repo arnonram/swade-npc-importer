@@ -1,4 +1,4 @@
-import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums } from "./global.js";
+import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums } from "../global.js";
 
 export const getItemFromCompendium = async function (itemName) {
     let activeCompendiums = getModuleSettings(settingActiveCompendiums);
@@ -88,10 +88,10 @@ export const getModuleSettings = function (settingKey) {
 export const Import = async function (actorData) {
     try {
         await Actor.create(actorData);
-        ui.notifications.info(game.i18n.format("HTML.ActorCreated", { actorName: actorData.name }))
+        ui.notifications.info(game.i18n.format("npcImporter.HTML.ActorCreated", { actorName: actorData.name }))
     } catch (error) {
         log(`Failed to import: ${error}`)
-        ui.notifications.error(game.i18n.localize("HTML.FailedToImport"))
+        ui.notifications.error(game.i18n.localize("npcImporter.HTML.FailedToImport"))
     }
 }
 
@@ -106,7 +106,7 @@ export const GetActorId = function (actorName) {
 export const DeleteActor = async function (actorId) {
     try {
         await Actor.delete(actorId);
-        ui.notifications.info(game.i18n.format("HTML.DeleteActor", { actorId: actorId }))
+        ui.notifications.info(game.i18n.format("npcImporter.HTML.DeleteActor", { actorId: actorId }))
     } catch (error) {
         log(`Failed to delet actor: ${error}`)
     }

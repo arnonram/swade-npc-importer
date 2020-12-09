@@ -1,4 +1,4 @@
-import { getActorAddtionalStats, getSpecificAdditionalStat } from "../foundryActions.js";
+import { getActorAddtionalStats, getSpecificAdditionalStat } from "../utils/foundryActions.js";
 import * as global from "../global.js";
 import { SpecialAbilitiesForDescription } from "./buildActorItemsSpecialAbilities.js"
 import { additionalStatsBuilder } from "./itemBuilder.js";
@@ -9,7 +9,7 @@ export const BuildActorData = async function (parsedData, isWildCard) {
     data.attributes = generateAttributes(parsedData),
         data.stats = {
             speed: {
-                runningDie: findRunningDie(parsedData[game.i18n.localize("Parser.SpecialAbilities")]),
+                runningDie: findRunningDie(parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]),
                 value: parsedData.Pace
             },
             toughness: {
@@ -25,8 +25,8 @@ export const BuildActorData = async function (parsedData, isWildCard) {
         autoCalcToughness: true
     }
     data.powerPoints = {
-        value: parsedData[game.i18n.localize("Parser.PowerPoints")],
-        max: parsedData[game.i18n.localize("Parser.PowerPoints")]
+        value: parsedData[game.i18n.localize("npcImporter.parser.PowerPoints")],
+        max: parsedData[game.i18n.localize("npcImporter.parser.PowerPoints")]
     }
     data.wounds = {
         max: calculateWoundMod(parsedData.Size, isWildCard),
@@ -43,7 +43,7 @@ function generateAttributes(parsedData) {
     let attributesData = parsedData.Attributes;
 
     if (parsedData.Attributes.animalSmarts == true) {
-        attributesData.smarts.animal = true;
+        attributesData.smarts.animal = true;        
     }
 
     let unShakeBonus = findUnshakeBonus(parsedData);
@@ -51,12 +51,13 @@ function generateAttributes(parsedData) {
         attributesData.spirit.unShakeBonus = unShakeBonus;
     }
 
+    delete attributesData.animalSmarts;
     return attributesData;
 }
 
 function buildBioAndSpecialAbilities(parsedData) {
-    if (parsedData[game.i18n.localize("Parser.SpecialAbilities")] != undefined) {
-        let specialAbsHtml = SpecialAbilitiesForDescription(parsedData[game.i18n.localize("Parser.SpecialAbilities")])
+    if (parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")] != undefined) {
+        let specialAbsHtml = SpecialAbilitiesForDescription(parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")])
         return parsedData.Biography.value.concat(specialAbsHtml);
     }
     return parsedData.Biography.value;    
@@ -96,13 +97,13 @@ function initiativeMod(edges) {
         let hasLevelHeaded = false;
         let hasImpLevelHeaded = false;
         edges.forEach(element => {
-            if (element.includes(game.i18n.localize("Parser.Hesitant"))) {
+            if (element.includes(game.i18n.localize("npcImporter.parser.Hesitant"))) {
                 hasHesitant = true;
             }
-            if (element.includes(game.i18n.localize("Parser.LevelHeaded"))) {
+            if (element.includes(game.i18n.localize("npcImporter.parser.LevelHeaded"))) {
                 hasLevelHeaded = true;
             }
-            if (element.includes(game.i18n.localize("Parser.LevelHeadedImp"))) {
+            if (element.includes(game.i18n.localize("npcImporter.parser.LevelHeadedImp"))) {
                 hasImpLevelHeaded = true;
             }
         });
@@ -117,7 +118,7 @@ function initiativeMod(edges) {
 
 function findRunningDie(abilities) {
     for (const ability in abilities) {
-        if (ability.toLowerCase().includes(game.i18n.localize("Parser.Speed"))) {
+        if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Speed"))) {
             return parseInt(abilities[ability].match(global.diceRegex)[0].replace('d', ''))
         }
     }
@@ -125,13 +126,13 @@ function findRunningDie(abilities) {
 
 function calculateIgnoredWounds(parsedData) {
     const ignoreWound = [
-        game.i18n.localize("Parser.Undead"),
-        game.i18n.localize("Parser.Construct"),
-        game.i18n.localize("Parser.Elemental")
+        game.i18n.localize("npcImporter.parser.Undead"),
+        game.i18n.localize("npcImporter.parser.Construct"),
+        game.i18n.localize("npcImporter.parser.Elemental")
     ];
     
     let bonusTotal = 0;
-    for (const ability in parsedData[game.i18n.localize("Parser.SpecialAbilities")]) {
+    for (const ability in parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]) {
         if (ignoreWound.includes((ability.toLowerCase()))) {
             bonusTotal += 1;
         }
@@ -141,13 +142,13 @@ function calculateIgnoredWounds(parsedData) {
 
 function findUnshakeBonus(parsedData) {
     const unshakeBonus = [
-        game.i18n.localize("Parser.Undead"),
-        game.i18n.localize("Parser.Construct"),
-        game.i18n.localize("Parser.CombatReflexes")
+        game.i18n.localize("npcImporter.parser.Undead"),
+        game.i18n.localize("npcImporter.parser.Construct"),
+        game.i18n.localize("npcImporter.parser.CombatReflexes")
     ];
     
     let bonusTotal = 0;
-    for (const ability in parsedData[game.i18n.localize("Parser.SpecialAbilities")]) {
+    for (const ability in parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]) {
         if (unshakeBonus.includes((ability.toLowerCase()))) {
             bonusTotal += 2;
         }

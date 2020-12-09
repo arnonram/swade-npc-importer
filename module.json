@@ -6,22 +6,27 @@
     "swade"
   ],
   "author": "Arnon Ram",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.7",
   "esmodules": [
     "scripts/swadeNpcImporter.js"
   ],
   "url": "https://github.com/arnonram/swade-npc-importer",
-  "manifest": "https://raw.githubusercontent.com/arnonram/swade-npc-importer/v0.1.1/module.json",
-  "download": "https://github.com/arnonram/swade-npc-importer/archive/v0.1.1.zip",
+  "manifest": "https://raw.githubusercontent.com/arnonram/swade-npc-importer/v0.1.2/module.json",
+  "download": "https://github.com/arnonram/swade-npc-importer/archive/v0.1.2.zip",
   "bugs": "https://github.com/arnonram/swade-npc-importer/issues",
-  "readme": "https://raw.githubusercontent.com/arnonram/swade-npc-importer/v0.1.1/README.md",
+  "readme": "https://raw.githubusercontent.com/arnonram/swade-npc-importer/v0.1.2/README.md",
   "languages": [
     {
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
+    },
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "lang/es.json"
     }
   ]
 }

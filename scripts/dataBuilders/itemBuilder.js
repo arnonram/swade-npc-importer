@@ -1,4 +1,4 @@
-import { getItemFromCompendium, getSpecificAdditionalStat } from "../foundryActions.js";
+import { getItemFromCompendium, getSpecificAdditionalStat } from "../utils/foundryActions.js";
 import { log } from "../global.js";
 import { capitalize } from "../utils/textUtils.js";
 
@@ -16,7 +16,7 @@ export const SkillBuilder = async function (skillsDict) {
                     };
 
                     skill.name = capitalize(element);
-                    skill.type = game.i18n.localize("Parser.Skill");
+                    skill.type = "skill";
                     skill.img = "systems/swade/assets/icons/skill.svg"
                     skill.data = {
                         die: die,
@@ -47,9 +47,9 @@ export const EdgeBuilder = async function (edges) {
                 } else {
                     let edge = {};
                     edge.name = capitalize(element)
-                    edge.type = game.i18n.localize("Parser.Edge");
+                    edge.type = game.i18n.localize("npcImporter.parser.Edge");
                     edge.data = {
-                        isArcaneBackground: element.includes(game.i18n.localize("Parser.Arcane")) ? true : false
+                        isArcaneBackground: element.includes(game.i18n.localize("npcImporter.parser.Arcane")) ? true : false
                     }
                     edge.img = "systems/swade/assets/icons/edge.svg";
                     allEdges.push(edge);
@@ -74,7 +74,7 @@ export const HindranceBuilder = async function (hindrances) {
                 } else {
                     let hindrance = {};
                     hindrance.name = capitalize(element);
-                    hindrance.type = game.i18n.localize("Parser.Hindrance");
+                    hindrance.type = game.i18n.localize("npcImporter.parser.Hindrance");
                     hindrance.img = "systems/swade/assets/icons/hindrance.svg";
                     allHindrances.push(hindrance);
                 }
@@ -99,7 +99,7 @@ export const PowerBuilder = async function (powers) {
                 } else {
                     let power = {};
                     power.name = capitalize(element);
-                    power.type = game.i18n.localize("Parser.Power")
+                    power.type = game.i18n.localize("npcImporter.parser.Power")
                     power.img = "systems/swade/assets/icons/power.svg";
                     allPowers.push(power);
                 }
@@ -120,7 +120,7 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
         } else {
             let weapon = {};
             weapon.name = capitalize(weaponName);
-            weapon.type = game.i18n.localize("Parser.Weapon");
+            weapon.type = game.i18n.localize("npcImporter.parser.Weapon");
             weapon.data = {
                 description: description,
                 equippable: true,
@@ -146,7 +146,7 @@ export const ShieldBuilder = async function (shieldName, description, parry = 0,
         } else {
             let shield = {};
             shield.name = capitalize(shieldName);
-            shield.type = game.i18n.localize("Parser.Shield")
+            shield.type = game.i18n.localize("npcImporter.parser.Shield")
             shield.data = {
                 description: description,
                 equipped: true,
@@ -171,7 +171,7 @@ export const ArmorBuilder = async function (armorName, armorBonus, armorDescript
         } else {
             let armor = {};
             armor.name = capitalize(armorName);
-            armor.type = game.i18n.localize("Parser.Armor")
+            armor.type = game.i18n.localize("npcImporter.parser.Armor")
             armor.data = {
                 description: armorDescription,
                 armor: parseInt(armorBonus),
@@ -194,7 +194,7 @@ export const GearBuilder = async function (gearName, description) {
         } else {
             let gear = {};
             gear.name = capitalize(gearName);
-            gear.type = game.i18n.localize("Parser.Gear").toLowerCase();
+            gear.type = game.i18n.localize("npcImporter.parser.Gear").toLowerCase();
             gear.data = {
                 description: description,
                 equipped: false,
