@@ -1,5 +1,5 @@
 import { log } from "./global.js";
-import { Import, GetActorId, DeleteActor } from "./foundryActions.js";
+import { Import, GetActorId, DeleteActor } from "./utils/foundryActions.js";
 
 export const ActorImporter = async function (actorDataToImport) {
     let actorId = GetActorId(actorDataToImport.name);

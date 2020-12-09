@@ -2,7 +2,7 @@ import { log } from "./global.js";
 import * as global from "./global.js";
 import * as GetMeleeDamage from "./utils/parserBuilderHelpers.js";
 import { capitalizeEveryWord } from "./utils/textUtils.js";
-import { getModuleSettings, getActorAddtionalStats } from "./foundryActions.js";
+import { getModuleSettings, getActorAddtionalStats } from "./utils/foundryActions.js";
 
 
 export const StatBlockParser = async function (clipData) {
