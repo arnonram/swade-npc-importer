@@ -1,4 +1,4 @@
-import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums } from "./global.js";
+import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums } from "../global.js";
 
 export const getItemFromCompendium = async function (itemName) {
     let activeCompendiums = getModuleSettings(settingActiveCompendiums);
@@ -13,7 +13,7 @@ export const getItemFromCompendium = async function (itemName) {
             let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
             if (resultId != undefined) {
                 return packs[i].getEntry(resultId);
-            }            
+            }
         } catch (error) {
             log(`Could not find ${itemName}: ${error}`)
         }
@@ -88,10 +88,10 @@ export const getModuleSettings = function (settingKey) {
 export const Import = async function (actorData) {
     try {
         await Actor.create(actorData);
-        ui.notifications.info(`${actorData.name} created successfully`)
+        ui.notifications.info(game.i18n.format("npcImporter.HTML.ActorCreated", { actorName: actorData.name }))
     } catch (error) {
         log(`Failed to import: ${error}`)
-        ui.notifications.error("Failed to import actor (see console for errors)")
+        ui.notifications.error(game.i18n.localize("npcImporter.HTML.FailedToImport"))
     }
 }
 
@@ -106,7 +106,7 @@ export const GetActorId = function (actorName) {
 export const DeleteActor = async function (actorId) {
     try {
         await Actor.delete(actorId);
-        ui.notifications.info(`Delete Actor with id ${actorId}`)
+        ui.notifications.info(game.i18n.format("npcImporter.HTML.DeleteActor", { actorId: actorId }))
     } catch (error) {
         log(`Failed to delet actor: ${error}`)
     }

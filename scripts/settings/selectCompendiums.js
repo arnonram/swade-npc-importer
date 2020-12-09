@@ -1,5 +1,5 @@
-import { GetAllItemCompendiums, getAllPackageNames, getModuleSettings, updateModuleSetting, getAllActiveCompendiums } from "../foundryActions.js";
-import { log, settingPackageToUse, thisModule, settingCompsToUse, settingActiveCompendiums } from "../global.js";
+import { GetAllItemCompendiums, getAllPackageNames, getModuleSettings, updateModuleSetting, getAllActiveCompendiums } from "../utils/foundryActions.js";
+import { settingPackageToUse, thisModule, settingCompsToUse, settingActiveCompendiums } from "../global.js";
 
 export default class SelectCompendiums extends FormApplication {
     constructor(object = {}, options = {}) {
@@ -9,7 +9,7 @@ export default class SelectCompendiums extends FormApplication {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             id: `${thisModule}.compendiumsSelector`,
-            title: "Compendiums Selector",
+            title: game.i18n.localize("npcImporter.settings.CompendiumsSelector"),
             template: "modules/swade-npc-importer/templates/CompendiumsToUse.html",
             width: 300,
             closeOnSubmit: true

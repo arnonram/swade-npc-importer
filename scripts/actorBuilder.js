@@ -4,7 +4,7 @@ import { ActorImporter } from "./actorImporter.js";
 import { BuildActorData} from "./dataBuilders/buildActorData.js";
 import { BuildActorItems} from "./dataBuilders/buildActorItems.js";
 import { BuildActorToken } from "./dataBuilders/buildActorToken.js";
-import { getFolderId, updateModuleSetting } from "./foundryActions.js";
+import { getFolderId, updateModuleSetting } from "./utils/foundryActions.js";
 
 export const BuildActor = async function (actorType, isWildCard, disposition, saveFolder ,data = undefined) {
     log(`BuildActor initiated: actorType=${actorType}, isWildCard=${isWildCard}, disposition=${disposition}, saveFolder=${saveFolder}`)
@@ -25,7 +25,7 @@ export const BuildActor = async function (actorType, isWildCard, disposition, sa
             await ActorImporter(finalActor);
         }
     } else {
-        ui.notification.error("Clipboard empty")
+        ui.notification.error(game.i18n.localize("npcImporter.parser.EmptyClipboard"))
     }
 }
 
