@@ -1,5 +1,4 @@
 import { WeaponBuilder, ArmorBuilder, GearBuilder, ShieldBuilder } from "./itemBuilder.js";
-import * as global from "../global.js";
 
 export const ItemGearBuilder = async function (gear) {
     let gearItems = [];

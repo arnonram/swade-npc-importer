@@ -2,9 +2,7 @@
   "name": "swade-npc-importer",
   "title": "SWADE NPC Importer",
   "description": "Import NPC statblocks for SWADE",
-  "systems": [
-    "swade"
-  ],
+  "systems": ["swade"],
   "author": "Arnon Ram",
   "version": "0.1.2",
   "minimumCoreVersion": "0.7.5",
@@ -22,11 +20,6 @@
       "lang": "en",
       "name": "English",
       "path": "lang/en.json"
-    },
-    {
-      "lang": "es",
-      "name": "Español",
-      "path": "lang/es.json"
-    }
+    }    
   ]
 }

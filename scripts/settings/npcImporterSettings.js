@@ -31,15 +31,15 @@ export class NpcImporterSettings {
             type: String
         });
 
-        game.settings.register(thisModule, settingParaeLanguage, {
-            name: game.i18n.localize("npcImporter.settings.parseLanguage"),
-            hint: game.i18n.localize("npcImporter.settings.parseLanguageHint"),
-            config: true,
-            scope: "world",
-            type: String,
-            choices: { "en": "English", "es": "Español" },
-            default: "en"
-        });
+        // game.settings.register(thisModule, settingParaeLanguage, {
+        //     name: game.i18n.localize("npcImporter.settings.parseLanguage"),
+        //     hint: game.i18n.localize("npcImporter.settings.parseLanguageHint"),
+        //     config: true,
+        //     scope: "world",
+        //     type: String,
+        //     choices: { "en": "English", "es": "Español" },
+        //     default: "en"
+        // });
         game.settings.register(thisModule, settingDefaultDisposition, {
             name: game.i18n.localize("npcImporter.settings.DefaultDisposition"),
             config: true,

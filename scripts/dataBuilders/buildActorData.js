@@ -1,4 +1,4 @@
-import { getActorAddtionalStats, getSpecificAdditionalStat } from "../utils/foundryActions.js";
+import { getActorAddtionalStats } from "../utils/foundryActions.js";
 import * as global from "../global.js";
 import { SpecialAbilitiesForDescription } from "./buildActorItemsSpecialAbilities.js"
 import { additionalStatsBuilder } from "./itemBuilder.js";

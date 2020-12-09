@@ -1,5 +1,5 @@
 import { GetAllItemCompendiums, getAllPackageNames, getModuleSettings, updateModuleSetting, getAllActiveCompendiums } from "../utils/foundryActions.js";
-import { log, settingPackageToUse, thisModule, settingCompsToUse, settingActiveCompendiums } from "../global.js";
+import { settingPackageToUse, thisModule, settingCompsToUse, settingActiveCompendiums } from "../global.js";
 
 export default class SelectCompendiums extends FormApplication {
     constructor(object = {}, options = {}) {

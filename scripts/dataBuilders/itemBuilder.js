@@ -47,7 +47,7 @@ export const EdgeBuilder = async function (edges) {
                 } else {
                     let edge = {};
                     edge.name = capitalize(element)
-                    edge.type = game.i18n.localize("npcImporter.parser.Edge");
+                    edge.type = "edge";
                     edge.data = {
                         isArcaneBackground: element.includes(game.i18n.localize("npcImporter.parser.Arcane")) ? true : false
                     }
@@ -74,7 +74,7 @@ export const HindranceBuilder = async function (hindrances) {
                 } else {
                     let hindrance = {};
                     hindrance.name = capitalize(element);
-                    hindrance.type = game.i18n.localize("npcImporter.parser.Hindrance");
+                    hindrance.type = "hindrance";
                     hindrance.img = "systems/swade/assets/icons/hindrance.svg";
                     allHindrances.push(hindrance);
                 }
@@ -99,7 +99,7 @@ export const PowerBuilder = async function (powers) {
                 } else {
                     let power = {};
                     power.name = capitalize(element);
-                    power.type = game.i18n.localize("npcImporter.parser.Power")
+                    power.type = "power";
                     power.img = "systems/swade/assets/icons/power.svg";
                     allPowers.push(power);
                 }
@@ -120,7 +120,7 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
         } else {
             let weapon = {};
             weapon.name = capitalize(weaponName);
-            weapon.type = game.i18n.localize("npcImporter.parser.Weapon");
+            weapon.type = "weapon";
             weapon.data = {
                 description: description,
                 equippable: true,
@@ -146,7 +146,7 @@ export const ShieldBuilder = async function (shieldName, description, parry = 0,
         } else {
             let shield = {};
             shield.name = capitalize(shieldName);
-            shield.type = game.i18n.localize("npcImporter.parser.Shield")
+            shield.type = "shield";
             shield.data = {
                 description: description,
                 equipped: true,
@@ -171,7 +171,7 @@ export const ArmorBuilder = async function (armorName, armorBonus, armorDescript
         } else {
             let armor = {};
             armor.name = capitalize(armorName);
-            armor.type = game.i18n.localize("npcImporter.parser.Armor")
+            armor.type = "armor";
             armor.data = {
                 description: armorDescription,
                 armor: parseInt(armorBonus),
@@ -194,7 +194,7 @@ export const GearBuilder = async function (gearName, description) {
         } else {
             let gear = {};
             gear.name = capitalize(gearName);
-            gear.type = game.i18n.localize("npcImporter.parser.Gear").toLowerCase();
+            gear.type = "gear";
             gear.data = {
                 description: description,
                 equipped: false,

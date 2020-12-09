@@ -38,13 +38,7 @@
     "npcImporter.parser.Elemental" : "elemental",
     "npcImporter.parser.CombatReflexes" : "combat reflexes",
     
-    "npcImporter.parser.Skill" : "skill",
-    "npcImporter.parser.Edge" : "edge",
-    "npcImporter.parser.Hindrance" : "hindrance",
-    "npcImporter.parser.Power" : "power",
     "npcImporter.parser.Shield" : "shield",
-    "npcImporter.parser.Armor" : "armor",
-    "npcImporter.parser.Weapon" : "weapon",
     "npcImporter.parser.Speed" : "speed",
 
     "npcImporter.parser.Hesitant" : "Hesitant",
