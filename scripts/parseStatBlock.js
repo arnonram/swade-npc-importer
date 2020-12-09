@@ -63,7 +63,7 @@ function GetSectionsIndex(inData) {
         `${game.i18n.localize("Parser.Gear")}:`,
         `${game.i18n.localize("Parser.SpecialAbilities")}:`,
         `${game.i18n.localize("Parser.SuperPowers")}:`
-    ]; 
+    ];
 
     let allStats = allStatBlockEntities.concat(getActorAddtionalStats());
     let sectionsIndex = [];
@@ -245,7 +245,9 @@ async function ParseGear(gearArray) {
 
         // normal gear
         if (splitGear.length == 1) {
-            gearDict[gear] = null;
+            if (splitGear != '.') {
+                gearDict[gear] = null;
+            }
         }
         // check if armor
         else if (gearArmorRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("Parser.Armor"))) {

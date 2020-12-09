@@ -96,13 +96,13 @@ function initiativeMod(edges) {
         let hasLevelHeaded = false;
         let hasImpLevelHeaded = false;
         edges.forEach(element => {
-            if (element.includes(game.i18n.localize("Builder.Hesitant"))) {
+            if (element.includes(game.i18n.localize("Parser.Hesitant"))) {
                 hasHesitant = true;
             }
-            if (element.includes(game.i18n.localize("Builder.LevelHeaded"))) {
+            if (element.includes(game.i18n.localize("Parser.LevelHeaded"))) {
                 hasLevelHeaded = true;
             }
-            if (element.includes(game.i18n.localize("Builder.LevelHeadedImp"))) {
+            if (element.includes(game.i18n.localize("Parser.LevelHeadedImp"))) {
                 hasImpLevelHeaded = true;
             }
         });
@@ -117,7 +117,7 @@ function initiativeMod(edges) {
 
 function findRunningDie(abilities) {
     for (const ability in abilities) {
-        if (ability.toLowerCase().includes(game.i18n.localize("Builder.Speed"))) {
+        if (ability.toLowerCase().includes(game.i18n.localize("Parser.Speed"))) {
             return parseInt(abilities[ability].match(global.diceRegex)[0].replace('d', ''))
         }
     }

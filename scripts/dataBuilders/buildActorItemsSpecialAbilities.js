@@ -1,15 +1,15 @@
 import { ArmorBuilder, WeaponBuilder } from "./itemBuilder.js";
 import { diceRegex, meleeDamageRegex } from "../global.js";
-import { GetMeleeDamage, GetArmorBonus } from "../utils/parserBuilderHelpers.js";
+import { GetArmorBonus } from "../utils/parserBuilderHelpers.js";
 
 export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     let specialAbitlitiesItems = [];
     for (const elem in specialAbilitiesData) {
-        if (elem.toLocaleLowerCase().startsWith(game.i18n.localize("Builder.Armor").toLocaleLowerCase())) {
+        if (elem.toLocaleLowerCase().startsWith(game.i18n.localize("Parser.Armor").toLocaleLowerCase())) {
             let armorBonus = GetArmorBonus(elem);
             specialAbitlitiesItems.push(await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem]))
         }
-        if (meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem])){
+        if (meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem])) {
             let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
             specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage[0]));
         }
