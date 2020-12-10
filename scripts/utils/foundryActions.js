@@ -72,13 +72,17 @@ export const getSpecificAdditionalStat = function (additionalStatName) {
     }
 }
 
-export const getActorAddtionalStats = function () {
-    let actorAdditionalStats = game.settings.get("swade", "settingFields").actor;
+export const getActorAddtionalStatsArray = function () {
+    let actorAdditionalStats = getActorAddtionalStats();
     let stats = [];
     for (const key in actorAdditionalStats) {
         stats.push(`${key}:`);
     }
     return stats;
+}
+
+export const getActorAddtionalStats = function () {
+    return game.settings.get("swade", "settingFields").actor;
 }
 
 export const getModuleSettings = function (settingKey) {

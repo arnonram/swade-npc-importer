@@ -9,7 +9,8 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
             let armorBonus = GetArmorBonus(elem);
             specialAbitlitiesItems.push(await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem]))
         }
-        if (meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem])) {
+        if ((meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem]))
+            && elem.toLocaleLowerCase() != game.i18n.localize("npcImporter.parser.Speed")) {
             let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
             specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage[0]));
         }

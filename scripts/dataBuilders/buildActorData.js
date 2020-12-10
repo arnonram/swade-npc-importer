@@ -1,4 +1,4 @@
-import { getActorAddtionalStats } from "../utils/foundryActions.js";
+import { getActorAddtionalStats, getActorAddtionalStatsArray } from "../utils/foundryActions.js";
 import * as global from "../global.js";
 import { SpecialAbilitiesForDescription } from "./buildActorItemsSpecialAbilities.js"
 import { additionalStatsBuilder } from "./itemBuilder.js";
@@ -42,9 +42,10 @@ export const BuildActorData = async function (parsedData, isWildCard) {
 function generateAttributes(parsedData) {
     let attributesData = parsedData.Attributes;
 
-    if (parsedData.Attributes.animalSmarts == true) {
-        attributesData.smarts.animal = true;        
-    }
+    attributesData.smarts.animal = parsedData.Attributes.animalSmarts == true;
+    // if (parsedData.Attributes.animalSmarts == true) {
+    //     attributesData.smarts.animal = true;        
+    // } 
 
     let unShakeBonus = findUnshakeBonus(parsedData);
     if (unShakeBonus != undefined) {
@@ -56,16 +57,18 @@ function generateAttributes(parsedData) {
 }
 
 function buildBioAndSpecialAbilities(parsedData) {
+    let bio = parsedData.Biography?.value ?? '';
+
     if (parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")] != undefined) {
         let specialAbsHtml = SpecialAbilitiesForDescription(parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")])
-        return parsedData.Biography.value.concat(specialAbsHtml);
+        return bio.concat(specialAbsHtml);
     }
-    return parsedData.Biography.value;    
+    return bio;    
 }
 
 async function buildAdditionalStats(parsedData) {
     let additionalStats = {};
-    let actorSystemStats = getActorAddtionalStats();
+    let actorSystemStats = getActorAddtionalStatsArray();
     actorSystemStats.forEach(element => {
         let statName = element.replace(':', '');
         let statValue = parsedData[statName];

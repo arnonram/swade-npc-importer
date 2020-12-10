@@ -2,7 +2,7 @@ import { log } from "./global.js";
 import * as global from "./global.js";
 import * as GetMeleeDamage from "./utils/parserBuilderHelpers.js";
 import { capitalizeEveryWord } from "./utils/textUtils.js";
-import { getModuleSettings, getActorAddtionalStats } from "./utils/foundryActions.js";
+import { getModuleSettings, getActorAddtionalStatsArray, getActorAddtionalStats } from "./utils/foundryActions.js";
 
 
 export const StatBlockParser = async function (clipData) {
@@ -65,7 +65,7 @@ function GetSectionsIndex(inData) {
         `${game.i18n.localize("npcImporter.parser.SuperPowers")}:`
     ];
 
-    let allStats = allStatBlockEntities.concat(getActorAddtionalStats());
+    let allStats = allStatBlockEntities.concat(getActorAddtionalStatsArray());
     let sectionsIndex = [];
     allStats.forEach(element => {
         let index = inData.indexOf(element);
@@ -237,21 +237,26 @@ async function GetGear(sections) {
 
 async function ParseGear(gearArray) {
     let parryRegex = new RegExp(`(\\+\\+d|\\-\\d+) ${game.i18n.localize("npcImporter.parser.Parry")}`);
-    let gearArmorRegex = /\(\+\d+\)/gi
 
     let gearDict = {};
     gearArray.forEach(async (gear) => {
         let splitGear = gear.replace(')', '').split('(');
-
+        
         // normal gear
         if (splitGear.length == 1) {
             if (splitGear != '.') {
                 gearDict[gear] = null;
             }
         }
+        // parse weapon
+        else if (global.meleeDamageRegex.test(splitGear[1])
+            || splitGear[1].toLowerCase().includes('damage')
+            || splitGear[1].toLowerCase().includes('range')) {
+            gearDict[splitGear[0]] = weaponParser(splitGear[1].split(',').filter(n => n).map(function (x) { return x.trim() }));
+        }
         // check if armor
-        else if (gearArmorRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Armor"))) {
-            gearDict[splitGear[0]] = { armorBonus: GetMeleeDamage.GetArmorBonus(splitGear[1].replace(',')) }
+        else if (global.armorModRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Armor"))) {
+            gearDict[splitGear[0]] = { armorBonus: GetMeleeDamage.GetArmorBonus(splitGear[1]) }
         }
         // check if shield
         else if (parryRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Shield"))) {
@@ -259,18 +264,19 @@ async function ParseGear(gearArray) {
             let cover = GetMeleeDamage.GetCoverBonus(splitGear[1]);
             gearDict[splitGear[0]] = { parry: parry, cover: cover }
         }
-        // parse weapon
-        else {
-            gearDict[splitGear[0]] = weaponParser(splitGear[1].split(',').filter(n => n).map(function (x) { return x.trim() }));
-        }
+        // // parse weapon
+        // else {
+        //     gearDict[splitGear[0]] = weaponParser(splitGear[1].split(',').filter(n => n).map(function (x) { return x.trim() }));
+        // }
     });
     return gearDict;
 }
 
 function weaponParser(weapon) {
     let weaponStats = {};
-
+    log(weapon)
     weapon.forEach(stat => {
+        log(stat)
         if (new RegExp('^Str', 'i').test(stat)) {
             weaponStats.damage = stat;
         } else {
@@ -284,13 +290,23 @@ function weaponParser(weapon) {
 function getSystemDefinedStats(sections) {
     let additionalStats = getActorAddtionalStats();
     let systemStats = {};
-    additionalStats.forEach(element => {
-        let stat = sections.find(x => x.includes(element));
-        if (stat != undefined) {
-            stat = sections.find(x => x.includes(element)).split(':');
-            systemStats[stat[0]] = parseInt(stat[1].replace(';', '').trim());
+    for (const key in additionalStats) {
+        if (additionalStats.hasOwnProperty(key)) {
+            const element = additionalStats[key];
+            let stat = sections.find(x => x.startsWith(element.label));
+            if (stat != undefined) {
+                stat = stat.replace(global.newLineRegex, ' ');
+                stat = stat.split(':');
+                if (element.dtype === "String") {
+                    systemStats[stat[0]] = stat[1]
+                } else if (element.dtype === "Number") {
+                    systemStats[stat[0]] = parseInt(stat[1].replace(';', '').trim());
+                } else if (element.dtype === "Boolean") {
+                    systemStats[stat[0]] = stat[1].replace(';', '').trim() == "true";
+                }
+            }
         }
-    });
+    }
     return systemStats;
 }
 
