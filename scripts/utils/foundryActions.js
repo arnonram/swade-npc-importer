@@ -76,7 +76,10 @@ export const getActorAddtionalStatsArray = function () {
     let actorAdditionalStats = getActorAddtionalStats();
     let stats = [];
     for (const key in actorAdditionalStats) {
-        stats.push(`${key}:`);
+        if (actorAdditionalStats.hasOwnProperty(key)) {
+            const element = actorAdditionalStats[key];
+            stats.push(`${element.label}:`);
+        }
     }
     return stats;
 }
