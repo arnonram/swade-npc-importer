@@ -37,7 +37,11 @@ export class NpcImporterSettings {
             config: true,
             scope: "world",
             type: String,
-            choices: { "en": "English", "es": "Español", "por": "Português" },
+            choices: {
+                "en": "English",
+                "es": "Español",
+                "por": "Português"
+            },
             default: game.i18n.lang
         });
         game.settings.register(thisModule, settingDefaultDisposition, {
@@ -45,7 +49,11 @@ export class NpcImporterSettings {
             config: true,
             scope: "world",
             type: String,
-            choices: { "1": "Friendly", "0": "Neutral", "-1": "Hostile" },
+            choices: { 
+                "1": game.i18n.localize("npcImporter.settings.Friendly"),
+                "0": game.i18n.localize("npcImporter.settings.Neutral"),
+                "-1": game.i18n.localize("npcImporter.settings.Hostile") 
+            },
             default: "-1"
         });
         game.settings.register(thisModule, settingDefaultActorType, {
@@ -53,7 +61,10 @@ export class NpcImporterSettings {
             config: true,
             scope: "world",
             type: String,
-            choices: { "npc": "NPC", "character": "Character" },
+            choices: {
+                "npc": game.i18n.localize("npcImporter.settings.NPC"),
+                "character": game.i18n.localize("npcImporter.settings.Character")
+            },
             default: "npc"
         });
         game.settings.register(thisModule, settingDefaultIsWildcard, {
@@ -73,7 +84,7 @@ export class NpcImporterSettings {
         });
         game.settings.register(thisModule, settingBulletPointIcons, {
             name: game.i18n.localize("npcImporter.settings.BulletPointIcons"),
-            hint: game.i18n.localize("BulletPointIconsHint.AdditionalTraitsHint"),
+            hint: game.i18n.localize("npcImporter.settings.BulletPointIconsHint"),
             config: true,
             scope: "world",
             type: String,
@@ -83,7 +94,7 @@ export class NpcImporterSettings {
             name: "Set the last save folder",
             config: false,
             scope: "world",
-            type: String,            
+            type: String,
         });
         game.settings.register(thisModule, settingActiveCompendiums, {
             name: "Compendiums in use by Importer",

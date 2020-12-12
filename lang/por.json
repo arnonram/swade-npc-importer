@@ -52,6 +52,11 @@
     "npcImporter.parser.LevelHeadedImp" : "Extremamente Focado",
     "npcImporter.parser.Arcane" : "Arcano",
 
+    "npcImporter.settings.Friendly" : "Amigáveis",
+    "npcImporter.settings.Neutral" : "Neutro",
+    "npcImporter.settings.Hostile" : "Hostil",
+    "npcImporter.settings.NPC" : "NPC",
+    "npcImporter.settings.Character" : "Personagem",
     "npcImporter.settings.CompendiumsSelector" : "Seletor de Compêndios",
     "npcImporter.settings.SelectItemCompendiums" : "Selecione os Compêndios de Itens",
     "npcImporter.settings.CompendiumsSelectorHint" : "Permitir selecionar compêndios individuais para o Importador procurar",

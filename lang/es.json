@@ -52,6 +52,11 @@
     "npcImporter.parser.LevelHeadedImp" : "Level Headed (Imp)",
     "npcImporter.parser.Arcane" : "Arcana",
 
+    "npcImporter.settings.Friendly" : "Amistoso",
+    "npcImporter.settings.Neutral" : "Neutral",
+    "npcImporter.settings.Hostile" : "Hostil",
+    "npcImporter.settings.NPC" : "NPC",
+    "npcImporter.settings.Character" : "Personaje",
     "npcImporter.settings.CompendiumsSelector" : "Compendiums Selector",
     "npcImporter.settings.SelectItemCompendiums" : "Select Item Compendiums",
     "npcImporter.settings.CompendiumsSelectorHint" : "Allows for selecting individual compendiums for the Importer to search through",
