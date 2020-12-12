@@ -125,7 +125,7 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
                 description: description,
                 equippable: true,
                 equipped: true,
-                damage: weaponDamage.replace(new RegExp('Str\.|Str',"gi"), '@str+'),
+                damage: weaponDamage.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`,"gi"), '@str'),
                 range: range,
                 rof: rof,
                 ap: ap

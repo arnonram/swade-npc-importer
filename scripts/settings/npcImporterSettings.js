@@ -37,8 +37,8 @@ export class NpcImporterSettings {
             config: true,
             scope: "world",
             type: String,
-            choices: { "en": "English", "es": "Español" },
-            default: "en"
+            choices: { "en": "English", "es": "Español", "por": "Português" },
+            default: game.i18n.lang
         });
         game.settings.register(thisModule, settingDefaultDisposition, {
             name: game.i18n.localize("npcImporter.settings.DefaultDisposition"),

@@ -1,8 +1,11 @@
 import { ArmorBuilder, WeaponBuilder } from "./itemBuilder.js";
-import { diceRegex, meleeDamageRegex } from "../global.js";
+import { diceRegex } from "../global.js";
 import { GetArmorBonus } from "../utils/parserBuilderHelpers.js";
 
 export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
+    const meleeDamageRegex = 
+        new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}\\s?[\\+\\-]\\s?(\\d+)?d?(\\d+)?\\s?[\\+\\-]?\\s?(\\d+)?d?(\\d+)`, "gi")
+        
     let specialAbitlitiesItems = [];
     for (const elem in specialAbilitiesData) {
         if (elem.toLocaleLowerCase().startsWith(game.i18n.localize("npcImporter.parser.Armor").toLocaleLowerCase())) {

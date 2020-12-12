@@ -1,4 +1,4 @@
-import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums } from "../global.js";
+import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums, settingParaeLanguage } from "../global.js";
 
 export const getItemFromCompendium = async function (itemName) {
     let activeCompendiums = getModuleSettings(settingActiveCompendiums);
@@ -132,4 +132,8 @@ export const getFolderId = function (folderName) {
 
 export const updateModuleSetting = async function (settingName, newValue) {
     await game.settings.set(thisModule, settingName, newValue);
+}
+
+export const setParsingLanguage = async function (lang) {    
+    await game.i18n.setLanguage(lang);
 }

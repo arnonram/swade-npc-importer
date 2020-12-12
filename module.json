@@ -25,6 +25,11 @@
       "lang": "es",
       "name": "Español",
       "path": "lang/es.json"
+    },
+    {
+      "lang": "por",
+      "name": "Português",
+      "path": "lang/por.json"
     }
   ]
 }

@@ -9,7 +9,7 @@ export const BuildActorData = async function (parsedData, isWildCard) {
     data.attributes = generateAttributes(parsedData),
         data.stats = {
             speed: {
-                runningDie: findRunningDie(parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]),
+                runningDie: findRunningDie(parsedData.SpecialAbilities),
                 value: parsedData.Pace
             },
             toughness: {
@@ -42,11 +42,6 @@ export const BuildActorData = async function (parsedData, isWildCard) {
 function generateAttributes(parsedData) {
     let attributesData = parsedData.Attributes;
 
-    attributesData.smarts.animal = parsedData.Attributes.animalSmarts == true;
-    // if (parsedData.Attributes.animalSmarts == true) {
-    //     attributesData.smarts.animal = true;        
-    // } 
-
     let unShakeBonus = findUnshakeBonus(parsedData);
     if (unShakeBonus != undefined) {
         attributesData.spirit.unShakeBonus = unShakeBonus;
@@ -59,8 +54,8 @@ function generateAttributes(parsedData) {
 function buildBioAndSpecialAbilities(parsedData) {
     let bio = parsedData.Biography?.value ?? '';
 
-    if (parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")] != undefined) {
-        let specialAbsHtml = SpecialAbilitiesForDescription(parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")])
+    if (parsedData.SpecialAbilities != undefined) {
+        let specialAbsHtml = SpecialAbilitiesForDescription(parsedData.SpecialAbilities)
         return bio.concat(specialAbsHtml);
     }
     return bio;    
@@ -135,7 +130,7 @@ function calculateIgnoredWounds(parsedData) {
     ];
     
     let bonusTotal = 0;
-    for (const ability in parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]) {
+    for (const ability in parsedData.SpecialAbilities) {
         if (ignoreWound.includes((ability.toLowerCase()))) {
             bonusTotal += 1;
         }
@@ -151,7 +146,7 @@ function findUnshakeBonus(parsedData) {
     ];
     
     let bonusTotal = 0;
-    for (const ability in parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]) {
+    for (const ability in parsedData.SpecialAbilities) {
         if (unshakeBonus.includes((ability.toLowerCase()))) {
             bonusTotal += 2;
         }
