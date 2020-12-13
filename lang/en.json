@@ -70,6 +70,6 @@
     "npcImporter.settings.BulletPointIconsHint" : "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\n(There is currently a know issue with adding *)",
     "npcImporter.settings.parseLanguage" : "Parsing language",
     "npcImporter.settings.parseLanguageHint" : "The language used to parse the statblock",
-    "npcImporter.settings.ModifiedSpecialAbilities" : "Use modified Special Abilities ",
-    "npcImporter.settings.ModifiedSpecialAbilitiesHint" : "Edit the Special Abilities section to help NPC Importer be smarter by replacing the bullet-point with '@' as follows: @e => Edge; @h => hinrance; @w => weapom; @a => armor; @ => listed as Special Ability under Description section"
+    "npcImporter.settings.ModifiedSpecialAbilities" : "Use modified Special Abilities",
+    "npcImporter.settings.ModifiedSpecialAbilitiesHint" : "Edit the Special Abilities section to help NPC Importer be smarter, by replacing each bullet-point with '@' as follows: @e => Edge; @h => hinrance; @w => weapom; @a => armor; @ => listed as Special Ability under Description section. (BUllet point icons setting is ignored)"
 }

@@ -42,8 +42,7 @@ export class NpcImporterSettings {
                 "en": "English",
                 "es": "Español",
                 "por": "Português"
-            },
-            default: game.i18n.lang
+            }
         });
         game.settings.register(thisModule, settingDefaultDisposition, {
             name: game.i18n.localize("npcImporter.settings.DefaultDisposition"),

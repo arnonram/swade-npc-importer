@@ -22,14 +22,14 @@ export const StatBlockParser = async function (clipData) {
         Object.assign(importedActor, getSystemDefinedStats(sections));
 
         importedActor.Size = GetSize(importedActor.SpecialAbilities);
-        log(`Prased data: ${JSON.stringify(importedActor, null, 4)}`)
-
+        log(`Prased data: ${JSON.stringify(importedActor, null, 4)}`);
         return importedActor;
     } catch (error) {
         log(`Failed to prase: ${error}`);
         ui.notifications.error(game.i18n.localize("npcImporter.parser.NotValidStablock"))
+    } finally {
+        await setParsingLanguage(currentLang);
     }
-    await setParsingLanguage(getModuleSettings(currentLang));
 }
 
 function GetSections(inData) {
@@ -137,8 +137,13 @@ function GetSkills(sections) {
 }
 
 function buildTrait(data) {
-    let diceAndMode = [];
-    diceAndMode = data.match(global.diceRegex)[0].toString();
+    let diceAndMode = '';
+    try {
+        diceAndMode = data.match(global.diceRegex)[0].toString();    
+    } catch (error) {
+        diceAndMode = '1' // usually will be 1, if not then we'll need to think about it.
+    }
+    
     let traitDice = diceAndMode.includes("+") ? diceAndMode.split("+")[0] : diceAndMode.split("-")[0];
     let traitMod = diceAndMode.includes("+")
         ? `+${diceAndMode.split("+")[1]}`

@@ -11,8 +11,8 @@ export const SkillBuilder = async function (skillsDict) {
                 if (skillFromComp == undefined) {
                     let skill = {};
                     let die = {
-                        sides: skillsDict[element].sides,
-                        modifier: skillsDict[element].modifier
+                        sides: skillsDict[element].die.sides,
+                        modifier: skillsDict[element].die.modifier
                     };
 
                     skill.name = capitalize(element);
@@ -23,8 +23,8 @@ export const SkillBuilder = async function (skillsDict) {
                     }
                     allSkills.push(skill);
                 } else {
-                    skillFromComp.data.die.sides = skillsDict[element].sides;
-                    skillFromComp.data.die.modifier = skillsDict[element].modifier;
+                    skillFromComp.data.die.sides = skillsDict[element].die.sides;
+                    skillFromComp.data.die.modifier = skillsDict[element].die.modifier;
                     allSkills.push(skillFromComp);
                 }
             } catch (error) {

@@ -135,5 +135,6 @@ export const updateModuleSetting = async function (settingName, newValue) {
 }
 
 export const setParsingLanguage = async function (lang) {    
+    log(`Setting parsing language to: ${lang}`)
     await game.i18n.setLanguage(lang);
 }
