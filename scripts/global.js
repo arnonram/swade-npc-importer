@@ -13,6 +13,7 @@ export const settingLastSaveFolder = "lastSaveFolder";
 export const settingCompsToUse = "compsToUse";
 export const settingActiveCompendiums = "activeCompendiums";
 export const settingParaeLanguage = "parseLanguage";
+export const settingModifiedSpecialAbs = "modSpecailAbs";
 
 // global logger
 export const log = function (msg) {

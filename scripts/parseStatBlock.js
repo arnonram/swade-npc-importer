@@ -1,6 +1,6 @@
 import { log } from "./global.js";
 import * as global from "./global.js";
-import * as GetMeleeDamage from "./utils/parserBuilderHelpers.js";
+import * as parserHelper from "./utils/parserBuilderHelpers.js";
 import { capitalizeEveryWord } from "./utils/textUtils.js";
 import { getModuleSettings, getActorAddtionalStatsArray, getActorAddtionalStats, setParsingLanguage } from "./utils/foundryActions.js";
 
@@ -21,7 +21,7 @@ export const StatBlockParser = async function (clipData) {
         Object.assign(importedActor, await GetGear(sections));
         Object.assign(importedActor, getSystemDefinedStats(sections));
 
-        importedActor.Size = GetSize(importedActor.specialAbilities);
+        importedActor.Size = GetSize(importedActor.SpecialAbilities);
         log(`Prased data: ${JSON.stringify(importedActor, null, 4)}`)
 
         return importedActor;
@@ -102,29 +102,41 @@ function GetAttributes(sections) {
 
     attributes.forEach(singleTrait => {
         if (singleTrait.startsWith(game.i18n.localize("npcImporter.parser.Agility"))) {
-            attributesDict.agility = buildAttribute(singleTrait.replace(game.i18n.localize("npcImporter.parser.Agility")).trim());
+            attributesDict.agility = buildTrait(singleTrait.replace(game.i18n.localize("npcImporter.parser.Agility")).trim());
         } else if (singleTrait.startsWith(game.i18n.localize("npcImporter.parser.Smarts"))) {
             let animal = false;
             if (singleTrait.includes('(A)')) {
                 animal = true;
                 singleTrait = singleTrait.replace('(A)', '')
             }
-            attributesDict.smarts = buildAttribute(singleTrait.replace(game.i18n.localize("npcImporter.parser.Smarts")).trim());
+            attributesDict.smarts = buildTrait(singleTrait.replace(game.i18n.localize("npcImporter.parser.Smarts")).trim());
             if (animal) {
                 attributesDict.smarts.animal = animal;
             }
         } else if (singleTrait.startsWith(game.i18n.localize("npcImporter.parser.Spirit"))) {
-            attributesDict.spirit = buildAttribute(singleTrait.replace("npcImporter.parser.Spirit").trim());
+            attributesDict.spirit = buildTrait(singleTrait.replace("npcImporter.parser.Spirit").trim());
         } else if (singleTrait.startsWith(game.i18n.localize("npcImporter.parser.Strength"))) {
-            attributesDict.strength = buildAttribute(singleTrait.replace("npcImporter.parser.Strength").trim());
-        } else if (singleTrait.startsWith(game.i18n.localize("npcImporter.parser.vigor"))) {
-            attributesDict.vigor = buildAttribute(singleTrait.replace("npcImporter.parser.vigor").trim());
+            attributesDict.strength = buildTrait(singleTrait.replace("npcImporter.parser.Strength").trim());
+        } else if (singleTrait.startsWith(game.i18n.localize("npcImporter.parser.Vigor"))) {
+            attributesDict.vigor = buildTrait(singleTrait.replace("npcImporter.parser.Vigor").trim());
         }
     });
     return { Attributes: attributesDict };
 }
 
-function buildAttribute(data) {
+function GetSkills(sections) {
+    let trait = `${game.i18n.localize("npcImporter.parser.Skills")}:`;
+    let skills = SplitAndTrim(sections.find(x => x.includes(trait)).replace(trait, ''), ',');
+    let skillsDict = {};
+    skills.forEach(singleTrait => {        
+        let diceAndMode = singleTrait.match(global.diceRegex)[0].toString();
+        let traitName = singleTrait.replace(diceAndMode, '').trim().replace(' )', ')');
+        skillsDict[traitName.toLowerCase().replace(':', '')] = buildTrait(diceAndMode);
+    });
+    return { Skills: skillsDict };
+}
+
+function buildTrait(data) {
     let diceAndMode = [];
     diceAndMode = data.match(global.diceRegex)[0].toString();
     let traitDice = diceAndMode.includes("+") ? diceAndMode.split("+")[0] : diceAndMode.split("-")[0];
@@ -138,28 +150,6 @@ function buildAttribute(data) {
             modifier: parseInt(traitMod.trim())
         }
     }
-}
-
-
-function GetSkills(sections) {
-    let trait = `${game.i18n.localize("npcImporter.parser.Skills")}:`;
-    let skills = SplitAndTrim(sections.find(x => x.includes(trait)).replace(trait, ''), ',');
-    let skillsDict = {};
-    skills.forEach(singleTrait => {
-        let diceAndMode = singleTrait.match(global.diceRegex)[0].toString();
-
-        let traitName = singleTrait.replace(diceAndMode, '').trim().replace(' )', ')');
-        let traitDice = diceAndMode.includes("+") ? diceAndMode.split("+")[0] : diceAndMode.split("-")[0];
-        let traitMod = diceAndMode.includes("+")
-            ? `+${diceAndMode.split("+")[1]}`
-            : (diceAndMode.includes("-") ? `-${diceAndMode.split("-")[1]}` : "0");
-
-        skillsDict[traitName.toLowerCase()] = {
-            sides: parseInt(traitDice.trim().replace('d', '')),
-            modifier: parseInt(traitMod.trim())
-        }
-    });
-    return { Skills: skillsDict };
 }
 
 function GetBaseStats(sections) {
@@ -237,13 +227,22 @@ function GetBulletListStats(sections) {
 }
 
 function getAbilities(data) {
+    const modifiedSpecialAbs = getModuleSettings(global.settingModifiedSpecialAbs);
     let abilities = {}
-    let line = SplitAndTrim(data, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
+    let line = ''
+    if(!modifiedSpecialAbs){
+        line = SplitAndTrim(data, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
+    } else {
+        line = SplitAndTrim(data, new RegExp('@', 'gi'))
+    }
+
     line.shift();
     line.forEach(element => {
         let ability = element.split(':');
-        abilities[ability[0].trim()] = ability.length == 2 ? ability[1].replace(global.newLineRegex, " ").trim() : ability[0];
+        let abilityName = !modifiedSpecialAbs ? ability[0].trim() : `@${ability[0].trim()}`;
+        abilities[abilityName] = ability.length == 2 ? ability[1].replace(global.newLineRegex, " ").trim() : ability[0];
     });
+    
     return abilities;
 }
 
@@ -289,12 +288,12 @@ async function ParseGear(gearArray) {
         }
         // check if armor
         else if (global.armorModRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Armor"))) {
-            gearDict[splitGear[0]] = { armorBonus: GetMeleeDamage.GetArmorBonus(splitGear[1]) }
+            gearDict[splitGear[0]] = { armorBonus: parserHelper.GetArmorBonus(splitGear[1]) }
         }
         // check if shield
         else if (parryRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Shield"))) {
-            let parry = GetMeleeDamage.GetParryBonus(splitGear[1]);
-            let cover = GetMeleeDamage.GetCoverBonus(splitGear[1]);
+            let parry = parserHelper.GetParryBonus(splitGear[1]);
+            let cover = parserHelper.GetCoverBonus(splitGear[1]);
             gearDict[splitGear[0]] = { parry: parry, cover: cover }
         }
     });

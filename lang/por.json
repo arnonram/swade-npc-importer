@@ -38,13 +38,14 @@
     "npcImporter.parser.SpecialAbilities" : "Habilidades Especiais",
     "npcImporter.parser.SuperPowers" : "Superpoderes",
     "npcImporter.parser.Size" : "tamanho",
-    "npcImporter.parser.undead" : "morto-vivo",
+    "npcImporter.parser.Undead" : "morto-vivo",
     "npcImporter.parser.Construct" : "construto",
     "npcImporter.parser.Elemental" : "elemental",
     "npcImporter.parser.CombatReflexes" : "reflexos de combate",
     "npcImporter.parser.Str" : "For",
 
     "npcImporter.parser.Shield" : "escudo",
+    "npcImporter.parser.Armor" : "Armor",
     "npcImporter.parser.Speed" : "velocidade",
 
     "npcImporter.parser.Hesitant" : "Hesitante",
@@ -68,5 +69,7 @@
     "npcImporter.settings.BulletPointIcons" : "Ícones de tópicos",
     "npcImporter.settings.BulletPointIconsHint" : "Cole aqui os ícone(s) usados pelos dados da ficha, separado por uma barra '|'.\n(Atualmente há um problema conhecido ao adicionar *)",
     "npcImporter.settings.parseLanguage" : "Língua de análise",
-    "npcImporter.settings.parseLanguageHint" : "A língua usada para analisar os dados da ficha"
+    "npcImporter.settings.parseLanguageHint" : "A língua usada para analisar os dados da ficha",
+    "npcImporter.settings.ModifiedSpecialAbilities" : "Use modified Special Abilities ",
+    "npcImporter.settings.ModifiedSpecialAbilitiesHint" : "Edit the Special Abilities section to help NPC Importer be smarter by replacing the bullet-point with '@' as follows: @e => Edge; @h => hinrance; @w => weapom; @a => armor; @ => listed as Special Ability under Description section"
 }

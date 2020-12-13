@@ -131,7 +131,7 @@ function calculateIgnoredWounds(parsedData) {
     
     let bonusTotal = 0;
     for (const ability in parsedData.SpecialAbilities) {
-        if (ignoreWound.includes((ability.toLowerCase()))) {
+        if (ignoreWound.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
             bonusTotal += 1;
         }
     }
@@ -147,7 +147,7 @@ function findUnshakeBonus(parsedData) {
     
     let bonusTotal = 0;
     for (const ability in parsedData.SpecialAbilities) {
-        if (unshakeBonus.includes((ability.toLowerCase()))) {
+        if (unshakeBonus.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
             bonusTotal += 2;
         }
     }

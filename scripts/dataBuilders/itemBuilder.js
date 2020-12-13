@@ -35,55 +35,80 @@ export const SkillBuilder = async function (skillsDict) {
     }
 }
 
-export const EdgeBuilder = async function (edges) {
-    if (edges != undefined) {
-        var allEdges = [];
-        for (let i = 0; i < edges.length; i++) {
-            const element = edges[i];
-            var edgeFromCompendium = await getItemFromCompendium(element);
-            try {
-                if (edgeFromCompendium != undefined) {
-                    allEdges.push(edgeFromCompendium);
-                } else {
-                    let edge = {};
-                    edge.name = capitalize(element)
-                    edge.type = "edge";
-                    edge.data = {
-                        isArcaneBackground: element.includes(game.i18n.localize("npcImporter.parser.Arcane")) ? true : false
+export const EdgeBuilder = async function (edges, fromSpecialAbs = false) {
+    if (!fromSpecialAbs) {
+        if (edges != undefined) {
+            var allEdges = [];
+            for (let i = 0; i < edges.length; i++) {
+                const element = edges[i];
+                var edgeFromCompendium = await getItemFromCompendium(element);
+                try {
+                    if (edgeFromCompendium != undefined) {
+                        allEdges.push(edgeFromCompendium);
+                    } else {
+                        let edge = {};
+                        edge.name = capitalize(element)
+                        edge.type = "edge";
+                        edge.data = {
+                            isArcaneBackground: element.includes(game.i18n.localize("npcImporter.parser.Arcane")) ? true : false
+                        }
+                        edge.img = "systems/swade/assets/icons/edge.svg";
+                        allEdges.push(edge);
                     }
-                    edge.img = "systems/swade/assets/icons/edge.svg";
-                    allEdges.push(edge);
+                } catch (error) {
+                    log(`Could not build edge: ${error}`)
                 }
-            } catch (error) {
-                log(`Could not build edge: ${error}`)
             }
+            return allEdges;
         }
-        return allEdges;
+    } else {
+        let edge = {};
+        edge.name = capitalize(edges[0].trim())
+        edge.type = "edge";
+        edge.data = {
+            description: edges[1].trim()
+        }
+        edge.img = "systems/swade/assets/icons/edge.svg";
+
+        return edge;
     }
+
 }
 
-export const HindranceBuilder = async function (hindrances) {
-    if (hindrances != undefined) {
-        var allHindrances = [];
-        for (let i = 0; i < hindrances.length; i++) {
-            const element = hindrances[i];
-            var hindranceFromCompendium = await getItemFromCompendium(element);
-            try {
-                if (hindranceFromCompendium != undefined) {
-                    allHindrances.push(hindranceFromCompendium);
-                } else {
-                    let hindrance = {};
-                    hindrance.name = capitalize(element);
-                    hindrance.type = "hindrance";
-                    hindrance.img = "systems/swade/assets/icons/hindrance.svg";
-                    allHindrances.push(hindrance);
+export const HindranceBuilder = async function (hindrances, fromSpecialAbs = false) {
+    if (!fromSpecialAbs) {
+        if (hindrances != undefined) {
+            var allHindrances = [];
+            for (let i = 0; i < hindrances.length; i++) {
+                const element = hindrances[i];
+                var hindranceFromCompendium = await getItemFromCompendium(element);
+                try {
+                    if (hindranceFromCompendium != undefined) {
+                        allHindrances.push(hindranceFromCompendium);
+                    } else {
+                        let hindrance = {};
+                        hindrance.name = capitalize(element);
+                        hindrance.type = "hindrance";
+                        hindrance.img = "systems/swade/assets/icons/hindrance.svg";
+                        allHindrances.push(hindrance);
+                    }
+                } catch (error) {
+                    log(`Could not build hindrance: ${error}`)
                 }
-            } catch (error) {
-                log(`Could not build hindrance: ${error}`)
             }
-        }
 
-        return allHindrances;
+            return allHindrances;
+        }
+    } else {        
+        let hindrance = {};
+        hindrance.name = capitalize(hindrances[0].trim());
+        hindrance.type = "hindrance";
+        hindrance.data = {
+            description : hindrances[1].trim()
+        }
+        hindrance.img = "systems/swade/assets/icons/hindrance.svg";
+
+        return hindrance;
     }
 }
 
@@ -125,7 +150,7 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
                 description: description,
                 equippable: true,
                 equipped: true,
-                damage: weaponDamage.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`,"gi"), '@str'),
+                damage: weaponDamage.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`, "gi"), '@str'),
                 range: range,
                 rof: rof,
                 ap: ap
@@ -208,7 +233,7 @@ export const GearBuilder = async function (gearName, description) {
     }
 }
 
-export const additionalStatsBuilder = function(additionalStatName, additionalStatValue){
+export const additionalStatsBuilder = function (additionalStatName, additionalStatValue) {
     let gameAditionalStat = getSpecificAdditionalStat(additionalStatName);
     if (gameAditionalStat !== undefined) {
         gameAditionalStat['value'] = additionalStatValue;

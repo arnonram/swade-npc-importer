@@ -2,7 +2,8 @@ import { getActorAddtionalStatsArray } from "../utils/foundryActions.js";
 import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
-    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage
+    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage,
+    settingModifiedSpecialAbs
 } from "../global.js";
 import SelectCompendiums from "./selectCompendiums.js";
 
@@ -89,6 +90,14 @@ export class NpcImporterSettings {
             scope: "world",
             type: String,
             default: '•|'
+        });
+        game.settings.register(thisModule, settingModifiedSpecialAbs, {
+            name: game.i18n.localize("npcImporter.settings.ModifiedSpecialAbilities"),
+            hint: game.i18n.localize("npcImporter.settings.ModifiedSpecialAbilitiesHint"),
+            config: true,
+            scope: "world",
+            type: Boolean,
+            default: false
         });
         game.settings.register(thisModule, settingLastSaveFolder, {
             name: "Set the last save folder",
