@@ -10,9 +10,9 @@ import SelectCompendiums from "./selectCompendiums.js";
 export class NpcImporterSettings {
     static async register() {
         game.settings.registerMenu(thisModule, settingCompsToUse, {
-            name: game.i18n.localize("npcImporter.settings.SelectItemCompendiums"),
-            label: game.i18n.localize("npcImporter.settings.SelectItemCompendiums"),
-            hint: game.i18n.localize("npcImporter.settings.SelectItemCompendiumsHints"),
+            name: game.i18n.localize("npcImporter.settings.CompendiumsSelector"),
+            label: game.i18n.localize("npcImporter.settings.CompendiumsSelector"),
+            hint: game.i18n.localize("npcImporter.settings.CompendiumsSelectorHint"),
             icon: "fas fa-bars",
             type: SelectCompendiums,
             restricted: false

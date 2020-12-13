@@ -8,16 +8,19 @@ Cheers,<br/>
 
 ---
 <br/>
-A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com/).
+
+A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
 
 ## How to use it...
-0. Go to [Settings -> Select Item Compendiums](#some-configurations), and mark any Compendium you wish NPC Importer to use. No selecting anyting will cycle through all compendiums and use the first relevant entry.
+0. Go to [Settings -> Select Item Compendiums](#some-configurations) and mark any Compendium you wish NPC Importer to use. Not selecting anyting will cycle through all compendiums and use the first relevant entry.
+
+   Look around a bit, maybe you'll find other settings that might interest you.
+
 1. Copy the desired statblock (ctr+c, into the clipboard)
 2. Click on the NPC Importer button at the buttom of the **Actors Directory**
 
     ![NPC Importer Button](./readme_images/ActorImporterButton.png)
-3. Choose desired options
-4. Click Import!
+3. Choose desired options & Click Import!
 
     ![NPC Importer Dialogue](./readme_images/ActorImportDialogue.png)
 5. In case an Actor with the same name already exists, then you have some options
@@ -28,7 +31,7 @@ A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry 
 On first use (or, you know, whenever), it is recommended to look at the default settings
     ![NPC Importer Settings](./readme_images/NpcImporterSettings.png)
 
-You **should** select the Package and/or Item Compendiums you wish NPC Importer to use while importing
+It is highly recommended to choose the Package and/or Item Compendiums you wish NPC Importer to use while importing
     ![Compendiums Selector](./readme_images/NpcImporterSettingsCompendiumSelector.png)
 
 ## How it does it and what's supported
@@ -38,6 +41,14 @@ You **should** select the Package and/or Item Compendiums you wish NPC Importer 
     - Traits/Item means: skills, Edges, Hindrances, gear, Powers, etc..
 2. Every trait/item is searched for throughout all Item Compendiums in the selected Package ([see Settings](#some-configurations))
 3. If the triat/item is found in a Compendium then it is copied and updated to the Actor; If not found, then a new one will be created for the Actor only (no new compendium entry is created)
+
+### Supported Languages
+Support is for both the UI and parsing of statblock
+- English
+- Español (thanks @Montver)
+- Português (thanks @lipefl)
+
+(If you wish to add support for more languages, please don't hesitate to create a pull request or open an issue with the file attached)
 
 ### Out-of-the-box supported Attributes & Traits
 
@@ -63,5 +74,4 @@ You **should** select the Package and/or Item Compendiums you wish NPC Importer 
     - Size influences the tokens' size (bigger than medium) and scale (for smaller than medium)
   - Ignore wounds & Unshake bonuses from: construct, undead, elemental, combat reflexes
   - List them all in the actors' description
-    <!-- , adding in-line roll macros where found -->
 

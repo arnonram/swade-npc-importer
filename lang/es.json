@@ -59,7 +59,7 @@
     "npcImporter.settings.NPC" : "PNJ",
     "npcImporter.settings.Character" : "Personaje",
     "npcImporter.settings.CompendiumsSelector" : "Selector de compendios",
-    "npcImporter.settings.SelectItemCompendiums" : "Selecciona el compendio Item",
+    "npcImporter.settings.CompendiumsSelector" : "Selecciona el compendio Item",
     "npcImporter.settings.CompendiumsSelectorHint" : "Permite seleccionar compendios individuales para que el importador los busque",
     "npcImporter.settings.DefaultDisposition" : "Establecer la disposición por defecto",
     "npcImporter.settings.DefaultActorType" : "Establecer el Tipo de Actor por defecto",
@@ -71,5 +71,5 @@
     "npcImporter.settings.parseLanguage" : "Analizando lenguaje",
     "npcImporter.settings.parseLanguageHint" : "El lenguaje utilizado para analizar el conjunto de estadísticas",
     "npcImporter.settings.ModifiedSpecialAbilities" : "Use modified Special Abilities",
-    "npcImporter.settings.ModifiedSpecialAbilitiesHint" : "Edit the Special Abilities section to help NPC Importer be smarter, by replacing each bullet-point with '@' as follows: @e => Edge; @h => hinrance; @w => weapom; @a => armor; @ => listed as Special Ability under Description section. (BUllet point icons setting is ignored)"
+    "npcImporter.settings.ModifiedSpecialAbilitiesHint" : "Edit the Special Abilities section to help NPC Importer be smarter, by replacing each bullet-point with '@' as follows: @e => Edge; @h => hinrance; @w => weapom; @a => armor; @ => listed as Special Ability under Description section. (Bullet point icons setting is ignored)"
 }
