@@ -41,7 +41,7 @@ It is highly recommended to choose the Package and/or Item Compendiums you wish 
 1. The statblock is prased by searching for all supported attributes/traits/items/etc..
     - Any _Additional Stats (Actors)_ which were added through the SWADE System Settings are: searched for, added, and enabled
     - Traits/Item means: skills, Edges, Hindrances, gear, Powers, etc..
-2. Every trait/item is searched for throughout all Item Compendiums in the selected Package ([see Settings](#some-configurations))
+2. Every trait/item is searched for throughout all Item Compendiums in the selected Package (See [NPC Importer Settings](#some-configurations))
 3. If the triat/item is found in a Compendium then it is copied and updated to the Actor; If not found, then a new one will be created for the Actor only (no new compendium entry is created)
 
 ### Supported Languages
@@ -74,6 +74,8 @@ Support is for both the UI and parsing of statblock
   - Searching for "Armor" and/or any damage attack (lines with Str., Str+d*, or dice formulas)
   - Size
     - Size influences the tokens' size (bigger than medium) and scale (for smaller than medium)
-  - Ignore wounds & Unshake bonuses from: construct, undead, elemental, combat reflexes
+    - Add additional wounds as per the Size Table (SWADE Core)
+  - Ignore wounds & Unshake bonuses for: construct, undead, elemental, combat reflexes
   - List them all in the actors' description
+  - See [NPC Importer Settings](#some-configurations) for further manipulation of the statblock
 
