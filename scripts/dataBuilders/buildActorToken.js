@@ -33,13 +33,13 @@ function CalculateScale(size) {
     if (size >= 0) {
         return 1;
     }
-    if (-1) {
+    if (size == -1) {
         return 0.85;
     }
-    if (-2 || -3) {
+    if (size == -2 || size == -3) {
         return 0.75;
     }
-    if (-4) {
+    if (size == -4) {
         return 0.5;
     }
 }

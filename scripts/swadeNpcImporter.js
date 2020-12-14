@@ -1,7 +1,11 @@
 import { BuildActor } from "./actorBuilder.js";
-import { log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard, settingLastSaveFolder, settingActiveCompendiums } from "./global.js";
+import { 
+    log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard,
+    settingLastSaveFolder, settingActiveCompendiums } from "./global.js";
 import { NpcImporterSettings } from "./settings/npcImporterSettings.js";
-import { getModuleSettings, getAllActorFolders, updateModuleSetting, getAllActiveCompendiums } from "./utils/foundryActions.js";
+import { 
+    getModuleSettings, getAllActorFolders, updateModuleSetting,
+    getAllActiveCompendiums } from "./utils/foundryActions.js";
 
 // Hooks.once("init", async () => {});
 // Hooks.once("setup", () => {});

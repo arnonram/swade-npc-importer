@@ -20,6 +20,11 @@
     "npcImporter.parser.EmptyClipboard" : "Clipboard empty",
     "npcImporter.parser.NotValidStablock" : "Failed to parse. Not a valid statblock.",
     "npcImporter.parser.Attributes" : "Attributes",
+    "npcImporter.parser.Agility" : "Agility",
+    "npcImporter.parser.Smarts" : "Smarts",
+    "npcImporter.parser.Spirit" : "Spirit",
+    "npcImporter.parser.Strength" : "Strength",
+    "npcImporter.parser.Vigor" : "Vigor",
     "npcImporter.parser.Skills" : "Skills",
     "npcImporter.parser.Hindrances" : "Hindrances",
     "npcImporter.parser.Edges" : "Edges",
@@ -33,12 +38,14 @@
     "npcImporter.parser.SpecialAbilities" : "Special Abilities",
     "npcImporter.parser.SuperPowers" : "Super Powers",
     "npcImporter.parser.Size" : "size",
-    "npcImporter.parser.undead" : "undead",
+    "npcImporter.parser.Undead" : "undead",
     "npcImporter.parser.Construct" : "construct",
     "npcImporter.parser.Elemental" : "elemental",
     "npcImporter.parser.CombatReflexes" : "combat reflexes",
+    "npcImporter.parser.Str" : "Str",
     
     "npcImporter.parser.Shield" : "shield",
+    "npcImporter.parser.Armor" : "Armor",
     "npcImporter.parser.Speed" : "speed",
 
     "npcImporter.parser.Hesitant" : "Hesitant",
@@ -46,8 +53,13 @@
     "npcImporter.parser.LevelHeadedImp" : "Level Headed (Imp)",
     "npcImporter.parser.Arcane" : "Arcane",
 
+    "npcImporter.settings.Friendly" : "Friendly",
+    "npcImporter.settings.Neutral" : "Neutral",
+    "npcImporter.settings.Hostile" : "Hostile",
+    "npcImporter.settings.NPC" : "NPC",
+    "npcImporter.settings.Character" : "Character",
     "npcImporter.settings.CompendiumsSelector" : "Compendiums Selector",
-    "npcImporter.settings.SelectItemCompendiums" : "Select Item Compendiums",
+    "npcImporter.settings.CompendiumsSelector" : "Select Item Compendiums",
     "npcImporter.settings.CompendiumsSelectorHint" : "Allows for selecting individual compendiums for the Importer to search through",
     "npcImporter.settings.DefaultDisposition" : "Set the default disposition",
     "npcImporter.settings.DefaultActorType" : "Set the default Actor Type",
@@ -57,5 +69,7 @@
     "npcImporter.settings.BulletPointIcons" : "Bullet point icons",
     "npcImporter.settings.BulletPointIconsHint" : "Paste here the bullet-point icon(s) used by the statblock, seperated by a pipe '|'.\n(There is currently a know issue with adding *)",
     "npcImporter.settings.parseLanguage" : "Parsing language",
-    "npcImporter.settings.parseLanguageHint" : "The language used to parse the statblock"
+    "npcImporter.settings.parseLanguageHint" : "The language used to parse the statblock",
+    "npcImporter.settings.ModifiedSpecialAbilities" : "Use modified Special Abilities",
+    "npcImporter.settings.ModifiedSpecialAbilitiesHint" : "Edit the Special Abilities section to help NPC Importer be smarter, by replacing each bullet-point with '@' as follows: @e => Edge; @h => hinrance; @w => weapom; @a => armor; @ => listed as Special Ability under Description section. (Bullet point icons setting is ignored)"
 }

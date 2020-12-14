@@ -1,4 +1,4 @@
-import { getActorAddtionalStats } from "../utils/foundryActions.js";
+import { getActorAddtionalStats, getActorAddtionalStatsArray } from "../utils/foundryActions.js";
 import * as global from "../global.js";
 import { SpecialAbilitiesForDescription } from "./buildActorItemsSpecialAbilities.js"
 import { additionalStatsBuilder } from "./itemBuilder.js";
@@ -9,7 +9,7 @@ export const BuildActorData = async function (parsedData, isWildCard) {
     data.attributes = generateAttributes(parsedData),
         data.stats = {
             speed: {
-                runningDie: findRunningDie(parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]),
+                runningDie: findRunningDie(parsedData.SpecialAbilities),
                 value: parsedData.Pace
             },
             toughness: {
@@ -42,10 +42,6 @@ export const BuildActorData = async function (parsedData, isWildCard) {
 function generateAttributes(parsedData) {
     let attributesData = parsedData.Attributes;
 
-    if (parsedData.Attributes.animalSmarts == true) {
-        attributesData.smarts.animal = true;        
-    }
-
     let unShakeBonus = findUnshakeBonus(parsedData);
     if (unShakeBonus != undefined) {
         attributesData.spirit.unShakeBonus = unShakeBonus;
@@ -56,16 +52,18 @@ function generateAttributes(parsedData) {
 }
 
 function buildBioAndSpecialAbilities(parsedData) {
-    if (parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")] != undefined) {
-        let specialAbsHtml = SpecialAbilitiesForDescription(parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")])
-        return parsedData.Biography.value.concat(specialAbsHtml);
+    let bio = parsedData.Biography?.value ?? '';
+
+    if (parsedData.SpecialAbilities != undefined) {
+        let specialAbsHtml = SpecialAbilitiesForDescription(parsedData.SpecialAbilities)
+        return bio.concat(specialAbsHtml);
     }
-    return parsedData.Biography.value;    
+    return bio;    
 }
 
 async function buildAdditionalStats(parsedData) {
     let additionalStats = {};
-    let actorSystemStats = getActorAddtionalStats();
+    let actorSystemStats = getActorAddtionalStatsArray();
     actorSystemStats.forEach(element => {
         let statName = element.replace(':', '');
         let statValue = parsedData[statName];
@@ -132,8 +130,8 @@ function calculateIgnoredWounds(parsedData) {
     ];
     
     let bonusTotal = 0;
-    for (const ability in parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]) {
-        if (ignoreWound.includes((ability.toLowerCase()))) {
+    for (const ability in parsedData.SpecialAbilities) {
+        if (ignoreWound.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
             bonusTotal += 1;
         }
     }
@@ -148,8 +146,8 @@ function findUnshakeBonus(parsedData) {
     ];
     
     let bonusTotal = 0;
-    for (const ability in parsedData[game.i18n.localize("npcImporter.parser.SpecialAbilities")]) {
-        if (unshakeBonus.includes((ability.toLowerCase()))) {
+    for (const ability in parsedData.SpecialAbilities) {
+        if (unshakeBonus.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
             bonusTotal += 2;
         }
     }

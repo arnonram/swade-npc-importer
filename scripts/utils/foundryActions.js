@@ -1,4 +1,4 @@
-import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums } from "../global.js";
+import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums, settingParaeLanguage } from "../global.js";
 
 export const getItemFromCompendium = async function (itemName) {
     let activeCompendiums = getModuleSettings(settingActiveCompendiums);
@@ -72,13 +72,20 @@ export const getSpecificAdditionalStat = function (additionalStatName) {
     }
 }
 
-export const getActorAddtionalStats = function () {
-    let actorAdditionalStats = game.settings.get("swade", "settingFields").actor;
+export const getActorAddtionalStatsArray = function () {
+    let actorAdditionalStats = getActorAddtionalStats();
     let stats = [];
     for (const key in actorAdditionalStats) {
-        stats.push(`${key}:`);
+        if (actorAdditionalStats.hasOwnProperty(key)) {
+            const element = actorAdditionalStats[key];
+            stats.push(`${element.label}:`);
+        }
     }
     return stats;
+}
+
+export const getActorAddtionalStats = function () {
+    return game.settings.get("swade", "settingFields").actor;
 }
 
 export const getModuleSettings = function (settingKey) {
@@ -125,4 +132,9 @@ export const getFolderId = function (folderName) {
 
 export const updateModuleSetting = async function (settingName, newValue) {
     await game.settings.set(thisModule, settingName, newValue);
+}
+
+export const setParsingLanguage = async function (lang) {    
+    log(`Setting parsing language to: ${lang}`)
+    await game.i18n.setLanguage(lang);
 }
