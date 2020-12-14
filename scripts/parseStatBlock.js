@@ -286,7 +286,7 @@ async function ParseGear(gearArray) {
         }
         // parse weapon
         else if (
-            splitGear[1].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Str"))
+            splitGear[1].includes(game.i18n.localize("npcImporter.parser.Str"))
             || splitGear[1].toLowerCase().includes('damage')
             || splitGear[1].toLowerCase().includes('range')) {
             gearDict[splitGear[0]] = weaponParser(splitGear[1].split(',').filter(n => n).map(function (x) { return x.trim() }));
