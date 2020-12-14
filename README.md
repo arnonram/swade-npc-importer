@@ -12,9 +12,9 @@ Cheers,<br/>
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
 
 ## How to use it...
-0. Go to [Settings -> Select Item Compendiums](#some-configurations) and mark any Compendium you wish NPC Importer to use. Not selecting anyting will cycle through all compendiums and use the first relevant entry.
-
-   Look around a bit, maybe you'll find other settings that might interest you.
+0. Go to [Settings](#some-configurations) and look  around:
+   - Under ***Select Item Compendiums*** mark any Compendium you wish NPC Importer to use (not selecting anyting will cycle through all compendiums and use the first relevant entry)
+   - Set up any other default values you might want
 
 1. Copy the desired statblock (ctr+c, into the clipboard)
 2. Click on the NPC Importer button at the buttom of the **Actors Directory**
@@ -29,10 +29,12 @@ A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry 
 ## Some configurations
 
 On first use (or, you know, whenever), it is recommended to look at the default settings
-    ![NPC Importer Settings](./readme_images/NpcImporterSettings.png)
+
+![NPC Importer Settings](./readme_images/NpcImporterSettings.png)
 
 It is highly recommended to choose the Package and/or Item Compendiums you wish NPC Importer to use while importing
-    ![Compendiums Selector](./readme_images/NpcImporterSettingsCompendiumSelector.png)
+
+![Compendiums Selector](./readme_images/NpcImporterSettingsCompendiumSelector.png)
 
 ## How it does it and what's supported
 
