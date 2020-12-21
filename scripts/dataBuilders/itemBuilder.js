@@ -39,7 +39,11 @@ export const EdgeBuilder = async function (edges) {
     if (edges != undefined) {
         var allEdges = [];
         for (let i = 0; i < edges.length; i++) {
-            const element = edges[i];
+            let element = edges[i];
+            if (element.includes(game.i18n.localize("npcImporter.parser.Imp"))){
+                element = element.replace(game.i18n.localize("npcImporter.parser.Imp"), '');
+                element = `${game.i18n.localize("npcImporter.parser.Improved")} ${element}`.trim();
+            }            
             var edgeFromCompendium = await getItemFromCompendium(element);
             try {
                 if (edgeFromCompendium != undefined) {

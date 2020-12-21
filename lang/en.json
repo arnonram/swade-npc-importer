@@ -42,7 +42,9 @@
     "npcImporter.parser.Construct" : "construct",
     "npcImporter.parser.Elemental" : "elemental",
     "npcImporter.parser.Str" : "Str",
-    
+    "npcImporter.parser.Imp" : "(Imp)",
+    "npcImporter.parser.Improved" : "Improved",
+
     "npcImporter.parser.Shield" : "Shield",
     "npcImporter.parser.Armor" : "Armor",
     "npcImporter.parser.Speed" : "Speed",
@@ -51,7 +53,7 @@
     "npcImporter.parser.CombatReflexes" : "combat reflexes",
     "npcImporter.parser.Hesitant" : "Hesitant",
     "npcImporter.parser.LevelHeaded" : "Level Headed",
-    "npcImporter.parser.LevelHeadedImp" : "Level Headed (Imp)",
+    "npcImporter.parser.LevelHeadedImp" : "Improved Level Headed",
     "npcImporter.parser.Resilient" : "Resilient",
     "npcImporter.parser.VeryResilient" : "Very Resilient",
     "npcImporter.parser.Weakness" : "Weakness",
