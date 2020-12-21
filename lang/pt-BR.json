@@ -37,14 +37,14 @@
     "npcImporter.parser.Gear" : "Equipamento",
     "npcImporter.parser.SpecialAbilities" : "Habilidades Especiais",
     "npcImporter.parser.SuperPowers" : "Superpoderes",
-    "npcImporter.parser.Size" : "tamanho",
+    "npcImporter.parser.Size" : "Tamanho",
     "npcImporter.parser.Undead" : "morto-vivo",
     "npcImporter.parser.Construct" : "construto",
     "npcImporter.parser.Elemental" : "elemental",
     "npcImporter.parser.CombatReflexes" : "reflexos de combate",
     "npcImporter.parser.Str" : "For",
 
-    "npcImporter.parser.Shield" : "escudo",
+    "npcImporter.parser.Shield" : "Escudo",
     "npcImporter.parser.Armor" : "Armor",
     "npcImporter.parser.Speed" : "velocidade",
 

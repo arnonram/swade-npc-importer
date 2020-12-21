@@ -1,4 +1,4 @@
-import { getActorAddtionalStats, getActorAddtionalStatsArray } from "../utils/foundryActions.js";
+import { getActorAddtionalStats, getActorAddtionalStatsArray, getModuleSettings } from "../utils/foundryActions.js";
 import * as global from "../global.js";
 import { SpecialAbilitiesForDescription } from "./buildActorItemsSpecialAbilities.js"
 import { additionalStatsBuilder } from "./itemBuilder.js";
@@ -13,7 +13,8 @@ export const BuildActorData = async function (parsedData, isWildCard) {
                 value: parsedData.Pace
             },
             toughness: {
-                value: parsedData.Toughness
+                value: parsedData.Toughness,
+                modifier: toughnessBonus(parsedData)
             },
             parry: { value: parsedData.Parry },
             size: parsedData.Size
@@ -22,14 +23,14 @@ export const BuildActorData = async function (parsedData, isWildCard) {
         biography: {
             value: buildBioAndSpecialAbilities(parsedData)
         },
-        autoCalcToughness: true
+        autoCalcToughness: false
     }
     data.powerPoints = {
         value: parsedData[game.i18n.localize("npcImporter.parser.PowerPoints")],
         max: parsedData[game.i18n.localize("npcImporter.parser.PowerPoints")]
     }
     data.wounds = {
-        max: calculateWoundMod(parsedData.Size, isWildCard),
+        max: calculateWoundMod(parsedData.Size, isWildCard, parsedData.SpecialAbilities),
         ignored: calculateIgnoredWounds(parsedData)
     }
     data.initiative = initiativeMod(parsedData.Edges);
@@ -74,18 +75,28 @@ async function buildAdditionalStats(parsedData) {
     return additionalStats;
 }
 
-function calculateWoundMod(size, isWildCard) {
-    var baseWounds = isWildCard ? 3 : 1;
-    if (size >= 4 && size <= 7) {
-        baseWounds += 1;
+function calculateWoundMod(size, isWildCard, specialAbs) {
+    var baseWounds = isWildCard ? 3 : 0;
+    if (getModuleSettings(global.settingCalculateAdditionalWounds)){        
+        if (size >= 4 && size <= 7) {
+            baseWounds += 1;
+        }
+        if (size >= 8 && size <= 11) {
+            baseWounds += 2;
+        }
+        if (size >= 12) {
+            baseWounds += 3;
+        }
+    
+        for (const ability in specialAbs) {
+            if (`${game.i18n.localize("npcImporter.parser.Resilient")}`.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+                bonusTotal += 1;
+            } else if (`${game.i18n.localize("npcImporter.parser.VeryResilient")}`.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+                bonusTotal += 2;
+            }
+        }
+        return baseWounds;
     }
-    if (size >= 8 && size <= 11) {
-        baseWounds += 2;
-    }
-    if (size >= 12) {
-        baseWounds += 3;
-    }
-
     return baseWounds;
 }
 
@@ -116,24 +127,26 @@ function initiativeMod(edges) {
 
 function findRunningDie(abilities) {
     for (const ability in abilities) {
-        if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Speed"))) {
+        if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Speed").toLowerCase())) {
             return parseInt(abilities[ability].match(global.diceRegex)[0].replace('d', ''))
         }
     }
 }
 
 function calculateIgnoredWounds(parsedData) {
-    const ignoreWound = [
-        game.i18n.localize("npcImporter.parser.Undead"),
-        game.i18n.localize("npcImporter.parser.Construct"),
-        game.i18n.localize("npcImporter.parser.Elemental")
-    ];
-    
     let bonusTotal = 0;
-    for (const ability in parsedData.SpecialAbilities) {
-        if (ignoreWound.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
-            bonusTotal += 1;
-        }
+    if (getModuleSettings(global.settingCalculateIgnoredWounds)){
+        const ignoreWound = [
+            game.i18n.localize("npcImporter.parser.Undead"),
+            game.i18n.localize("npcImporter.parser.Construct"),
+            game.i18n.localize("npcImporter.parser.Elemental")
+        ];
+
+        for (const ability in parsedData.SpecialAbilities) {
+            if (ignoreWound.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+                bonusTotal += 1;
+            }
+        }        
     }
     return bonusTotal;
 }
@@ -160,6 +173,31 @@ function findUnshakeBonus(parsedData) {
         });
     }
 
+    return bonusTotal;
+}
+
+function toughnessBonus(parsedData){
+    const toughnessBonus = [
+        game.i18n.localize("npcImporter.parser.Undead"),
+        game.i18n.localize("npcImporter.parser.Brawny"),
+        game.i18n.localize("npcImporter.parser.Brawler"),
+        game.i18n.localize("npcImporter.parser.Bruiser"),
+
+    ]; 
+    let bonusTotal = 0;
+    for (const ability in parsedData.SpecialAbilities) {
+        if (toughnessBonus.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+            bonusTotal += 2;
+        }
+    }
+
+    if (parsedData.Edges != undefined) {
+        parsedData.Edges.forEach(edge => {
+            if (toughnessBonus.includes((edge.toLowerCase()))) {
+                bonusTotal += 1;
+            }
+        });
+    }
 
     return bonusTotal;
 }

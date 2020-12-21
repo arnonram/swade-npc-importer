@@ -84,15 +84,26 @@ function GetSectionsIndex(inData) {
 function GetNameAndDescription(nameAndDescription) {
     let nameDesc = {}
     let lines = nameAndDescription.split(global.newLineRegex);
-    nameDesc.Name = capitalizeEveryWord(lines[0]);
+    nameDesc.Name = capitalizeEveryWord(lines[0].trim());
     lines.shift();
-    let bio = lines.join(" ").replace(global.newLineRegex, " ").trim();
-    if (lines.length > 0) {
+    let bio = descriptionByParagraph(lines);
+    if (bio.length > 0) {
         nameDesc.Biography = {
             value: bio
         }
     }
     return nameDesc;
+}
+
+function descriptionByParagraph(descArray){
+    let bio = '';
+    descArray.forEach(line=>{
+        if (line.endsWith('.')){
+            line = line + '</br>'
+        }
+        bio += line;
+    })
+    return bio;
 }
 
 function GetAttributes(sections) {
@@ -296,7 +307,7 @@ async function ParseGear(gearArray) {
             gearDict[splitGear[0]] = { armorBonus: parserHelper.GetArmorBonus(splitGear[1]) }
         }
         // check if shield
-        else if (parryRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Shield"))) {
+        else if (parryRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Shield").toLowerCase())) {
             let parry = parserHelper.GetParryBonus(splitGear[1]);
             let cover = parserHelper.GetCoverBonus(splitGear[1]);
             gearDict[splitGear[0]] = { parry: parry, cover: cover }
@@ -351,7 +362,7 @@ function SplitAndTrim(stringToSplit, separator) {
 
 function GetSize(abilities) {
     for (const ability in abilities) {
-        if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Size"))) {
+        if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Size").toLowerCase())) {
             return parseInt(ability.split(" ")[1].replace('−', '-'));
         }
     }

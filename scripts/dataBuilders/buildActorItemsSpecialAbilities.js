@@ -1,20 +1,20 @@
-import { ArmorBuilder, EdgeBuilder, HindranceBuilder, WeaponBuilder } from "./itemBuilder.js";
+import { ArmorBuilder, ItemBuilderFromSpecAbs, WeaponBuilder } from "./itemBuilder.js";
 import { diceRegex, settingModifiedSpecialAbs } from "../global.js";
 import { GetArmorBonus } from "../utils/parserBuilderHelpers.js";
 import { getModuleSettings } from "../utils/foundryActions.js";
 
 export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     const meleeDamageRegex = 
-        new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}\\s?[\\+\\-]\\s?(\\d+)?d?(\\d+)?\\s?[\\+\\-]?\\s?(\\d+)?d?(\\d+)`, "gi")
+        new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}(\s?[\+\-]?\s?(\d+)?d?(\d+)?){0,}`, "gi")
         let specialAbitlitiesItems = [];
     if (!getModuleSettings(settingModifiedSpecialAbs)){        
         for (const elem in specialAbilitiesData) {
-            if (elem.toLocaleLowerCase().startsWith(game.i18n.localize("npcImporter.parser.Armor"))) {
+            if (elem.toLocaleLowerCase().startsWith(game.i18n.localize("npcImporter.parser.Armor").toLocaleLowerCase())) {
                 let armorBonus = GetArmorBonus(elem);
                 specialAbitlitiesItems.push(await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem]))
             }
             if ((meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem]))
-                && elem.toLocaleLowerCase() != game.i18n.localize("npcImporter.parser.Speed")) {
+                && elem.toLocaleLowerCase() != game.i18n.localize("npcImporter.parser.Speed").toLocaleLowerCase()) {
                 let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
                 specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage[0]));
             }
@@ -31,10 +31,10 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
                 specialAbitlitiesItems.push(await ArmorBuilder(name, armorBonus, specialAbilitiesData[elem]))
             } else if (elem.startsWith('@e')){
                 let data = [elem.replace('@e', '').trim(), specialAbilitiesData[elem]]
-                specialAbitlitiesItems.push(await EdgeBuilder(data, true));
+                specialAbitlitiesItems.push(await ItemBuilderFromSpecAbs(data[0], data[1], "edge"));
             } else if (elem.startsWith('@h')){
                 let data = [elem.replace('@h', '').trim(), specialAbilitiesData[elem]]
-                specialAbitlitiesItems.push(await HindranceBuilder(data, true));
+                specialAbitlitiesItems.push(await ItemBuilderFromSpecAbs(data[0], data[1], "hindrance"));
             } 
         }
     }

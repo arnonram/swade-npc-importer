@@ -7,12 +7,16 @@ export const getItemFromCompendium = async function (itemName) {
         packs.push(game.packs.get(x));
     });
 
+    packs  = packs.filter(function (el) {
+        return el != null;
+      });
+
     for (let i = 0; i < packs.length; i++) {
         try {
             const packIndex = await packs[i].getIndex();
-            let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase())["_id"];
+            let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase());
             if (resultId != undefined) {
-                return packs[i].getEntry(resultId);
+                return packs[i].getEntry(resultId["_id"]);
             }
         } catch (error) {
             log(`Could not find ${itemName}: ${error}`)
