@@ -10,5 +10,6 @@ export const capitalizeEveryWord = function (string) {
     string.split(' ').forEach(x => {
         capitalizedString.push(capitalize(x.toLowerCase()));
     });
-    return capitalizedString.join(' ');
+
+    return capitalizedString.join(' ').replace(/\-[a-z]| [a-z]/g, match => match.toUpperCase());
 };

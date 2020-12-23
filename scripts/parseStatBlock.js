@@ -99,7 +99,7 @@ function descriptionByParagraph(descArray){
     let bio = '';
     descArray.forEach(line=>{
         if (line.endsWith('.')){
-            line = line + '</br>'
+            line = line + '<br/>'
         }
         bio += line;
     })
@@ -291,8 +291,13 @@ async function ParseGear(gearArray) {
 
         // normal gear
         if (splitGear.length == 1) {
-            if (splitGear != '.') {
-                gearDict[gear] = null;
+            let normalGear = splitGear[0];
+            if (normalGear != '.') {
+                if (normalGear.slice(-1) == ',' || normalGear.slice(-1) == '.' ){
+                    normalGear = normalGear.replace(',','').replace('.', '');
+                }
+
+                gearDict[normalGear.trim()] = null;
             }
         }
         // parse weapon
@@ -300,17 +305,17 @@ async function ParseGear(gearArray) {
             splitGear[1].includes(game.i18n.localize("npcImporter.parser.Str"))
             || splitGear[1].toLowerCase().includes('damage')
             || splitGear[1].toLowerCase().includes('range')) {
-            gearDict[splitGear[0]] = weaponParser(splitGear[1].split(',').filter(n => n).map(function (x) { return x.trim() }));
+            gearDict[splitGear[0].trim()] = weaponParser(splitGear[1].split(',').filter(n => n).map(function (x) { return x.trim() }));
         }
         // check if armor
         else if (global.armorModRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Armor"))) {
-            gearDict[splitGear[0]] = { armorBonus: parserHelper.GetArmorBonus(splitGear[1]) }
+            gearDict[splitGear[0].trim()] = { armorBonus: parserHelper.GetArmorBonus(splitGear[1]) }
         }
         // check if shield
         else if (parryRegex.test(splitGear[1]) || splitGear[0].toLowerCase().includes(game.i18n.localize("npcImporter.parser.Shield").toLowerCase())) {
             let parry = parserHelper.GetParryBonus(splitGear[1]);
             let cover = parserHelper.GetCoverBonus(splitGear[1]);
-            gearDict[splitGear[0]] = { parry: parry, cover: cover }
+            gearDict[splitGear[0].trim()] = { parry: parry, cover: cover }
         }
     });
     return gearDict;
@@ -363,7 +368,7 @@ function SplitAndTrim(stringToSplit, separator) {
 function GetSize(abilities) {
     for (const ability in abilities) {
         if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Size").toLowerCase())) {
-            return parseInt(ability.split(" ")[1].replace('−', '-'));
+            return parseInt(ability.replace(new RegExp('@([aehw])?'), '').trim().split(" ")[1].replace('−', '-'));
         }
     }
     return 0;

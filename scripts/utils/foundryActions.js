@@ -1,6 +1,6 @@
 import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums, settingParaeLanguage } from "../global.js";
 
-export const getItemFromCompendium = async function (itemName) {
+export const getItemFromCompendium = async function (itemName, expectedType) {
     let activeCompendiums = getModuleSettings(settingActiveCompendiums);
     let packs = [];
     activeCompendiums.split(',').forEach(x => {
@@ -14,9 +14,17 @@ export const getItemFromCompendium = async function (itemName) {
     for (let i = 0; i < packs.length; i++) {
         try {
             const packIndex = await packs[i].getIndex();
-            let resultId = await packIndex.find(it => it.name.toLowerCase() == itemName.toLowerCase());
+            let resultId = '';
+            if (expectedType == "weapon"){
+                resultId = await packIndex.find(it => it.name.toLowerCase().includes(itemName.toLowerCase()));    
+            } else {
+                resultId = await packIndex.find(it => it.name.toLowerCase() === itemName.toLowerCase());
+            }            
             if (resultId != undefined) {
-                return packs[i].getEntry(resultId["_id"]);
+                let item = await packs[i].getEntry(resultId["_id"]);
+                if (item.type == expectedType || item.type == ''){
+                    return item;
+                }
             }
         } catch (error) {
             log(`Could not find ${itemName}: ${error}`)

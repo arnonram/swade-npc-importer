@@ -3,7 +3,7 @@ import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
     settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage,
-    settingModifiedSpecialAbs, settingToken, settingCalculateIgnoredWounds, settingCalculateAdditionalWounds
+    settingModifiedSpecialAbs, settingAutoCalcToughness, settingCalculateIgnoredWounds, settingCalculateAdditionalWounds
 } from "../global.js";
 import SelectCompendiums from "./selectCompendiums.js";
 import TokenSettings from "./tokenSettings.js"
@@ -140,6 +140,13 @@ export class NpcImporterSettings {
             scope: "world",
             type: Boolean,
             default: true
+        });
+        game.settings.register(thisModule, settingAutoCalcToughness, {
+            name: game.i18n.localize("npcImporter.settings.AutoCalcToughness"),
+            config: true,
+            scope: "world",
+            type: Boolean,
+            default: false
         });
         game.settings.register(thisModule, settingLastSaveFolder, {
             name: "Set the last save folder",
