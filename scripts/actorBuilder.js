@@ -27,7 +27,7 @@ export const BuildActor = async function (actorType, isWildCard, disposition, sa
                 log(`Actor to import: ${JSON.stringify(finalActor)}`);
                 await ActorImporter(finalActor);
             } catch (error) {
-                
+                log("Failed to build finalActor: " + error);
             } finally {
                 await setParsingLanguage(currentLang);
             }
