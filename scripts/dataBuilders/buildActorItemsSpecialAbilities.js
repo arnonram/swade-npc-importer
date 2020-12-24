@@ -5,7 +5,7 @@ import { getModuleSettings } from "../utils/foundryActions.js";
 
 export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     const meleeDamageRegex = 
-        new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}(\\s?[\\+\\-]?\\s?(\\d+)?d?(\\d+)?){0,}`, "gi")
+        new RegExp(`\\b${game.i18n.localize("npcImporter.parser.Str")}\\.\\b|\\b${game.i18n.localize("npcImporter.parser.Str")}\\b(\\s?[\\+\\-]\\s?(\\d+)?d?(\\d+)?){0,}`, "gi")
         let specialAbitlitiesItems = [];
     if (!getModuleSettings(settingModifiedSpecialAbs)){        
         for (const elem in specialAbilitiesData) {

@@ -126,20 +126,21 @@ function initiativeMod(edges) {
 }
 
 function findRunningDie(parsedData) {
-    let runningDie = 6;
+    let runningDie = undefined;
 
     try {
         for (const ability in parsedData.SpecialAbilities) {
             if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Speed").toLowerCase())) {
-                runningDie = parseInt(parsedData[ability].match(global.diceRegex)[0].replace('d', ''))
+                runningDie = parseInt(parsedData.SpecialAbilities[ability].match(global.diceRegex)[0].replace('d', ''))
             }
         }
-    
-        parsedData.Edges.forEach(edge => {
-            if (edge.toLowerCase().includes(game.i18n.localize("npcImporter.parser.FleetFooted").toLowerCase())) {
-                runningDie += 2
-            }
-        });
+        if (runningDie == undefined){
+            parsedData.Edges.forEach(edge => {
+                if (edge.toLowerCase().includes(game.i18n.localize("npcImporter.parser.FleetFooted").toLowerCase())) {
+                    runningDie += 2
+                }
+            });
+        }        
     } catch (error) {
         
     }

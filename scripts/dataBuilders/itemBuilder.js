@@ -143,11 +143,12 @@ export const PowerBuilder = async function (powers) {
 }
 
 export const WeaponBuilder = async function (weaponName, description, weaponDamage, range = '', rof = '', ap = '') {
+    const dmg = weaponDamage.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`, "gi"), '@str');
     var weaponFromCompendium = await getItemFromCompendium(weaponName, 'weapon');
     try {
         if (weaponFromCompendium != undefined) {
             if (new RegExp(game.i18n.localize("npcImporter.parser.NaturalWeapons")).test(weaponFromCompendium.name)){
-                weaponFromCompendium.data.damage = weaponDamage;
+                weaponFromCompendium.data.damage = dmg;
             }
             return weaponFromCompendium;
         } else {
@@ -158,7 +159,7 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
                 description: description,
                 equippable: true,
                 equipped: true,
-                damage: weaponDamage.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`, "gi"), '@str'),
+                damage: dmg,
                 range: range,
                 rof: rof,
                 ap: ap
