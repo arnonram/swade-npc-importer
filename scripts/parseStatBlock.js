@@ -2,12 +2,10 @@ import { log } from "./global.js";
 import * as global from "./global.js";
 import * as parserHelper from "./utils/parserBuilderHelpers.js";
 import { capitalizeEveryWord } from "./utils/textUtils.js";
-import { getModuleSettings, getActorAddtionalStatsArray, getActorAddtionalStats, setParsingLanguage } from "./utils/foundryActions.js";
+import { getModuleSettings, getActorAddtionalStatsArray, getActorAddtionalStats } from "./utils/foundryActions.js";
 
 
 export const StatBlockParser = async function (clipData) {
-    let currentLang = game.i18n.lang;
-    await setParsingLanguage(getModuleSettings(global.settingParaeLanguage));
     try {
         log(`Starting statblock parsing`);
         let sections = GetSections(clipData);
@@ -27,8 +25,6 @@ export const StatBlockParser = async function (clipData) {
     } catch (error) {
         log(`Failed to prase: ${error}`);
         ui.notifications.error(game.i18n.localize("npcImporter.parser.NotValidStablock"))
-    } finally {
-        await setParsingLanguage(currentLang);
     }
 }
 
