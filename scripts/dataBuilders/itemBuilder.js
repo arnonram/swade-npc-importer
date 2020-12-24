@@ -146,6 +146,9 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
     var weaponFromCompendium = await getItemFromCompendium(weaponName, 'weapon');
     try {
         if (weaponFromCompendium != undefined) {
+            if (new RegExp(game.i18n.localize("npcImporter.parser.NaturalWeapons")).test(weaponFromCompendium.name)){
+                weaponFromCompendium.data.damage = weaponDamage;
+            }
             return weaponFromCompendium;
         } else {
             let weapon = {};

@@ -51,6 +51,7 @@
     "npcImporter.parser.Fear" : "Fear",
 
     "npcImporter.parser.CombatReflexes" : "reflexos de combate",
+    "npcImporter.parser.FleetFooted" : "Fleet-Footed",
     "npcImporter.parser.Hesitant" : "Hesitante",
     "npcImporter.parser.LevelHeaded" : "Focado",
     "npcImporter.parser.LevelHeadedImp" : "Extremamente Focado",
@@ -86,5 +87,6 @@
     "npcImporter.settings.IgnoredWounds" : "Calculate Ignore Wounds",
     "npcImporter.settings.IgnoredWoundsHint" : "Take into account Edges and Abilities which allow to ignore wound",
     "npcImporter.settings.AdditionalWounds" : "Calcualte additioanl wounds",
-    "npcImporter.settings.AdditionalWoundsHint" : "Take into account Size, isWildcard, and (Very) Resilient, which increase max wounds"
+    "npcImporter.settings.AdditionalWoundsHint" : "Take into account Size, isWildcard, and (Very) Resilient, which increase max wounds",
+    "npcImporter.settings.AutoCalcToughness" : "Set default Auto Calculate Toughness"
 }

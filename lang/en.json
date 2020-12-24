@@ -49,6 +49,8 @@
     "npcImporter.parser.Armor" : "Armor",
     "npcImporter.parser.Speed" : "Speed",
     "npcImporter.parser.Fear" : "Fear",
+    "npcImporter.parser.NaturalWeapons" : "Claws|Bite|Horns",
+
 
     "npcImporter.parser.CombatReflexes" : "combat reflexes",
     "npcImporter.parser.FleetFooted" : "Fleet-Footed",
