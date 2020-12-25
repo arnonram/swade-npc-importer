@@ -48,7 +48,7 @@ It is highly recommended to choose the Package and/or Item Compendiums you wish 
 Support is for both the UI and parsing of statblock
 - English
 - Español (thanks @Montver)
-- Português (thanks @lipefl)
+- Português (Brasil) (thanks @lipefl)
 
 (If you wish to add support for more languages, please don't hesitate to create a pull request or open an issue with the file attached)
 
@@ -62,7 +62,7 @@ Support is for both the UI and parsing of statblock
 - **Pace**
 - **Parry**
 - **Toughness**
-  - Set to Auto-calculate by default
+  - Set to Auto-calculate to `false` by default
 - **Power Points**
 - **Gear**
   - (Equipped by default)
@@ -76,6 +76,6 @@ Support is for both the UI and parsing of statblock
     - Size influences the tokens' size (bigger than medium) and scale (for smaller than medium)
     - Add additional wounds as per the Size Table (SWADE Core)
   - Ignore wounds & Unshake bonuses for: construct, undead, elemental, combat reflexes
-  - List them all in the actors' description
+  - List them all in the actors' description with links to Compendium rules (if using the core-swade Compendium pack)
   - See [NPC Importer Settings](#some-configurations) for further manipulation of the statblock
 
