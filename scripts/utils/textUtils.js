@@ -21,7 +21,7 @@ export const SpecialAbilitiesForDescription = function (specialAbilitiesData) {
 
         if (item != game.i18n.localize("npcImporter.parser.Speed")){
             if (game.packs.get('swade-core-rules.swade-rules') != undefined) {
-                var cleanedItem = item.split('(')[0].replace(new RegExp('[0-9]'), '').trim();
+                var cleanedItem = item.split('(')[0].replace(new RegExp('[\\−\\-\\+][0-9]'), '').trim();
             textForDescription.push(`&commat;Compendium[swade-core-rules.swade-rules.Special Ability (${cleanedItem})]{${item}}: ${specialAbilitiesData[item]}`)
             }
         } else {
