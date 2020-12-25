@@ -3,7 +3,7 @@ import { armorModRegex } from "../global.js";
 
 export const GetMeleeDamage = function (abilityDescription) {
     const meleeDamageRegex = 
-    new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}\\s?[\\+\\-]\\s?(\\d+)?d?(\\d+)?\\s?[\\+\\-]?\\s?(\\d+)?d?(\\d+)`, "gi")
+    new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}(\s?[\+\-]?\s?(\d+)?d?(\d+)?){0,}`, "gi")
 
     let damage = abilityDescription.match(meleeDamageRegex).toString().replace('.', '').toLowerCase();
     return `@${damage}`;

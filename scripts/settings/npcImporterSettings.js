@@ -3,9 +3,10 @@ import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
     settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage,
-    settingModifiedSpecialAbs
+    settingModifiedSpecialAbs, settingAutoCalcToughness, settingCalculateIgnoredWounds, settingCalculateAdditionalWounds
 } from "../global.js";
 import SelectCompendiums from "./selectCompendiums.js";
+import TokenSettings from "./tokenSettings.js"
 
 export class NpcImporterSettings {
     static async register() {
@@ -17,6 +18,32 @@ export class NpcImporterSettings {
             type: SelectCompendiums,
             restricted: false
         });
+        // TODO need to finish this, but maybe at a later version as there's still stuff i need to figure out
+        // game.settings.registerMenu(thisModule, 'tokenSettingMenu', {
+        //     name: game.i18n.localize("npcImporter.settings.TokenSettings"),
+        //     label: game.i18n.localize("npcImporter.settings.TokenSettings"),
+        //     hint: game.i18n.localize("npcImporter.settings.TokenSettingsHint"),
+        //     icon: "fas fa-eye",
+        //     type: TokenSettings,
+        //     restricted: false
+        // });
+        // game.settings.register(thisModule, settingToken, { 
+        //     name: "Package for imports",
+        //     hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
+        //     config: false,
+        //     scope: "world",
+        //     type: Object,
+        //     default: {
+        //         disposition: "hostile",
+        //         displayName: "DISPLAY_ALWAYS",
+        //         hasVision: true,
+        //         dimVision: "10",
+        //         brightVision: "",
+        //         displayBars: "DISPLAY_ALWAYS",
+        //         bar1Attribute: "",
+        //         bar2Attribute: "",
+        //       }
+        // });
         game.settings.register(thisModule, settingPackageToUse, {
             name: "Package for imports",
             hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
@@ -41,7 +68,7 @@ export class NpcImporterSettings {
             choices: {
                 "en": "English",
                 "es": "Español",
-                "por": "Português"
+                "pt-BR": "Português (Brasil)"
             }
         });
         game.settings.register(thisModule, settingDefaultDisposition, {
@@ -93,6 +120,29 @@ export class NpcImporterSettings {
         game.settings.register(thisModule, settingModifiedSpecialAbs, {
             name: game.i18n.localize("npcImporter.settings.ModifiedSpecialAbilities"),
             hint: game.i18n.localize("npcImporter.settings.ModifiedSpecialAbilitiesHint"),
+            config: true,
+            scope: "world",
+            type: Boolean,
+            default: false
+        });
+        game.settings.register(thisModule, settingCalculateIgnoredWounds, {
+            name: game.i18n.localize("npcImporter.settings.IgnoredWounds"),
+            hint: game.i18n.localize("npcImporter.settings.IgnoredWoundsHint"),
+            config: true,
+            scope: "world",
+            type: Boolean,
+            default: true
+        });
+        game.settings.register(thisModule, settingCalculateAdditionalWounds, {
+            name: game.i18n.localize("npcImporter.settings.AdditionalWounds"),
+            hint: game.i18n.localize("npcImporter.settings.AdditionalWoundsHint"),
+            config: true,
+            scope: "world",
+            type: Boolean,
+            default: true
+        });
+        game.settings.register(thisModule, settingAutoCalcToughness, {
+            name: game.i18n.localize("npcImporter.settings.AutoCalcToughness"),
             config: true,
             scope: "world",
             type: Boolean,

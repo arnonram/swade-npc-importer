@@ -1,0 +1,56 @@
+<form autocomplete="off">
+    <div class="column"> 
+        <label>{{localize 'TOKEN.CharDisposition'}}:</label>
+        <select name="disposition">
+            <option value="{{this.disposition}}" selected>`{{localize 'TOKEN.${this.disposition})'}}`</option>
+            <option value="HOSTILE">{{localize 'TOKEN.HOSTILE'}}</option>
+            <option value="NEUTRAL">{{localize 'TOKEN.NEUTRAL'}}</option>
+            <option value="FRIENDLY">{{localize 'TOKEN.FRIENDLY'}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'TOKEN.CharShowNameplate'}}:</label>
+        <select name="displayName">
+            <option value="DISPLAY_ALWAYS" selected>{{localize 'TOKEN.DISPLAY_ALWAYS'}}</option>
+            <option value="DISPLAY_CONTROL">{{localize 'TOKEN.DISPLAY_CONTROL'}}</option>
+            <option value="DISPLAY_HOVER">{{localize 'TOKEN.DISPLAY_HOVER'}}</option>
+            <option value="DISPLAY_NONE">{{localize 'TOKEN.DISPLAY_NONE'}}</option>
+            <option value="DISPLAY_OWNER">{{localize 'TOKEN.DISPLAY_OWNER'}}</option>
+            <option value="DISPLAY_OWNER_HOVER">{{localize 'TOKEN.DISPLAY_OWNER_HOVER'}}</option>
+        </select>
+    </div>
+    <hr>
+    <div class="form-group">
+        <label>{{localize 'TOKEN.VisionHas'}}</label>
+        <input type="checkbox" id="hasVision" name="hasVision" value="hasVision"/>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'TOKEN.VisionDimDist'}}</label>
+        <input type="text" name="dimVision" value="{{this.dimVision}}" />
+    </div>
+    <div class="form-group">
+        <label>{{localize 'TOKEN.VisionBrightDist'}}</label>
+        <input type="text" name="brightVision" value="{{this.brightVision}}" />
+    </div>
+    <hr>
+    <div class="form-group">
+        <label>{{localize 'TOKEN.ResourceDisplay'}}:</label>
+        <select name="displayBars">
+            <option value="DISPLAY_ALWAYS" selected>{{localize 'TOKEN.DISPLAY_ALWAYS'}}</option>
+            <option value="DISPLAY_CONTROL">{{localize 'TOKEN.DISPLAY_CONTROL'}}</option>
+            <option value="DISPLAY_HOVER">{{localize 'TOKEN.DISPLAY_HOVER'}}</option>
+            <option value="DISPLAY_NONE">{{localize 'TOKEN.DISPLAY_NONE'}}</option>
+            <option value="DISPLAY_OWNER">{{localize 'TOKEN.DISPLAY_OWNER'}}</option>
+            <option value="DISPLAY_OWNER_HOVER">{{localize 'TOKEN.DISPLAY_OWNER_HOVER'}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>{{localize 'TOKEN.ResourceBar1A'}}</label>
+        <input type="text" name="bar1Attribute" value="" />
+    </div>
+    <div class="form-group">
+        <label>{{localize 'TOKEN.ResourceBar2A'}}</label>
+        <input type="text" name="bar2Attribute" value="" />
+    </div>
+    <button type="submit" name="submit"><i class="far fa-save"> Save</i></button>
+</form>
