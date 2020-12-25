@@ -1,6 +1,6 @@
 import { getActorAddtionalStatsArray, getModuleSettings } from "../utils/foundryActions.js";
 import * as global from "../global.js";
-import { SpecialAbilitiesForDescription } from "./buildActorItemsSpecialAbilities.js"
+import { SpecialAbilitiesForDescription } from "../utils/textUtils.js"
 import { additionalStatsBuilder } from "./itemBuilder.js";
 
 export const BuildActorData = async function (parsedData, isWildCard) {
@@ -20,9 +20,7 @@ export const BuildActorData = async function (parsedData, isWildCard) {
             size: parsedData.Size
         }
     data.details = {
-        biography: {
-            value: buildBioAndSpecialAbilities(parsedData)
-        },
+        biography: parsedData.Biography,
         autoCalcToughness: getModuleSettings(global.settingAutoCalcToughness)
     }
     data.powerPoints = {

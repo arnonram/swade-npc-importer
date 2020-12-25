@@ -41,22 +41,3 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
 
     return specialAbitlitiesItems;
 }
-
-
-export const SpecialAbilitiesForDescription = function (specialAbilitiesData) {
-    let textForDescription = [];
-    for (const elem in specialAbilitiesData) {
-        textForDescription.push(`<b>${elem}:</b> ${specialAbilitiesData[elem]}`)
-    }
-
-    return CreateHtmlList(textForDescription);
-}
-
-function CreateHtmlList(text) {
-    let html = `<hr><h3><strong>${game.i18n.localize("npcImporter.parser.SpecialAbilities")}</strong></h3><ul>`
-    text.forEach(element => {
-        html = html.concat(`<li>${element.replace(new RegExp('@([aehw])?'), '').trim()}</li>`);
-    });
-    html.concat(`</ul>`)
-    return html;
-}

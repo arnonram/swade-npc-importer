@@ -5,6 +5,7 @@ import { BuildActorData} from "./dataBuilders/buildActorData.js";
 import { BuildActorItems} from "./dataBuilders/buildActorItems.js";
 import { BuildActorToken } from "./dataBuilders/buildActorToken.js";
 import { getFolderId, updateModuleSetting, setParsingLanguage, getModuleSettings } from "./utils/foundryActions.js";
+import { SpecialAbilitiesForDescription } from "./utils/textUtils.js";
 
 export const BuildActor = async function (actorType, isWildCard, disposition, saveFolder ,data = undefined) {
     let clipboardText = data ?? await GetClipboardText();
@@ -21,7 +22,7 @@ export const BuildActor = async function (actorType, isWildCard, disposition, sa
                 finalActor.data = await BuildActorData(parsedData, isWildCard == 'true');
                 finalActor.items = await BuildActorItems(parsedData);
                 finalActor.token = await BuildActorToken(parsedData, disposition);            
-                
+                finalActor.data.details.biography.value = await addSpecAbsToDescription(finalActor, parsedData.SpecialAbilities);
                 await updateModuleSetting(settingLastSaveFolder, saveFolder);
                 await setParsingLanguage(currentLang);
                 log(`Actor to import: ${JSON.stringify(finalActor)}`);
@@ -39,4 +40,19 @@ export const BuildActor = async function (actorType, isWildCard, disposition, sa
 
 async function GetClipboardText() {
     return await navigator.clipboard.readText();
+}
+
+async function addSpecAbsToDescription(finalActor, specAbilities){
+    var desc = finalActor.data.details.biography.value;
+    var items = finalActor.items;
+ 
+    for (const elem in specAbilities) {
+        var ability = elem.replace(new RegExp('^@[aehw]?'), '').trim();
+        items.forEach(item =>{
+            if (item.name === ability){
+                delete specAbilities[elem];
+            }
+        });
+    }
+    return desc + SpecialAbilitiesForDescription(specAbilities);
 }
