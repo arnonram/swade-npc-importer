@@ -214,9 +214,12 @@ function GetListsStats(sections) {
 
 function stringsToArray(line) {
     let data = line.replace(global.newLineRegex, ' ').replace('.', '').split(':')[1]
-    if (new RegExp(/\w+/gi).test(data)) {
-        return data.split(',').map(s => s.trim());
-    }
+    // if (new RegExp(/\w+/gi).test(data)) {
+    //     return data.split(',').map(s => s.trim());
+    // }
+    return data.match(new RegExp(/[\w ]+(\()?([\w ,]+)?(\))?/gi));
+
+
 }
 
 function GetBulletListStats(sections) {

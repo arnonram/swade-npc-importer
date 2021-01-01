@@ -76,7 +76,7 @@ export const EdgeBuilder = async function (edges) {
 }
 
 export const HindranceBuilder = async function (hindrances) {
-    const majorMinor = new RegExp(`${game.i18n.localize("npcImporter.parser.Major")}|${game.i18n.localize("npcImporter.parser.Minor")}`);
+    const majorMinor = new RegExp(`${game.i18n.localize("npcImporter.parser.Major")}(,)?\\s?|${game.i18n.localize("npcImporter.parser.Minor")}(,)?\\s?`);
     if (hindrances != undefined) {
         var allHindrances = [];
         for (let i = 0; i < hindrances.length; i++) {
