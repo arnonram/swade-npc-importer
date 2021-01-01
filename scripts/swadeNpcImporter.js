@@ -7,44 +7,46 @@ import {
     getModuleSettings, getAllActorFolders, updateModuleSetting,
     getAllActiveCompendiums } from "./utils/foundryActions.js";
 
-// Hooks.once("init", async () => {});
-// Hooks.once("setup", () => {});
 Hooks.on("ready", async () => {
-    log("Setting up settings...");
-    await NpcImporterSettings.register();
-    // update Active Compendiums for Importer to use
-    await updateModuleSetting(settingActiveCompendiums, getAllActiveCompendiums())
+    if (game.users.get(game.userId).can('ACTOR_CREATE') == true){
+        log("Setting up settings...");
+        await NpcImporterSettings.register();
+        // update Active Compendiums for Importer to use
+        await updateModuleSetting(settingActiveCompendiums, getAllActiveCompendiums())
+    }    
 });
 
 Hooks.on("renderActorDirectory", async (app, html, data) => {
-    const npcImporterButton = $(
-        `<button style="margin: 4px; padding: 1px 6px;"><i class="fas fa-file-import"> ${game.i18n.localize("npcImporter.HTML.ActorImporter")}</i></button>`
-    );
-    html.find(".directory-footer").append(npcImporterButton);
-
-    npcImporterButton.click(() => {
-        new Dialog({
-            title: game.i18n.localize("npcImporter.HTML.ImportTitle"),
-            content: importerDialogue(),
-            buttons: {
-                Import: {
-                    label: game.i18n.localize("npcImporter.HTML.Import"),
-                    callback: (html) => {
-                        let radios = document.querySelectorAll('input[type="radio"]:checked');
-                        BuildActor(
-                            radios[0].value,
-                            radios[1].value,
-                            parseInt(radios[2].value),
-                            html.find('select[name="save-folder"]')[0].value);
+    if (game.users.get(game.userId).can('ACTOR_CREATE') == true){
+        const npcImporterButton = $(
+            `<button style="margin: 4px; padding: 1px 6px;"><i class="fas fa-file-import"> ${game.i18n.localize("npcImporter.HTML.ActorImporter")}</i></button>`
+        );
+        html.find(".directory-footer").append(npcImporterButton);
+    
+        npcImporterButton.click(() => {
+            new Dialog({
+                title: game.i18n.localize("npcImporter.HTML.ImportTitle"),
+                content: importerDialogue(),
+                buttons: {
+                    Import: {
+                        label: game.i18n.localize("npcImporter.HTML.Import"),
+                        callback: (html) => {
+                            let radios = document.querySelectorAll('input[type="radio"]:checked');
+                            BuildActor(
+                                radios[0].value,
+                                radios[1].value,
+                                parseInt(radios[2].value),
+                                html.find('select[name="save-folder"]')[0].value);
+                        },
+                    },
+                    Cancel: {
+                        label: "Cancel"
                     },
                 },
-                Cancel: {
-                    label: "Cancel"
-                },
-            },
-            Default: "Import!",
-        }).render(true);
-    });
+                Default: "Import!",
+            }).render(true);
+        });
+    }
 });
 
 

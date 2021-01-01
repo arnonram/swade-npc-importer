@@ -45,7 +45,14 @@ export const EdgeBuilder = async function (edges) {
                 element = element.replace(game.i18n.localize("npcImporter.parser.Imp"), '');
                 element = `${game.i18n.localize("npcImporter.parser.Improved")} ${element}`.trim();
             }
-            var edgeFromCompendium = await getItemFromCompendium(element.split('(')[0].trim(), 'edge');
+            var cleanedName = '';
+            if (element.includes(game.i18n.localize("npcImporter.parser.Arcane"))){
+                cleanedName = element;
+            } else {
+                cleanedName = element.split('(')[0].trim();
+            }
+
+            var edgeFromCompendium = await getItemFromCompendium(cleanedName, 'edge');
             try {
                 if (edgeFromCompendium != undefined) {
                     edgeFromCompendium.name = element;
@@ -262,7 +269,7 @@ export const additionalStatsBuilder = function (additionalStatName, additionalSt
 
 function checkSpecificItem(data) {
     const abilitiesWithMod = new RegExp(
-        `^${game.i18n.localize("npcImporter.parser.Armor")}$|^${game.i18n.localize("npcImporter.parser.Size")}$|^${game.i18n.localize("npcImporter.parser.Fear")}$|^${game.i18n.localize("npcImporter.parser.Weakness")}$`);
+        `${game.i18n.localize("npcImporter.parser.Armor")}|${game.i18n.localize("npcImporter.parser.Size")}|${game.i18n.localize("npcImporter.parser.Fear")}|${game.i18n.localize("npcImporter.parser.Weakness")}$`);
 
     let item = data.match(abilitiesWithMod);
 

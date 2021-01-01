@@ -44,6 +44,10 @@ async function GetClipboardText() {
 
 async function addSpecAbsToDescription(finalActor, specAbilities){
     var desc = finalActor.data.details.biography.value;
+    if (desc.length > 0){
+        desc = `${desc} <hr>`;
+    }
+
     var items = finalActor.items;
  
     for (const elem in specAbilities) {
@@ -54,5 +58,7 @@ async function addSpecAbsToDescription(finalActor, specAbilities){
             }
         });
     }
-    return desc + SpecialAbilitiesForDescription(specAbilities);
+    return Object.keys(specAbilities).length > 0 
+        ? `${desc} ${SpecialAbilitiesForDescription(specAbilities)}`
+        : desc;
 }

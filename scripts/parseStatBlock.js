@@ -83,18 +83,17 @@ function GetNameAndDescription(nameAndDescription) {
     nameDesc.Name = capitalizeEveryWord(lines[0].trim());
     lines.shift();
     let bio = descriptionByParagraph(lines);
-    if (bio.length > 0) {
-        nameDesc.Biography = {
-            value: bio
-        }
+    nameDesc.Biography = {
+        value: bio
     }
+
     return nameDesc;
 }
 
-function descriptionByParagraph(descArray){
+function descriptionByParagraph(descArray) {
     let bio = '';
-    descArray.forEach(line=>{
-        if (line.endsWith('.')){
+    descArray.forEach(line => {
+        if (line.endsWith('.')) {
             line = line + '<br/>'
         }
         bio += line;
@@ -135,7 +134,7 @@ function GetSkills(sections) {
     let trait = `${game.i18n.localize("npcImporter.parser.Skills")}:`;
     let skills = SplitAndTrim(sections.find(x => x.includes(trait)).replace(trait, ''), ',');
     let skillsDict = {};
-    skills.forEach(singleTrait => {        
+    skills.forEach(singleTrait => {
         let diceAndMode = singleTrait.match(global.diceRegex)[0].toString();
         let traitName = singleTrait.replace(diceAndMode, '').trim().replace(' )', ')');
         skillsDict[traitName.toLowerCase().replace(':', '')] = buildTrait(diceAndMode);
@@ -146,11 +145,11 @@ function GetSkills(sections) {
 function buildTrait(data) {
     let diceAndMode = '';
     try {
-        diceAndMode = data.match(global.diceRegex)[0].toString();    
+        diceAndMode = data.match(global.diceRegex)[0].toString();
     } catch (error) {
         diceAndMode = '1' // usually will be 1, if not then we'll need to think about it.
     }
-    
+
     let traitDice = diceAndMode.includes("+") ? diceAndMode.split("+")[0] : diceAndMode.split("-")[0];
     let traitMod = diceAndMode.includes("+")
         ? `+${diceAndMode.split("+")[1]}`
@@ -242,7 +241,7 @@ function getAbilities(data) {
     const modifiedSpecialAbs = getModuleSettings(global.settingModifiedSpecialAbs);
     let abilities = {}
     let line = ''
-    if(!modifiedSpecialAbs){
+    if (!modifiedSpecialAbs) {
         line = SplitAndTrim(data, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
     } else {
         line = SplitAndTrim(data, new RegExp('@', 'gi'))
@@ -254,7 +253,7 @@ function getAbilities(data) {
         let abilityName = !modifiedSpecialAbs ? ability[0].trim() : `@${ability[0].trim()}`;
         abilities[abilityName] = ability.length == 2 ? ability[1].replace(global.newLineRegex, " ").trim() : ability[0];
     });
-    
+
     return abilities;
 }
 
@@ -289,8 +288,8 @@ async function ParseGear(gearArray) {
         if (splitGear.length == 1) {
             let normalGear = splitGear[0];
             if (normalGear != '.') {
-                if (normalGear.slice(-1) == ',' || normalGear.slice(-1) == '.' ){
-                    normalGear = normalGear.replace(',','').replace('.', '');
+                if (normalGear.slice(-1) == ',' || normalGear.slice(-1) == '.') {
+                    normalGear = normalGear.replace(',', '').replace('.', '');
                 }
 
                 gearDict[normalGear.trim()] = null;
