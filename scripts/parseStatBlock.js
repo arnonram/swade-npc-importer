@@ -342,9 +342,9 @@ function getSystemDefinedStats(sections) {
                 stat = stat.replace(global.newLineRegex, ' ');
                 stat = stat.split(':');
                 if (element.dtype === "String") {
-                    systemStats[stat[0]] = stat[1]
+                    systemStats[stat[0]] = stat[1].replace(';', '').trim();
                 } else if (element.dtype === "Number") {
-                    systemStats[stat[0]] = parseInt(stat[1].replace(';', '').trim());
+                    systemStats[stat[0]] = parseInt(stat[1].replace(';', '').trim().replace('–', '-'));
                 } else if (element.dtype === "Boolean") {
                     systemStats[stat[0]] = stat[1].replace(';', '').trim() == "true";
                 }
