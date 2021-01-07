@@ -6,7 +6,12 @@ export const SkillBuilder = async function (skillsDict) {
     if (skillsDict != undefined) {
         var allSkills = [];
         for (const element in skillsDict) {
-            var skillFromComp = await getItemFromCompendium(element.split('(')[0].trim(), 'skill');
+            var skillFromComp = {};
+            if (element.startsWith(game.i18n.localize("npcImporter.parser.Knowledge").toLowerCase())){
+                skillFromComp = await getItemFromCompendium(element, 'skill');
+            } else {
+                skillFromComp = await getItemFromCompendium(element.split('(')[0].trim(), 'skill');
+            }
             try {
                 if (skillFromComp == undefined) {
                     let skill = {};

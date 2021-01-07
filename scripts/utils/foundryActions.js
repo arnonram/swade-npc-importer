@@ -15,10 +15,13 @@ export const getItemFromCompendium = async function (itemName, expectedType) {
         try {
             const packIndex = await packs[i].getIndex();
             let resultId = '';
-            if (expectedType == "weapon"){
-                resultId = await packIndex.find(it => it.name.toLowerCase().includes(itemName.toLowerCase()));    
+            if (expectedType === "weapon"){
+                resultId = await packIndex.find(it => it.name.toLowerCase().includes(itemName.toLowerCase())); 
+                if (resultId === undefined)   {
+                    resultId = await packIndex.find(it => itemName.toLowerCase().includes(it.name.toLowerCase())); 
+                }
             } else {
-                resultId = await packIndex.find(it => it.name.toLowerCase().includes(itemName.toLowerCase()));
+                resultId = await packIndex.find(it => it.name.toLowerCase() === (itemName.toLowerCase()));
             }            
             if (resultId != undefined) {
                 let item = await packs[i].getEntry(resultId["_id"]);

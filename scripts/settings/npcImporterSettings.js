@@ -2,8 +2,8 @@ import { getActorAddtionalStatsArray } from "../utils/foundryActions.js";
 import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
     settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
-    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage,
-    settingModifiedSpecialAbs, settingAutoCalcToughness, settingCalculateIgnoredWounds, settingCalculateAdditionalWounds
+    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage, settingToken,
+    settingModifiedSpecialAbs, settingAutoCalcToughness, settingCalculateIgnoredWounds, settingCalculateAdditionalWounds, settingAutoCalcSize
 } from "../global.js";
 import SelectCompendiums from "./selectCompendiums.js";
 import TokenSettings from "./tokenSettings.js"
@@ -19,31 +19,31 @@ export class NpcImporterSettings {
             restricted: false
         });
         // TODO need to finish this, but maybe at a later version as there's still stuff i need to figure out
-        // game.settings.registerMenu(thisModule, 'tokenSettingMenu', {
-        //     name: game.i18n.localize("npcImporter.settings.TokenSettings"),
-        //     label: game.i18n.localize("npcImporter.settings.TokenSettings"),
-        //     hint: game.i18n.localize("npcImporter.settings.TokenSettingsHint"),
-        //     icon: "fas fa-eye",
-        //     type: TokenSettings,
-        //     restricted: false
-        // });
-        // game.settings.register(thisModule, settingToken, { 
-        //     name: "Package for imports",
-        //     hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
-        //     config: false,
-        //     scope: "world",
-        //     type: Object,
-        //     default: {
-        //         disposition: "hostile",
-        //         displayName: "DISPLAY_ALWAYS",
-        //         hasVision: true,
-        //         dimVision: "10",
-        //         brightVision: "",
-        //         displayBars: "DISPLAY_ALWAYS",
-        //         bar1Attribute: "",
-        //         bar2Attribute: "",
-        //       }
-        // });
+        game.settings.registerMenu(thisModule, 'tokenSettingMenu', {
+            name: game.i18n.localize("npcImporter.settings.TokenSettings"),
+            label: game.i18n.localize("npcImporter.settings.TokenSettings"),
+            hint: game.i18n.localize("npcImporter.settings.TokenSettingsHint"),
+            icon: "fas fa-eye",
+            type: TokenSettings,
+            restricted: false
+        });
+        game.settings.register(thisModule, settingToken, { 
+            name: "Package for imports",
+            hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
+            config: false,
+            scope: "world",
+            type: Object,
+            default: {
+                disposition: "HOSTILE",
+                displayName: "DISPLAY_NONE",
+                vision: false,
+                dimSight: 0,
+                brightSight: 0//,
+                // displayBars: "DISPLAY_NONE",
+                // bar1Attribute: "",
+                // bar2Attribute: "",
+              }
+        });
         game.settings.register(thisModule, settingPackageToUse, {
             name: "Package for imports",
             hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
@@ -58,7 +58,6 @@ export class NpcImporterSettings {
             scope: "world",
             type: String
         });
-
         game.settings.register(thisModule, settingParaeLanguage, {
             name: game.i18n.localize("npcImporter.settings.parseLanguage"),
             hint: game.i18n.localize("npcImporter.settings.parseLanguageHint"),
@@ -70,18 +69,6 @@ export class NpcImporterSettings {
                 "es": "Español",
                 "pt-BR": "Português (Brasil)"
             }
-        });
-        game.settings.register(thisModule, settingDefaultDisposition, {
-            name: game.i18n.localize("npcImporter.settings.DefaultDisposition"),
-            config: true,
-            scope: "world",
-            type: String,
-            choices: { 
-                "1": game.i18n.localize("npcImporter.settings.Friendly"),
-                "0": game.i18n.localize("npcImporter.settings.Neutral"),
-                "-1": game.i18n.localize("npcImporter.settings.Hostile") 
-            },
-            default: "-1"
         });
         game.settings.register(thisModule, settingDefaultActorType, {
             name: game.i18n.localize("npcImporter.settings.DefaultActorType"),
@@ -147,6 +134,14 @@ export class NpcImporterSettings {
             scope: "world",
             type: Boolean,
             default: false
+        });
+        game.settings.register(thisModule, settingAutoCalcSize, {
+            name: game.i18n.localize("npcImporter.settings.SetSize"),
+            hint: game.i18n.localize("npcImporter.settings.SetSizeHint"),
+            config: true,
+            scope: "world",
+            type: Boolean,
+            default: true
         });
         game.settings.register(thisModule, settingLastSaveFolder, {
             name: "Set the last save folder",

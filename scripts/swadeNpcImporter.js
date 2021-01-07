@@ -1,7 +1,7 @@
 import { BuildActor } from "./actorBuilder.js";
 import { 
     log, settingDefaultActorType, settingDefaultDisposition, settingDefaultIsWildcard,
-    settingLastSaveFolder, settingActiveCompendiums } from "./global.js";
+    settingLastSaveFolder, settingActiveCompendiums, settingToken } from "./global.js";
 import { NpcImporterSettings } from "./settings/npcImporterSettings.js";
 import { 
     getModuleSettings, getAllActorFolders, updateModuleSetting,
@@ -32,11 +32,18 @@ Hooks.on("renderActorDirectory", async (app, html, data) => {
                         label: game.i18n.localize("npcImporter.HTML.Import"),
                         callback: (html) => {
                             let radios = document.querySelectorAll('input[type="radio"]:checked');
-                            BuildActor(
-                                radios[0].value,
-                                radios[1].value,
-                                parseInt(radios[2].value),
-                                html.find('select[name="save-folder"]')[0].value);
+                            let importSettings = {
+                                actorType: radios[0].value,
+                                isWildCard: radios[1].value,
+                                tokenSettings: {
+                                    disposition: parseInt(radios[2].value),
+                                    vision: document.getElementsByName("vision")[0].checked,
+                                    dimSight: document.getElementsByName("dimSight")[0].value,
+                                    brightSight: document.getElementsByName("brightSight")[0].value
+                                },                                
+                                saveFolder: html.find('select[name="save-folder"]')[0].value
+                            }
+                            BuildActor(importSettings);
                         },
                     },
                     Cancel: {
@@ -54,7 +61,7 @@ function importerDialogue() {
     let defaultData = {
         actorType: getModuleSettings(settingDefaultActorType),
         isWildcard: getModuleSettings(settingDefaultIsWildcard),
-        disposition: getModuleSettings(settingDefaultDisposition)
+        tokenData: getModuleSettings(settingToken)
     };
 
     let folderOptions = buildFolderOptions();
@@ -98,18 +105,30 @@ function importerDialogue() {
             </div>
             <div class="column"> 
                 <p>${game.i18n.localize("npcImporter.HTML.Disposition")}:</p>
-                <input type="radio" id="hostile" name="disposition" value="-1" ${is_checked(defaultData.disposition, '-1')}>
+                <input type="radio" id="hostile" name="disposition" value="-1" ${is_checked(defaultData.tokenData.disposition, 'HOSTILE')}>
                 <label for="hostile">Hostile</lable><br>
-                <input type="radio" id="neutral" name="disposition" value="0" ${is_checked(defaultData.disposition, '0')}>
+                <input type="radio" id="neutral" name="disposition" value="0" ${is_checked(defaultData.tokenData.disposition, 'NEUTRAL')}>
                 <label for="neutral">Neutral</lable><br>
-                <input type="radio" id="friendly" name="disposition" value="1" ${is_checked(defaultData.disposition, '1')}>
+                <input type="radio" id="friendly" name="disposition" value="1" ${is_checked(defaultData.tokenData.disposition, 'FRIENDLY')}>
                 <label for="friendly">Friendly</lable>
-                </div>
             </div>
-            <div class="row">
-                <label>${game.i18n.localize("npcImporter.HTML.SaveFolder")}...</label>
-                <select name="save-folder">${folderOptions}</select>
+        </div>
+        <div class = "row">
+            <div class="column">
+                <p>${game.i18n.localize('TOKEN.VisionHas')}</p>
+                <input type="checkbox" id="vision" name="vision" value="vision" ${defaultData.tokenData.vision == true ? 'checked' : ''}/>
             </div>
+            <div class="column">
+                <p>${game.i18n.localize('TOKEN.VisionDimDist')}</p>
+                <input type="number" name="dimSight" value="${defaultData.tokenData.dimSight}" />
+            </div>
+            <div class="column">
+                <p>${game.i18n.localize('TOKEN.VisionBrightDist')}</p>
+                <input type="number" name="brightSight" value="${defaultData.tokenData.brightSight}" />
+            </div>
+            <label>${game.i18n.localize("npcImporter.HTML.SaveFolder")} </label>
+            <select name="save-folder">${folderOptions}</select>
+        </div>
             `;
     return npcImporterDialog;
 }

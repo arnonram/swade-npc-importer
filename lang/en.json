@@ -50,6 +50,7 @@
     "npcImporter.parser.Speed" : "Speed",
     "npcImporter.parser.Fear" : "Fear",
     "npcImporter.parser.NaturalWeapons" : "Claws|Bite|Horns",
+    "npcImporter.parser.Shots" : "Shots",
 
 
     "npcImporter.parser.CombatReflexes" : "combat reflexes",
@@ -61,6 +62,7 @@
     "npcImporter.parser.VeryResilient" : "Very Resilient",
     "npcImporter.parser.Weakness" : "Weakness",
     "npcImporter.parser.Arcane" : "Arcane",
+    "npcImporter.parser.Knowledge" : "Knowledge",
     "npcImporter.parser.Minor" : "Minor",
     "npcImporter.parser.Major" : "Major",
 
@@ -90,5 +92,7 @@
     "npcImporter.settings.IgnoredWoundsHint" : "Take into account Edges and Abilities which allow to ignore wound",
     "npcImporter.settings.AdditionalWounds" : "Calcualte additioanl wounds",
     "npcImporter.settings.AdditionalWoundsHint" : "Take into account Size, isWildcard, and (Very) Resilient, which increase max wounds",
-    "npcImporter.settings.AutoCalcToughness" : "Set default Auto Calculate Toughness"
+    "npcImporter.settings.AutoCalcToughness" : "Set default Auto Calculate Toughness",
+    "npcImporter.settings.SetSize": "Auto-set token size",
+    "npcImporter.settings.SetSizeHint" : "Auto-sets the token size & scale according to creature size"
 }

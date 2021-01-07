@@ -202,24 +202,19 @@ function GetListsStats(sections) {
     supportedListStats.forEach(element => {
         var line = sections.find(x => x.includes(element));
         if (line != undefined && line.startsWith(game.i18n.localize("npcImporter.parser.Hindrances"))) {
-            retrievedListStats.Hindrances = stringsToArray(line)
+            retrievedListStats.Hindrances = stringsToArray(line);
         } else if (line != undefined && line.startsWith(game.i18n.localize("npcImporter.parser.Edges"))) {
-            retrievedListStats.Edges = stringsToArray(line)
+            retrievedListStats.Edges = stringsToArray(line);
         } else if (line != undefined && line.startsWith(game.i18n.localize("npcImporter.parser.Powers"))) {
-            retrievedListStats.Powers = stringsToArray(line)
+            retrievedListStats.Powers = stringsToArray(line);
         }
     });
     return retrievedListStats;
 }
 
 function stringsToArray(line) {
-    let data = line.replace(global.newLineRegex, ' ').replace('.', '').split(':')[1]
-    // if (new RegExp(/\w+/gi).test(data)) {
-    //     return data.split(',').map(s => s.trim());
-    // }
+    let data = line.replace(global.newLineRegex, ' ').replace('.', '').split(':')[1];
     return data.match(new RegExp(/[\w ]+(\()?([\w ,]+)?(\))?/gi));
-
-
 }
 
 function GetBulletListStats(sections) {
@@ -265,7 +260,7 @@ async function GetGear(sections) {
     try {
         let characterGear = []
         let gearLine = sections.find(x => x.includes(gearString)).replace(global.newLineRegex, ' ').replace(`${gearString} `, '');
-        while (gearLine.length > 0) {
+        while (gearLine.length > 1) {
             if (global.gearParsingRegex.test(gearLine)) {
                 let match = gearLine.match(global.gearParsingRegex)[0];
                 characterGear.push(match.trim());
@@ -327,8 +322,12 @@ function weaponParser(weapon) {
         if (new RegExp('^Str', 'i').test(stat)) {
             weaponStats.damage = stat;
         } else {
-            let statName = stat.match(new RegExp('^[A-Za-z]+'))[0];
-            weaponStats[statName.toLowerCase().trim()] = stat.replace(statName, '').trim();
+            if (stat.includes(game.i18n.localize("npcImporter.parser.Shots").toLowerCase())){
+                weaponStats["Shots"] = stat.replace("Shots", '').trim();    
+            } else {
+                let statName = stat.match(new RegExp('^[A-Za-z]+'))[0];
+                weaponStats[statName.toLowerCase().trim()] = stat.replace(statName, '').trim();
+            }
         }
     });
     return weaponStats;

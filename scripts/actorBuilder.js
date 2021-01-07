@@ -7,7 +7,7 @@ import { BuildActorToken } from "./dataBuilders/buildActorToken.js";
 import { getFolderId, updateModuleSetting, setParsingLanguage, getModuleSettings } from "./utils/foundryActions.js";
 import { SpecialAbilitiesForDescription } from "./utils/textUtils.js";
 
-export const BuildActor = async function (actorType, isWildCard, disposition, saveFolder, data = undefined) {
+export const BuildActor = async function (importSettings, data = undefined) {
     let clipboardText = data ?? await GetClipboardText();
     if (clipboardText != undefined) {
         let currentLang = game.i18n.lang;
@@ -17,13 +17,13 @@ export const BuildActor = async function (actorType, isWildCard, disposition, sa
             try {
                 var finalActor = {}
                 finalActor.name = parsedData.Name;
-                finalActor.type = actorType;
-                finalActor.folder = saveFolder == '' ? '' : getFolderId(saveFolder);
-                finalActor.data = await BuildActorData(parsedData, isWildCard == 'true');
+                finalActor.type = importSettings.actorType;
+                finalActor.folder = importSettings.saveFolder == '' ? '' : getFolderId(importSettings.saveFolder);
+                finalActor.data = await BuildActorData(parsedData, importSettings.isWildCard == 'true');
                 finalActor.items = await BuildActorItems(parsedData);
-                finalActor.token = await BuildActorToken(parsedData, disposition);
+                finalActor.token = await BuildActorToken(parsedData, importSettings.tokenSettings);
                 finalActor.data.details.biography.value = await addSpecAbsToDescription(finalActor, parsedData.SpecialAbilities);
-                await updateModuleSetting(settingLastSaveFolder, saveFolder);
+                await updateModuleSetting(settingLastSaveFolder, importSettings.saveFolder);
                 await setParsingLanguage(currentLang);
                 log(`Actor to import: ${JSON.stringify(finalActor)}`);
                 await ActorImporter(finalActor);
