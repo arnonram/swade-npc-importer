@@ -46,7 +46,7 @@ async function addSpecAbsToDescription(finalActor, specAbilities) {
     var desc = finalActor.data.details.biography.value;
     try {
         if (desc.length > 0) {
-            desc = `${desc} <hr>`;
+            desc = `${desc}`;
         }
 
         var items = finalActor.items;

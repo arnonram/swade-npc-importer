@@ -45,13 +45,13 @@ export const EdgeBuilder = async function (edges) {
     if (edges != undefined) {
         var allEdges = [];
         for (let i = 0; i < edges.length; i++) {
-            let element = edges[i];
+            let element = edges[i].trim();
             if (element.includes(game.i18n.localize("npcImporter.parser.Imp"))){
                 element = element.replace(game.i18n.localize("npcImporter.parser.Imp"), '');
                 element = `${game.i18n.localize("npcImporter.parser.Improved")} ${element}`.trim();
             }
             var cleanedName = '';
-            if (element.includes(game.i18n.localize("npcImporter.parser.Arcane"))){
+            if (new RegExp(game.i18n.localize("npcImporter.parser.Arcane")).test(element)){
                 cleanedName = element;
             } else {
                 cleanedName = element.split('(')[0].trim();
@@ -67,7 +67,7 @@ export const EdgeBuilder = async function (edges) {
                     edge.name = capitalize(element)
                     edge.type = "edge";
                     edge.data = {
-                        isArcaneBackground: element.includes(game.i18n.localize("npcImporter.parser.Arcane")) ? true : false
+                        isArcaneBackground: new RegExp(game.i18n.localize("npcImporter.parser.Arcane")).test(element)
                     }
                     edge.img = "systems/swade/assets/icons/edge.svg";
                     allEdges.push(edge);
@@ -85,7 +85,7 @@ export const HindranceBuilder = async function (hindrances) {
     if (hindrances != undefined) {
         var allHindrances = [];
         for (let i = 0; i < hindrances.length; i++) {
-            let element = hindrances[i];
+            let element = hindrances[i].trim();
             let isMajor = RegExp(`\\(${game.i18n.localize("npcImporter.parser.Major")}`).test(element);
             element = element.replace(majorMinor, '').replace('()', '').trim();
             var hindranceFromCompendium = await getItemFromCompendium(element.split('(')[0].trim(), 'hindrance');
@@ -135,7 +135,7 @@ export const PowerBuilder = async function (powers) {
     if (powers != undefined) {
         var allPowers = [];
         for (let i = 0; i < powers.length; i++) {
-            const element = powers[i];
+            const element = powers[i].trim();
             var powerFromCompendium = await getItemFromCompendium(element, 'power');
             try {
                 if (powerFromCompendium != undefined) {

@@ -33,7 +33,7 @@ export const SpecialAbilitiesForDescription = function (specialAbilitiesData) {
 }
 
 function CreateHtmlList(text) {
-    let html = `<h3><strong>${game.i18n.localize("npcImporter.parser.SpecialAbilities")}</strong></h3><ul>`
+    let html = `<hr> <h3><strong>${game.i18n.localize("npcImporter.parser.SpecialAbilities")}</strong></h3><ul>`
     text.forEach(element => {
         html = html.concat(`<li>${element.replace(new RegExp('@([aehw])?'), '').trim()}</li>`);
     });
