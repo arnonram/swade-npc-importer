@@ -22,7 +22,7 @@ export const SpecialAbilitiesForDescription = function (specialAbilitiesData) {
         if (item != game.i18n.localize("npcImporter.parser.Speed")){
             if (game.packs.get('swade-core-rules.swade-rules') != undefined) {
                 var cleanedItem = item.split('(')[0].replace(new RegExp('[\\−\\-\\+]?[0-9]'), '').trim();
-            textForDescription.push(`&commat;Compendium[swade-core-rules.swade-rules.Special Ability (${cleanedItem})]{${item}}: ${specialAbilitiesData[item]}`)
+            textForDescription.push(`&commat;Compendium[swade-core-rules.swade-rules.Special Ability (${cleanedItem})]{${item}}: ${specialAbilitiesData[elem]}`)
             }
         } else {
             textForDescription.push(`<b>${item}:</b> ${specialAbilitiesData[item]}`)
@@ -33,7 +33,7 @@ export const SpecialAbilitiesForDescription = function (specialAbilitiesData) {
 }
 
 function CreateHtmlList(text) {
-    let html = `<hr><h3><strong>${game.i18n.localize("npcImporter.parser.SpecialAbilities")}</strong></h3><ul>`
+    let html = `<hr> <h3><strong>${game.i18n.localize("npcImporter.parser.SpecialAbilities")}</strong></h3><ul>`
     text.forEach(element => {
         html = html.concat(`<li>${element.replace(new RegExp('@([aehw])?'), '').trim()}</li>`);
     });

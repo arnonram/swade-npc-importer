@@ -1,13 +1,15 @@
-export const BuildActorToken = async function(parsedData, disposition) {
-    var token = {};
+import { settingAutoCalcSize } from "../global.js";
+import { getModuleSettings } from "../utils/foundryActions.js";
+
+export const BuildActorToken = async function(parsedData, tokenSettings) {
+    var token = tokenSettings;
     const squares = GetWidthHight(parsedData.Size);
 
-    token.width = squares;
-    token.height = squares;
-    token.scale = CalculateScale(parsedData.Size);
-    token.vision = true;
-    token.dimSight = 10;
-    token.disposition = disposition;
+    if(getModuleSettings(settingAutoCalcSize)) {
+        token.width = squares;
+        token.height = squares;
+        token.scale = CalculateScale(parsedData.Size);
+    }    
     return token;
 }
 

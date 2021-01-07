@@ -36,6 +36,10 @@ It is highly recommended to choose the Package and/or Item Compendiums you wish 
 
 ![Compendiums Selector](./readme_images/NpcImporterSettingsCompendiumSelector.png)
 
+Some _Prototype Token_ options may be set by default
+
+![Compendiums Selector](./readme_images/NpcImporterSettingsTokenSettings.png)
+
 ## How it does it and what's supported
 
 1. The statblock is prased by searching for all supported attributes/traits/items/etc..
@@ -50,7 +54,11 @@ Support is for both the UI and parsing of statblock
 - Español (thanks @Montver)
 - Português (Brasil) (thanks @lipefl)
 
-(If you wish to add support for more languages, please don't hesitate to create a pull request or open an issue with the file attached)
+***Please Note:*** I work mainly with English sources, and I do try to test with the supported languages, but, due to the few non-English stat-blocks I have and due to translation quirks, there will be more issus with the non-English. 
+
+My Apologies for that :)
+
+***Adding More Languages:*** If you wish to add support for more languages, please don't hesitate to create a pull request or open an issue with the file attached.
 
 ### Out-of-the-box supported Attributes & Traits
 

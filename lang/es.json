@@ -58,7 +58,7 @@
     "npcImporter.parser.Resilient" : "Resilient",
     "npcImporter.parser.VeryResilient" : "Very Resilient",
     "npcImporter.parser.Weakness" : "Weakness",
-    "npcImporter.parser.Arcane" : "Arcano",
+    "npcImporter.parser.Arcane" : "TA|Trasfondo Arcano",
     "npcImporter.parser.Minor" : "Minor",
     "npcImporter.parser.Major" : "Major",
 

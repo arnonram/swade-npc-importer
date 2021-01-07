@@ -18,6 +18,7 @@ export const settingToken = "tokenSettings";
 export const settingCalculateIgnoredWounds = "calculateIgnoreWounds";
 export const settingCalculateAdditionalWounds = "calculateAdditionalWounds";
 export const settingAutoCalcToughness = "autoCalcToughness";
+export const settingAutoCalcSize = "autoCalcSize";
 
 // global logger
 export const log = function (msg) {
@@ -27,5 +28,5 @@ export const log = function (msg) {
 // regex
 export const newLineRegex = /\r\n|\n|\r/g;
 export const diceRegex = /(\d+)?d(\d+)([\+\-]\d+)?/g;
-export const gearParsingRegex = /(^[A-Za-zÀ-ÖØ-öø-ÿ \-]+)(\(([^()]+)\))?,?/gi;
+export const gearParsingRegex = /(^[A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
 export const armorModRegex = /\+\d+/;

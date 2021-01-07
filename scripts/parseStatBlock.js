@@ -83,18 +83,17 @@ function GetNameAndDescription(nameAndDescription) {
     nameDesc.Name = capitalizeEveryWord(lines[0].trim());
     lines.shift();
     let bio = descriptionByParagraph(lines);
-    if (bio.length > 0) {
-        nameDesc.Biography = {
-            value: bio
-        }
+    nameDesc.Biography = {
+        value: bio
     }
+
     return nameDesc;
 }
 
-function descriptionByParagraph(descArray){
+function descriptionByParagraph(descArray) {
     let bio = '';
-    descArray.forEach(line=>{
-        if (line.endsWith('.')){
+    descArray.forEach(line => {
+        if (line.endsWith('.')) {
             line = line + '<br/>'
         }
         bio += line;
@@ -135,7 +134,7 @@ function GetSkills(sections) {
     let trait = `${game.i18n.localize("npcImporter.parser.Skills")}:`;
     let skills = SplitAndTrim(sections.find(x => x.includes(trait)).replace(trait, ''), ',');
     let skillsDict = {};
-    skills.forEach(singleTrait => {        
+    skills.forEach(singleTrait => {
         let diceAndMode = singleTrait.match(global.diceRegex)[0].toString();
         let traitName = singleTrait.replace(diceAndMode, '').trim().replace(' )', ')');
         skillsDict[traitName.toLowerCase().replace(':', '')] = buildTrait(diceAndMode);
@@ -146,11 +145,11 @@ function GetSkills(sections) {
 function buildTrait(data) {
     let diceAndMode = '';
     try {
-        diceAndMode = data.match(global.diceRegex)[0].toString();    
+        diceAndMode = data.match(global.diceRegex)[0].toString();
     } catch (error) {
         diceAndMode = '1' // usually will be 1, if not then we'll need to think about it.
     }
-    
+
     let traitDice = diceAndMode.includes("+") ? diceAndMode.split("+")[0] : diceAndMode.split("-")[0];
     let traitMod = diceAndMode.includes("+")
         ? `+${diceAndMode.split("+")[1]}`
@@ -203,20 +202,20 @@ function GetListsStats(sections) {
     supportedListStats.forEach(element => {
         var line = sections.find(x => x.includes(element));
         if (line != undefined && line.startsWith(game.i18n.localize("npcImporter.parser.Hindrances"))) {
-            retrievedListStats.Hindrances = stringsToArray(line)
+            retrievedListStats.Hindrances = stringsToArray(line);
         } else if (line != undefined && line.startsWith(game.i18n.localize("npcImporter.parser.Edges"))) {
-            retrievedListStats.Edges = stringsToArray(line)
+            retrievedListStats.Edges = stringsToArray(line);
         } else if (line != undefined && line.startsWith(game.i18n.localize("npcImporter.parser.Powers"))) {
-            retrievedListStats.Powers = stringsToArray(line)
+            retrievedListStats.Powers = stringsToArray(line);
         }
     });
     return retrievedListStats;
 }
 
 function stringsToArray(line) {
-    let data = line.replace(global.newLineRegex, ' ').replace('.', '').split(':')[1]
-    if (new RegExp(/\w+/gi).test(data)) {
-        return data.split(',').map(s => s.trim());
+    let data = line.replace(global.newLineRegex, ' ').replace('.', '').split(':')[1].trim();
+    if (data.length > 1){
+        return data.match(new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9 ]+)(\(([^\)]+)\))?/gi));
     }
 }
 
@@ -242,7 +241,7 @@ function getAbilities(data) {
     const modifiedSpecialAbs = getModuleSettings(global.settingModifiedSpecialAbs);
     let abilities = {}
     let line = ''
-    if(!modifiedSpecialAbs){
+    if (!modifiedSpecialAbs) {
         line = SplitAndTrim(data, new RegExp(getModuleSettings(global.settingBulletPointIcons), "ig"));
     } else {
         line = SplitAndTrim(data, new RegExp('@', 'gi'))
@@ -254,7 +253,7 @@ function getAbilities(data) {
         let abilityName = !modifiedSpecialAbs ? ability[0].trim() : `@${ability[0].trim()}`;
         abilities[abilityName] = ability.length == 2 ? ability[1].replace(global.newLineRegex, " ").trim() : ability[0];
     });
-    
+
     return abilities;
 }
 
@@ -263,7 +262,7 @@ async function GetGear(sections) {
     try {
         let characterGear = []
         let gearLine = sections.find(x => x.includes(gearString)).replace(global.newLineRegex, ' ').replace(`${gearString} `, '');
-        while (gearLine.length > 0) {
+        while (gearLine.length > 1) {
             if (global.gearParsingRegex.test(gearLine)) {
                 let match = gearLine.match(global.gearParsingRegex)[0];
                 characterGear.push(match.trim());
@@ -289,8 +288,8 @@ async function ParseGear(gearArray) {
         if (splitGear.length == 1) {
             let normalGear = splitGear[0];
             if (normalGear != '.') {
-                if (normalGear.slice(-1) == ',' || normalGear.slice(-1) == '.' ){
-                    normalGear = normalGear.replace(',','').replace('.', '');
+                if (normalGear.slice(-1) == ',' || normalGear.slice(-1) == '.') {
+                    normalGear = normalGear.replace(',', '').replace('.', '');
                 }
 
                 gearDict[normalGear.trim()] = null;
@@ -325,8 +324,12 @@ function weaponParser(weapon) {
         if (new RegExp('^Str', 'i').test(stat)) {
             weaponStats.damage = stat;
         } else {
-            let statName = stat.match(new RegExp('^[A-Za-z]+'))[0];
-            weaponStats[statName.toLowerCase().trim()] = stat.replace(statName, '').trim();
+            if (stat.includes(game.i18n.localize("npcImporter.parser.Shots").toLowerCase())){
+                weaponStats["Shots"] = stat.replace("Shots", '').trim();    
+            } else {
+                let statName = stat.match(new RegExp('^[A-Za-z]+'))[0];
+                weaponStats[statName.toLowerCase().trim()] = stat.replace(statName, '').trim();
+            }
         }
     });
     return weaponStats;
@@ -343,9 +346,9 @@ function getSystemDefinedStats(sections) {
                 stat = stat.replace(global.newLineRegex, ' ');
                 stat = stat.split(':');
                 if (element.dtype === "String") {
-                    systemStats[stat[0]] = stat[1]
+                    systemStats[stat[0]] = stat[1].replace(';', '').trim();
                 } else if (element.dtype === "Number") {
-                    systemStats[stat[0]] = parseInt(stat[1].replace(';', '').trim());
+                    systemStats[stat[0]] = parseInt(stat[1].replace(';', '').trim().replace('–', '-'));
                 } else if (element.dtype === "Boolean") {
                     systemStats[stat[0]] = stat[1].replace(';', '').trim() == "true";
                 }
