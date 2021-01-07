@@ -18,7 +18,7 @@ export default class TokenSettings extends FormApplication {
 
     getData() {
         const currentTokenValues = getModuleSettings(settingToken);
-        let a = {
+        return {
             dispositionHostile: {
                 value: "HOSTILE",
                 selected: currentTokenValues.disposition == 'HOSTILE' ? 'selected' : ''
@@ -65,7 +65,6 @@ export default class TokenSettings extends FormApplication {
             // bar1Attribute: "",
             // bar2Attribute: "",
           }
-          return a;
     }
     
     async _updateObject(event, formData) {
