@@ -133,7 +133,7 @@ export class NpcImporterSettings {
             config: true,
             scope: "world",
             type: Boolean,
-            default: false
+            default: true
         });
         game.settings.register(thisModule, settingAutoCalcSize, {
             name: game.i18n.localize("npcImporter.settings.SetSize"),

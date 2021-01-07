@@ -163,6 +163,7 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
         if (weaponFromCompendium != undefined) {
             if (new RegExp(game.i18n.localize("npcImporter.parser.NaturalWeapons")).test(weaponFromCompendium.name)){
                 weaponFromCompendium.data.damage = dmg;
+                weaponFromCompendium.data.equipped= true;
             }
             return weaponFromCompendium;
         } else {
@@ -190,6 +191,7 @@ export const ShieldBuilder = async function (shieldName, description, parry = 0,
     var shieldFromCompendium = await getItemFromCompendium(shieldName, 'shield');
     try {
         if (shieldFromCompendium != undefined) {
+            shieldFromCompendium.data.equipped= true;
             return shieldFromCompendium;
         } else {
             let shield = {};
@@ -218,6 +220,7 @@ export const ArmorBuilder = async function (armorName, armorBonus, armorDescript
         if (armorFromCompendium != undefined) {
             armorFromCompendium.name = armorName;
             armorFromCompendium.data.description = `${armorDescription.trim()}<hr><br/>${armorFromCompendium.data.description}`
+            armorFromCompendium.data.equipped = true;
             if (armorFromCompendium.data.armor == 0){
                 armorFromCompendium.data.armor = armorBonus;
             }
