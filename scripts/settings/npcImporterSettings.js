@@ -34,8 +34,8 @@ export class NpcImporterSettings {
             scope: "world",
             type: Object,
             default: {
-                disposition: "HOSTILE",
-                displayName: "DISPLAY_NONE",
+                disposition: -1,
+                displayName: 0,
                 vision: false,
                 dimSight: 0,
                 brightSight: 0//,
