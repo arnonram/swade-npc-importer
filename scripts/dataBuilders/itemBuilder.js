@@ -164,9 +164,13 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
     var weaponFromCompendium = await getItemFromCompendium(weaponName, 'weapon');
     try {
         if (weaponFromCompendium != undefined) {
-            if (new RegExp(game.i18n.localize("npcImporter.parser.NaturalWeapons")).test(weaponFromCompendium.name)) {
-                weaponFromCompendium.data.damage = dmg;
-                weaponFromCompendium.data.equipped = true;
+            // if (new RegExp(game.i18n.localize("npcImporter.parser.NaturalWeapons")).test(weaponFromCompendium.name)) {
+            //     weaponFromCompendium.data.damage = dmg;
+            // }
+            weaponFromCompendium.data.damage = dmg != undefined ? dmg : weaponFromCompendium.data.damage;
+            weaponFromCompendium.data.equipped = true;
+            if (description != undefined && description.length > 0){
+                weaponFromCompendium.data.description = `${description}<hr>${weaponFromCompendium.data.description}`;
             }
             return weaponFromCompendium;
         } else {
@@ -224,7 +228,7 @@ export const ArmorBuilder = async function (armorName, armorBonus, armorDescript
             armorFromCompendium.name = armorName;
             armorFromCompendium.data.equipped = true;
             if (armorDescription != undefined || armorDescription.length > 0) {
-                armorFromCompendium.data.description = `${armorDescription.trim()}<hr>${armorFromCompendium.data.description}`
+                armorFromCompendium.data.description = `${armorDescription.trim()}<hr>${armorFromCompendium.data.description}`;
             }
             if (armorBonus != 0) {
                 armorFromCompendium.data.armor = armorBonus;
