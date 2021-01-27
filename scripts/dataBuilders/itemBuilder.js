@@ -7,7 +7,7 @@ export const SkillBuilder = async function (skillsDict) {
         var allSkills = [];
         for (const element in skillsDict) {
             var skillFromComp = {};
-            if (element.startsWith(game.i18n.localize("npcImporter.parser.Knowledge").toLowerCase())){
+            if (element.startsWith(game.i18n.localize("npcImporter.parser.Knowledge").toLowerCase())) {
                 skillFromComp = await getItemFromCompendium(element, 'skill');
             } else {
                 skillFromComp = await getItemFromCompendium(element.split('(')[0].trim(), 'skill');
@@ -46,12 +46,12 @@ export const EdgeBuilder = async function (edges) {
         var allEdges = [];
         for (let i = 0; i < edges.length; i++) {
             let element = edges[i].trim();
-            if (element.includes(game.i18n.localize("npcImporter.parser.Imp"))){
+            if (element.includes(game.i18n.localize("npcImporter.parser.Imp"))) {
                 element = element.replace(game.i18n.localize("npcImporter.parser.Imp"), '');
                 element = `${game.i18n.localize("npcImporter.parser.Improved")} ${element}`.trim();
             }
             var cleanedName = '';
-            if (new RegExp(game.i18n.localize("npcImporter.parser.Arcane")).test(element)){
+            if (new RegExp(game.i18n.localize("npcImporter.parser.Arcane")).test(element)) {
                 cleanedName = element;
             } else {
                 cleanedName = element.split('(')[0].trim();
@@ -91,7 +91,7 @@ export const HindranceBuilder = async function (hindrances) {
             var hindranceFromCompendium = await getItemFromCompendium(element.split('(')[0].trim(), 'hindrance');
             try {
                 if (hindranceFromCompendium != undefined) {
-                    hindranceFromCompendium.name = element.replace('—','').replace('-','').trim();
+                    hindranceFromCompendium.name = element.replace('—', '').replace('-', '').trim();
                     hindranceFromCompendium.data.major = isMajor;
                     allHindrances.push(hindranceFromCompendium);
                 } else {
@@ -114,6 +114,9 @@ export const HindranceBuilder = async function (hindrances) {
 export const ItemBuilderFromSpecAbs = async function (name, desc, type) {
     let cleanName = checkSpecificItem(name).trim();
     var itemFromCompendium = await getItemFromCompendium(cleanName, type);
+    if (itemFromCompendium == undefined) {
+        itemFromCompendium = await getItemFromCompendium(cleanName.split('(')[0].trim(), type);
+    }
     if (itemFromCompendium != undefined && itemFromCompendium.type === type) {
         itemFromCompendium.name = name;
         itemFromCompendium.data.description = `${desc.trim()}<hr>${itemFromCompendium.data.description}`;
@@ -161,9 +164,9 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
     var weaponFromCompendium = await getItemFromCompendium(weaponName, 'weapon');
     try {
         if (weaponFromCompendium != undefined) {
-            if (new RegExp(game.i18n.localize("npcImporter.parser.NaturalWeapons")).test(weaponFromCompendium.name)){
+            if (new RegExp(game.i18n.localize("npcImporter.parser.NaturalWeapons")).test(weaponFromCompendium.name)) {
                 weaponFromCompendium.data.damage = dmg;
-                weaponFromCompendium.data.equipped= true;
+                weaponFromCompendium.data.equipped = true;
             }
             return weaponFromCompendium;
         } else {
@@ -191,7 +194,7 @@ export const ShieldBuilder = async function (shieldName, description, parry = 0,
     var shieldFromCompendium = await getItemFromCompendium(shieldName, 'shield');
     try {
         if (shieldFromCompendium != undefined) {
-            shieldFromCompendium.data.equipped= true;
+            shieldFromCompendium.data.equipped = true;
             return shieldFromCompendium;
         } else {
             let shield = {};
@@ -219,9 +222,11 @@ export const ArmorBuilder = async function (armorName, armorBonus, armorDescript
     try {
         if (armorFromCompendium != undefined) {
             armorFromCompendium.name = armorName;
-            armorFromCompendium.data.description = `${armorDescription.trim()}<hr><br/>${armorFromCompendium.data.description}`
             armorFromCompendium.data.equipped = true;
-            if (armorFromCompendium.data.armor == 0){
+            if (armorDescription != undefined || armorDescription.length > 0) {
+                armorFromCompendium.data.description = `${armorDescription.trim()}<hr>${armorFromCompendium.data.description}`
+            }
+            if (armorBonus != 0) {
                 armorFromCompendium.data.armor = armorBonus;
             }
             return armorFromCompendium;

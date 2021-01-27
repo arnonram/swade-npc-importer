@@ -137,7 +137,7 @@ function GetSkills(sections) {
     skills.forEach(singleTrait => {
         let diceAndMode = singleTrait.match(global.diceRegex)[0].toString();
         let traitName = singleTrait.replace(diceAndMode, '').trim().replace(' )', ')');
-        skillsDict[traitName.toLowerCase().replace(':', '')] = buildTrait(diceAndMode);
+        skillsDict[traitName.toLowerCase().replace(':', '').replace('.', '')] = buildTrait(diceAndMode);
     });
     return { Skills: skillsDict };
 }
