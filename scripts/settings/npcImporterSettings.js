@@ -1,7 +1,7 @@
 import { getActorAddtionalStatsArray } from "../utils/foundryActions.js";
 import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
-    settingDefaultDisposition, settingDefaultActorType, settingDefaultIsWildcard,
+    settingDefaultActorType, settingDefaultIsWildcard,
     settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage, settingToken,
     settingModifiedSpecialAbs, settingAutoCalcToughness, settingCalculateIgnoredWounds, settingCalculateAdditionalWounds, settingAutoCalcSize
 } from "../global.js";
@@ -133,7 +133,7 @@ export class NpcImporterSettings {
             config: true,
             scope: "world",
             type: Boolean,
-            default: true
+            default: false
         });
         game.settings.register(thisModule, settingAutoCalcSize, {
             name: game.i18n.localize("npcImporter.settings.SetSize"),
