@@ -49,7 +49,7 @@ export const getAllActiveCompendiums = function () {
         let packArray = packs.split(',');
         packArray.forEach(packName => {
             game.packs.filter((comp) =>
-                comp.metadata.entity == "Item" &&
+                // comp.metadata.entity == "Item" &&
                 comp.metadata.package == packName)
                 .map((comp) => {
                     comps.push(`${comp.metadata.package}.${comp.metadata.name}`);

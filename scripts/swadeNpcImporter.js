@@ -105,11 +105,11 @@ function importerDialogue() {
             </div>
             <div class="column"> 
                 <p>${game.i18n.localize("npcImporter.HTML.Disposition")}:</p>
-                <input type="radio" id="hostile" name="disposition" value="-1" ${is_checked(defaultData.tokenData.disposition, 'HOSTILE')}>
+                <input type="radio" id="hostile" name="disposition" value="-1" ${is_checked(defaultData.tokenData.disposition, -1)}>
                 <label for="hostile">Hostile</lable><br>
-                <input type="radio" id="neutral" name="disposition" value="0" ${is_checked(defaultData.tokenData.disposition, 'NEUTRAL')}>
+                <input type="radio" id="neutral" name="disposition" value="0" ${is_checked(defaultData.tokenData.disposition, 0)}>
                 <label for="neutral">Neutral</lable><br>
-                <input type="radio" id="friendly" name="disposition" value="1" ${is_checked(defaultData.tokenData.disposition, 'FRIENDLY')}>
+                <input type="radio" id="friendly" name="disposition" value="1" ${is_checked(defaultData.tokenData.disposition, 1)}>
                 <label for="friendly">Friendly</lable>
             </div>
         </div>

@@ -1,6 +1,5 @@
 import { getActorAddtionalStatsArray, getModuleSettings } from "../utils/foundryActions.js";
 import * as global from "../global.js";
-import { SpecialAbilitiesForDescription } from "../utils/textUtils.js"
 import { additionalStatsBuilder } from "./itemBuilder.js";
 
 export const BuildActorData = async function (parsedData, isWildCard) {
@@ -10,6 +9,7 @@ export const BuildActorData = async function (parsedData, isWildCard) {
         data.stats = {
             speed: {
                 runningDie: findRunningDie(parsedData),
+                runningMod: findRunningMod(parsedData),
                 value: parsedData.Pace
             },
             toughness: {
@@ -48,16 +48,6 @@ function generateAttributes(parsedData) {
 
     delete attributesData.animalSmarts;
     return attributesData;
-}
-
-function buildBioAndSpecialAbilities(parsedData) {
-    let bio = parsedData.Biography?.value ?? '';
-
-    if (parsedData.SpecialAbilities != undefined) {
-        let specialAbsHtml = SpecialAbilitiesForDescription(parsedData.SpecialAbilities)
-        return bio.concat(specialAbsHtml);
-    }
-    return bio;
 }
 
 async function buildAdditionalStats(parsedData) {
@@ -129,26 +119,38 @@ function initiativeMod(parsedData) {
 }
 
 function findRunningDie(parsedData) {
-    let runningDie = undefined;
+    let runningDie = 6;
 
     try {
         for (const ability in parsedData.SpecialAbilities) {
             if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Speed").toLowerCase())) {
-                runningDie = parseInt(parsedData.SpecialAbilities[ability].match(global.diceRegex)[0].replace('d', ''))
+                return parseInt(parsedData.SpecialAbilities[ability].match(global.diceRegex)[0].replace('d', ''))
             }
         }
-        if (runningDie == undefined) {
-            parsedData.Edges.forEach(edge => {
-                if (edge.toLowerCase().includes(game.i18n.localize("npcImporter.parser.FleetFooted").toLowerCase())) {
-                    runningDie += 2
-                }
-            });
-        }
+        parsedData.Edges.forEach(edge => {
+            if (edge.toLowerCase().includes(game.i18n.localize("npcImporter.parser.FleetFooted").toLowerCase())) {
+                runningDie += 2
+            }
+        });
     } catch (error) {
 
     }
 
     return runningDie;
+}
+
+function findRunningMod(parsedData) {
+    try {
+        let runningMode = 0;
+        parsedData.Edges.forEach(edge => {
+            if (edge.toLowerCase().includes(game.i18n.localize("npcImporter.parser.FleetFooted").toLowerCase())) {
+                runningMode += 2
+            }
+        });
+        return runningMode;    
+    } catch (error) {
+        
+    }    
 }
 
 function calculateIgnoredWounds(parsedData) {

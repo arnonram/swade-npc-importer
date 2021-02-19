@@ -2,20 +2,20 @@
     <div class="column">
         <label>{{localize 'TOKEN.CharDisposition'}}:</label>
         <select id="disposition" name="disposition">
-            <option value="HOSTILE" {{this.dispositionHostile.selected}}>{{localize 'TOKEN.HOSTILE'}}</option>
-            <option value="NEUTRAL" {{this.dispositionNeutral.selected}}>{{localize 'TOKEN.NEUTRAL'}}</option>
-            <option value="FRIENDLY" {{this.dispositionFriendly.selected}}>{{localize 'TOKEN.FRIENDLY'}}</option>
+            <option name="HOSTILE" value="-1" {{this.dispositionHostile.selected}}>{{localize 'TOKEN.HOSTILE'}}</option>
+            <option name="NEUTRAL" value="0" {{this.dispositionNeutral.selected}}>{{localize 'TOKEN.NEUTRAL'}}</option>
+            <option name="FRIENDLY" value="1" {{this.dispositionFriendly.selected}}>{{localize 'TOKEN.FRIENDLY'}}</option>
         </select>
     </div>
     <div class="form-group">
         <label>{{localize 'TOKEN.CharShowNameplate'}}:</label>
         <select id="displayName" name="displayName">
-            <option value="DISPLAY_ALWAYS" {{this.displayNameDISPLAY_ALWAYS.selected}}>{{localize 'TOKEN.DISPLAY_ALWAYS'}}</option>
-            <option value="DISPLAY_CONTROL" {{this.displayNameDISPLAY_CONTROL.selected}}>{{localize 'TOKEN.DISPLAY_CONTROL'}}</option>
-            <option value="DISPLAY_HOVER" {{this.displayNameDISPLAY_HOVER.selected}}>{{localize 'TOKEN.DISPLAY_HOVER'}}</option>
-            <option value="DISPLAY_NONE" {{this.displayNameDISPLAY_NONE.selected}}>{{localize 'TOKEN.DISPLAY_NONE'}}</option>
-            <option value="DISPLAY_OWNER" {{this.displayNameDISPLAY_OWNER.selected}}>{{localize 'TOKEN.DISPLAY_OWNER'}}</option>
-            <option value="DISPLAY_OWNER_HOVER" {{this.displayNameDISPLAY_OWNER_HOVER.selected}}>{{localize 'TOKEN.DISPLAY_OWNER_HOVER'}}</option>
+            <option name="DISPLAY_NONE" value="0" {{this.displayNameDISPLAY_NONE.selected}}>{{localize 'TOKEN.DISPLAY_NONE'}}</option>
+            <option name="DISPLAY_CONTROL" value="10" {{this.displayNameDISPLAY_CONTROL.selected}}>{{localize 'TOKEN.DISPLAY_CONTROL'}}</option>
+            <option name="DISPLAY_OWNER_HOVER" value="20" {{this.displayNameDISPLAY_OWNER_HOVER.selected}}>{{localize 'TOKEN.DISPLAY_OWNER_HOVER'}}</option>
+            <option name="DISPLAY_HOVER" value="30" {{this.displayNameDISPLAY_HOVER.selected}}>{{localize 'TOKEN.DISPLAY_HOVER'}}</option>
+            <option name="DISPLAY_OWNER" value="40" {{this.displayNameDISPLAY_OWNER.selected}}>{{localize 'TOKEN.DISPLAY_OWNER'}}</option>
+            <option name="DISPLAY_ALWAYS" value="50" {{this.displayNameDISPLAY_ALWAYS.selected}}>{{localize 'TOKEN.DISPLAY_ALWAYS'}}</option>
         </select>
     </div>
     <hr>

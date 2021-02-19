@@ -24,9 +24,9 @@ jobs:
         uses: ncipollo/release-action@v1.7.3
         with:
           allowUpdates: true
-          name: Release ${{steps.get-version.outputs.version}}
+          name: v${{steps.get-version.outputs.version}}
           draft: false
           prerelease: false
           token: ${{secrets.GITHUB_TOKEN}}
           artifacts: ./module.zip, ./module.json
-          tag: ${{steps.get-version.outputs.version}}
+          tag: v${{steps.get-version.outputs.version}}
