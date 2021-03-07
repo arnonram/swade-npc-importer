@@ -1,6 +1,6 @@
 # SWADE NPC Importer
 
-I took this project in order to learn some JavaScript (my day job is C# and some Python; can't say I really like JS that much). <br/>
+I took this project in order to have an easy way of importing NPCs to FoundryVTT and also learn some JavaScript (so the code here might be messy and not use best conventions, sorry about that :grinning: )<br/>
 Mostly, I did it for myself and my friends, but of course you're all welcome to enjoy and use.
 
 Cheers,<br/>
@@ -11,6 +11,7 @@ Cheers,<br/>
 
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
 
+> **Please Note**: If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard. Either set your hosted Foundry to work throught HTTPS, or set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
 ## How to use it...
 0. Go to [Settings](#some-configurations) and look  around:
    - Under ***Select Item Compendiums*** mark any Compendium you wish NPC Importer to use (not selecting anyting will cycle through all compendiums and use the first relevant entry)
