@@ -367,7 +367,7 @@ function SplitAndTrim(stringToSplit, separator) {
 function GetSize(abilities) {
     for (const ability in abilities) {
         if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Size").toLowerCase())) {
-            return parseInt(ability.replace(new RegExp('@([aehw])?'), '').trim().split(" ")[1].replace('−', '-'));
+            return parseInt(ability.replace(new RegExp('@([aehw]|sa)?'), '').trim().split(" ")[1].replace('−', '-'));
         }
     }
     return 0;

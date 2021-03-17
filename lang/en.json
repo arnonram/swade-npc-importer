@@ -94,5 +94,7 @@
     "npcImporter.settings.AdditionalWoundsHint" : "Take into account Size, isWildcard, and (Very) Resilient, which increase max wounds",
     "npcImporter.settings.AutoCalcToughness" : "Set default Auto Calculate Toughness",
     "npcImporter.settings.SetSize": "Auto-set token size",
-    "npcImporter.settings.SetSizeHint" : "Auto-sets the token size & scale according to creature size"
+    "npcImporter.settings.SetSizeHint" : "Auto-sets the token size & scale according to creature size",
+    "npcImporter.settings.AllAsSpecialAbilities": "Set all as Special Abilities",
+    "npcImporter.settings.AllAsSpecialAbilitiesHint": "If checked all Special Abilities will be created at Special Abilities items. Otherwise, NPC Importer will try to identify Weapons/Armors and create them as appropriate Gear items"
 }

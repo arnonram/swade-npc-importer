@@ -1,9 +1,9 @@
 import { getActorAddtionalStatsArray } from "../utils/foundryActions.js";
 import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
-    settingDefaultActorType, settingDefaultIsWildcard,
-    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage, settingToken,
-    settingModifiedSpecialAbs, settingAutoCalcToughness, settingCalculateIgnoredWounds, settingCalculateAdditionalWounds, settingAutoCalcSize
+    settingDefaultActorType, settingDefaultIsWildcard, settingBulletPointIcons, settingLastSaveFolder,
+    settingCompsToUse, settingParaeLanguage, settingToken, settingModifiedSpecialAbs, settingAutoCalcToughness,
+    settingCalculateIgnoredWounds, settingCalculateAdditionalWounds, settingAutoCalcSize, settingallAsSpecialAbilities
 } from "../global.js";
 import SelectCompendiums from "./selectCompendiums.js";
 import TokenSettings from "./tokenSettings.js"
@@ -103,6 +103,14 @@ export class NpcImporterSettings {
             scope: "world",
             type: String,
             default: '•|'
+        });
+        game.settings.register(thisModule, settingallAsSpecialAbilities, {
+            name: game.i18n.localize("npcImporter.settings.AllAsSpecialAbilities"),
+            hint: game.i18n.localize("npcImporter.settings.AllAsSpecialAbilitiesHint"),
+            config: true,
+            scope: "world",
+            type: Boolean,
+            default: false
         });
         game.settings.register(thisModule, settingModifiedSpecialAbs, {
             name: game.i18n.localize("npcImporter.settings.ModifiedSpecialAbilities"),

@@ -112,11 +112,11 @@ export const HindranceBuilder = async function (hindrances) {
 }
 
 export const AbilityBuilder = async function (abilityName, abilityDescription){
-    const doesGrnatPowers = new RegExp(`${game.i18n.localize("npcImporter.parser.PowerPoints")}|${game.i18n.localize("npcImporter.parser.Powers")}`).test(abilityDescription);
+    const doesGrantPowers = new RegExp(`${game.i18n.localize("npcImporter.parser.PowerPoints")}|${game.i18n.localize("npcImporter.parser.Powers")}`).test(abilityDescription);
     var abilityFromCompendium = await getItemFromCompendium(abilityName, 'ability');
     try {
         if (abilityFromCompendium != undefined) {
-            abilityFromCompendium.data.description = `${desc.trim()}<hr>${itemFromCompendium.data.description}`;
+            abilityFromCompendium.data.description = `${abilityDescription.trim()}<hr>${abilityFromCompendium.data.description}`;
             return abilityFromCompendium;
         } else {
             let ability = {};
@@ -124,8 +124,8 @@ export const AbilityBuilder = async function (abilityName, abilityDescription){
             ability.type = "ability";
             ability.data = {
                 description: abilityDescription,
-                subtype = "special",
-                grantsPowers = doesGrnatPowers
+                subtype: "special",
+                grantsPowers: doesGrantPowers
             };
             ability.img = "systems/swade/assets/icons/ability.svg";
             return ability;

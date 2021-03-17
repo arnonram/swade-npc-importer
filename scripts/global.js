@@ -19,6 +19,7 @@ export const settingCalculateIgnoredWounds = "calculateIgnoreWounds";
 export const settingCalculateAdditionalWounds = "calculateAdditionalWounds";
 export const settingAutoCalcToughness = "autoCalcToughness";
 export const settingAutoCalcSize = "autoCalcSize";
+export const settingallAsSpecialAbilities = "allAsSpecialAbilities";
 
 // global logger
 export const log = function (msg) {
