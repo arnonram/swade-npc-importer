@@ -1,17 +1,8 @@
 # SWADE NPC Importer
 
-I took this project in order to have an easy way of importing NPCs to FoundryVTT and also learn some JavaScript (so the code here might be messy and not use best conventions, sorry about that :grinning: )<br/>
-Mostly, I did it for myself and my friends, but of course you're all welcome to enjoy and use.
-
-Cheers,<br/>
--arnon
-
----
-<br/>
-
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
 
-> **Please Note**: If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard. Either set your hosted Foundry to work throught HTTPS, or set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
+> **Please Note**: If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). Either set your hosted Foundry to work with HTTPS, or set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
 ## How to use it...
 0. Go to [Settings](#some-configurations) and look  around:
    - Under ***Select Item Compendiums*** mark any Compendium you wish NPC Importer to use (not selecting anyting will cycle through all compendiums and use the first relevant entry)
@@ -41,28 +32,16 @@ Some _Prototype Token_ options may be set by default
 
 ![Compendiums Selector](./readme_images/NpcImporterSettingsTokenSettings.png)
 
+---
 ## How it does it and what's supported
 
 1. The statblock is prased by searching for all supported attributes/traits/items/etc..
     - Any _Additional Stats (Actors)_ which were added through the SWADE System Settings are: searched for, added, and enabled
-    - Traits/Item means: skills, Edges, Hindrances, gear, Powers, etc..
+    - Traits/Item means: skills, Edges, Hindrances, Special Abilities, Gear, Powers, etc..
 2. Every trait/item is searched for throughout all Item Compendiums in the selected Package (See [NPC Importer Settings](#some-configurations))
 3. If the triat/item is found in a Compendium then it is copied and updated to the Actor; If not found, then a new one will be created for the Actor only (no new compendium entry is created)
 
-### Supported Languages
-Support is for both the UI and parsing of statblock
-- English
-- Español (thanks @Montver)
-- Português (Brasil) (thanks @lipefl)
-
-***Please Note:*** I work mainly with English sources, and I do try to test with the supported languages, but, due to the few non-English stat-blocks I have and due to translation quirks, there will be more issus with the non-English. 
-
-My Apologies for that :)
-
-***Adding More Languages:*** If you wish to add support for more languages, please don't hesitate to create a pull request or open an issue with the file attached.
-
-### Out-of-the-box supported Attributes & Traits
-
+### What's supported:
 - **Attributes**
 - **Skills**
 - **Hindrances**
@@ -80,7 +59,9 @@ My Apologies for that :)
   - Shields
   - Gear
 - **Special Abilities**
-  - Searching for "Armor" and/or any damage attack (lines with Str., Str+d*, or dice formulas)
+  - Search for "Armor" and/or any damage attack (lines with Str., Str+d*, or dice formulas).
+    - You may select from the settings to not search for these special items, and then they will all be listed as Special Abilities Items
+  - Lists all others as Special Abilities Items
   - Size
     - Size influences the tokens' size (bigger than medium) and scale (for smaller than medium)
     - Add additional wounds as per the Size Table (SWADE Core)
@@ -88,3 +69,14 @@ My Apologies for that :)
   - List them all in the actors' description with links to Compendium rules (if using the core-swade Compendium pack)
   - See [NPC Importer Settings](#some-configurations) for further manipulation of the statblock
 
+---
+## Supported Languages
+Support is for both the UI and parsing of statblock
+- English
+- Español (thanks @Montver)
+- Português (Brasil) (thanks @lipefl)
+
+> ***Please Note:*** I work mainly with English sources, and I do try to test with the supported languages, but, due to the few non-English stat-blocks I have and due to translation quirks, there will be more issus with the non-English. 
+My Apologies for that :)
+
+> ***Adding More Languages:*** If you wish to add support for more languages, please don't hesitate to create a pull request or open an issue with the file attached.

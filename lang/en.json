@@ -85,7 +85,7 @@
     "npcImporter.settings.parseLanguage" : "Parsing language",
     "npcImporter.settings.parseLanguageHint" : "The language used to parse the statblock",
     "npcImporter.settings.ModifiedSpecialAbilities" : "Use modified Special Abilities",
-    "npcImporter.settings.ModifiedSpecialAbilitiesHint" : "Edit the Special Abilities section to help NPC Importer be smarter, by replacing each bullet-point with '@' as follows: @e => Edge; @h => hinrance; @w => weapom; @a => armor; @ => listed as Special Ability under Description section. (Bullet point icons setting is ignored)",
+    "npcImporter.settings.ModifiedSpecialAbilitiesHint" : "Edit the Special Abilities section to help NPC Importer be smarter, by replacing each bullet-point with '@' as follows: @e => Edge; @h => hinrance; @w => weapom; @a => armor; @sa => listed as Special Ability item",
     "npcImporter.settings.TokenSettings" : "Token Settings",
     "npcImporter.settings.TokenSettingsHint" : "Set the default Prototype Token settings for imported actors",
     "npcImporter.settings.IgnoredWounds" : "Calculate Ignore Wounds",

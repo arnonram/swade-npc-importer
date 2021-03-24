@@ -96,7 +96,7 @@ function descriptionByParagraph(descArray) {
         if (line.endsWith('.')) {
             line = line + '<br/>'
         }
-        bio += line;
+        bio += `${line} `;
     })
     return bio;
 }
