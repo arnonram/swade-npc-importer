@@ -49,8 +49,8 @@ async function GetClipboardText() {
 }
 
 function PowerPointsFromSpecialAbility(abilities) {
-    let powerAbility = abilities.filter((items) => items.data.grantsPowers === true)
-    if (powerAbility != undefined) {
+    let powerAbility = abilities.filter((items) => items.data?.grantsPowers === true)
+    if (powerAbility.length > 0) {
         return GetPowerPoints(powerAbility[0].data.description);
     }
 }

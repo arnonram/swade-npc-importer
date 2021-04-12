@@ -125,6 +125,14 @@ export const GetActorId = function (actorName) {
     }
 }
 
+export const GetActorData = function (actorName) {
+    try {
+        return game.actors.getName(actorName).data;
+    } catch (error) {
+        return false;
+    }
+}
+
 export const DeleteActor = async function (actorId) {
     try {
         await Actor.delete(actorId);
