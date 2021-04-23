@@ -111,6 +111,30 @@ export const HindranceBuilder = async function (hindrances) {
     }
 }
 
+export const AbilityBuilder = async function (abilityName, abilityDescription){
+    const doesGrantPowers = new RegExp(`${game.i18n.localize("npcImporter.parser.PowerPoints")}|${game.i18n.localize("npcImporter.parser.Powers")}`).test(abilityDescription);
+    var abilityFromCompendium = await getItemFromCompendium(abilityName, 'ability');
+    try {
+        if (abilityFromCompendium != undefined) {
+            abilityFromCompendium.data.description = `${abilityDescription.trim()}<hr>${abilityFromCompendium.data.description}`;
+            return abilityFromCompendium;
+        } else {
+            let ability = {};
+            ability.name = capitalize(abilityName);
+            ability.type = "ability";
+            ability.data = {
+                description: abilityDescription,
+                subtype: "special",
+                grantsPowers: doesGrantPowers
+            };
+            ability.img = "systems/swade/assets/icons/ability.svg";
+            return ability;
+        }
+    } catch (error) {
+        log(`Could not build ability: ${error}`)
+    }
+}
+
 export const ItemBuilderFromSpecAbs = async function (name, desc, type) {
     let cleanName = checkSpecificItem(name).trim();
     var itemFromCompendium = await getItemFromCompendium(cleanName, type);
@@ -164,9 +188,6 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
     var weaponFromCompendium = await getItemFromCompendium(weaponName, 'weapon');
     try {
         if (weaponFromCompendium != undefined) {
-            // if (new RegExp(game.i18n.localize("npcImporter.parser.NaturalWeapons")).test(weaponFromCompendium.name)) {
-            //     weaponFromCompendium.data.damage = dmg;
-            // }
             weaponFromCompendium.data.damage = dmg != undefined ? dmg : weaponFromCompendium.data.damage;
             weaponFromCompendium.data.equipped = true;
             if (description != undefined && description.length > 0){
@@ -281,8 +302,6 @@ export const additionalStatsBuilder = function (additionalStatName, additionalSt
         return gameAditionalStat;
     }
 }
-
-
 
 function checkSpecificItem(data) {
     const abilitiesWithMod = new RegExp(

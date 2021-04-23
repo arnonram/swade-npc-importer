@@ -4,7 +4,7 @@
   "description": "Import NPC statblocks for SWADE",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "update": "npm uninstall foundry-pc-types && npm install --save-dev gitlab:foundry-projects/foundry-pc/foundry-pc-types"
   },
   "type": "module",
@@ -12,7 +12,8 @@
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
-    "foundry-pc-types": "gitlab:foundry-projects/foundry-pc/foundry-pc-types"
+    "foundry-pc-types": "gitlab:foundry-projects/foundry-pc/foundry-pc-types",
+    "jest": "^26.6.3"
   },
   "repository": {
     "type": "git",

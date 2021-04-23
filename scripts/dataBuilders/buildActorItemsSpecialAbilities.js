@@ -1,5 +1,5 @@
-import { ArmorBuilder, ItemBuilderFromSpecAbs, WeaponBuilder } from "./itemBuilder.js";
-import { diceRegex, settingModifiedSpecialAbs } from "../global.js";
+import { AbilityBuilder, ArmorBuilder, ItemBuilderFromSpecAbs, WeaponBuilder } from "./itemBuilder.js";
+import { diceRegex, settingallAsSpecialAbilities, settingModifiedSpecialAbs } from "../global.js";
 import { GetArmorBonus } from "../utils/parserBuilderHelpers.js";
 import { getModuleSettings } from "../utils/foundryActions.js";
 
@@ -7,18 +7,26 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     const meleeDamageRegex = 
         new RegExp(`\\b${game.i18n.localize("npcImporter.parser.Str")}\\.\\b|\\b${game.i18n.localize("npcImporter.parser.Str")}\\b(\\s?[\\+\\-]\\s?(\\d+)?d?(\\d+)?){0,}`, "gi");
         let specialAbitlitiesItems = [];
-    if (!getModuleSettings(settingModifiedSpecialAbs)){        
-        for (const elem in specialAbilitiesData) {
-            if (elem.toLocaleLowerCase().startsWith(game.i18n.localize("npcImporter.parser.Armor").toLocaleLowerCase())) {
-                let armorBonus = GetArmorBonus(elem);
-                specialAbitlitiesItems.push(await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem]))
+    if (!getModuleSettings(settingModifiedSpecialAbs)){
+        if (getModuleSettings(settingallAsSpecialAbilities)) {
+            for (const elem in specialAbilitiesData) {
+                specialAbitlitiesItems.push(await AbilityBuilder(elem, specialAbilitiesData[elem]));
+            }    
+        } else {
+            for (const elem in specialAbilitiesData) {
+                if (elem.toLocaleLowerCase().startsWith(game.i18n.localize("npcImporter.parser.Armor").toLocaleLowerCase())) {
+                    let armorBonus = GetArmorBonus(elem);
+                    specialAbitlitiesItems.push(await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem]))
+                }
+                else if ((meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem]))
+                    && elem.toLocaleLowerCase() != game.i18n.localize("npcImporter.parser.Speed").toLocaleLowerCase()) {
+                    let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
+                    specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage[0]));
+                } else {
+                    specialAbitlitiesItems.push(await AbilityBuilder(elem, specialAbilitiesData[elem]));
+                }
             }
-            if ((meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem]))
-                && elem.toLocaleLowerCase() != game.i18n.localize("npcImporter.parser.Speed").toLocaleLowerCase()) {
-                let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
-                specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage[0]));
-            }
-        }        
+        }
     } else {
         for (const elem in specialAbilitiesData) {
             if(elem.startsWith('@w')){
@@ -35,7 +43,10 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
             } else if (elem.startsWith('@h')){
                 let data = [elem.replace('@h', '').trim(), specialAbilitiesData[elem]]
                 specialAbitlitiesItems.push(await ItemBuilderFromSpecAbs(data[0], data[1], "hindrance"));
-            } 
+            } else if (elem.startsWith('@sa')){
+                let data = [elem.replace('@sa', '').trim(), specialAbilitiesData[elem]]
+                specialAbitlitiesItems.push(await AbilityBuilder(data[0], data[1]));
+            }
         }
     }
 

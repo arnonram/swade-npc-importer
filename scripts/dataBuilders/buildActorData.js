@@ -77,9 +77,9 @@ function calculateWoundMod(size, isWildCard, specialAbs) {
         }
 
         for (const ability in specialAbs) {
-            if (`${game.i18n.localize("npcImporter.parser.Resilient")}`.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+            if (`${game.i18n.localize("npcImporter.parser.Resilient")}`.includes((ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase()).trim())) {
                 bonusTotal += 1;
-            } else if (`${game.i18n.localize("npcImporter.parser.VeryResilient")}`.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+            } else if (`${game.i18n.localize("npcImporter.parser.VeryResilient")}`.includes((ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase()).trim())) {
                 bonusTotal += 2;
             }
         }
@@ -163,7 +163,7 @@ function calculateIgnoredWounds(parsedData) {
         ];
 
         for (const ability in parsedData.SpecialAbilities) {
-            if (ignoreWound.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+            if (ignoreWound.includes((ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase()).trim())) {
                 bonusTotal += 1;
             }
         }
@@ -180,7 +180,7 @@ function findUnshakeBonus(parsedData) {
 
     let bonusTotal = 0;
     for (const ability in parsedData.SpecialAbilities) {
-        if (unshakeBonus.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+        if (unshakeBonus.includes((ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase()).trim())) {
             bonusTotal += 2;
         }
     }
@@ -206,7 +206,7 @@ function toughnessBonus(parsedData) {
     ];
     let bonusTotal = 0;
     for (const ability in parsedData.SpecialAbilities) {
-        if (toughnessBonus.includes((ability.replace(new RegExp('^@[aehw]'), '').toLowerCase()).trim())) {
+        if (toughnessBonus.includes((ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase()).trim())) {
             bonusTotal += 2;
         }
     }

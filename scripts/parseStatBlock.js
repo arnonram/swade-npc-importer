@@ -96,7 +96,7 @@ function descriptionByParagraph(descArray) {
         if (line.endsWith('.')) {
             line = line + '<br/>'
         }
-        bio += line;
+        bio += `${line} `;
     })
     return bio;
 }
@@ -215,7 +215,7 @@ function GetListsStats(sections) {
 function stringsToArray(line) {
     let data = line.replace(global.newLineRegex, ' ').replace('.', '').split(':')[1].trim();
     if (data.length > 1){
-        return data.match(new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9 -]+)(\(([^\)]+)\))?/gi));
+        return data.match(new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9!\- ]+)(\(([^\)]+)\))?/gi));
     }
 }
 
@@ -367,7 +367,7 @@ function SplitAndTrim(stringToSplit, separator) {
 function GetSize(abilities) {
     for (const ability in abilities) {
         if (ability.toLowerCase().includes(game.i18n.localize("npcImporter.parser.Size").toLowerCase())) {
-            return parseInt(ability.replace(new RegExp('@([aehw])?'), '').trim().split(" ")[1].replace('−', '-'));
+            return parseInt(ability.replace(new RegExp('@([aehw]|sa)?'), '').trim().split(" ")[1].replace('−', '-'));
         }
     }
     return 0;

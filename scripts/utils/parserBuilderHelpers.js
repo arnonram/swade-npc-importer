@@ -22,3 +22,9 @@ export const GetCoverBonus = function (data) {
     let coverRegex = new RegExp(`(\\+\\+d|\\-\\d+) ${game.i18n.localize("npcImporter.parser.Parry")}`);
     return parseInt(data.match(coverRegex)[0]);
 };
+
+export const GetPowerPoints = function (data) {
+    const powerPointsRegex = new RegExp(`\\d+ ${game.i18n.localize("npcImporter.parser.PowerPoints")}`);
+    let powerPointsNumber = data.match(powerPointsRegex)[0];
+    return parseInt(powerPointsNumber.replace(game.i18n.localize("npcImporter.parser.PowerPoints"), '').trim());
+}

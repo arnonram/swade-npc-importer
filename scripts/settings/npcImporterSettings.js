@@ -1,9 +1,9 @@
 import { getActorAddtionalStatsArray } from "../utils/foundryActions.js";
 import {
     settingActiveCompendiums, thisModule, settingPackageToUse, settingAdditionalTraits,
-    settingDefaultActorType, settingDefaultIsWildcard,
-    settingBulletPointIcons, settingLastSaveFolder, settingCompsToUse, settingParaeLanguage, settingToken,
-    settingModifiedSpecialAbs, settingAutoCalcToughness, settingCalculateIgnoredWounds, settingCalculateAdditionalWounds, settingAutoCalcSize
+    settingDefaultActorType, settingDefaultIsWildcard, settingBulletPointIcons, settingLastSaveFolder,
+    settingCompsToUse, settingParaeLanguage, settingToken, settingModifiedSpecialAbs, settingAutoCalcToughness,
+    settingCalculateIgnoredWounds, settingCalculateAdditionalWounds, settingAutoCalcSize, settingallAsSpecialAbilities
 } from "../global.js";
 import SelectCompendiums from "./selectCompendiums.js";
 import TokenSettings from "./tokenSettings.js"
@@ -18,7 +18,6 @@ export class NpcImporterSettings {
             type: SelectCompendiums,
             restricted: false
         });
-        // TODO need to finish this, but maybe at a later version as there's still stuff i need to figure out
         game.settings.registerMenu(thisModule, 'tokenSettingMenu', {
             name: game.i18n.localize("npcImporter.settings.TokenSettings"),
             label: game.i18n.localize("npcImporter.settings.TokenSettings"),
@@ -38,10 +37,7 @@ export class NpcImporterSettings {
                 displayName: 0,
                 vision: false,
                 dimSight: 0,
-                brightSight: 0//,
-                // displayBars: "DISPLAY_NONE",
-                // bar1Attribute: "",
-                // bar2Attribute: "",
+                brightSight: 0
               }
         });
         game.settings.register(thisModule, settingPackageToUse, {
@@ -103,6 +99,14 @@ export class NpcImporterSettings {
             scope: "world",
             type: String,
             default: '•|'
+        });
+        game.settings.register(thisModule, settingallAsSpecialAbilities, {
+            name: game.i18n.localize("npcImporter.settings.AllAsSpecialAbilities"),
+            hint: game.i18n.localize("npcImporter.settings.AllAsSpecialAbilitiesHint"),
+            config: true,
+            scope: "world",
+            type: Boolean,
+            default: false
         });
         game.settings.register(thisModule, settingModifiedSpecialAbs, {
             name: game.i18n.localize("npcImporter.settings.ModifiedSpecialAbilities"),
