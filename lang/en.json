@@ -51,7 +51,10 @@
     "npcImporter.parser.Fear" : "Fear",
     "npcImporter.parser.NaturalWeapons" : "Claws|Bite|Horns",
     "npcImporter.parser.Shots" : "Shots",
-
+    "npcImporter.parser.Brute" : "Brute",
+    "npcImporter.parser.Athletics" : "Athletics",
+    "npcImporter.parser.Fighting" : "Fighting",
+    "npcImporter.parser.Shooting" : "Shooting",
 
     "npcImporter.parser.CombatReflexes" : "combat reflexes",
     "npcImporter.parser.FleetFooted" : "Fleet-Footed",
@@ -90,7 +93,7 @@
     "npcImporter.settings.TokenSettingsHint" : "Set the default Prototype Token settings for imported actors",
     "npcImporter.settings.IgnoredWounds" : "Calculate Ignore Wounds",
     "npcImporter.settings.IgnoredWoundsHint" : "Take into account Edges and Abilities which allow to ignore wound",
-    "npcImporter.settings.AdditionalWounds" : "Calcualte additioanl wounds",
+    "npcImporter.settings.AdditionalWounds" : "Calculate additioanl wounds",
     "npcImporter.settings.AdditionalWoundsHint" : "Take into account Size, isWildcard, and (Very) Resilient, which increase max wounds",
     "npcImporter.settings.AutoCalcToughness" : "Set default Auto Calculate Toughness",
     "npcImporter.settings.SetSize": "Auto-set token size",
