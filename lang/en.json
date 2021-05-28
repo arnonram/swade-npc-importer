@@ -53,6 +53,8 @@
     "npcImporter.parser.Shots" : "Shots",
     "npcImporter.parser.Brute" : "Brute",
     "npcImporter.parser.Athletics" : "Athletics",
+    "npcImporter.parser.Fighting" : "Fighting",
+    "npcImporter.parser.Shooting" : "Shooting",
 
     "npcImporter.parser.CombatReflexes" : "combat reflexes",
     "npcImporter.parser.FleetFooted" : "Fleet-Footed",

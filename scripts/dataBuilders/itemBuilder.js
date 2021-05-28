@@ -205,7 +205,10 @@ export const WeaponBuilder = async function (weaponName, description, weaponDama
                 damage: dmg,
                 range: range,
                 rof: rof,
-                ap: ap
+                ap: ap,
+                actions: {
+                    skill: range === '' ? game.i18n.localize("npcImporter.parser.Fighting") : game.i18n.localize("npcImporter.parser.Shooting"),
+                }
             };
             weapon.img = "systems/swade/assets/icons/weapon.svg";
             return weapon;

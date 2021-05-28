@@ -2,7 +2,16 @@
 
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
 
-> **Please Note**: If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). Either set your hosted Foundry to work with HTTPS, or set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
+---
+:exclamation: **Please Note**
+
+If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefine`.
+
+To solve this either:
+  - Set your hosted Foundry to work with HTTPS, or 
+  - Set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
+
+---
 ## How to use it...
 0. Go to [Settings](#some-configurations) and look  around:
    - Under ***Select Item Compendiums*** mark any Compendium you wish NPC Importer to use (not selecting anyting will cycle through all compendiums and use the first relevant entry)
@@ -55,6 +64,8 @@ Some _Prototype Token_ options may be set by default
 - **Gear**
   - (Equipped by default)
   - Weapons (melee & ranged)
+    - If weapon does not have Range, then related skill will be Fighting
+    - If weapon has range, then related skill will be Shooting
   - Armors
   - Shields
   - Gear
