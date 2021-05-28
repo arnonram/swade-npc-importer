@@ -51,7 +51,8 @@
     "npcImporter.parser.Fear" : "Fear",
     "npcImporter.parser.NaturalWeapons" : "Claws|Bite|Horns",
     "npcImporter.parser.Shots" : "Shots",
-
+    "npcImporter.parser.Brute" : "Brute",
+    "npcImporter.parser.Athletics" : "Athletics",
 
     "npcImporter.parser.CombatReflexes" : "combat reflexes",
     "npcImporter.parser.FleetFooted" : "Fleet-Footed",
