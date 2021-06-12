@@ -318,9 +318,7 @@ async function ParseGear(gearArray) {
 
 function weaponParser(weapon) {
     let weaponStats = {};
-    log(weapon)
     weapon.forEach(stat => {
-        log(stat)
         if (new RegExp('^Str', 'i').test(stat)) {
             weaponStats.damage = stat;
         } else {

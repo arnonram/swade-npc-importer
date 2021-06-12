@@ -24,7 +24,7 @@ export const getItemFromCompendium = async function (itemName, expectedType) {
                 resultId = await packIndex.find(it => it.name.toLowerCase() === (itemName.toLowerCase()));
             }            
             if (resultId != undefined) {
-                let item = await packs[i].getEntry(resultId["_id"]);
+                let item = await packs[i].getDocument(resultId["_id"]);
                 if (item.type == expectedType || item.type == ''){
                     return item;
                 }
@@ -41,9 +41,9 @@ export const getAllActiveCompendiums = function () {
 
     if (packs.length + comps.length === 0) {
         return game.packs
-            .filter((comp) => comp.metadata.entity == "Item")
+            .filter((comp) => comp.documentName == "Item")
             .map((comp) => {
-                return `${comp.metadata.package}.${comp.metadata.name}`;
+                return comp.collection;
             });
     } else {
         let packArray = packs.split(',');
@@ -52,7 +52,7 @@ export const getAllActiveCompendiums = function () {
                 // comp.metadata.entity == "Item" &&
                 comp.metadata.package == packName)
                 .map((comp) => {
-                    comps.push(`${comp.metadata.package}.${comp.metadata.name}`);
+                    comps.push(comp.collection);
                 })
         });
 
@@ -62,9 +62,9 @@ export const getAllActiveCompendiums = function () {
 
 export const GetAllItemCompendiums = function () {
     let comps = game.packs
-        .filter((comp) => comp.metadata.entity == "Item")
+        .filter((comp) => comp.documentName == "Item")
         .map((comp) => {
-            return `${comp.metadata.package}.${comp.metadata.name}`;
+            return comp.collection;
         });
     return Array.from(comps);
 }
@@ -109,7 +109,7 @@ export const getModuleSettings = function (settingKey) {
 
 export const Import = async function (actorData) {
     try {
-        await Actor.create(actorData);
+        await Actor.createDocuments([actorData]);
         ui.notifications.info(game.i18n.format("npcImporter.HTML.ActorCreated", { actorName: actorData.name }))
     } catch (error) {
         log(`Failed to import: ${error}`)
@@ -119,7 +119,7 @@ export const Import = async function (actorData) {
 
 export const GetActorId = function (actorName) {
     try {
-        return game.actors.getName(actorName).data._id;
+        return game.actors.getName(actorName).id;
     } catch (error) {
         return false;
     }
@@ -135,7 +135,7 @@ export const GetActorData = function (actorName) {
 
 export const DeleteActor = async function (actorId) {
     try {
-        await Actor.delete(actorId);
+        await Actor.deleteDocuments([actorId]);
         ui.notifications.info(game.i18n.format("npcImporter.HTML.DeleteActor", { actorId: actorId }))
     } catch (error) {
         log(`Failed to delet actor: ${error}`)
@@ -150,7 +150,7 @@ export const getAllActorFolders = function () {
 }
 
 export const getFolderId = function (folderName) {
-    return game.folders.getName(folderName)._id;
+    return game.folders.getName(folderName).id;
 }
 
 export const updateModuleSetting = async function (settingName, newValue) {
