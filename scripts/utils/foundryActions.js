@@ -7,32 +7,34 @@ export const getItemFromCompendium = async function (itemName, expectedType) {
         packs.push(game.packs.get(x));
     });
 
-    packs  = packs.filter(function (el) {
+    packs = packs.filter(function (el) {
         return el != null;
-      });
+    });
 
     for (let i = 0; i < packs.length; i++) {
         try {
             const packIndex = await packs[i].getIndex();
             let resultId = '';
-            if (expectedType === "weapon"){
-                resultId = await packIndex.find(it => it.name.toLowerCase().includes(itemName.toLowerCase())); 
-                if (resultId === undefined)   {
-                    resultId = await packIndex.find(it => itemName.toLowerCase().includes(it.name.toLowerCase())); 
+            if (expectedType === "weapon") {
+                resultId = packIndex.contents.find(it => it.name.toLowerCase().includes(itemName.toLowerCase()));
+                if (resultId === undefined) {
+                    resultId = packIndex.contents.find(it => itemName.toLowerCase().includes(it.name.toLowerCase()));
                 }
             } else {
-                resultId = await packIndex.find(it => it.name.toLowerCase() === (itemName.toLowerCase()));
-            }            
+                resultId = packIndex.contents.find(it => it.name.toLowerCase() === (itemName.toLowerCase()));
+            }
             if (resultId != undefined) {
-                let item = await packs[i].getDocument(resultId["_id"]);
-                if (item.type == expectedType || item.type == ''){
+                const item = await packs[i].getDocument(resultId["_id"]);
+                if (item.type == expectedType || item.type == '') {
                     return item;
                 }
             }
         } catch (error) {
-            log(`Could not find ${itemName}: ${error}`)
+            log(`Error when searching for ${itemName}: ${error}`);
         }
     }
+    log(`Could not find ${itemName}`);
+    return { data: {} };
 }
 
 export const getAllActiveCompendiums = function () {
@@ -157,7 +159,7 @@ export const updateModuleSetting = async function (settingName, newValue) {
     await game.settings.set(thisModule, settingName, newValue);
 }
 
-export const setParsingLanguage = async function (lang) {    
+export const setParsingLanguage = async function (lang) {
     log(`Setting parsing language to: ${lang}`)
     await game.i18n.setLanguage(lang);
 }
