@@ -6,7 +6,7 @@
   "author": "Arnon Ram",
   "version": "0.1.9",
   "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.6",
+  "compatibleCoreVersion": "0.8.7",
   "esmodules": [
     "scripts/swadeNpcImporter.js"
   ],
