@@ -105,6 +105,10 @@ export const getActorAddtionalStats = function () {
     return game.settings.get("swade", "settingFields").actor;
 }
 
+export const getSystemCoreSkills = function () {
+    return game.settings.get("swade", "coreSkills").toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
+}
+
 export const getModuleSettings = function (settingKey) {
     return game.settings.get(thisModule, settingKey);
 }

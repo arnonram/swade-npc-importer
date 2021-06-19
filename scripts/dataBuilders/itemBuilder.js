@@ -1,8 +1,9 @@
-import { getItemFromCompendium, getSpecificAdditionalStat } from "../utils/foundryActions.js";
+import { getItemFromCompendium, getSpecificAdditionalStat, getSystemCoreSkills } from "../utils/foundryActions.js";
 import { log } from "../global.js";
 import { capitalizeEveryWord } from "../utils/textUtils.js";
 
 export const SkillBuilder = async function (skillsDict) {
+    const coreSkills = getSystemCoreSkills();
     if (skillsDict != undefined) {
         var allSkills = [];
         for (const skillName in skillsDict) {
@@ -12,6 +13,7 @@ export const SkillBuilder = async function (skillsDict) {
             } else {
                 skillFromComp = await getItemFromCompendium(skillName.split('(')[0].trim(), 'skill');
             }
+            const isCore = coreSkills.includes(skillName);
             try {
                 allSkills.push({
                     type: "skill",
@@ -22,7 +24,7 @@ export const SkillBuilder = async function (skillsDict) {
                         notes: skillFromComp?.data?.data.notes ?? '',
                         additionalStats: skillFromComp?.data?.data.additionalStats ?? {},
                         attribute: skillFromComp?.data?.data.attribute ?? '',
-                        isCoreSkill: skillFromComp?.data?.data.isCoreSkill ?? false,
+                        isCoreSkill: isCore,
                         die: {
                             sides: skillsDict[skillName].die.sides,
                             modifier: skillsDict[skillName].die.modifier
