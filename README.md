@@ -5,11 +5,15 @@ A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry 
 ---
 ## :exclamation: **Please Note**
 
-If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefine`.
+1. If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefined`.
 
-To solve this either:
-  - Set your hosted Foundry to work with HTTPS, or 
-  - Set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
+    To solve this either:
+      - Set your hosted Foundry to work with HTTPS, or 
+      - Set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
+
+2. ***Firefox*** does not support the `clipboard.readText()` API, and I found not way around this.
+
+:smiley: **The Solution**: The Actor Importer dialog has a text-box into which you may paste the statblock. This will by-pass both of these problems.
 
 ---
 ## How to use it...
