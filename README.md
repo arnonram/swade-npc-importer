@@ -3,7 +3,7 @@
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
 
 ---
-:exclamation: **Please Note**
+## :exclamation: **Please Note**
 
 If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefine`.
 
@@ -53,6 +53,7 @@ Some _Prototype Token_ options may be set by default
 ### What's supported:
 - **Attributes**
 - **Skills**
+  - Core Skills are set according to the SWADE System Settings -> Setting Configurator
 - **Hindrances**
 - **Edges**
 - **Powers**
@@ -64,8 +65,8 @@ Some _Prototype Token_ options may be set by default
 - **Gear**
   - (Equipped by default)
   - Weapons (melee & ranged)
-    - If weapon does not have Range, then related skill will be Fighting
-    - If weapon has range, then related skill will be Shooting
+    - If weapon does not have Range, then related skill will be *Fighting*
+    - If weapon has range, then related skill will be *Shooting*
   - Armors
   - Shields
   - Gear
