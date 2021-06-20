@@ -43,7 +43,7 @@ Hooks.on("renderActorDirectory", async (app, html, data) => {
                                 },                                
                                 saveFolder: html.find('select[name="save-folder"]')[0].value
                             }
-                            BuildActor(importSettings);
+                            BuildActor(importSettings, document.getElementById('statBlock').value);
                         },
                     },
                     Cancel: {
@@ -129,6 +129,15 @@ function importerDialogue() {
             <label>${game.i18n.localize("npcImporter.HTML.SaveFolder")} </label>
             <select name="save-folder">${folderOptions}</select>
         </div>
+        </br>
+        <div class = "row">
+            <details>
+                <summary><i>Paste statblock here (for example, Firefox users)</i></summary>
+                <label for="statBlock"><b>${game.i18n.localize('npcImporter.HTML.StatBlock')}</b></label>
+                <textarea id="statBlock" name="statBlock" rows="10" autocomplete="off" placeholder="Paste statblock here..."></textarea>
+            </details>
+        </div>
+        </br>
             `;
     return npcImporterDialog;
 }

@@ -7,8 +7,8 @@ import { BuildActorToken } from "./dataBuilders/buildActorToken.js";
 import { getFolderId, updateModuleSetting, setParsingLanguage, getModuleSettings } from "./utils/foundryActions.js";
 import { GetPowerPoints } from "./utils/parserBuilderHelpers.js";
 
-export const BuildActor = async function (importSettings, data = undefined) {
-    let clipboardText = data ?? await GetClipboardText();
+export const BuildActor = async function (importSettings, data) {
+    let clipboardText = data ? data : await GetClipboardText();
     if (clipboardText != undefined) {
         let currentLang = game.i18n.lang;
         await setParsingLanguage(getModuleSettings(settingParaeLanguage));
