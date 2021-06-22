@@ -7,23 +7,24 @@ export const SkillBuilder = async function (skillsDict) {
     if (skillsDict != undefined) {
         var allSkills = [];
         for (const skillName in skillsDict) {
-            var skillFromComp = {};
-            if (skillName.startsWith(game.i18n.localize("npcImporter.parser.Knowledge").toLowerCase())) {
-                skillFromComp = await getItemFromCompendium(skillName, 'skill');
-            } else {
-                skillFromComp = await getItemFromCompendium(skillName.split('(')[0].trim(), 'skill');
-            }
+            const { data } = await checkforItem(skillName, 'skill');
+            // var skillFromComp = {};
+            // if (skillName.startsWith(game.i18n.localize("npcImporter.parser.Knowledge").toLowerCase())) {
+            //     skillFromComp = await getItemFromCompendium(skillName, 'skill');
+            // } else {
+            //     skillFromComp = await getItemFromCompendium(skillName.split('(')[0].trim(), 'skill');
+            // }
             const isCore = coreSkills.includes(skillName);
             try {
                 allSkills.push({
                     type: "skill",
                     name: capitalizeEveryWord(skillName),
-                    img: skillFromComp?.data?.img ?? "systems/swade/assets/icons/skill.svg",
+                    img: data?.img ?? "systems/swade/assets/icons/skill.svg",
                     data: {
-                        description: skillFromComp?.data?.data.description ?? '',
-                        notes: skillFromComp?.data?.data.notes ?? '',
-                        additionalStats: skillFromComp?.data?.data.additionalStats ?? {},
-                        attribute: skillFromComp?.data?.data.attribute ?? '',
+                        description: data?.data.description ?? '',
+                        notes: data?.data.notes ?? '',
+                        additionalStats: data?.data.additionalStats ?? {},
+                        attribute: data?.data.attribute ?? '',
                         isCoreSkill: isCore,
                         die: {
                             sides: skillsDict[skillName].die.sides,
@@ -48,14 +49,15 @@ export const EdgeBuilder = async function (edges) {
                 edgeName = edgeName.replace(game.i18n.localize("npcImporter.parser.Imp"), '');
                 edgeName = `${game.i18n.localize("npcImporter.parser.Improved")} ${edgeName}`.trim();
             }
-            var cleanedName = '';
-            if (new RegExp(game.i18n.localize("npcImporter.parser.Arcane")).test(edgeName)) {
-                cleanedName = edgeName;
-            } else {
-                cleanedName = edgeName.split('(')[0].trim();
-            }
+            const { data } = await checkforItem(edgeName, 'edge');
 
-            const { data } = await getItemFromCompendium(cleanedName, 'edge');
+            // var cleanedName = '';
+            // if (new RegExp(game.i18n.localize("npcImporter.parser.Arcane")).test(edgeName)) {
+            //     cleanedName = edgeName;
+            // } else {
+            //     cleanedName = edgeName.split('(')[0].trim();
+            // }
+            // const { data } = await getItemFromCompendium(cleanedName, 'edge');
             try {
                 allEdges.push({
                     type: "edge",
@@ -87,7 +89,9 @@ export const HindranceBuilder = async function (hindrances) {
             let hindranceName = hindrances[i].trim();
             let isMajor = RegExp(`\\(${game.i18n.localize("npcImporter.parser.Major")}`).test(hindranceName);
             hindranceName = hindranceName.replace(majorMinor, '').replace('()', '').trim();
-            const { data } = await getItemFromCompendium(hindranceName.split('(')[0].trim(), 'hindrance');
+            const { data } = await checkforItem(hindranceName, 'hindrance');
+
+            // const { data } = await getItemFromCompendium(hindranceName.split('(')[0].trim(), 'hindrance');
             try {
                 allHindrances.push({
                     type: "hindrance",
@@ -111,7 +115,7 @@ export const HindranceBuilder = async function (hindrances) {
 
 export const AbilityBuilder = async function (abilityName, abilityDescription) {
     const doesGrantPowers = new RegExp(`${game.i18n.localize("npcImporter.parser.PowerPoints")}|${game.i18n.localize("npcImporter.parser.Powers")}`).test(abilityDescription);
-    const { data } = await getItemFromCompendium(abilityName, 'ability');
+    const { data } = await checkforItem(abilityName, 'ability');
     const desc = data?.data?.description ? `${abilityDescription.trim()}<hr>${data?.data?.description}` : abilityDescription
     try {
         return {
@@ -133,10 +137,11 @@ export const AbilityBuilder = async function (abilityName, abilityDescription) {
 
 export const ItemBuilderFromSpecAbs = async function (name, itemDescription, type) {
     let cleanName = checkSpecificItem(name).trim();
-    var itemFromCompendium = await getItemFromCompendium(cleanName, type);
-    if (itemFromCompendium == undefined) {
-        itemFromCompendium = await getItemFromCompendium(cleanName.split('(')[0].trim(), type);
-    }
+    let itemFromCompendium = await checkforItem(cleanName, type);
+    // var itemFromCompendium = await getItemFromCompendium(cleanName, type);
+    // if (itemFromCompendium == undefined) {
+    //     itemFromCompendium = await getItemFromCompendium(cleanName.split('(')[0].trim(), type);
+    // }
 
     const item = {
         type: type,
@@ -158,12 +163,12 @@ export const PowerBuilder = async function (powers) {
             const powerName = powers[i].trim();
             const { data } = await getItemFromCompendium(powerName, 'power');
             try {
-                return {
+                allPowers.push({
                     type: "power",
                     name: capitalizeEveryWord(powerName),
                     img: data?.img ?? "systems/swade/assets/icons/power.svg",
                     data: data?.data ?? {}
-                }
+                })
             } catch (error) {
                 log(`Could not build power: ${error}`)
             }
@@ -172,22 +177,23 @@ export const PowerBuilder = async function (powers) {
     }
 }
 
-export const WeaponBuilder = async function (weaponName, description, weaponDamage, range = '', rof = '', ap = '') {
+export const WeaponBuilder = async function (weaponName, weaponDescription, weaponDamage, range = '', rof = '', ap = '') {
     const dmg = weaponDamage.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`, "gi"), '@str');
     const { data } = await getItemFromCompendium(weaponName, 'weapon');
+    const desc = data?.data?.description ? `${weaponDescription.trim()}<hr>${data?.data?.description}` : weaponDescription
     try {
         return {
             type: "weapon",
             name: data?.name ?? capitalizeEveryWord(weaponName),
             img: data?.img ?? "systems/swade/assets/icons/weapon.svg",
             data: {
-                description: data?.data?.description ?? description,
+                description: desc,
                 equippable: true,
                 equipped: true,
-                damage: data?.data?.damage ?? dmg,
-                range: data?.data?.range ?? range,
-                rof: data?.data?.rof ?? rof,
-                ap: data?.data?.ap ?? ap,
+                damage: dmg,
+                range: range ? range : data?.data?.range ?? '',
+                rof: rof ? rof : data?.data?.rof ?? '',
+                ap: ap ? ap : data?.data?.ap ?? '',
                 actions: {
                     skill: range === '' ? game.i18n.localize("npcImporter.parser.Fighting") : game.i18n.localize("npcImporter.parser.Shooting"),
                 }
@@ -245,7 +251,7 @@ export const ArmorBuilder = async function (armorName, armorBonus, armorDescript
 }
 
 export const GearBuilder = async function (gearName, description) {
-    const { data } = await getItemFromCompendium(gearName, 'gear');
+    const { data } = await checkforItem(gearName, 'gear');
     try {
         return {
             type: "gear",
@@ -280,4 +286,19 @@ function checkSpecificItem(data) {
         return item[0];
     }
     return data;
+}
+
+async function checkforItem(itemName, itemType) {
+    let itemFromCompendium = await getItemFromCompendium(itemName, itemType);
+    if (isObjectEmpty(itemFromCompendium.data)) {
+        itemFromCompendium = await getItemFromCompendium(itemName.split('(')[0].trim(), itemType);
+    };
+    if (isObjectEmpty(itemFromCompendium.data)) {
+        itemFromCompendium = await getItemFromCompendium(
+            itemName
+                .split('(')[0]
+                .replace(new RegExp('\\d|-\\d|−\\d'), '').trim(),
+            itemType);
+    };
+    return itemFromCompendium;
 }
