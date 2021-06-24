@@ -60,14 +60,23 @@ Some _Prototype Token_ options may be set by default
   - Core Skills are set according to the SWADE System Settings -> Setting Configurator
 - **Hindrances**
 - **Edges**
-- **Powers**
+- **Powers** & **Power Points**
 - **Pace**
 - **Parry**
 - **Toughness**
   - Set to Auto-calculate to `false` by default
-- **Power Points**
+- **Bennies**
+  - Bennies are set according to the table below. 
+  - ***Note:*** Edges/Hindrances affecting bennies are not taken into account
+
+  |Actor Type |Wild Card  | Max/Current Bennies|
+  |:---: | :---: | :---:|
+  |NPC| No| 0/0|
+  |NPC| Yes| 2/2|
+  |Character| No| 0/0|
+  |Character| Yes| 3/3|
 - **Gear**
-  - (Equipped by default)
+  - _Equipped_ by default
   - Weapons (melee & ranged)
     - If weapon does not have Range, then related skill will be *Fighting*
     - If weapon has range, then related skill will be *Shooting*
