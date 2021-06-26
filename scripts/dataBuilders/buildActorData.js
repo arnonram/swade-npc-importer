@@ -106,28 +106,32 @@ function initiativeMod(parsedData) {
     let hasHesitant = false;
     let hasLevelHeaded = false;
     let hasImpLevelHeaded = false;
+    let hasQuick = false;
 
     if (parsedData.Edges != undefined) {
         parsedData.Edges.forEach(element => {
-            if (element.includes(game.i18n.localize("npcImporter.parser.LevelHeaded"))) {
+            if (element === game.i18n.localize("npcImporter.parser.LevelHeadedImp")) {
+                hasImpLevelHeaded = true;
+            } else if (element === game.i18n.localize("npcImporter.parser.LevelHeaded")) {
                 hasLevelHeaded = true;
             }
-            if (element.includes(game.i18n.localize("npcImporter.parser.LevelHeadedImp"))) {
-                hasImpLevelHeaded = true;
+            if (element === game.i18n.localize("npcImporter.parser.Quick")) {
+                hasQuick = true;
             }
         });
     }
     if (parsedData.Hindrances != undefined) {
         parsedData.Hindrances.forEach(element => {
-            if (element.includes(game.i18n.localize("npcImporter.parser.Hesitant"))) {
+            if (element === game.i18n.localize("npcImporter.parser.Hesitant")) {
                 hasHesitant = true;
             }
         });
 
         return {
-            "hasHesitant": hasHesitant,
-            "hasLevelHeaded": hasLevelHeaded,
-            "hasImpLevelHeaded": hasImpLevelHeaded
+            hasHesitant: hasHesitant,
+            hasLevelHeaded: hasLevelHeaded,
+            hasImpLevelHeaded: hasImpLevelHeaded,
+            hasQuick : hasQuick
         }
     }
 }
