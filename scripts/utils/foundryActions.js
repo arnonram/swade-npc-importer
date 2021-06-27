@@ -1,6 +1,8 @@
 import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums, settingParaeLanguage } from "../global.js";
+import { removeMultipleWhitespaces } from "./textUtils.js";
 
 export const getItemFromCompendium = async function (itemName, expectedType) {
+    let item = removeMultipleWhitespaces(itemName);
     let activeCompendiums = getModuleSettings(settingActiveCompendiums);
     let packs = [];
     activeCompendiums.split(',').forEach(x => {
@@ -16,12 +18,12 @@ export const getItemFromCompendium = async function (itemName, expectedType) {
             const packIndex = await packs[i].getIndex();
             let resultId = '';
             if (expectedType === "weapon") {
-                resultId = packIndex.contents.find(it => it.name.toLowerCase().includes(itemName.toLowerCase()));
+                resultId = packIndex.contents.find(it => it.name.toLowerCase().includes(item.toLowerCase()));
                 if (resultId === undefined) {
-                    resultId = packIndex.contents.find(it => itemName.toLowerCase().includes(it.name.toLowerCase()));
+                    resultId = packIndex.contents.find(it => item.toLowerCase().includes(it.name.toLowerCase()));
                 }
             } else {
-                resultId = packIndex.contents.find(it => it.name.toLowerCase() === (itemName.toLowerCase()));
+                resultId = packIndex.contents.find(it => it.name.toLowerCase() === (item.toLowerCase()));
             }
             if (resultId != undefined) {
                 const item = await packs[i].getDocument(resultId["_id"]);
@@ -30,10 +32,10 @@ export const getItemFromCompendium = async function (itemName, expectedType) {
                 }
             }
         } catch (error) {
-            log(`Error when searching for ${itemName}: ${error}`);
+            log(`Error when searching for ${item}: ${error}`);
         }
     }
-    log(`Could not find ${itemName}`);
+    log(`Could not find ${item}`);
     return { data: {} };
 }
 

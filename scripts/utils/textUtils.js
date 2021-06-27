@@ -18,3 +18,7 @@ export const SpcialAbilitiesLink = function (SpecAbName) {
     var cleanedName = SpecAbName.split('(')[0].replace(new RegExp('[\\−\\-\\+]?[0-9]'), '').trim();
     return `Compendium[swade-core-rules.swade-rules.Special Ability (${cleanedName})]{${SpecAbName}}`;
 }
+
+export function removeMultipleWhitespaces(text) {    
+    return text.replace(new RegExp(/\s+/g), ' ');
+}

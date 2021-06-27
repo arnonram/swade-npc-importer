@@ -8,12 +8,6 @@ export const SkillBuilder = async function (skillsDict) {
         var allSkills = [];
         for (const skillName in skillsDict) {
             const { data } = await checkforItem(skillName, 'skill');
-            // var skillFromComp = {};
-            // if (skillName.startsWith(game.i18n.localize("npcImporter.parser.Knowledge").toLowerCase())) {
-            //     skillFromComp = await getItemFromCompendium(skillName, 'skill');
-            // } else {
-            //     skillFromComp = await getItemFromCompendium(skillName.split('(')[0].trim(), 'skill');
-            // }
             const isCore = coreSkills.includes(skillName);
             try {
                 allSkills.push({
@@ -45,19 +39,7 @@ export const EdgeBuilder = async function (edges) {
         var allEdges = [];
         for (let i = 0; i < edges.length; i++) {
             let edgeName = edges[i].trim();
-            if (edgeName.includes(game.i18n.localize("npcImporter.parser.Imp"))) {
-                edgeName = edgeName.replace(game.i18n.localize("npcImporter.parser.Imp"), '');
-                edgeName = `${game.i18n.localize("npcImporter.parser.Improved")} ${edgeName}`.trim();
-            }
             const { data } = await checkforItem(edgeName, 'edge');
-
-            // var cleanedName = '';
-            // if (new RegExp(game.i18n.localize("npcImporter.parser.Arcane")).test(edgeName)) {
-            //     cleanedName = edgeName;
-            // } else {
-            //     cleanedName = edgeName.split('(')[0].trim();
-            // }
-            // const { data } = await getItemFromCompendium(cleanedName, 'edge');
             try {
                 allEdges.push({
                     type: "edge",
@@ -90,8 +72,6 @@ export const HindranceBuilder = async function (hindrances) {
             let isMajor = RegExp(`\\(${game.i18n.localize("npcImporter.parser.Major")}`).test(hindranceName);
             hindranceName = hindranceName.replace(majorMinor, '').replace('()', '').trim();
             const { data } = await checkforItem(hindranceName, 'hindrance');
-
-            // const { data } = await getItemFromCompendium(hindranceName.split('(')[0].trim(), 'hindrance');
             try {
                 allHindrances.push({
                     type: "hindrance",
@@ -138,11 +118,6 @@ export const AbilityBuilder = async function (abilityName, abilityDescription) {
 export const ItemBuilderFromSpecAbs = async function (name, itemDescription, type) {
     let cleanName = checkSpecificItem(name).trim();
     let itemFromCompendium = await checkforItem(cleanName, type);
-    // var itemFromCompendium = await getItemFromCompendium(cleanName, type);
-    // if (itemFromCompendium == undefined) {
-    //     itemFromCompendium = await getItemFromCompendium(cleanName.split('(')[0].trim(), type);
-    // }
-
     const item = {
         type: type,
         name: itemFromCompendium?.data?.name ?? capitalizeEveryWord(name.trim()),
@@ -290,6 +265,10 @@ function checkSpecificItem(data) {
 
 async function checkforItem(itemName, itemType) {
     let itemFromCompendium = await getItemFromCompendium(itemName, itemType);
+    if (isObjectEmpty(itemFromCompendium.data) && itemType === 'edge') {
+        itemName = rearrangeImprovedEdges(itemName);
+        itemFromCompendium = await getItemFromCompendium(itemName.split('(')[0].trim(), itemType);
+    };
     if (isObjectEmpty(itemFromCompendium.data)) {
         itemFromCompendium = await getItemFromCompendium(itemName.split('(')[0].trim(), itemType);
     };
@@ -301,4 +280,13 @@ async function checkforItem(itemName, itemType) {
             itemType);
     };
     return itemFromCompendium;
+}
+
+function rearrangeImprovedEdges(edgeName){
+    let edge = '';
+    if (edgeName.includes(game.i18n.localize("npcImporter.parser.Imp"))) {
+        edge = edgeName.replace(game.i18n.localize("npcImporter.parser.Imp"), '');
+        edge = `${game.i18n.localize("npcImporter.parser.Improved")} ${edgeName}`.trim();
+    }
+    return edgeName;
 }
