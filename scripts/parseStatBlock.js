@@ -54,7 +54,7 @@ function GetSectionsIndex(inData) {
         `${game.i18n.localize("npcImporter.parser.Skills")}:`,
         `${game.i18n.localize("npcImporter.parser.Hindrances")}:`,
         `${game.i18n.localize("npcImporter.parser.Edges")}:`,
-        `${game.i18n.localize("npcImporter.parser.Powers")}:`,
+        new RegExp(`(?<! )${game.i18n.localize("npcImporter.parser.Powers")}:`),
         `${game.i18n.localize("npcImporter.parser.Pace")}:`,
         `${game.i18n.localize("npcImporter.parser.Parry")}:`,
         `${game.i18n.localize("npcImporter.parser.Toughness")}:`,
@@ -67,7 +67,7 @@ function GetSectionsIndex(inData) {
     let allStats = allStatBlockEntities.concat(getActorAddtionalStatsArray());
     let sectionsIndex = [];
     allStats.forEach(element => {
-        let index = inData.indexOf(element);
+        let index = inData.search(element);
         if (index > 0) {
             sectionsIndex.push(index);
         }
@@ -215,7 +215,7 @@ function GetListsStats(sections) {
 function stringsToArray(line) {
     let data = line.replace(global.newLineRegex, ' ').replace('.', '').split(':')[1].trim();
     if (data.length > 1){
-        return data.match(new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9!\- ]+)(\(([^\)]+)\))?/gi));
+        return data.match(new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9!\- ]+)(\(([^\)]+)\))?/gi)).map(s => s.trim());
     }
 }
 
@@ -318,9 +318,7 @@ async function ParseGear(gearArray) {
 
 function weaponParser(weapon) {
     let weaponStats = {};
-    log(weapon)
     weapon.forEach(stat => {
-        log(stat)
         if (new RegExp('^Str', 'i').test(stat)) {
             weaponStats.damage = stat;
         } else {

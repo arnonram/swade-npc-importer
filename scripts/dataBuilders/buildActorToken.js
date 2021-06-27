@@ -4,7 +4,7 @@ import { getModuleSettings } from "../utils/foundryActions.js";
 export const BuildActorToken = async function(parsedData, tokenSettings) {
     var token = tokenSettings;
     const squares = GetWidthHight(parsedData.Size);
-    token.displayName = getModuleSettings(settingToken).displayName;
+    token.displayName = parseInt(getModuleSettings(settingToken).displayName);
     if(getModuleSettings(settingAutoCalcSize)) {
         token.width = squares;
         token.height = squares;

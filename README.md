@@ -3,13 +3,17 @@
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
 
 ---
-:exclamation: **Please Note**
+### :exclamation: **Please Note**
 
-If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefine`.
+1. If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefined`.
 
-To solve this either:
-  - Set your hosted Foundry to work with HTTPS, or 
-  - Set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
+    To solve this either:
+      - Set your hosted Foundry to work with HTTPS, or 
+      - Set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
+
+2. ***Firefox*** does not support the `clipboard.readText()` API, and I found not way around this.
+
+:smiley: **The Solution**: The Actor Importer dialog has a text-box into which you may paste the statblock. This will by-pass both of these problems.
 
 ---
 ## How to use it...
@@ -53,19 +57,30 @@ Some _Prototype Token_ options may be set by default
 ### What's supported:
 - **Attributes**
 - **Skills**
+  - Core Skills are set according to the SWADE System Settings -> Setting Configurator
 - **Hindrances**
 - **Edges**
-- **Powers**
+  - Inititate Edges are checked in the _tweaks_ sections of the Actor
+- **Powers** & **Power Points**
 - **Pace**
 - **Parry**
 - **Toughness**
   - Set to Auto-calculate to `false` by default
-- **Power Points**
+- **Bennies**
+  - Bennies are set according to the table below. 
+  - ***Note:*** Edges/Hindrances affecting bennies are not taken into account
+
+  |Actor Type |Wild Card  | Max/Current Bennies|
+  |:---: | :---: | :---:|
+  |NPC| No| 0/0|
+  |NPC| Yes| 2/2|
+  |Character| No| 0/0|
+  |Character| Yes| 3/3|
 - **Gear**
-  - (Equipped by default)
+  - _Equipped_ by default
   - Weapons (melee & ranged)
-    - If weapon does not have Range, then related skill will be Fighting
-    - If weapon has range, then related skill will be Shooting
+    - If weapon does not have Range, then related skill will be *Fighting*
+    - If weapon has range, then related skill will be *Shooting*
   - Armors
   - Shields
   - Gear

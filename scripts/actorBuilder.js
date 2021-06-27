@@ -7,8 +7,8 @@ import { BuildActorToken } from "./dataBuilders/buildActorToken.js";
 import { getFolderId, updateModuleSetting, setParsingLanguage, getModuleSettings } from "./utils/foundryActions.js";
 import { GetPowerPoints } from "./utils/parserBuilderHelpers.js";
 
-export const BuildActor = async function (importSettings, data = undefined) {
-    let clipboardText = data ?? await GetClipboardText();
+export const BuildActor = async function (importSettings, data) {
+    let clipboardText = data ? data : await GetClipboardText();
     if (clipboardText != undefined) {
         let currentLang = game.i18n.lang;
         await setParsingLanguage(getModuleSettings(settingParaeLanguage));
@@ -19,7 +19,7 @@ export const BuildActor = async function (importSettings, data = undefined) {
                 finalActor.name = parsedData.Name;
                 finalActor.type = importSettings.actorType;
                 finalActor.folder = importSettings.saveFolder == '' ? '' : getFolderId(importSettings.saveFolder);
-                finalActor.data = await BuildActorData(parsedData, importSettings.isWildCard == 'true');
+                finalActor.data = await BuildActorData(parsedData, importSettings.isWildCard == 'true', importSettings.actorType);
                 finalActor.items = await BuildActorItems(parsedData);
                 finalActor.token = await BuildActorToken(parsedData, importSettings.tokenSettings);
                 const powerPoints = PowerPointsFromSpecialAbility(finalActor.items);

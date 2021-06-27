@@ -1,38 +1,42 @@
 import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums, settingParaeLanguage } from "../global.js";
+import { removeMultipleWhitespaces } from "./textUtils.js";
 
 export const getItemFromCompendium = async function (itemName, expectedType) {
+    let item = removeMultipleWhitespaces(itemName);
     let activeCompendiums = getModuleSettings(settingActiveCompendiums);
     let packs = [];
     activeCompendiums.split(',').forEach(x => {
         packs.push(game.packs.get(x));
     });
 
-    packs  = packs.filter(function (el) {
+    packs = packs.filter(function (el) {
         return el != null;
-      });
+    });
 
     for (let i = 0; i < packs.length; i++) {
         try {
             const packIndex = await packs[i].getIndex();
             let resultId = '';
-            if (expectedType === "weapon"){
-                resultId = await packIndex.find(it => it.name.toLowerCase().includes(itemName.toLowerCase())); 
-                if (resultId === undefined)   {
-                    resultId = await packIndex.find(it => itemName.toLowerCase().includes(it.name.toLowerCase())); 
+            if (expectedType === "weapon") {
+                resultId = packIndex.contents.find(it => it.name.toLowerCase().includes(item.toLowerCase()));
+                if (resultId === undefined) {
+                    resultId = packIndex.contents.find(it => item.toLowerCase().includes(it.name.toLowerCase()));
                 }
             } else {
-                resultId = await packIndex.find(it => it.name.toLowerCase() === (itemName.toLowerCase()));
-            }            
+                resultId = packIndex.contents.find(it => it.name.toLowerCase() === (item.toLowerCase()));
+            }
             if (resultId != undefined) {
-                let item = await packs[i].getEntry(resultId["_id"]);
-                if (item.type == expectedType || item.type == ''){
+                const item = await packs[i].getDocument(resultId["_id"]);
+                if (item.type == expectedType || item.type == '') {
                     return item;
                 }
             }
         } catch (error) {
-            log(`Could not find ${itemName}: ${error}`)
+            log(`Error when searching for ${item}: ${error}`);
         }
     }
+    log(`Could not find ${item}`);
+    return { data: {} };
 }
 
 export const getAllActiveCompendiums = function () {
@@ -41,9 +45,9 @@ export const getAllActiveCompendiums = function () {
 
     if (packs.length + comps.length === 0) {
         return game.packs
-            .filter((comp) => comp.metadata.entity == "Item")
+            .filter((comp) => comp.documentName == "Item")
             .map((comp) => {
-                return `${comp.metadata.package}.${comp.metadata.name}`;
+                return comp.collection;
             });
     } else {
         let packArray = packs.split(',');
@@ -52,7 +56,7 @@ export const getAllActiveCompendiums = function () {
                 // comp.metadata.entity == "Item" &&
                 comp.metadata.package == packName)
                 .map((comp) => {
-                    comps.push(`${comp.metadata.package}.${comp.metadata.name}`);
+                    comps.push(comp.collection);
                 })
         });
 
@@ -62,9 +66,9 @@ export const getAllActiveCompendiums = function () {
 
 export const GetAllItemCompendiums = function () {
     let comps = game.packs
-        .filter((comp) => comp.metadata.entity == "Item")
+        .filter((comp) => comp.documentName == "Item")
         .map((comp) => {
-            return `${comp.metadata.package}.${comp.metadata.name}`;
+            return comp.collection;
         });
     return Array.from(comps);
 }
@@ -103,13 +107,17 @@ export const getActorAddtionalStats = function () {
     return game.settings.get("swade", "settingFields").actor;
 }
 
+export const getSystemCoreSkills = function () {
+    return game.settings.get("swade", "coreSkills").toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
+}
+
 export const getModuleSettings = function (settingKey) {
     return game.settings.get(thisModule, settingKey);
 }
 
 export const Import = async function (actorData) {
     try {
-        await Actor.create(actorData);
+        await Actor.createDocuments([actorData]);
         ui.notifications.info(game.i18n.format("npcImporter.HTML.ActorCreated", { actorName: actorData.name }))
     } catch (error) {
         log(`Failed to import: ${error}`)
@@ -119,7 +127,7 @@ export const Import = async function (actorData) {
 
 export const GetActorId = function (actorName) {
     try {
-        return game.actors.getName(actorName).data._id;
+        return game.actors.getName(actorName).id;
     } catch (error) {
         return false;
     }
@@ -135,7 +143,7 @@ export const GetActorData = function (actorName) {
 
 export const DeleteActor = async function (actorId) {
     try {
-        await Actor.delete(actorId);
+        await Actor.deleteDocuments([actorId]);
         ui.notifications.info(game.i18n.format("npcImporter.HTML.DeleteActor", { actorId: actorId }))
     } catch (error) {
         log(`Failed to delet actor: ${error}`)
@@ -150,14 +158,14 @@ export const getAllActorFolders = function () {
 }
 
 export const getFolderId = function (folderName) {
-    return game.folders.getName(folderName)._id;
+    return game.folders.getName(folderName).id;
 }
 
 export const updateModuleSetting = async function (settingName, newValue) {
     await game.settings.set(thisModule, settingName, newValue);
 }
 
-export const setParsingLanguage = async function (lang) {    
+export const setParsingLanguage = async function (lang) {
     log(`Setting parsing language to: ${lang}`)
     await game.i18n.setLanguage(lang);
 }

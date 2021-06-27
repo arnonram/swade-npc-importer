@@ -2,7 +2,7 @@ import { getActorAddtionalStatsArray, getModuleSettings } from "../utils/foundry
 import * as global from "../global.js";
 import { additionalStatsBuilder } from "./itemBuilder.js";
 
-export const BuildActorData = async function (parsedData, isWildCard) {
+export const BuildActorData = async function (parsedData, isWildCard, actorType) {
     var data = {};
 
     data.attributes = generateAttributes(parsedData),
@@ -34,7 +34,7 @@ export const BuildActorData = async function (parsedData, isWildCard) {
     data.initiative = initiativeMod(parsedData);
     data.wildcard = isWildCard;
     data.additionalStats = await buildAdditionalStats(parsedData)
-
+    data.bennies = calculateBennies(isWildCard, actorType)
     return data;
 }
 
@@ -61,6 +61,20 @@ async function buildAdditionalStats(parsedData) {
         }
     });
     return additionalStats;
+}
+
+function calculateBennies(isWildCard, actorType) {
+    let numOfBennies = 0;
+    if (isWildCard && actorType === 'npc') {
+        numOfBennies = 2;
+    } else if (isWildCard && actorType === 'character') {
+        numOfBennies = 3;
+    }
+
+    return {
+        value: numOfBennies,
+        max: numOfBennies
+    }
 }
 
 function calculateWoundMod(size, isWildCard, specialAbs) {
@@ -92,28 +106,32 @@ function initiativeMod(parsedData) {
     let hasHesitant = false;
     let hasLevelHeaded = false;
     let hasImpLevelHeaded = false;
+    let hasQuick = false;
 
     if (parsedData.Edges != undefined) {
         parsedData.Edges.forEach(element => {
-            if (element.includes(game.i18n.localize("npcImporter.parser.LevelHeaded"))) {
+            if (element === game.i18n.localize("npcImporter.parser.LevelHeadedImp")) {
+                hasImpLevelHeaded = true;
+            } else if (element === game.i18n.localize("npcImporter.parser.LevelHeaded")) {
                 hasLevelHeaded = true;
             }
-            if (element.includes(game.i18n.localize("npcImporter.parser.LevelHeadedImp"))) {
-                hasImpLevelHeaded = true;
+            if (element === game.i18n.localize("npcImporter.parser.Quick")) {
+                hasQuick = true;
             }
         });
     }
     if (parsedData.Hindrances != undefined) {
         parsedData.Hindrances.forEach(element => {
-            if (element.includes(game.i18n.localize("npcImporter.parser.Hesitant"))) {
+            if (element === game.i18n.localize("npcImporter.parser.Hesitant")) {
                 hasHesitant = true;
             }
         });
 
         return {
-            "hasHesitant": hasHesitant,
-            "hasLevelHeaded": hasLevelHeaded,
-            "hasImpLevelHeaded": hasImpLevelHeaded
+            hasHesitant: hasHesitant,
+            hasLevelHeaded: hasLevelHeaded,
+            hasImpLevelHeaded: hasImpLevelHeaded,
+            hasQuick : hasQuick
         }
     }
 }
@@ -147,10 +165,10 @@ function findRunningMod(parsedData) {
                 runningMode += 2
             }
         });
-        return runningMode;    
+        return runningMode;
     } catch (error) {
-        
-    }    
+
+    }
 }
 
 function calculateIgnoredWounds(parsedData) {
