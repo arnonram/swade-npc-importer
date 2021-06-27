@@ -60,6 +60,7 @@ Some _Prototype Token_ options may be set by default
   - Core Skills are set according to the SWADE System Settings -> Setting Configurator
 - **Hindrances**
 - **Edges**
+  - Inititate Edges are checked in the _tweaks_ sections of the Actor
 - **Powers** & **Power Points**
 - **Pace**
 - **Parry**
