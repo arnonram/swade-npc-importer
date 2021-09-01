@@ -323,8 +323,8 @@ function weaponParser(weapon) {
             weaponStats.damage = stat;
         } else {
             if (stat.includes(game.i18n.localize("npcImporter.parser.Shots").toLowerCase())){
-                weaponStats["Shots"] = stat.replace("Shots", '').trim();    
-            } else {
+                weaponStats["shots"] = stat.replace(game.i18n.localize("npcImporter.parser.Shots"), '').trim();    
+            } else if (stat.match(new RegExp('^[A-Za-z]+'))) {
                 let statName = stat.match(new RegExp('^[A-Za-z]+'))[0];
                 weaponStats[statName.toLowerCase().trim()] = stat.replace(statName, '').trim();
             }
