@@ -4,17 +4,17 @@
   "description": "Import NPC statblocks for SWADE",
   "systems": ["swade"],
   "author": "Arnon Ram",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "0.8.7",
+  "compatibleCoreVersion": "0.8.9",
   "esmodules": [
     "scripts/swadeNpcImporter.js"
   ],
   "url": "https://github.com/arnonram/swade-npc-importer",
   "manifest": "https://github.com/arnonram/swade-npc-importer/releases/latest/download/module.json",
-  "download": "https://github.com/arnonram/swade-npc-importer/releases/download/v0.1.9/module.zip",
+  "download": "https://github.com/arnonram/swade-npc-importer/releases/download/v0.1.10/module.zip",
   "bugs": "https://github.com/arnonram/swade-npc-importer/issues",
-  "readme": "https://github.com/arnonram/swade-npc-importer/tree/v0.1.9#swade-npc-importer",
+  "readme": "https://github.com/arnonram/swade-npc-importer/tree/v0.1.10#swade-npc-importer",
   "languages": [
     {
       "lang": "en",
