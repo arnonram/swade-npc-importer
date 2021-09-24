@@ -21,7 +21,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
                 else if ((meleeDamageRegex.test(specialAbilitiesData[elem]) || diceRegex.test(specialAbilitiesData[elem]))
                     && elem.toLocaleLowerCase() != game.i18n.localize("npcImporter.parser.Speed").toLocaleLowerCase()) {
                     let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
-                    specialAbitlitiesItems.push(await WeaponBuilder(elem, specialAbilitiesData[elem], meleeDamage[0]));
+                    specialAbitlitiesItems.push(await WeaponBuilder({weaponName: elem, weaponDescription: specialAbilitiesData[elem], weaponDamage: meleeDamage[0]}));
                 } else {
                     specialAbitlitiesItems.push(await AbilityBuilder(elem, specialAbilitiesData[elem]));
                 }
@@ -32,7 +32,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
             if(elem.startsWith('@w')){
                 let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
                 let name = elem.replace('@w', '').trim();
-                specialAbitlitiesItems.push(await WeaponBuilder(name, specialAbilitiesData[elem], meleeDamage[0]));
+                specialAbitlitiesItems.push(await WeaponBuilder({weaponName: elem, weaponDescription: specialAbilitiesData[elem], weaponDamage: meleeDamage[0]}));
             } else if (elem.startsWith('@a')){
                 let armorBonus = GetArmorBonus(elem);
                 let name = elem.replace('@a', '').trim();
