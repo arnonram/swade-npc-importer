@@ -32,7 +32,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
             if(elem.startsWith('@w')){
                 let meleeDamage = specialAbilitiesData[elem].match(meleeDamageRegex) || specialAbilitiesData[elem].match(diceRegex);
                 let name = elem.replace('@w', '').trim();
-                specialAbitlitiesItems.push(await WeaponBuilder({weaponName: elem, weaponDescription: specialAbilitiesData[elem], weaponDamage: meleeDamage[0]}));
+                specialAbitlitiesItems.push(await WeaponBuilder({weaponName: name, weaponDescription: specialAbilitiesData[elem], weaponDamage: meleeDamage[0]}));
             } else if (elem.startsWith('@a')){
                 let armorBonus = GetArmorBonus(elem);
                 let name = elem.replace('@a', '').trim();
