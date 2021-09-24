@@ -11,7 +11,7 @@ A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry 
       - Set your hosted Foundry to work with HTTPS, or 
       - Set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
 
-2. ***Firefox*** does not support the `clipboard.readText()` API, and I found not way around this.
+2. ***Firefox*** does not support the `clipboard.readText()` API, and I found no way around this.
 
 :smiley: **The Solution**: The Actor Importer dialog has a text-box into which you may paste the statblock. This will by-pass both of these problems.
 

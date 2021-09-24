@@ -5,10 +5,8 @@ export const ItemGearBuilder = async function (gear) {
     for (const item in gear) {
         if (gear[item] == null) {                                 // check for other gear
             gearItems.push(await GearBuilder(item));
-        } else if (Object.keys(gear[item]).includes("range")) {   //check for ranged weapon
-            gearItems.push(await WeaponBuilder(item, item, gear[item]['damage'], gear[item]['range'], gear[item]['rpf'], gear[item]['ap']))
-        } else if (Object.keys(gear[item]).includes("damage")) {   // check for melee weapons
-            gearItems.push(await WeaponBuilder(item, item, gear[item]['damage']));
+        } else if (Object.keys(gear[item]).includes("range") || Object.keys(gear[item]).includes("damage")) {  // check for weapon
+            gearItems.push(await WeaponBuilder({weaponName: item, weaponDescription: item, weaponDamage: gear[item]['damage'], range: gear[item]['range'], rof: gear[item]['rof'], ap: gear[item]['ap'], shots: gear[item]['shots']}))
         } else if (Object.keys(gear[item]).includes("armorBonus")) {      // check for armor
             gearItems.push(await ArmorBuilder(item, gear[item]['armorBonus'], item));
         } else if (Object.keys(gear[item]).includes("parry")){        //check for shield

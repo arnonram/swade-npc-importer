@@ -152,7 +152,7 @@ export const PowerBuilder = async function (powers) {
     }
 }
 
-export const WeaponBuilder = async function (weaponName, weaponDescription, weaponDamage, range = '', rof = '', ap = '') {
+export const WeaponBuilder = async function ({weaponName, weaponDescription, weaponDamage, range, rof, ap, shots}) {
     const dmg = weaponDamage.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`, "gi"), '@str');
     const { data } = await getItemFromCompendium(weaponName, 'weapon');
     const desc = data?.data?.description ? `${weaponDescription.trim()}<hr>${data?.data?.description}` : weaponDescription
@@ -166,11 +166,13 @@ export const WeaponBuilder = async function (weaponName, weaponDescription, weap
                 equippable: true,
                 equipped: true,
                 damage: dmg,
-                range: range ? range : data?.data?.range ?? '',
-                rof: rof ? rof : data?.data?.rof ?? '',
-                ap: ap ? ap : data?.data?.ap ?? '',
+                range: range ?? data?.data?.range,
+                rof: rof ?? data?.data?.rof,
+                ap: ap ?? data?.data?.ap,
+                shots: shots ?? data?.data?.shots,
+                currentShots: shots ?? data?.data?.shots,
                 actions: {
-                    skill: range === '' ? game.i18n.localize("npcImporter.parser.Fighting") : game.i18n.localize("npcImporter.parser.Shooting"),
+                    skill: range ? game.i18n.localize("npcImporter.parser.Shooting") : game.i18n.localize("npcImporter.parser.Fighting"),
                 }
             }
         }
