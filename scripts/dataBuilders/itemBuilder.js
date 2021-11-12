@@ -15,10 +15,10 @@ export const SkillBuilder = async function (skillsDict) {
                     name: capitalizeEveryWord(skillName),
                     img: data?.img ?? "systems/swade/assets/icons/skill.svg",
                     data: {
-                        description: data?.data.description ?? '',
-                        notes: data?.data.notes ?? '',
-                        additionalStats: data?.data.additionalStats ?? {},
-                        attribute: data?.data.attribute ?? '',
+                        description: data?.data?.description ?? '',
+                        notes: data?.data?.notes ?? '',
+                        additionalStats: data?.data?.additionalStats ?? {},
+                        attribute: data?.data?.attribute ?? '',
                         isCoreSkill: isCore,
                         die: {
                             sides: skillsDict[skillName].die.sides,
@@ -125,7 +125,7 @@ export const ItemBuilderFromSpecAbs = async function (name, itemDescription, typ
         data: (itemFromCompendium?.data?.data && itemFromCompendium?.type === type) ? itemFromCompendium?.data?.data : { description: itemDescription.trim() }
     };
     if (itemFromCompendium?.type === type) {
-        item.data.description = `${itemDescription.trim()}<hr>${itemFromCompendium?.data?.data.description}`
+        item.data.description = `${itemDescription.trim()}<hr>${itemFromCompendium?.data?.data?.description}`
     }
     return item;
 }

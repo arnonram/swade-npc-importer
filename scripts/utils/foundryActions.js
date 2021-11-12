@@ -18,7 +18,7 @@ export const getItemFromCompendium = async function (itemName, expectedType) {
             const packIndex = await packs[i].getIndex();
             let resultId = '';
             if (expectedType === "weapon") {
-                resultId = packIndex.contents.find(it => it.name.toLowerCase().includes(item.toLowerCase()));
+                resultId = packIndex.contents.find(it => it.name.toLowerCase() == item.toLowerCase());
                 if (resultId === undefined) {
                     resultId = packIndex.contents.find(it => item.toLowerCase().includes(it.name.toLowerCase()));
                 }
