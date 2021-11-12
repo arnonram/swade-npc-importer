@@ -1,6 +1,6 @@
 import { getItemFromCompendium, getSpecificAdditionalStat, getSystemCoreSkills } from "../utils/foundryActions.js";
 import { log } from "../global.js";
-import { capitalizeEveryWord } from "../utils/textUtils.js";
+import { capitalizeEveryWord, spcialAbilitiesLink } from "../utils/textUtils.js";
 
 export const SkillBuilder = async function (skillsDict) {
     const coreSkills = getSystemCoreSkills();
@@ -15,6 +15,7 @@ export const SkillBuilder = async function (skillsDict) {
                     name: capitalizeEveryWord(skillName),
                     img: data?.img ?? "systems/swade/assets/icons/skill.svg",
                     data: {
+                        ...data?.data,
                         description: data?.data?.description ?? '',
                         notes: data?.data?.notes ?? '',
                         additionalStats: data?.data?.additionalStats ?? {},
@@ -46,6 +47,7 @@ export const EdgeBuilder = async function (edges) {
                     name: capitalizeEveryWord(edgeName),
                     img: data?.img ?? "systems/swade/assets/icons/edge.svg",
                     data: {
+                        ...data?.data,
                         description: data?.data?.description ?? '',
                         notes: data?.data?.notes ?? '',
                         additionalStats: data?.data?.additionalStats ?? {},
@@ -78,6 +80,7 @@ export const HindranceBuilder = async function (hindrances) {
                     name: capitalizeEveryWord(hindranceName),
                     img: data?.img ?? "systems/swade/assets/icons/hindrance.svg",
                     data: {
+                        ...data?.data,
                         description: data?.data?.description ?? '',
                         notes: data?.data?.notes ?? '',
                         additionalStats: data?.data?.additionalStats ?? {},
@@ -96,14 +99,16 @@ export const HindranceBuilder = async function (hindrances) {
 export const AbilityBuilder = async function (abilityName, abilityDescription) {
     const doesGrantPowers = new RegExp(`${game.i18n.localize("npcImporter.parser.PowerPoints")}|${game.i18n.localize("npcImporter.parser.Powers")}`).test(abilityDescription);
     const { data } = await checkforItem(abilityName, 'ability');
-    const desc = data?.data?.description ? `${abilityDescription.trim()}<hr>${data?.data?.description}` : abilityDescription
+    // const abilityFromJournal = spcialAbilitiesLink(abilityName);
     try {
         return {
             type: "ability",
             name: capitalizeEveryWord(abilityName),
             img: data?.img ?? "systems/swade/assets/icons/ability.svg",
             data: {
-                description: desc,
+                // description: `${desc}<hr>${abilityFromJournal}`,
+                ...data?.data,
+                description: generateDescription(abilityDescription, data),
                 notes: data?.data?.notes ?? '',
                 additionalStats: data?.data?.additionalStats ?? {},
                 subtype: "special",
@@ -152,17 +157,18 @@ export const PowerBuilder = async function (powers) {
     }
 }
 
-export const WeaponBuilder = async function ({weaponName, weaponDescription, weaponDamage, range, rof, ap, shots}) {
-    const dmg = weaponDamage.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`, "gi"), '@str');
+export const WeaponBuilder = async function ({ weaponName, weaponDescription, weaponDamage, range, rof, ap, shots }) {
+    const dmg = weaponDamage?.replace(new RegExp(`${game.i18n.localize("npcImporter.parser.Str")}\\.|${game.i18n.localize("npcImporter.parser.Str")}`, "gi"), '@str');
     const { data } = await getItemFromCompendium(weaponName, 'weapon');
-    const desc = data?.data?.description ? `${weaponDescription.trim()}<hr>${data?.data?.description}` : weaponDescription
+    const actions = data?.data?.actions ?? { skill: range ? game.i18n.localize("npcImporter.parser.Shooting") : game.i18n.localize("npcImporter.parser.Fighting") };
     try {
         return {
             type: "weapon",
             name: data?.name ?? capitalizeEveryWord(weaponName),
             img: data?.img ?? "systems/swade/assets/icons/weapon.svg",
             data: {
-                description: desc,
+                ...data?.data,
+                description: generateDescription(weaponDescription, data),
                 equippable: true,
                 equipped: true,
                 damage: dmg,
@@ -171,9 +177,7 @@ export const WeaponBuilder = async function ({weaponName, weaponDescription, wea
                 ap: ap ?? data?.data?.ap,
                 shots: shots ?? data?.data?.shots,
                 currentShots: shots ?? data?.data?.shots,
-                actions: {
-                    skill: range ? game.i18n.localize("npcImporter.parser.Shooting") : game.i18n.localize("npcImporter.parser.Fighting"),
-                }
+                actions: actions
             }
         }
     } catch (error) {
@@ -189,7 +193,8 @@ export const ShieldBuilder = async function (shieldName, description, parry = 0,
             name: data?.name ?? capitalizeEveryWord(shieldName),
             img: data?.img ?? "systems/swade/assets/icons/shield.svg",
             data: {
-                description: data?.description ?? description,
+                ...data?.data,
+                description: generateDescription(description, data),
                 notes: data?.data?.notes ?? '',
                 additionalStats: data?.data?.additionalStats ?? {},
                 equipped: true,
@@ -207,14 +212,14 @@ export const ShieldBuilder = async function (shieldName, description, parry = 0,
 export const ArmorBuilder = async function (armorName, armorBonus, armorDescription) {
     var cleanName = checkSpecificItem(armorName);
     const { data } = await getItemFromCompendium(cleanName, 'armor');
-    const desc = (data?.description?.length > 0) ? `${armorDescription}<hr>${data?.data?.description}` : armorDescription;
     try {
         return {
             type: "armor",
             name: data?.name ?? capitalizeEveryWord(armorName),
             img: data?.img ?? "systems/swade/assets/icons/armor.svg",
             data: {
-                description: desc,
+                ...data?.data,
+                description: generateDescription(armorDescription, data),
                 notes: data?.data?.notes ?? '',
                 additionalStats: data?.data?.additionalStats ?? {},
                 equipped: true,
@@ -235,7 +240,8 @@ export const GearBuilder = async function (gearName, description) {
             name: data?.name ?? capitalizeEveryWord(gearName),
             img: data?.img ?? "systems/swade/assets/icons/gear.svg",
             data: {
-                description: data?.data?.description ?? description,
+                ...data?.data,
+                description: generateDescription(description, data),
                 equipped: false,
                 equippable: false,
             },
@@ -284,11 +290,17 @@ async function checkforItem(itemName, itemType) {
     return itemFromCompendium;
 }
 
-function rearrangeImprovedEdges(edgeName){
+function rearrangeImprovedEdges(edgeName) {
     let edge = '';
     if (edgeName.includes(game.i18n.localize("npcImporter.parser.Imp"))) {
         edge = edgeName.replace(game.i18n.localize("npcImporter.parser.Imp"), '');
         edge = `${game.i18n.localize("npcImporter.parser.Improved")} ${edgeName}`.trim();
     }
     return edgeName;
+}
+
+function generateDescription(description, itemData) {
+    if (description) {
+        return itemData?.data?.description ? `${description.trim()}<hr>${itemData?.data?.description}` : description
+    } else return '';
 }

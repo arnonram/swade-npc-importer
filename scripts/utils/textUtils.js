@@ -14,9 +14,9 @@ export const capitalizeEveryWord = function (string) {
     return capitalizedString.join(' ').replace(/[\-\()][a-z]| [a-z]/g, match => match.toUpperCase());
 };
 
-export const SpcialAbilitiesLink = function (SpecAbName) {
-    var cleanedName = SpecAbName.split('(')[0].replace(new RegExp('[\\−\\-\\+]?[0-9]'), '').trim();
-    return `Compendium[swade-core-rules.swade-rules.Special Ability (${cleanedName})]{${SpecAbName}}`;
+export const spcialAbilitiesLink = function (specAbName) {
+    var cleanedName = specAbName.split('(')[0].replace(new RegExp('[\\−\\-\\+]?[0-9]'), '').trim();
+    return `@Compendium[swade-core-rules.swade-rules.Special Ability (${cleanedName})]{${specAbName}}`;
 }
 
 export function removeMultipleWhitespaces(text) {    
