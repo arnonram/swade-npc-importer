@@ -99,14 +99,12 @@ export const HindranceBuilder = async function (hindrances) {
 export const AbilityBuilder = async function (abilityName, abilityDescription) {
     const doesGrantPowers = new RegExp(`${game.i18n.localize("npcImporter.parser.PowerPoints")}|${game.i18n.localize("npcImporter.parser.Powers")}`).test(abilityDescription);
     const { data } = await checkforItem(abilityName, 'ability');
-    // const abilityFromJournal = spcialAbilitiesLink(abilityName);
     try {
         return {
             type: "ability",
             name: capitalizeEveryWord(abilityName),
             img: data?.img ?? "systems/swade/assets/icons/ability.svg",
             data: {
-                // description: `${desc}<hr>${abilityFromJournal}`,
                 ...data?.data,
                 description: generateDescription(abilityDescription, data),
                 notes: data?.data?.notes ?? '',
@@ -284,7 +282,7 @@ async function checkforItem(itemName, itemType) {
         itemFromCompendium = await getItemFromCompendium(
             itemName
                 .split('(')[0]
-                .replace(new RegExp('\\d|-\\d|−\\d'), '').trim(),
+                .replace(new RegExp('(\\+|\\-|\\-)?\\d'), '').trim(),
             itemType);
     };
     return itemFromCompendium;
