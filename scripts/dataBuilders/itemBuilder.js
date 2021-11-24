@@ -282,7 +282,7 @@ async function checkforItem(itemName, itemType) {
         itemFromCompendium = await getItemFromCompendium(
             itemName
                 .split('(')[0]
-                .replace(new RegExp('(\\+|\\-|\\-)?\\d'), '').trim(),
+                .replace(new RegExp('[+-−]?\\d'), '').trim(),
             itemType);
     };
     return itemFromCompendium;
