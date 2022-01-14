@@ -339,12 +339,12 @@ function checkSpecificItem(data) {
 }
 
 async function checkforItem(itemName, itemType) {
-  let itemFromCompendium = await getItemFromCompendium(itemName, itemType);
-  if (!isObjectEmpty(itemFromCompendium.data)) return itemFromCompendium;
-
   if (itemType === 'edge') {
     itemName = rearrangeImprovedEdges(itemName);
   }
+  let itemFromCompendium = await getItemFromCompendium(itemName, itemType);
+  if (!isObjectEmpty(itemFromCompendium.data)) return itemFromCompendium;
+
   itemFromCompendium = await getItemFromCompendium(
     itemName.split('(')[0].trim(),
     itemType
@@ -362,12 +362,12 @@ async function checkforItem(itemName, itemType) {
 function rearrangeImprovedEdges(edgeName) {
   let edge = '';
   if (edgeName.includes(game.i18n.localize('npcImporter.parser.Imp'))) {
-    edge = edgeName.replace(game.i18n.localize('npcImporter.parser.Imp'), '');
-    edge = `${game.i18n.localize(
-      'npcImporter.parser.Improved'
-    )} ${edgeName}`.trim();
+    edge = edgeName
+      .replace(game.i18n.localize('npcImporter.parser.Imp'), '')
+      .trim();
+    edge = `${game.i18n.localize('npcImporter.parser.Improved')} ${edge}`;
   }
-  return edgeName;
+  return edge;
 }
 
 function generateDescription(description, itemData, isSpecialAbility) {
