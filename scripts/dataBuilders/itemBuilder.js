@@ -207,6 +207,7 @@ export const WeaponBuilder = async function ({
     '@str'
   );
   const { data } = await getItemFromCompendium(weaponName, 'weapon');
+  //todo Improve this so that it'll add multiple entries for weapons which are ranged && melee
   const actions = data?.data?.actions ?? {
     skill: range
       ? game.i18n.localize('npcImporter.parser.Shooting')
@@ -377,7 +378,7 @@ function generateDescription(description, itemData, isSpecialAbility) {
   }
   if (description) {
     return itemData?.data?.description
-      ? `${desc}<hr>${itemData?.data?.description}`
+      ? `${desc ?? description}<hr>${itemData?.data?.description}`
       : description;
   } else return '';
 }
