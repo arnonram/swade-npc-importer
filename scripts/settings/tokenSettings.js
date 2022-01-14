@@ -63,10 +63,7 @@ export default class TokenSettings extends FormApplication {
       },
       dimSight: currentTokenValues.dimSight,
       brightSight: currentTokenValues.brightSight,
-      // TODO
-      // displayBars: "DISPLAY_NONE",
-      // bar1Attribute: "",
-      // bar2Attribute: "",
+      sightAngle: currentTokenValues.sightAngle,
     };
   }
 

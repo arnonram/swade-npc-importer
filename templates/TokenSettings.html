@@ -1,6 +1,6 @@
 <form autocomplete="off">
   <div class="column">
-    <label>{{localize 'TOKEN.CharDisposition'}}:</label>
+    <label>{{localize 'TOKEN.Disposition'}}:</label>
     <select id="disposition" name="disposition">
       <option name="HOSTILE" value="-1" {{this.dispositionHostile.selected}}>
         {{localize 'TOKEN.HOSTILE'}}
@@ -64,33 +64,28 @@
       value="vision"
       {{this.vision.checked}} />
   </div>
-  <div class="form-group">
-    <label>{{localize 'TOKEN.VisionDimDist'}}</label>
-    <input type="number" name="dimSight" value="{{this.dimSight}}" />
-  </div>
-  <div class="form-group">
-    <label>{{localize 'TOKEN.VisionBrightDist'}}</label>
-    <input type="number" name="brightSight" value="{{this.brightSight}}" />
-  </div>
-  <!--TODO <hr>
-    <div class="form-group">
-        <label>{{localize 'TOKEN.ResourceDisplay'}}:</label>
-        <select name="displayBars">
-            <option value="DISPLAY_ALWAYS" selected>{{localize 'TOKEN.DISPLAY_ALWAYS'}}</option>
-            <option value="DISPLAY_CONTROL">{{localize 'TOKEN.DISPLAY_CONTROL'}}</option>
-            <option value="DISPLAY_HOVER">{{localize 'TOKEN.DISPLAY_HOVER'}}</option>
-            <option value="DISPLAY_NONE">{{localize 'TOKEN.DISPLAY_NONE'}}</option>
-            <option value="DISPLAY_OWNER">{{localize 'TOKEN.DISPLAY_OWNER'}}</option>
-            <option value="DISPLAY_OWNER_HOVER">{{localize 'TOKEN.DISPLAY_OWNER_HOVER'}}</option>
-        </select>
+  <div class="form-group slim">
+    <label>Vision Radius</label>
+    <div class="form-fields">
+      <label>{{localize 'TOKEN.VisionDim'}}</label>
+      <input
+        type="number"
+        step="0.1"
+        name="dimSight"
+        value="{{this.dimSight}}" />
+      <label>{{localize 'TOKEN.VisionBright'}}</label>
+      <input
+        type="number"
+        step="0.1"
+        name="brightSight"
+        value="{{this.brightSight}}" />
     </div>
-    <div class="form-group">
-        <label>{{localize 'TOKEN.ResourceBar1A'}}</label>
-        <input type="text" name="bar1Attribute" value="" />
+  </div>
+  <div class="form-group slim">
+    <label>{{localize 'TOKEN.VisionAngle'}} </label>
+    <div class="form-fields">
+      <input type="number" name="sightAngle" value="{{this.sightAngle}}" />
     </div>
-    <div class="form-group">
-        <label>{{localize 'TOKEN.ResourceBar2A'}}</label>
-        <input type="text" name="bar2Attribute" value="" />
-    </div> -->
+  </div>
   <button type="submit" name="submit"><i class="far fa-save"> Save</i></button>
 </form>

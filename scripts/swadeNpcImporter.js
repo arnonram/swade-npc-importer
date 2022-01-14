@@ -60,6 +60,9 @@ Hooks.on('renderActorDirectory', async (app, html, data) => {
                   brightSight: parseInt(
                     document.getElementsByName('brightSight')[0].value
                   ),
+                  sightAngle: parseInt(
+                    document.getElementsByName('sightAngle')[0].value
+                  ),
                 },
                 saveFolder: html.find('select[name="save-folder"]')[0].value,
               };
@@ -107,8 +110,7 @@ function importerDialogue() {
                 }
             </style>
         </head>
-        <body>
-        <h3>${game.i18n.localize('npcImporter.HTML.ImportTitle')}</h3>
+        <form>
         <p>${game.i18n.localize('npcImporter.HTML.ImportDesc')}</p>
         <div class = "row">
             <div class="column"> 
@@ -156,29 +158,40 @@ function importerDialogue() {
                 <label for="friendly">Friendly</lable>
             </div>
         </div>
-        <div class = "row">
-            <div class="column">
-                <p>${game.i18n.localize('TOKEN.VisionHas')}</p>
-                <input type="checkbox" id="vision" name="vision" value="vision" ${
-                  defaultData.tokenData.vision == true ? 'checked' : ''
-                }/>
-            </div>
-            <div class="column">
-                <p>${game.i18n.localize('TOKEN.VisionDimDist')}</p>
-                <input type="number" name="dimSight" value="${
-                  defaultData.tokenData.dimSight
-                }" />
-            </div>
-            <div class="column">
-                <p>${game.i18n.localize('TOKEN.VisionBrightDist')}</p>
-                <input type="number" name="brightSight" value="${
-                  defaultData.tokenData.brightSight
-                }" />
-            </div>
-            <label>${game.i18n.localize('npcImporter.HTML.SaveFolder')} </label>
-            <select name="save-folder">${folderOptions}</select>
+        <div class="form-group">
+            <p>${game.i18n.localize('TOKEN.VisionHas')}</p>
+            <input type="checkbox" id="vision" name="vision" value="vision" ${
+              defaultData.tokenData.vision == true ? 'checked' : ''
+            }/>
         </div>
-        </br>
+        <div class="form-group slim">
+          <lable>Vision Radius</label>
+          <div class="form-fields">
+            <label>${game.i18n.localize('TOKEN.VisionDim')}</label>
+            <input type="number" step="0.1" name="dimSight" value="${
+              defaultData.tokenData.dimSight
+            }" />
+            <label>${game.i18n.localize('TOKEN.VisionBright')}</label>
+            <input type="number" step="0.1" name="brightSight" value="${
+              defaultData.tokenData.brightSight
+            }" />
+          </div>
+          <div class="form-group slim">
+            <label>${game.i18n.localize('TOKEN.VisionAngle')}</label>
+            <div class="form-fields">
+              <input type="number" name="sightAngle" value="${
+                defaultData.tokenData.sightAngle
+              }" />
+            </div>
+          </div>
+        </div> 
+        <br>
+        <div class="form-group slim">
+          <label>${game.i18n.localize('npcImporter.HTML.SaveFolder')} </label>
+          <div class="form-fields">
+            <select name="save-folder">${folderOptions}</select>
+          </div>
+        </div>
         <div class = "row">
             <label for="statBlock"><b>${game.i18n.localize(
               'npcImporter.HTML.StatBlock'
@@ -186,7 +199,8 @@ function importerDialogue() {
             <textarea id="statBlock" name="statBlock" rows="10" autocomplete="off" placeholder="Paste statblock here ONLY if you're using Firefox or are over http..."></textarea>
         </div>
         </br>
-            `;
+        </form>
+        `;
   return npcImporterDialog;
 }
 

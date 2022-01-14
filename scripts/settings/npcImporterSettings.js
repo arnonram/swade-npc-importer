@@ -51,6 +51,7 @@ export class NpcImporterSettings {
         vision: false,
         dimSight: 0,
         brightSight: 0,
+        sightAngle: 360,
       },
     });
     game.settings.register(thisModule, settingPackageToUse, {
