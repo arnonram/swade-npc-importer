@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Zip Files
         working-directory: ./
         run: zip -r ./module.zip ./*
