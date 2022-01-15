@@ -1,171 +1,202 @@
-import { log, thisModule, settingPackageToUse, settingCompsToUse, settingActiveCompendiums, settingParaeLanguage } from "../global.js";
-import { removeMultipleWhitespaces } from "./textUtils.js";
+import {
+  log,
+  thisModule,
+  settingPackageToUse,
+  settingCompsToUse,
+  settingActiveCompendiums,
+  settingParaeLanguage,
+} from '../global.js';
+import { splitAndSort } from './textUtils.js';
 
 export const getItemFromCompendium = async function (itemName, expectedType) {
-    let item = removeMultipleWhitespaces(itemName);
-    let activeCompendiums = getModuleSettings(settingActiveCompendiums);
-    let packs = [];
-    activeCompendiums.split(',').forEach(x => {
-        packs.push(game.packs.get(x));
-    });
+  let item = splitAndSort(itemName);
+  let activeCompendiums = getModuleSettings(settingActiveCompendiums);
+  let packs = [];
+  activeCompendiums.split(',').forEach(x => {
+    packs.push(game.packs.get(x));
+  });
 
-    packs = packs.filter(function (el) {
-        return el != null;
-    });
+  packs = packs.filter(function (el) {
+    return el != null;
+  });
 
-    for (let i = 0; i < packs.length; i++) {
-        try {
-            const packIndex = await packs[i].getIndex();
-            let resultId = '';
-            if (expectedType === "weapon") {
-                resultId = packIndex.contents.find(it => it.name.toLowerCase().includes(item.toLowerCase()));
-                if (resultId === undefined) {
-                    resultId = packIndex.contents.find(it => item.toLowerCase().includes(it.name.toLowerCase()));
-                }
-            } else {
-                resultId = packIndex.contents.find(it => it.name.toLowerCase() === (item.toLowerCase()));
-            }
-            if (resultId != undefined) {
-                const item = await packs[i].getDocument(resultId["_id"]);
-                if (item.type == expectedType || item.type == '') {
-                    return item;
-                }
-            }
-        } catch (error) {
-            log(`Error when searching for ${item}: ${error}`);
+  for (let i = 0; i < packs.length; i++) {
+    try {
+      const packIndex = await packs[i].getIndex();
+      let resultId = '';
+      if (expectedType === 'weapon') {
+        resultId = packIndex.contents.find(it => splitAndSort(it.name) == item);
+        if (resultId === undefined) {
+          resultId = packIndex.contents.find(it =>
+            item.includes(splitAndSort(it.name))
+          );
         }
+      } else {
+        resultId = packIndex.contents.find(
+          it => splitAndSort(it.name) === item
+        );
+      }
+      if (resultId != undefined) {
+        const item = await packs[i].getDocument(resultId['_id']);
+        if (item.type == expectedType || item.type == '') {
+          return item;
+        }
+      }
+    } catch (error) {
+      log(`Error when searching for ${item}: ${error}`);
     }
-    log(`Could not find ${item}`);
-    return { data: {} };
-}
+  }
+  return { data: {} };
+};
 
 export const getAllActiveCompendiums = function () {
-    let packs = getModuleSettings(settingPackageToUse);
-    let comps = getModuleSettings(settingCompsToUse).split(',');
+  let packs = getModuleSettings(settingPackageToUse);
+  let comps = getModuleSettings(settingCompsToUse).split(',');
 
-    if (packs.length + comps.length === 0) {
-        return game.packs
-            .filter((comp) => comp.documentName == "Item")
-            .map((comp) => {
-                return comp.collection;
-            });
-    } else {
-        let packArray = packs.split(',');
-        packArray.forEach(packName => {
-            game.packs.filter((comp) =>
-                // comp.metadata.entity == "Item" &&
-                comp.metadata.package == packName)
-                .map((comp) => {
-                    comps.push(comp.collection);
-                })
+  if (packs.length + comps.length === 0) {
+    return game.packs
+      .filter(comp => comp.documentName == 'Item')
+      .map(comp => {
+        return comp.collection;
+      });
+  } else {
+    let packArray = packs.split(',');
+    packArray.forEach(packName => {
+      game.packs
+        .filter(
+          comp =>
+            // comp.metadata.entity == "Item" &&
+            comp.metadata.package == packName
+        )
+        .map(comp => {
+          comps.push(comp.collection);
         });
+    });
 
-        return Array.from(new Set(comps));
-    }
-}
+    return Array.from(new Set(comps));
+  }
+};
 
 export const GetAllItemCompendiums = function () {
-    let comps = game.packs
-        .filter((comp) => comp.documentName == "Item")
-        .map((comp) => {
-            return comp.collection;
-        });
-    return Array.from(comps);
-}
+  let comps = game.packs
+    .filter(comp => comp.documentName == 'Item')
+    .map(comp => {
+      return comp.collection;
+    });
+  return Array.from(comps);
+};
 
 export const getAllPackageNames = function () {
-    let uniquePackages = new Set(game.packs
-        .filter((comp) => comp.metadata.package)
-        .map((comp) => {
-            return `${comp.metadata.package}`;
-        }));
-    return Array.from(uniquePackages);
-}
+  let uniquePackages = new Set(
+    game.packs
+      .filter(comp => comp.metadata.package)
+      .map(comp => {
+        return `${comp.metadata.package}`;
+      })
+  );
+  return Array.from(uniquePackages);
+};
 
 export const getSpecificAdditionalStat = function (additionalStatName) {
-    let additionalStats = game.settings.get("swade", "settingFields").actor
-    for (const stat in additionalStats) {
-        if (additionalStats[stat].label.toLowerCase() == additionalStatName.toLowerCase()) {
-            return additionalStats[stat];
-        }
+  let additionalStats = game.settings.get('swade', 'settingFields').actor;
+  for (const stat in additionalStats) {
+    if (
+      additionalStats[stat].label.toLowerCase() ==
+      additionalStatName.toLowerCase()
+    ) {
+      return additionalStats[stat];
     }
-}
+  }
+};
 
 export const getActorAddtionalStatsArray = function () {
-    let actorAdditionalStats = getActorAddtionalStats();
-    let stats = [];
-    for (const key in actorAdditionalStats) {
-        if (actorAdditionalStats.hasOwnProperty(key)) {
-            const element = actorAdditionalStats[key];
-            stats.push(`${element.label}:`);
-        }
+  let actorAdditionalStats = getActorAddtionalStats();
+  let stats = [];
+  for (const key in actorAdditionalStats) {
+    if (actorAdditionalStats.hasOwnProperty(key)) {
+      const element = actorAdditionalStats[key];
+      stats.push(`${element.label}:`);
     }
-    return stats;
-}
+  }
+  return stats;
+};
 
 export const getActorAddtionalStats = function () {
-    return game.settings.get("swade", "settingFields").actor;
-}
+  return game.settings.get('swade', 'settingFields').actor;
+};
 
 export const getSystemCoreSkills = function () {
-    return game.settings.get("swade", "coreSkills").toLowerCase().split(',').map(Function.prototype.call, String.prototype.trim);
-}
+  return game.settings
+    .get('swade', 'coreSkills')
+    .toLowerCase()
+    .split(',')
+    .map(Function.prototype.call, String.prototype.trim);
+};
 
 export const getModuleSettings = function (settingKey) {
-    return game.settings.get(thisModule, settingKey);
-}
+  return game.settings.get(thisModule, settingKey);
+};
 
 export const Import = async function (actorData) {
-    try {
-        await Actor.createDocuments([actorData]);
-        ui.notifications.info(game.i18n.format("npcImporter.HTML.ActorCreated", { actorName: actorData.name }))
-    } catch (error) {
-        log(`Failed to import: ${error}`)
-        ui.notifications.error(game.i18n.localize("npcImporter.HTML.FailedToImport"))
-    }
-}
+  try {
+    await Actor.createDocuments([actorData]);
+    ui.notifications.info(
+      game.i18n.format('npcImporter.HTML.ActorCreated', {
+        actorName: actorData.name,
+      })
+    );
+  } catch (error) {
+    log(`Failed to import: ${error}`);
+    ui.notifications.error(
+      game.i18n.localize('npcImporter.HTML.FailedToImport')
+    );
+  }
+};
 
 export const GetActorId = function (actorName) {
-    try {
-        return game.actors.getName(actorName).id;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    return game.actors.getName(actorName).id;
+  } catch (error) {
+    return false;
+  }
+};
 
 export const GetActorData = function (actorName) {
-    try {
-        return game.actors.getName(actorName).data;
-    } catch (error) {
-        return false;
-    }
-}
+  try {
+    return game.actors.getName(actorName).data;
+  } catch (error) {
+    return false;
+  }
+};
 
 export const DeleteActor = async function (actorId) {
-    try {
-        await Actor.deleteDocuments([actorId]);
-        ui.notifications.info(game.i18n.format("npcImporter.HTML.DeleteActor", { actorId: actorId }))
-    } catch (error) {
-        log(`Failed to delet actor: ${error}`)
-    }
-}
+  try {
+    await Actor.deleteDocuments([actorId]);
+    ui.notifications.info(
+      game.i18n.format('npcImporter.HTML.DeleteActor', { actorId: actorId })
+    );
+  } catch (error) {
+    log(`Failed to delet actor: ${error}`);
+  }
+};
 
 export const getAllActorFolders = function () {
-    return game.folders.filter(x => x.data.type === "Actor")
-        .map((comp) => {
-            return `${comp.data.name}`;
-        });
-}
+  return game.folders
+    .filter(x => x.data.type === 'Actor')
+    .map(comp => {
+      return `${comp.data.name}`;
+    });
+};
 
 export const getFolderId = function (folderName) {
-    return game.folders.getName(folderName).id;
-}
+  return game.folders.getName(folderName).id;
+};
 
 export const updateModuleSetting = async function (settingName, newValue) {
-    await game.settings.set(thisModule, settingName, newValue);
-}
+  await game.settings.set(thisModule, settingName, newValue);
+};
 
 export const setParsingLanguage = async function (lang) {
-    log(`Setting parsing language to: ${lang}`)
-    await game.i18n.setLanguage(lang);
-}
+  log(`Setting parsing language to: ${lang}`);
+  await game.i18n.setLanguage(lang);
+};
