@@ -361,7 +361,7 @@ async function checkforItem(itemName, itemType) {
 }
 
 function rearrangeImprovedEdges(edgeName) {
-  let edge = '';
+  let edge = edgeName;
   if (edgeName.includes(game.i18n.localize('npcImporter.parser.Imp'))) {
     edge = edgeName
       .replace(game.i18n.localize('npcImporter.parser.Imp'), '')
