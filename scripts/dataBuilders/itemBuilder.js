@@ -80,14 +80,16 @@ export const hindranceBuilder = async function (hindrances) {
   const majorMinor = new RegExp(
     `${game.i18n.localize(
       'npcImporter.parser.Major'
-    )}(,)?\\s?|${game.i18n.localize('npcImporter.parser.Minor')}(,)?\\s?`
+    )}(,)?\\s?|${game.i18n.localize('npcImporter.parser.Minor')}(,)?\\s?`,
+    'ig'
   );
   if (hindrances != undefined) {
     var allHindrances = [];
     for (let i = 0; i < hindrances.length; i++) {
       let hindranceName = hindrances[i].trim();
       let isMajor = RegExp(
-        `\\(${game.i18n.localize('npcImporter.parser.Major')}`
+        `\\(${game.i18n.localize('npcImporter.parser.Major')}`,
+        'ig'
       ).test(hindranceName);
       hindranceName = hindranceName
         .replace(majorMinor, '')
@@ -104,7 +106,7 @@ export const hindranceBuilder = async function (hindrances) {
             description: data?.data?.description ?? '',
             notes: data?.data?.notes ?? '',
             additionalStats: data?.data?.additionalStats ?? {},
-            major: data?.data?.major ?? isMajor,
+            major: isMajor,
           },
         });
       } catch (error) {

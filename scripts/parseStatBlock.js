@@ -283,13 +283,13 @@ function GetListsStats(sections) {
 
 function stringsToArray(line) {
   let data = line
+    .slice(line.indexOf(':') + 1)
     .replace(global.newLineRegex, ' ')
     .replace('.', '')
-    .split(':')[1]
     .trim();
   if (data.length > 1) {
     return data
-      .match(new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9!\- ]+)(\(([^\)]+)\))?/gi))
+      .match(new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9!\-’' ]+)(\(([^\)]+)\))?/gi))
       .map(s => s.trim());
   }
 }
