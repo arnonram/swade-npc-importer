@@ -54,14 +54,15 @@ Hooks.on('renderActorDirectory', async (app, html, data) => {
                 tokenSettings: {
                   disposition: parseInt(radios[2].value),
                   vision: document.getElementsByName('vision')[0].checked,
-                  dimSight: parseInt(
-                    document.getElementsByName('dimSight')[0].value
-                  ),
-                  brightSight: parseInt(
-                    document.getElementsByName('brightSight')[0].value
-                  ),
+                  dimSight:
+                    parseInt(document.getElementsByName('dimSight')[0].value) ||
+                    0,
+                  brightSight:
+                    parseInt(
+                      document.getElementsByName('brightSight')[0].value
+                    ) || 0,
                   sightAngle: parseInt(
-                    document.getElementsByName('sightAngle')[0].value
+                    document.getElementsByName('sightAngle')[0].value || 360
                   ),
                 },
                 saveFolder: html.find('select[name="save-folder"]')[0].value,
@@ -179,6 +180,7 @@ function importerDialogue() {
           <div class="form-group slim">
             <label>${game.i18n.localize('TOKEN.VisionAngle')}</label>
             <div class="form-fields">
+              <label>Degress (360 if empty)</label>
               <input type="number" name="sightAngle" value="${
                 defaultData.tokenData.sightAngle
               }" />
