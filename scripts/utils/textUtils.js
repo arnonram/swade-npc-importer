@@ -1,3 +1,5 @@
+import * as global from '../global.js';
+
 export function capitalize(string) {
   return string.replace(/(?:^|\s)\S/g, function (a) {
     return a.toUpperCase();
@@ -34,4 +36,10 @@ export function splitAndSort(text) {
       .map(x => x.toLowerCase().trim())
       .sort()
   );
+}
+
+export function splitAndTrim(stringToSplit, separator) {
+  return stringToSplit.split(separator).map(function (item) {
+    return item.replace(global.newLineRegex, ' ').trim();
+  });
 }

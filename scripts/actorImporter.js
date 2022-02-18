@@ -6,11 +6,11 @@ export const actorImporter = async function (actorDataToImport) {
   if (!actorId) {
     await Import(actorDataToImport);
   } else {
-    await WhatToDo(actorDataToImport, actorId);
+    await whatToDo(actorDataToImport, actorId);
   }
 };
 
-async function WhatToDo(actorData, actorId) {
+async function whatToDo(actorData, actorId) {
   let actorExists = `
     ${game.i18n.localize('npcImporter.HTML.ActorExistText')}
     <div class="form-group-dialog newName" >

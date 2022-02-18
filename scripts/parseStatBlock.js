@@ -1,7 +1,7 @@
 import { log } from './global.js';
 import * as global from './global.js';
 import * as parserHelper from './utils/parserBuilderHelpers.js';
-import { capitalizeEveryWord } from './utils/textUtils.js';
+import { capitalizeEveryWord, splitAndTrim } from './utils/textUtils.js';
 import {
   getModuleSettings,
   getActorAddtionalStatsArray,
@@ -13,16 +13,20 @@ export const statBlockParser = async function (clipData) {
     log(`Starting statblock parsing`);
     let sections = GetSections(clipData);
     var importedActor = {};
-    Object.assign(importedActor, GetNameAndDescription(sections[0]));
-    Object.assign(importedActor, GetAttributes(sections));
-    Object.assign(importedActor, GetSkills(sections));
-    Object.assign(importedActor, GetBaseStats(sections));
-    Object.assign(importedActor, GetListsStats(sections));
-    Object.assign(importedActor, GetBulletListStats(sections));
-    Object.assign(importedActor, await GetGear(sections));
+    Object.assign(importedActor, getNameAndDescription(sections[0]));
+    Object.assign(importedActor, getAttributes(sections));
+    Object.assign(importedActor, getSkills(sections));
+    Object.assign(importedActor, getBaseStats(sections));
+    Object.assign(importedActor, getListsStats(sections));
+    Object.assign(importedActor, getBulletListStats(sections));
+    Object.assign(importedActor, await getGear(sections));
     Object.assign(importedActor, getSystemDefinedStats(sections));
+    importedActor.Biography.value = getConviction(
+      sections,
+      importedActor.Biography.value
+    );
 
-    importedActor.Size = GetSize(importedActor.SpecialAbilities);
+    importedActor.Size = getSize(importedActor.SpecialAbilities);
     log(`Prased data: ${JSON.stringify(importedActor, null, 4)}`);
     return importedActor;
   } catch (error) {
@@ -66,6 +70,7 @@ function GetSectionsIndex(inData) {
     `${game.i18n.localize('npcImporter.parser.Gear')}:`,
     `${game.i18n.localize('npcImporter.parser.SpecialAbilities')}:`,
     `${game.i18n.localize('npcImporter.parser.SuperPowers')}:`,
+    `${game.i18n.localize('npcImporter.parser.Conviction')}:`,
   ];
 
   let allStats = allStatBlockEntities.concat(getActorAddtionalStatsArray());
@@ -81,7 +86,7 @@ function GetSectionsIndex(inData) {
   });
 }
 
-function GetNameAndDescription(nameAndDescription) {
+function getNameAndDescription(nameAndDescription) {
   let nameDesc = {};
   let lines = nameAndDescription.split(global.newLineRegex);
   nameDesc.Name = capitalizeEveryWord(lines[0].trim());
@@ -105,11 +110,11 @@ function descriptionByParagraph(descArray) {
   return bio;
 }
 
-function GetAttributes(sections) {
+function getAttributes(sections) {
   let attrTranslation = `${game.i18n.localize(
     'npcImporter.parser.Attributes'
   )}:`;
-  let attributes = SplitAndTrim(
+  let attributes = splitAndTrim(
     sections
       .find(x => x.includes(attrTranslation))
       .replace(attrTranslation, ''),
@@ -165,9 +170,9 @@ function GetAttributes(sections) {
   return { Attributes: attributesDict };
 }
 
-function GetSkills(sections) {
+function getSkills(sections) {
   let trait = `${game.i18n.localize('npcImporter.parser.Skills')}:`;
-  let skills = SplitAndTrim(
+  let skills = splitAndTrim(
     sections.find(x => x.includes(trait)).replace(trait, ''),
     ','
   );
@@ -211,7 +216,7 @@ function buildTrait(data) {
   };
 }
 
-function GetBaseStats(sections) {
+function getBaseStats(sections) {
   let baseStats = [
     `${game.i18n.localize('npcImporter.parser.Pace')}:`,
     `${game.i18n.localize('npcImporter.parser.Parry')}:`,
@@ -251,7 +256,7 @@ function getStatNumber(data) {
   return parseInt(data.split(':')[1].replace(';', '').trim());
 }
 
-function GetListsStats(sections) {
+function getListsStats(sections) {
   const supportedListStats = [
     `${game.i18n.localize('npcImporter.parser.Hindrances')}:`,
     `${game.i18n.localize('npcImporter.parser.Edges')}:`,
@@ -294,7 +299,7 @@ function stringsToArray(line) {
   }
 }
 
-function GetBulletListStats(sections) {
+function getBulletListStats(sections) {
   const supportedBulletListStats = [
     `${game.i18n.localize('npcImporter.parser.SpecialAbilities')}:`,
     `${game.i18n.localize('npcImporter.parser.SuperPowers')}:`,
@@ -336,12 +341,12 @@ function getAbilities(data) {
   let abilities = {};
   let line = '';
   if (!modifiedSpecialAbs) {
-    line = SplitAndTrim(
+    line = splitAndTrim(
       data,
       new RegExp(getModuleSettings(global.settingBulletPointIcons), 'ig')
     );
   } else {
-    line = SplitAndTrim(data, new RegExp('@', 'gi'));
+    line = splitAndTrim(data, new RegExp('@', 'gi'));
   }
 
   line.shift();
@@ -359,7 +364,7 @@ function getAbilities(data) {
   return abilities;
 }
 
-async function GetGear(sections) {
+async function getGear(sections) {
   let gearString = `${game.i18n.localize('npcImporter.parser.Gear')}:`;
   try {
     let characterGear = [];
@@ -378,11 +383,11 @@ async function GetGear(sections) {
       }
     }
 
-    return { Gear: await ParseGear(characterGear) };
+    return { Gear: await parseGear(characterGear) };
   } catch {}
 }
 
-async function ParseGear(gearArray) {
+async function parseGear(gearArray) {
   let parryRegex = new RegExp(
     `(\\+\\+d|\\-\\d+) ${game.i18n.localize('npcImporter.parser.Parry')}`
   );
@@ -493,13 +498,7 @@ function getSystemDefinedStats(sections) {
   return systemStats;
 }
 
-function SplitAndTrim(stringToSplit, separator) {
-  return stringToSplit.split(separator).map(function (item) {
-    return item.replace(global.newLineRegex, ' ').trim();
-  });
-}
-
-function GetSize(abilities) {
+function getSize(abilities) {
   for (const ability in abilities) {
     if (
       ability
@@ -517,4 +516,11 @@ function GetSize(abilities) {
     }
   }
   return 0;
+}
+
+function getConviction(data, biography) {
+  const conviction = data.find(x =>
+    x.startsWith(game.i18n.localize('npcImporter.parser.Conviction'))
+  );
+  return conviction ? `${conviction}<hr>${biography}` : biography;
 }

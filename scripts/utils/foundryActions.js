@@ -4,41 +4,53 @@ import {
   settingPackageToUse,
   settingCompsToUse,
   settingActiveCompendiums,
-  settingParaeLanguage,
+  allPacks,
 } from '../global.js';
 import { splitAndSort } from './textUtils.js';
 
-export const getItemFromCompendium = async function (itemName, expectedType) {
-  let item = splitAndSort(itemName);
+export async function setAllPacks() {
+  log('Getting all active compendiums into allPacks');
   let activeCompendiums = getModuleSettings(settingActiveCompendiums);
-  let packs = [];
-  activeCompendiums.split(',').forEach(x => {
-    packs.push(game.packs.get(x));
-  });
-
-  packs = packs.filter(function (el) {
+  activeCompendiums
+    .split(',')
+    .filter(String)
+    .forEach(comp => {
+      if (game.packs.get(comp).metadata.type === 'Item') {
+        allPacks.push(game.packs.get(comp));
+      }
+    });
+  allPacks.filter(function (el) {
     return el != null;
   });
+}
 
-  for (let i = 0; i < packs.length; i++) {
+export function resetAllPacks() {
+  log('Resetting allPacks');
+  allPacks.length = 0;
+}
+
+export async function getItemFromCompendium(itemName, expectedType = '') {
+  let item = splitAndSort(itemName);
+  for (let i = 0; i < allPacks.length; i++) {
     try {
-      const packIndex = await packs[i].getIndex();
       let resultId = '';
       if (expectedType === 'weapon') {
-        resultId = packIndex.contents.find(it => splitAndSort(it.name) == item);
+        resultId = allPacks[i].index.contents.find(
+          it => splitAndSort(it.name) == item
+        );
         if (resultId === undefined) {
-          resultId = packIndex.contents.find(it =>
+          resultId = allPacks[i].index.contents.find(it =>
             item.includes(splitAndSort(it.name))
           );
         }
       } else {
-        resultId = packIndex.contents.find(
+        resultId = allPacks[i].index.contents.find(
           it => splitAndSort(it.name) === item
         );
       }
       if (resultId != undefined) {
-        const item = await packs[i].getDocument(resultId['_id']);
-        if (item.type == expectedType || item.type == '') {
+        const item = await allPacks[i].getDocument(resultId['_id']);
+        if (item.type === expectedType) {
           return item;
         }
       }
@@ -47,7 +59,7 @@ export const getItemFromCompendium = async function (itemName, expectedType) {
     }
   }
   return { data: {} };
-};
+}
 
 export const getAllActiveCompendiums = function () {
   let packs = getModuleSettings(settingPackageToUse);
@@ -77,7 +89,7 @@ export const getAllActiveCompendiums = function () {
   }
 };
 
-export const GetAllItemCompendiums = function () {
+export const getAllItemCompendiums = function () {
   let comps = game.packs
     .filter(comp => comp.documentName == 'Item')
     .map(comp => {

@@ -45,6 +45,7 @@
   "npcImporter.parser.Str": "Str",
   "npcImporter.parser.Imp": "(Imp)",
   "npcImporter.parser.Improved": "Improved",
+  "npcImporter.parser.Conviction": "Conviction",
 
   "npcImporter.parser.Shield": "Shield",
   "npcImporter.parser.Armor": "Armor",

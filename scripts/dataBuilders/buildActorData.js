@@ -151,14 +151,13 @@ function initiativeMod(parsedData) {
         hasHesitant = true;
       }
     });
-
-    return {
-      hasHesitant: hasHesitant,
-      hasLevelHeaded: hasLevelHeaded,
-      hasImpLevelHeaded: hasImpLevelHeaded,
-      hasQuick: hasQuick,
-    };
   }
+  return {
+    hasHesitant: hasHesitant,
+    hasLevelHeaded: hasLevelHeaded,
+    hasImpLevelHeaded: hasImpLevelHeaded,
+    hasQuick: hasQuick,
+  };
 }
 
 function findRunningDie(parsedData) {

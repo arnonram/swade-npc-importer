@@ -9,12 +9,15 @@ import {
   updateModuleSetting,
   setParsingLanguage,
   getModuleSettings,
+  setAllPacks,
+  resetAllPacks,
 } from './utils/foundryActions.js';
 import { getPowerPoints } from './utils/parserBuilderHelpers.js';
 
 export const buildActor = async function (importSettings, data) {
   let clipboardText = data ? data : await getClipboardText();
   if (clipboardText) {
+    await setAllPacks();
     const currentLang = game.i18n.lang;
     await setParsingLanguage(getModuleSettings(settingParaeLanguage));
     await updateModuleSetting(settingLastSaveFolder, importSettings.saveFolder);
@@ -28,6 +31,7 @@ export const buildActor = async function (importSettings, data) {
         log('Failed to build finalActor: ' + error);
       } finally {
         await setParsingLanguage(currentLang);
+        resetAllPacks();
       }
     }
   } else {
