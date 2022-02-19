@@ -1,6 +1,6 @@
 import * as itemBuilder from './itemBuilder.js';
 import { specialAbilitiesParser as specialAbilitiesParser } from './buildActorItemsSpecialAbilities.js';
-import { ItemGearBuilder as itemGearBuilder } from './buildActorGear.js';
+import { itemgearBuilder as itemgearBuilder } from './buildActorGear.js';
 
 export async function buildActorItems(parsedData) {
   let items = [];
@@ -11,7 +11,7 @@ export async function buildActorItems(parsedData) {
   let powers = (await itemBuilder.powerBuilder(parsedData.Powers)) ?? [];
   let specialAbilities =
     (await specialAbilitiesParser(parsedData.SpecialAbilities)) ?? [];
-  let gear = (await itemGearBuilder(parsedData.Gear)) ?? [];
+  let gear = (await itemgearBuilder(parsedData.Gear)) ?? [];
 
   items = items.concat(
     skills,

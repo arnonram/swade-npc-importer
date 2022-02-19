@@ -88,8 +88,6 @@ function importerDialogue() {
     isWildcard: getModuleSettings(settingDefaultIsWildcard),
     tokenData: getModuleSettings(settingToken),
   };
-  console.table(defaultData);
-
   let folderOptions = buildFolderOptions();
 
   let npcImporterDialog = `

@@ -1,23 +1,23 @@
 import {
-  WeaponBuilder,
-  ArmorBuilder,
-  GearBuilder,
-  ShieldBuilder,
+  weaponBuilder,
+  armorBuilder,
+  gearBuilder,
+  shieldBuilder,
 } from './itemBuilder.js';
 
-export async function ItemGearBuilder(gear) {
+export async function itemgearBuilder(gear) {
   let gearItems = [];
   for (const item in gear) {
     if (gear[item] == null) {
       // check for other gear
-      gearItems.push(await GearBuilder(item));
+      gearItems.push(await gearBuilder(item));
     } else if (
       Object.keys(gear[item]).includes('range') ||
       Object.keys(gear[item]).includes('damage')
     ) {
       // check for weapon
       gearItems.push(
-        await WeaponBuilder({
+        await weaponBuilder({
           weaponName: item,
           weaponDescription: item,
           weaponDamage: gear[item]['damage'],
@@ -29,11 +29,11 @@ export async function ItemGearBuilder(gear) {
       );
     } else if (Object.keys(gear[item]).includes('armorBonus')) {
       // check for armor
-      gearItems.push(await ArmorBuilder(item, gear[item]['armorBonus'], item));
+      gearItems.push(await armorBuilder(item, gear[item]['armorBonus'], item));
     } else if (Object.keys(gear[item]).includes('parry')) {
       //check for shield
       gearItems.push(
-        await ShieldBuilder(
+        await shieldBuilder(
           item,
           item,
           gear[item]['parry'],

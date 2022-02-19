@@ -100,7 +100,7 @@ Some _Prototype Token_ options may be set by default
   - Shields
   - Gear
 - **Special Abilities**
-  - Search for "Armor" and/or any damage attack (lines with Str., Str+d\*, or dice formulas).
+  - Search for "Armor" and/or any damage attack (lines with Str., Str+d, or dice formulas).
     - You may select from the settings to not search for these special items, and then they will all be listed as Special Abilities Items
   - Lists all others as Special Abilities Items
   - Size

@@ -118,7 +118,7 @@ export async function hindranceBuilder(hindrances) {
   }
 }
 
-export async function AbilityBuilder(abilityName, abilityDescription) {
+export async function abilityBuilder(abilityName, abilityDescription) {
   const doesGrantPowers = new RegExp(
     `${game.i18n.localize(
       'npcImporter.parser.PowerPoints'
@@ -144,7 +144,7 @@ export async function AbilityBuilder(abilityName, abilityDescription) {
   }
 }
 
-export async function ItemBuilderFromSpecAbs(name, itemDescription, type) {
+export async function itemBuilderFromSpecAbs(name, itemDescription, type) {
   let cleanName = checkSpecificItem(name).trim();
   let itemFromCompendium = await checkforItem(cleanName, type);
   const item = {
@@ -186,7 +186,7 @@ export async function powerBuilder(powers) {
   }
 }
 
-export async function WeaponBuilder({
+export async function weaponBuilder({
   weaponName,
   weaponDescription,
   weaponDamage,
@@ -235,7 +235,7 @@ export async function WeaponBuilder({
   }
 }
 
-export async function ShieldBuilder(
+export async function shieldBuilder(
   shieldName,
   description,
   parry = 0,
@@ -263,7 +263,7 @@ export async function ShieldBuilder(
   }
 }
 
-export async function ArmorBuilder(armorName, armorBonus, armorDescription) {
+export async function armorBuilder(armorName, armorBonus, armorDescription) {
   var cleanName = checkSpecificItem(armorName);
   const { data } = await getItemFromCompendium(cleanName, 'armor');
   try {
@@ -286,7 +286,7 @@ export async function ArmorBuilder(armorName, armorBonus, armorDescription) {
   }
 }
 
-export async function GearBuilder(gearName, description) {
+export async function gearBuilder(gearName, description) {
   const { data } = await checkforItem(gearName, 'gear');
   try {
     return {
