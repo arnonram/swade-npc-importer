@@ -1,6 +1,6 @@
 import * as itemBuilder from './itemBuilder.js';
-import { specialAbilitiesParser as specialAbilitiesParser } from './buildActorItemsSpecialAbilities.js';
-import { itemGearBuilder as itemGearBuilder } from './buildActorGear.js';
+import { specialAbilitiesParser } from './buildActorItemsSpecialAbilities.js';
+import { itemGearBuilder } from './buildActorGear.js';
 
 export async function buildActorItems(parsedData) {
   let items = [];
