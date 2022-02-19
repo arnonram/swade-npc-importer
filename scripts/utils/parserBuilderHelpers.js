@@ -1,6 +1,6 @@
 import { armorModRegex } from '../global.js';
 
-export const GetMeleeDamage = function (abilityDescription) {
+export function GetMeleeDamage(abilityDescription) {
   const meleeDamageRegex = new RegExp(
     `${game.i18n.localize('npcImporter.parser.Str')}\\.|${game.i18n.localize(
       'npcImporter.parser.Str'
@@ -14,27 +14,27 @@ export const GetMeleeDamage = function (abilityDescription) {
     .replace('.', '')
     .toLowerCase();
   return `@${damage}`;
-};
+}
 
-export const GetArmorBonus = function (data) {
+export function getArmorBonus(data) {
   return parseInt(data.match(armorModRegex)[0]);
-};
+}
 
-export const GetParryBonus = function (data) {
+export function getParryBonus(data) {
   let parryRegex = new RegExp(
     `([+-])\\d+ ${game.i18n.localize('npcImporter.parser.Parry')}`
   );
   return parseInt(data.match(parryRegex)[0]);
-};
+}
 
-export const GetCoverBonus = function (data) {
+export function getCoverBonus(data) {
   let coverRegex = new RegExp(
     `([+-])\\d+ ${game.i18n.localize('npcImporter.parser.Cover')}`
   );
   return parseInt(data.match(coverRegex)[0]);
-};
+}
 
-export const getPowerPoints = function (data) {
+export function getPowerPoints(data) {
   const powerPointsRegex = new RegExp(
     `\\d+ ${game.i18n.localize('npcImporter.parser.PowerPoints')}`
   );
@@ -46,4 +46,4 @@ export const getPowerPoints = function (data) {
         .trim()
     );
   } catch {}
-};
+}

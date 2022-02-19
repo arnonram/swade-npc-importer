@@ -8,7 +8,7 @@ import {
   getActorAddtionalStats,
 } from './utils/foundryActions.js';
 
-export const statBlockParser = async function (clipData) {
+export async function statBlockParser(clipData) {
   try {
     log(`Starting statblock parsing`);
     let sections = GetSections(clipData);
@@ -35,7 +35,7 @@ export const statBlockParser = async function (clipData) {
       game.i18n.localize('npcImporter.parser.NotValidStablock')
     );
   }
-};
+}
 
 function GetSections(inData) {
   let indexes = GetSectionsIndex(inData);
@@ -429,8 +429,8 @@ async function parseGear(gearArray) {
         .toLowerCase()
         .includes(game.i18n.localize('npcImporter.parser.Shield').toLowerCase())
     ) {
-      let parry = parserHelper.GetParryBonus(splitGear[1]);
-      let cover = parserHelper.GetCoverBonus(splitGear[1]);
+      let parry = parserHelper.getParryBonus(splitGear[1]);
+      let cover = parserHelper.getCoverBonus(splitGear[1]);
       gearDict[splitGear[0].trim()] = { parry, cover };
     }
     // check if armor
@@ -441,7 +441,7 @@ async function parseGear(gearArray) {
         .includes(game.i18n.localize('npcImporter.parser.Armor'))
     ) {
       gearDict[splitGear[0].trim()] = {
-        armorBonus: parserHelper.GetArmorBonus(splitGear[1]),
+        armorBonus: parserHelper.getArmorBonus(splitGear[1]),
       };
     }
   });

@@ -1,14 +1,14 @@
 import { log } from './global.js';
 import { Import, GetActorId, DeleteActor } from './utils/foundryActions.js';
 
-export const actorImporter = async function (actorDataToImport) {
+export async function actorImporter(actorDataToImport) {
   let actorId = GetActorId(actorDataToImport.name);
   if (!actorId) {
     await Import(actorDataToImport);
   } else {
     await whatToDo(actorDataToImport, actorId);
   }
-};
+}
 
 async function whatToDo(actorData, actorId) {
   let actorExists = `

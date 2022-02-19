@@ -14,7 +14,7 @@ import {
 } from './utils/foundryActions.js';
 import { getPowerPoints } from './utils/parserBuilderHelpers.js';
 
-export const buildActor = async function (importSettings, data) {
+export async function buildActor(importSettings, data) {
   let clipboardText = data ? data : await getClipboardText();
   if (clipboardText) {
     await setAllPacks();
@@ -39,7 +39,7 @@ export const buildActor = async function (importSettings, data) {
       game.i18n.localize('npcImporter.parser.EmptyClipboard')
     );
   }
-};
+}
 
 async function getClipboardText() {
   return await navigator.clipboard.readText();

@@ -61,7 +61,7 @@ export async function getItemFromCompendium(itemName, expectedType = '') {
   return { data: {} };
 }
 
-export const getAllActiveCompendiums = function () {
+export function getAllActiveCompendiums() {
   let packs = getModuleSettings(settingPackageToUse);
   let comps = getModuleSettings(settingCompsToUse).split(',');
 
@@ -75,11 +75,7 @@ export const getAllActiveCompendiums = function () {
     let packArray = packs.split(',');
     packArray.forEach(packName => {
       game.packs
-        .filter(
-          comp =>
-            // comp.metadata.entity == "Item" &&
-            comp.metadata.package == packName
-        )
+        .filter(comp => comp.metadata.package == packName)
         .map(comp => {
           comps.push(comp.collection);
         });
@@ -87,18 +83,18 @@ export const getAllActiveCompendiums = function () {
 
     return Array.from(new Set(comps));
   }
-};
+}
 
-export const getAllItemCompendiums = function () {
+export function getAllItemCompendiums() {
   let comps = game.packs
     .filter(comp => comp.documentName == 'Item')
     .map(comp => {
       return comp.collection;
     });
   return Array.from(comps);
-};
+}
 
-export const getAllPackageNames = function () {
+export function getAllPackageNames() {
   let uniquePackages = new Set(
     game.packs
       .filter(comp => comp.metadata.package)
@@ -107,9 +103,9 @@ export const getAllPackageNames = function () {
       })
   );
   return Array.from(uniquePackages);
-};
+}
 
-export const getSpecificAdditionalStat = function (additionalStatName) {
+export function getSpecificAdditionalStat(additionalStatName) {
   let additionalStats = game.settings.get('swade', 'settingFields').actor;
   for (const stat in additionalStats) {
     if (
@@ -119,9 +115,9 @@ export const getSpecificAdditionalStat = function (additionalStatName) {
       return additionalStats[stat];
     }
   }
-};
+}
 
-export const getActorAddtionalStatsArray = function () {
+export function getActorAddtionalStatsArray() {
   let actorAdditionalStats = getActorAddtionalStats();
   let stats = [];
   for (const key in actorAdditionalStats) {
@@ -131,25 +127,25 @@ export const getActorAddtionalStatsArray = function () {
     }
   }
   return stats;
-};
+}
 
-export const getActorAddtionalStats = function () {
+export function getActorAddtionalStats() {
   return game.settings.get('swade', 'settingFields').actor;
-};
+}
 
-export const getSystemCoreSkills = function () {
+export function getSystemCoreSkills() {
   return game.settings
     .get('swade', 'coreSkills')
     .toLowerCase()
     .split(',')
     .map(Function.prototype.call, String.prototype.trim);
-};
+}
 
-export const getModuleSettings = function (settingKey) {
+export function getModuleSettings(settingKey) {
   return game.settings.get(thisModule, settingKey);
-};
+}
 
-export const Import = async function (actorData) {
+export async function Import(actorData) {
   try {
     await Actor.createDocuments([actorData]);
     ui.notifications.info(
@@ -163,25 +159,25 @@ export const Import = async function (actorData) {
       game.i18n.localize('npcImporter.HTML.FailedToImport')
     );
   }
-};
+}
 
-export const GetActorId = function (actorName) {
+export function GetActorId(actorName) {
   try {
     return game.actors.getName(actorName).id;
   } catch (error) {
     return false;
   }
-};
+}
 
-export const GetActorData = function (actorName) {
+export function GetActorData(actorName) {
   try {
     return game.actors.getName(actorName).data;
   } catch (error) {
     return false;
   }
-};
+}
 
-export const DeleteActor = async function (actorId) {
+export async function DeleteActor(actorId) {
   try {
     await Actor.deleteDocuments([actorId]);
     ui.notifications.info(
@@ -190,25 +186,25 @@ export const DeleteActor = async function (actorId) {
   } catch (error) {
     log(`Failed to delet actor: ${error}`);
   }
-};
+}
 
-export const getAllActorFolders = function () {
+export function getAllActorFolders() {
   return game.folders
     .filter(x => x.data.type === 'Actor')
     .map(comp => {
       return `${comp.data.name}`;
     });
-};
+}
 
-export const getFolderId = function (folderName) {
+export function getFolderId(folderName) {
   return game.folders.getName(folderName).id;
-};
+}
 
-export const updateModuleSetting = async function (settingName, newValue) {
+export async function updateModuleSetting(settingName, newValue) {
   await game.settings.set(thisModule, settingName, newValue);
-};
+}
 
-export const setParsingLanguage = async function (lang) {
+export async function setParsingLanguage(lang) {
   log(`Setting parsing language to: ${lang}`);
   await game.i18n.setLanguage(lang);
-};
+}

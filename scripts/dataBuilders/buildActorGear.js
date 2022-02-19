@@ -5,7 +5,7 @@ import {
   ShieldBuilder,
 } from './itemBuilder.js';
 
-export const ItemGearBuilder = async function (gear) {
+export async function ItemGearBuilder(gear) {
   let gearItems = [];
   for (const item in gear) {
     if (gear[item] == null) {
@@ -43,4 +43,4 @@ export const ItemGearBuilder = async function (gear) {
     }
   }
   return gearItems;
-};
+}

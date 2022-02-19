@@ -9,10 +9,10 @@ import {
   settingallAsSpecialAbilities,
   settingModifiedSpecialAbs,
 } from '../global.js';
-import { GetArmorBonus } from '../utils/parserBuilderHelpers.js';
+import { getArmorBonus } from '../utils/parserBuilderHelpers.js';
 import { getModuleSettings } from '../utils/foundryActions.js';
 
-export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
+export async function specialAbilitiesParser(specialAbilitiesData) {
   const meleeDamageRegex = new RegExp(
     `\\b${game.i18n.localize(
       'npcImporter.parser.Str'
@@ -38,7 +38,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
               game.i18n.localize('npcImporter.parser.Armor').toLocaleLowerCase()
             )
         ) {
-          let armorBonus = GetArmorBonus(elem);
+          let armorBonus = getArmorBonus(elem);
           specialAbitlitiesItems.push(
             await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem])
           );
@@ -80,7 +80,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
           })
         );
       } else if (elem.startsWith('@a')) {
-        let armorBonus = GetArmorBonus(elem);
+        let armorBonus = getArmorBonus(elem);
         let name = elem.replace('@a', '').trim();
         specialAbitlitiesItems.push(
           await ArmorBuilder(name, armorBonus, specialAbilitiesData[elem])
@@ -103,4 +103,4 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
   }
 
   return specialAbitlitiesItems;
-};
+}

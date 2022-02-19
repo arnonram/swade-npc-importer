@@ -1,8 +1,8 @@
 import * as itemBuilder from './itemBuilder.js';
-import { SpecialAbilitiesParser as specialAbilitiesParser } from './buildActorItemsSpecialAbilities.js';
+import { specialAbilitiesParser as specialAbilitiesParser } from './buildActorItemsSpecialAbilities.js';
 import { ItemGearBuilder as itemGearBuilder } from './buildActorGear.js';
 
-export const buildActorItems = async function (parsedData) {
+export async function buildActorItems(parsedData) {
   let items = [];
   let skills = (await itemBuilder.skillBuilder(parsedData.Skills)) ?? [];
   let edges = (await itemBuilder.edgeBuilder(parsedData.Edges)) ?? [];
@@ -22,7 +22,7 @@ export const buildActorItems = async function (parsedData) {
     gear
   );
   return postProcessChecks(items);
-};
+}
 
 function postProcessChecks(actorItems) {
   let finalItems = checkBruteEdge(actorItems);

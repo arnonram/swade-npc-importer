@@ -1,7 +1,7 @@
 import { settingAutoCalcSize, settingToken } from '../global.js';
 import { getModuleSettings } from '../utils/foundryActions.js';
 
-export const buildActorToken = async function (parsedData, tokenSettings) {
+export async function buildActorToken(parsedData, tokenSettings) {
   var token = tokenSettings;
   const squares = GetWidthHight(parsedData.Size);
   token.displayName = parseInt(getModuleSettings(settingToken).displayName);
@@ -11,7 +11,7 @@ export const buildActorToken = async function (parsedData, tokenSettings) {
     token.scale = CalculateScale(parsedData.Size);
   }
   return token;
-};
+}
 
 function GetWidthHight(size) {
   if (size <= 2) {

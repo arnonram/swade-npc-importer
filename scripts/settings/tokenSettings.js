@@ -61,9 +61,9 @@ export default class TokenSettings extends FormApplication {
       vision: {
         checked: currentTokenValues.vision ? 'checked' : '',
       },
-      dimSight: currentTokenValues.dimSight,
-      brightSight: currentTokenValues.brightSight,
-      sightAngle: currentTokenValues.sightAngle,
+      dimSight: currentTokenValues.dimSight ?? 0,
+      brightSight: currentTokenValues.brightSight ?? 0,
+      sightAngle: currentTokenValues.sightAngle ?? 360,
     };
   }
 
