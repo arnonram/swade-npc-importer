@@ -1,5 +1,5 @@
 import {
-  GetAllItemCompendiums,
+  getAllItemCompendiums,
   getAllPackageNames,
   getModuleSettings,
   updateModuleSetting,
@@ -42,7 +42,7 @@ export default class SelectCompendiums extends FormApplication {
       });
     });
 
-    let allComps = GetAllItemCompendiums();
+    let allComps = getAllItemCompendiums();
     let settingsComps = getModuleSettings(settingCompsToUse);
     allComps.forEach(cmp => {
       data.comps.push({

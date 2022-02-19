@@ -1,18 +1,18 @@
 import {
-  AbilityBuilder,
-  ArmorBuilder,
-  ItemBuilderFromSpecAbs,
-  WeaponBuilder,
+  abilityBuilder,
+  armorBuilder,
+  itemBuilderFromSpecAbs,
+  weaponBuilder,
 } from './itemBuilder.js';
 import {
   diceRegex,
   settingallAsSpecialAbilities,
   settingModifiedSpecialAbs,
 } from '../global.js';
-import { GetArmorBonus } from '../utils/parserBuilderHelpers.js';
+import { getArmorBonus } from '../utils/parserBuilderHelpers.js';
 import { getModuleSettings } from '../utils/foundryActions.js';
 
-export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
+export async function specialAbilitiesParser(specialAbilitiesData) {
   const meleeDamageRegex = new RegExp(
     `\\b${game.i18n.localize(
       'npcImporter.parser.Str'
@@ -26,7 +26,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
     if (getModuleSettings(settingallAsSpecialAbilities)) {
       for (const elem in specialAbilitiesData) {
         specialAbitlitiesItems.push(
-          await AbilityBuilder(elem, specialAbilitiesData[elem])
+          await abilityBuilder(elem, specialAbilitiesData[elem])
         );
       }
     } else {
@@ -38,9 +38,9 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
               game.i18n.localize('npcImporter.parser.Armor').toLocaleLowerCase()
             )
         ) {
-          let armorBonus = GetArmorBonus(elem);
+          let armorBonus = getArmorBonus(elem);
           specialAbitlitiesItems.push(
-            await ArmorBuilder(elem, armorBonus, specialAbilitiesData[elem])
+            await armorBuilder(elem, armorBonus, specialAbilitiesData[elem])
           );
         } else if (
           (meleeDamageRegex.test(specialAbilitiesData[elem]) ||
@@ -52,7 +52,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
             specialAbilitiesData[elem].match(meleeDamageRegex) ||
             specialAbilitiesData[elem].match(diceRegex);
           specialAbitlitiesItems.push(
-            await WeaponBuilder({
+            await weaponBuilder({
               weaponName: elem,
               weaponDescription: specialAbilitiesData[elem],
               weaponDamage: meleeDamage[0],
@@ -60,7 +60,7 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
           );
         } else {
           specialAbitlitiesItems.push(
-            await AbilityBuilder(elem, specialAbilitiesData[elem])
+            await abilityBuilder(elem, specialAbilitiesData[elem])
           );
         }
       }
@@ -73,34 +73,34 @@ export const SpecialAbilitiesParser = async function (specialAbilitiesData) {
           specialAbilitiesData[elem].match(diceRegex);
         let name = elem.replace('@w', '').trim();
         specialAbitlitiesItems.push(
-          await WeaponBuilder({
+          await weaponBuilder({
             weaponName: name,
             weaponDescription: specialAbilitiesData[elem],
             weaponDamage: meleeDamage[0],
           })
         );
       } else if (elem.startsWith('@a')) {
-        let armorBonus = GetArmorBonus(elem);
+        let armorBonus = getArmorBonus(elem);
         let name = elem.replace('@a', '').trim();
         specialAbitlitiesItems.push(
-          await ArmorBuilder(name, armorBonus, specialAbilitiesData[elem])
+          await armorBuilder(name, armorBonus, specialAbilitiesData[elem])
         );
       } else if (elem.startsWith('@e')) {
         let data = [elem.replace('@e', '').trim(), specialAbilitiesData[elem]];
         specialAbitlitiesItems.push(
-          await ItemBuilderFromSpecAbs(data[0], data[1], 'edge')
+          await itemBuilderFromSpecAbs(data[0], data[1], 'edge')
         );
       } else if (elem.startsWith('@h')) {
         let data = [elem.replace('@h', '').trim(), specialAbilitiesData[elem]];
         specialAbitlitiesItems.push(
-          await ItemBuilderFromSpecAbs(data[0], data[1], 'hindrance')
+          await itemBuilderFromSpecAbs(data[0], data[1], 'hindrance')
         );
       } else if (elem.startsWith('@sa')) {
         let data = [elem.replace('@sa', '').trim(), specialAbilitiesData[elem]];
-        specialAbitlitiesItems.push(await AbilityBuilder(data[0], data[1]));
+        specialAbitlitiesItems.push(await abilityBuilder(data[0], data[1]));
       }
     }
   }
 
   return specialAbitlitiesItems;
-};
+}

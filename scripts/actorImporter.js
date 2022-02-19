@@ -1,16 +1,16 @@
 import { log } from './global.js';
 import { Import, GetActorId, DeleteActor } from './utils/foundryActions.js';
 
-export const actorImporter = async function (actorDataToImport) {
+export async function actorImporter(actorDataToImport) {
   let actorId = GetActorId(actorDataToImport.name);
   if (!actorId) {
     await Import(actorDataToImport);
   } else {
-    await WhatToDo(actorDataToImport, actorId);
+    await whatToDo(actorDataToImport, actorId);
   }
-};
+}
 
-async function WhatToDo(actorData, actorId) {
+async function whatToDo(actorData, actorId) {
   let actorExists = `
     ${game.i18n.localize('npcImporter.HTML.ActorExistText')}
     <div class="form-group-dialog newName" >

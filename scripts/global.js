@@ -21,6 +21,8 @@ export const settingAutoCalcToughness = 'autoCalcToughness';
 export const settingAutoCalcSize = 'autoCalcSize';
 export const settingallAsSpecialAbilities = 'allAsSpecialAbilities';
 
+export var allPacks = [];
+
 // global logger
 export const log = function (msg) {
   console.log(`SWADE NPC Importer | ${msg}`);

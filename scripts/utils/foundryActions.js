@@ -4,41 +4,53 @@ import {
   settingPackageToUse,
   settingCompsToUse,
   settingActiveCompendiums,
-  settingParaeLanguage,
+  allPacks,
 } from '../global.js';
 import { splitAndSort } from './textUtils.js';
 
-export const getItemFromCompendium = async function (itemName, expectedType) {
-  let item = splitAndSort(itemName);
+export async function setAllPacks() {
+  log('Getting all active compendiums into allPacks');
   let activeCompendiums = getModuleSettings(settingActiveCompendiums);
-  let packs = [];
-  activeCompendiums.split(',').forEach(x => {
-    packs.push(game.packs.get(x));
-  });
-
-  packs = packs.filter(function (el) {
+  activeCompendiums
+    .split(',')
+    .filter(String)
+    .forEach(comp => {
+      if (game.packs.get(comp).metadata.type === 'Item') {
+        allPacks.push(game.packs.get(comp));
+      }
+    });
+  allPacks.filter(function (el) {
     return el != null;
   });
+}
 
-  for (let i = 0; i < packs.length; i++) {
+export function resetAllPacks() {
+  log('Resetting allPacks');
+  allPacks.length = 0;
+}
+
+export async function getItemFromCompendium(itemName, expectedType = '') {
+  let item = splitAndSort(itemName);
+  for (let i = 0; i < allPacks.length; i++) {
     try {
-      const packIndex = await packs[i].getIndex();
       let resultId = '';
       if (expectedType === 'weapon') {
-        resultId = packIndex.contents.find(it => splitAndSort(it.name) == item);
+        resultId = allPacks[i].index.contents.find(
+          it => splitAndSort(it.name) == item
+        );
         if (resultId === undefined) {
-          resultId = packIndex.contents.find(it =>
+          resultId = allPacks[i].index.contents.find(it =>
             item.includes(splitAndSort(it.name))
           );
         }
       } else {
-        resultId = packIndex.contents.find(
+        resultId = allPacks[i].index.contents.find(
           it => splitAndSort(it.name) === item
         );
       }
       if (resultId != undefined) {
-        const item = await packs[i].getDocument(resultId['_id']);
-        if (item.type == expectedType || item.type == '') {
+        const item = await allPacks[i].getDocument(resultId['_id']);
+        if (item.type === expectedType) {
           return item;
         }
       }
@@ -47,9 +59,9 @@ export const getItemFromCompendium = async function (itemName, expectedType) {
     }
   }
   return { data: {} };
-};
+}
 
-export const getAllActiveCompendiums = function () {
+export function getAllActiveCompendiums() {
   let packs = getModuleSettings(settingPackageToUse);
   let comps = getModuleSettings(settingCompsToUse).split(',');
 
@@ -63,11 +75,7 @@ export const getAllActiveCompendiums = function () {
     let packArray = packs.split(',');
     packArray.forEach(packName => {
       game.packs
-        .filter(
-          comp =>
-            // comp.metadata.entity == "Item" &&
-            comp.metadata.package == packName
-        )
+        .filter(comp => comp.metadata.package == packName)
         .map(comp => {
           comps.push(comp.collection);
         });
@@ -75,18 +83,18 @@ export const getAllActiveCompendiums = function () {
 
     return Array.from(new Set(comps));
   }
-};
+}
 
-export const GetAllItemCompendiums = function () {
+export function getAllItemCompendiums() {
   let comps = game.packs
     .filter(comp => comp.documentName == 'Item')
     .map(comp => {
       return comp.collection;
     });
   return Array.from(comps);
-};
+}
 
-export const getAllPackageNames = function () {
+export function getAllPackageNames() {
   let uniquePackages = new Set(
     game.packs
       .filter(comp => comp.metadata.package)
@@ -95,9 +103,9 @@ export const getAllPackageNames = function () {
       })
   );
   return Array.from(uniquePackages);
-};
+}
 
-export const getSpecificAdditionalStat = function (additionalStatName) {
+export function getSpecificAdditionalStat(additionalStatName) {
   let additionalStats = game.settings.get('swade', 'settingFields').actor;
   for (const stat in additionalStats) {
     if (
@@ -107,9 +115,9 @@ export const getSpecificAdditionalStat = function (additionalStatName) {
       return additionalStats[stat];
     }
   }
-};
+}
 
-export const getActorAddtionalStatsArray = function () {
+export function getActorAddtionalStatsArray() {
   let actorAdditionalStats = getActorAddtionalStats();
   let stats = [];
   for (const key in actorAdditionalStats) {
@@ -119,25 +127,25 @@ export const getActorAddtionalStatsArray = function () {
     }
   }
   return stats;
-};
+}
 
-export const getActorAddtionalStats = function () {
+export function getActorAddtionalStats() {
   return game.settings.get('swade', 'settingFields').actor;
-};
+}
 
-export const getSystemCoreSkills = function () {
+export function getSystemCoreSkills() {
   return game.settings
     .get('swade', 'coreSkills')
     .toLowerCase()
     .split(',')
     .map(Function.prototype.call, String.prototype.trim);
-};
+}
 
-export const getModuleSettings = function (settingKey) {
+export function getModuleSettings(settingKey) {
   return game.settings.get(thisModule, settingKey);
-};
+}
 
-export const Import = async function (actorData) {
+export async function Import(actorData) {
   try {
     await Actor.createDocuments([actorData]);
     ui.notifications.info(
@@ -151,25 +159,25 @@ export const Import = async function (actorData) {
       game.i18n.localize('npcImporter.HTML.FailedToImport')
     );
   }
-};
+}
 
-export const GetActorId = function (actorName) {
+export function GetActorId(actorName) {
   try {
     return game.actors.getName(actorName).id;
   } catch (error) {
     return false;
   }
-};
+}
 
-export const GetActorData = function (actorName) {
+export function GetActorData(actorName) {
   try {
     return game.actors.getName(actorName).data;
   } catch (error) {
     return false;
   }
-};
+}
 
-export const DeleteActor = async function (actorId) {
+export async function DeleteActor(actorId) {
   try {
     await Actor.deleteDocuments([actorId]);
     ui.notifications.info(
@@ -178,25 +186,25 @@ export const DeleteActor = async function (actorId) {
   } catch (error) {
     log(`Failed to delet actor: ${error}`);
   }
-};
+}
 
-export const getAllActorFolders = function () {
+export function getAllActorFolders() {
   return game.folders
     .filter(x => x.data.type === 'Actor')
     .map(comp => {
       return `${comp.data.name}`;
     });
-};
+}
 
-export const getFolderId = function (folderName) {
+export function getFolderId(folderName) {
   return game.folders.getName(folderName).id;
-};
+}
 
-export const updateModuleSetting = async function (settingName, newValue) {
+export async function updateModuleSetting(settingName, newValue) {
   await game.settings.set(thisModule, settingName, newValue);
-};
+}
 
-export const setParsingLanguage = async function (lang) {
+export async function setParsingLanguage(lang) {
   log(`Setting parsing language to: ${lang}`);
   await game.i18n.setLanguage(lang);
-};
+}

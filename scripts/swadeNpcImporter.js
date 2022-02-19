@@ -2,7 +2,6 @@ import { buildActor } from './actorBuilder.js';
 import {
   log,
   settingDefaultActorType,
-  settingDefaultDisposition,
   settingDefaultIsWildcard,
   settingLastSaveFolder,
   settingActiveCompendiums,
@@ -89,7 +88,6 @@ function importerDialogue() {
     isWildcard: getModuleSettings(settingDefaultIsWildcard),
     tokenData: getModuleSettings(settingToken),
   };
-
   let folderOptions = buildFolderOptions();
 
   let npcImporterDialog = `
@@ -116,12 +114,12 @@ function importerDialogue() {
         <div class = "row">
             <div class="column"> 
                 <p>${game.i18n.localize('npcImporter.HTML.ActorType')}:</p>
-                <input type="radio" id="npc" name="actorType" value="npc" ${is_checked(
+                <input type="radio" id="npc" name="actorType" value="npc" ${isChecked(
                   defaultData.actorType,
                   'npc'
                 )}>
                 <label for="NPC">NPC</lable><br>
-                <input type="radio" id="character" name="actorType" value="character" ${is_checked(
+                <input type="radio" id="character" name="actorType" value="character" ${isChecked(
                   defaultData.actorType,
                   'character'
                 )}>
@@ -129,12 +127,12 @@ function importerDialogue() {
             </div>
             <div class="column"> 
                 <p>${game.i18n.localize('npcImporter.HTML.Wildcard')}?</p>
-                <input type="radio" id="yes" name="isWildcard" value="true" ${is_checked(
+                <input type="radio" id="yes" name="isWildcard" value="true" ${isChecked(
                   defaultData.isWildcard,
                   true
                 )}>
                 <label for="yes">Yes</lable><br>
-                <input type="radio" id="no" name="isWildcard" value="false" ${is_checked(
+                <input type="radio" id="no" name="isWildcard" value="false" ${isChecked(
                   defaultData.isWildcard,
                   false
                 )}>
@@ -142,17 +140,17 @@ function importerDialogue() {
             </div>
             <div class="column"> 
                 <p>${game.i18n.localize('npcImporter.HTML.Disposition')}:</p>
-                <input type="radio" id="hostile" name="disposition" value="-1" ${is_checked(
+                <input type="radio" id="hostile" name="disposition" value="-1" ${isChecked(
                   defaultData.tokenData.disposition,
                   -1
                 )}>
                 <label for="hostile">Hostile</lable><br>
-                <input type="radio" id="neutral" name="disposition" value="0" ${is_checked(
+                <input type="radio" id="neutral" name="disposition" value="0" ${isChecked(
                   defaultData.tokenData.disposition,
                   0
                 )}>
                 <label for="neutral">Neutral</lable><br>
-                <input type="radio" id="friendly" name="disposition" value="1" ${is_checked(
+                <input type="radio" id="friendly" name="disposition" value="1" ${isChecked(
                   defaultData.tokenData.disposition,
                   1
                 )}>
@@ -169,11 +167,11 @@ function importerDialogue() {
           <lable>Vision Radius</label>
           <div class="form-fields">
             <label>${game.i18n.localize('TOKEN.VisionDim')}</label>
-            <input type="number" step="0.1" name="dimSight" value="${
+            <input type="number" step="1" name="dimSight" value="${
               defaultData.tokenData.dimSight
             }" />
             <label>${game.i18n.localize('TOKEN.VisionBright')}</label>
-            <input type="number" step="0.1" name="brightSight" value="${
+            <input type="number" step="1" name="brightSight" value="${
               defaultData.tokenData.brightSight
             }" />
           </div>
@@ -181,7 +179,7 @@ function importerDialogue() {
             <label>${game.i18n.localize('TOKEN.VisionAngle')}</label>
             <div class="form-fields">
               <label>Degress (360 if empty)</label>
-              <input type="number" name="sightAngle" value="${
+              <input type="number" name="sightAngle" step="1" max="360" value="${
                 defaultData.tokenData.sightAngle
               }" />
             </div>
@@ -206,7 +204,7 @@ function importerDialogue() {
   return npcImporterDialog;
 }
 
-function is_checked(setValue, html_value) {
+function isChecked(setValue, html_value) {
   if (setValue == html_value) {
     return 'checked';
   } else {

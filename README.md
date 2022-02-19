@@ -2,6 +2,10 @@
 
 A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
 
+If you like what you see and find it uself, you can buy me a beer
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R5R2AMWC5)
+
 ---
 
 ### :exclamation: **Please Note**
@@ -26,7 +30,7 @@ A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry 
    - Under **_Select Item Compendiums_** mark any Compendium you wish NPC Importer to use (not selecting anyting will cycle through all compendiums and use the first relevant entry)
    - Set up any other default values you might want
 
-1. Copy the desired statblock (ctr+c, into the clipboard)
+1. Copy the desired statblock (ctr/cmd + c, into the clipboard)
 2. Click on the NPC Importer button at the buttom of the **Actors Directory**
 
    ![NPC Importer Button](./readme_images/ActorImporterButton.png)
@@ -69,12 +73,12 @@ Some _Prototype Token_ options may be set by default
   - Core Skills are set according to the SWADE System Settings -> Setting Configurator
 - **Hindrances**
 - **Edges**
-  - Inititate Edges are checked in the _tweaks_ sections of the Actor
+  - Initiative Edges are checked in the _tweaks_ sections of the Actor
 - **Powers** & **Power Points**
 - **Pace**
 - **Parry**
 - **Toughness**
-  - Set to Auto-calculate to `false` by default
+  - Set Auto-calculate to `false` by default
 - **Bennies**
 
   - Bennies are set according to the table below.

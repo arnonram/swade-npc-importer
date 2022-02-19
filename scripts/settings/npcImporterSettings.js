@@ -40,8 +40,8 @@ export class NpcImporterSettings {
       restricted: false,
     });
     game.settings.register(thisModule, settingToken, {
-      name: 'Package for imports',
-      hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
+      name: 'Token settings',
+      hint: 'Some default token settings',
       config: false,
       scope: 'world',
       type: Object,
@@ -62,7 +62,7 @@ export class NpcImporterSettings {
       type: String,
     });
     game.settings.register(thisModule, settingCompsToUse, {
-      name: 'Package for imports',
+      name: 'Compendiums for imports',
       hint: 'NPC Importer will search through all selected Item compendiums for the correct item from the NPC statblock, and use it',
       config: false,
       scope: 'world',

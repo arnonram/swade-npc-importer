@@ -62,30 +62,33 @@
       id="vision"
       name="vision"
       value="vision"
-      {{this.vision.checked}} />
+      {{this.vision.checked}}
+      min="0" />
   </div>
   <div class="form-group slim">
     <label>Vision Radius</label>
     <div class="form-fields">
       <label>{{localize 'TOKEN.VisionDim'}}</label>
-      <input
-        type="number"
-        step="0.1"
-        name="dimSight"
-        value="{{this.dimSight}}" />
+      <input type="number" step="1" name="dimSight" value="{{this.dimSight}}" />
       <label>{{localize 'TOKEN.VisionBright'}}</label>
       <input
         type="number"
-        step="0.1"
+        step="1"
         name="brightSight"
-        value="{{this.brightSight}}" />
+        value="{{this.brightSight}}"
+        min="0" />
     </div>
   </div>
   <div class="form-group slim">
     <label>{{localize 'TOKEN.VisionAngle'}} </label>
     <div class="form-fields">
       <label>0-360 (360 if empty)</label>
-      <input type="number" name="sightAngle" value="{{this.sightAngle}}" />
+      <input
+        type="number"
+        name="sightAngle"
+        value="{{this.sightAngle}}"
+        min="0"
+        max="360" />
     </div>
   </div>
   <button type="submit" name="submit"><i class="far fa-save"> Save</i></button>

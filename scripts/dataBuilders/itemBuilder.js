@@ -9,7 +9,7 @@ import {
   spcialAbilitiesLink,
 } from '../utils/textUtils.js';
 
-export const skillBuilder = async function (skillsDict) {
+export async function skillBuilder(skillsDict) {
   const coreSkills = getSystemCoreSkills();
   if (skillsDict != undefined) {
     var allSkills = [];
@@ -40,9 +40,9 @@ export const skillBuilder = async function (skillsDict) {
     }
     return allSkills;
   }
-};
+}
 
-export const edgeBuilder = async function (edges) {
+export async function edgeBuilder(edges) {
   if (edges != undefined) {
     var allEdges = [];
     for (let i = 0; i < edges.length; i++) {
@@ -74,9 +74,9 @@ export const edgeBuilder = async function (edges) {
     }
     return allEdges;
   }
-};
+}
 
-export const hindranceBuilder = async function (hindrances) {
+export async function hindranceBuilder(hindrances) {
   const majorMinor = new RegExp(
     `${game.i18n.localize(
       'npcImporter.parser.Major'
@@ -116,9 +116,9 @@ export const hindranceBuilder = async function (hindrances) {
 
     return allHindrances;
   }
-};
+}
 
-export const AbilityBuilder = async function (abilityName, abilityDescription) {
+export async function abilityBuilder(abilityName, abilityDescription) {
   const doesGrantPowers = new RegExp(
     `${game.i18n.localize(
       'npcImporter.parser.PowerPoints'
@@ -142,13 +142,9 @@ export const AbilityBuilder = async function (abilityName, abilityDescription) {
   } catch (error) {
     log(`Could not build ability: ${error}`);
   }
-};
+}
 
-export const ItemBuilderFromSpecAbs = async function (
-  name,
-  itemDescription,
-  type
-) {
+export async function itemBuilderFromSpecAbs(name, itemDescription, type) {
   let cleanName = checkSpecificItem(name).trim();
   let itemFromCompendium = await checkforItem(cleanName, type);
   const item = {
@@ -167,9 +163,9 @@ export const ItemBuilderFromSpecAbs = async function (
     }`;
   }
   return item;
-};
+}
 
-export const powerBuilder = async function (powers) {
+export async function powerBuilder(powers) {
   if (powers != undefined) {
     var allPowers = [];
     for (let i = 0; i < powers.length; i++) {
@@ -188,9 +184,9 @@ export const powerBuilder = async function (powers) {
     }
     return allPowers;
   }
-};
+}
 
-export const WeaponBuilder = async function ({
+export async function weaponBuilder({
   weaponName,
   weaponDescription,
   weaponDamage,
@@ -237,9 +233,9 @@ export const WeaponBuilder = async function ({
   } catch (error) {
     log(`Could not build weapon: ${error}`);
   }
-};
+}
 
-export const ShieldBuilder = async function (
+export async function shieldBuilder(
   shieldName,
   description,
   parry = 0,
@@ -265,13 +261,9 @@ export const ShieldBuilder = async function (
   } catch (error) {
     log(`Could not build shield: ${error}`);
   }
-};
+}
 
-export const ArmorBuilder = async function (
-  armorName,
-  armorBonus,
-  armorDescription
-) {
+export async function armorBuilder(armorName, armorBonus, armorDescription) {
   var cleanName = checkSpecificItem(armorName);
   const { data } = await getItemFromCompendium(cleanName, 'armor');
   try {
@@ -292,9 +284,9 @@ export const ArmorBuilder = async function (
   } catch (error) {
     log(`Could not build armor: ${error}`);
   }
-};
+}
 
-export const GearBuilder = async function (gearName, description) {
+export async function gearBuilder(gearName, description) {
   const { data } = await checkforItem(gearName, 'gear');
   try {
     return {
@@ -311,9 +303,9 @@ export const GearBuilder = async function (gearName, description) {
   } catch (error) {
     log(`Could not build gear: ${error}`);
   }
-};
+}
 
-export const additionalStatsBuilder = function (
+export function additionalStatsBuilder(
   additionalStatName,
   additionalStatValue
 ) {
@@ -322,7 +314,7 @@ export const additionalStatsBuilder = function (
     gameAditionalStat['value'] = additionalStatValue;
     return gameAditionalStat;
   }
-};
+}
 
 function checkSpecificItem(data) {
   const abilitiesWithMod = new RegExp(
