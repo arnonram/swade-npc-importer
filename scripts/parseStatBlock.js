@@ -76,7 +76,7 @@ function GetSectionsIndex(inData) {
   let allStats = allStatBlockEntities.concat(getActorAddtionalStatsArray());
   let sectionsIndex = [];
   allStats.forEach(element => {
-    let index = inData.search(element);
+    let index = inData.search(new RegExp(element, 'i'));
     if (index > 0) {
       sectionsIndex.push(index);
     }
@@ -111,13 +111,12 @@ function descriptionByParagraph(descArray) {
 }
 
 function getAttributes(sections) {
-  let attrTranslation = `${game.i18n.localize(
-    'npcImporter.parser.Attributes'
-  )}:`;
+  let attrTranslation = new RegExp(
+    `${game.i18n.localize('npcImporter.parser.Attributes')}:`,
+    'i'
+  );
   let attributes = splitAndTrim(
-    sections
-      .find(x => x.includes(attrTranslation))
-      .replace(attrTranslation, ''),
+    sections.find(x => x.match(attrTranslation)).replace(attrTranslation, ''),
     ','
   );
   let attributesDict = {};
@@ -171,9 +170,12 @@ function getAttributes(sections) {
 }
 
 function getSkills(sections) {
-  let trait = `${game.i18n.localize('npcImporter.parser.Skills')}:`;
+  let trait = new RegExp(
+    `${game.i18n.localize('npcImporter.parser.Skills')}:`,
+    'i'
+  );
   let skills = splitAndTrim(
-    sections.find(x => x.includes(trait)).replace(trait, ''),
+    sections.find(x => x.match(trait)).replace(trait, ''),
     ','
   );
   let skillsDict = {};
@@ -257,29 +259,28 @@ function getStatNumber(data) {
 }
 
 function getListsStats(sections) {
-  const supportedListStats = [
+  const hindrances = new RegExp(
     `${game.i18n.localize('npcImporter.parser.Hindrances')}:`,
+    'i'
+  );
+  const edges = new RegExp(
     `${game.i18n.localize('npcImporter.parser.Edges')}:`,
+    'i'
+  );
+  const powers = new RegExp(
     `${game.i18n.localize('npcImporter.parser.Powers')}:`,
-  ];
+    'i'
+  );
+  const supportedListStats = [hindrances, edges, powers];
 
   let retrievedListStats = {};
   supportedListStats.forEach(element => {
-    var line = sections.find(x => x.includes(element));
-    if (
-      line != undefined &&
-      line.startsWith(game.i18n.localize('npcImporter.parser.Hindrances'))
-    ) {
+    var line = sections.find(x => x.match(element));
+    if (line && line.match(hindrances)) {
       retrievedListStats.Hindrances = stringsToArray(line);
-    } else if (
-      line != undefined &&
-      line.startsWith(game.i18n.localize('npcImporter.parser.Edges'))
-    ) {
+    } else if (line && line.match(edges)) {
       retrievedListStats.Edges = stringsToArray(line);
-    } else if (
-      line != undefined &&
-      line.startsWith(game.i18n.localize('npcImporter.parser.Powers'))
-    ) {
+    } else if (line && line.match(powers)) {
       retrievedListStats.Powers = stringsToArray(line);
     }
   });
@@ -365,13 +366,17 @@ function getAbilities(data) {
 }
 
 async function getGear(sections) {
-  let gearString = `${game.i18n.localize('npcImporter.parser.Gear')}:`;
+  let gearString = new RegExp(
+    `${game.i18n.localize('npcImporter.parser.Gear')}:`,
+    'i'
+  );
   try {
     let characterGear = [];
     let gearLine = sections
-      .find(x => x.includes(gearString))
+      .find(x => x.match(gearString))
       .replace(global.newLineRegex, ' ')
-      .replace(`${gearString} `, '');
+      .replace(gearString, '')
+      .trim();
     while (gearLine.length > 1) {
       if (global.gearParsingRegex.test(gearLine)) {
         let match = gearLine.match(global.gearParsingRegex)[0];
