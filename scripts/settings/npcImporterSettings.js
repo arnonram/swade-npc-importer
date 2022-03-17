@@ -75,6 +75,7 @@ export class NpcImporterSettings {
       scope: 'world',
       type: String,
       choices: {
+        de: 'Deutsch',
         en: 'English',
         es: 'Español',
         'pt-BR': 'Português (Brasil)',

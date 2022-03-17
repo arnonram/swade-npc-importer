@@ -22,17 +22,15 @@ export async function buildActor(importSettings, data) {
     await setParsingLanguage(getModuleSettings(settingParaeLanguage));
     await updateModuleSetting(settingLastSaveFolder, importSettings.saveFolder);
 
-    const parsedData = await statBlockParser(clipboardText);
-    if (parsedData) {
-      try {
-        const finalActor = await generateActorData(parsedData, importSettings);
-        await actorImporter(finalActor);
-      } catch (error) {
-        log('Failed to build finalActor: ' + error);
-      } finally {
-        await setParsingLanguage(currentLang);
-        resetAllPacks();
-      }
+    try {
+      const parsedData = await statBlockParser(clipboardText);
+      const finalActor = await generateActorData(parsedData, importSettings);
+      await actorImporter(finalActor);
+    } catch (error) {
+      log('Failed to build finalActor: ' + error);
+    } finally {
+      await setParsingLanguage(currentLang);
+      resetAllPacks();
     }
   } else {
     ui.notification.error(

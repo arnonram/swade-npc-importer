@@ -4,7 +4,10 @@ export function GetMeleeDamage(abilityDescription) {
   const meleeDamageRegex = new RegExp(
     `${game.i18n.localize('npcImporter.parser.Str')}\\.|${game.i18n.localize(
       'npcImporter.parser.Str'
-    )}(\s?[\+\-]?\s?(\d+)?d?(\d+)?){0,}`,
+    )}(\s?[\+\-]?\s?(\d+)?X?(\d+)?){0,}`.replace(
+      'X',
+      game.i18n.localize('npcImporter.parser.dice')
+    ),
     'gi'
   );
 

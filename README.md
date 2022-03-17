@@ -119,6 +119,7 @@ Support is for both the UI and parsing of statblock
 - English
 - Español (thanks @Montver)
 - Português (Brasil) (thanks @lipefl)
+- Deutsch (thanks @Razortide)
 
 > **_Please Note:_** I work mainly with English sources, and I do try to test with the supported languages, but, due to the few non-English stat-blocks I have and due to translation quirks, there will be more issus with the non-English.
 > My Apologies for that :)

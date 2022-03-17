@@ -180,7 +180,9 @@ function getSkills(sections) {
   );
   let skillsDict = {};
   skills.forEach(singleTrait => {
-    let diceAndMode = singleTrait.match(global.diceRegex)[0].toString();
+    let diceAndMode = singleTrait
+      .match(new RegExp(game.i18n.localize('npcImporter.regex.dice'), 'i'))[0]
+      .toString();
     let traitName = singleTrait
       .replace(diceAndMode, '')
       .trim()
@@ -196,7 +198,9 @@ function getSkills(sections) {
 function buildTrait(data) {
   let diceAndMode = '';
   try {
-    diceAndMode = data.match(global.diceRegex)[0].toString();
+    diceAndMode = data
+      .match(new RegExp(game.i18n.localize('npcImporter.regex.dice'), 'i'))[0]
+      .toString();
   } catch (error) {
     diceAndMode = '1'; // usually will be 1, if not then we'll need to think about it.
   }
@@ -212,7 +216,7 @@ function buildTrait(data) {
 
   return {
     die: {
-      sides: parseInt(traitDice.trim().replace('d', '')),
+      sides: parseInt(traitDice.trim().replace(/[A-Za-z]/i, '')),
       modifier: parseInt(traitMod.trim()),
     },
   };

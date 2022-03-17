@@ -30,7 +30,6 @@ export const log = function (msg) {
 
 // regex
 export const newLineRegex = /\r\n|\n|\r/g;
-export const diceRegex = /(\d+)?d(\d+)([\+\-]\d+)?/g;
 export const gearParsingRegex =
   /(^[A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
 export const armorModRegex = /\+\d+/;

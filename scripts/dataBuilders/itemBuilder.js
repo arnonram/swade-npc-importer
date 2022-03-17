@@ -207,15 +207,17 @@ export async function weaponBuilder({
   ap,
   shots,
 }) {
-  const dmg = weaponDamage?.replace(
-    new RegExp(
-      `${game.i18n.localize('npcImporter.parser.Str')}\\.|${game.i18n.localize(
-        'npcImporter.parser.Str'
-      )}`,
-      'gi'
-    ),
-    '@str'
-  );
+  const dmg = weaponDamage
+    ?.replace(
+      new RegExp(
+        `${game.i18n.localize(
+          'npcImporter.parser.Str'
+        )}\\.|${game.i18n.localize('npcImporter.parser.Str')}`,
+        'gi'
+      ),
+      '@str'
+    )
+    .replace(game.i18n.localize('npcImporter.parser.dice'), 'd');
   const { data } = await getItemFromCompendium(weaponName, 'weapon');
   //todo Improve this so that it'll add multiple entries for weapons which are ranged && melee
   const actions = data?.data?.actions ?? {
@@ -367,7 +369,18 @@ async function checkforItem(itemName, itemType) {
 
   if (isObjectEmpty(itemFromCompendium.data)) {
     itemFromCompendium = await getItemFromCompendium(
-      itemName.split('(')[0].replace(new RegExp('[+-−]?\\d'), '').trim(),
+      itemName
+        .split('(')[0]
+        .replace(
+          new RegExp(
+            '[+-−]?\\X'.replace(
+              'X',
+              game.i18n.localize('npcImporter.parser.dice')
+            )
+          ),
+          ''
+        )
+        .trim(),
       itemType
     );
   }
