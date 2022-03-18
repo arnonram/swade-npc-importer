@@ -369,18 +369,7 @@ async function checkforItem(itemName, itemType) {
 
   if (isObjectEmpty(itemFromCompendium.data)) {
     itemFromCompendium = await getItemFromCompendium(
-      itemName
-        .split('(')[0]
-        .replace(
-          new RegExp(
-            '[+-−]?\\X'.replace(
-              'X',
-              game.i18n.localize('npcImporter.parser.dice')
-            )
-          ),
-          ''
-        )
-        .trim(),
+      itemName.split('(')[0].replace(new RegExp('[+-−]?\\d'), '').trim(),
       itemType
     );
   }
