@@ -118,12 +118,16 @@ function importerDialogue() {
                   defaultData.actorType,
                   'npc'
                 )}>
-                <label for="NPC">NPC</lable><br>
+                <label for="NPC">${game.i18n.localize(
+                  'npcImporter.settings.NPC'
+                )}</lable><br>
                 <input type="radio" id="character" name="actorType" value="character" ${isChecked(
                   defaultData.actorType,
                   'character'
                 )}>
-                <label for="character">Character</lable>
+                <label for="character">${game.i18n.localize(
+                  'npcImporter.settings.Character'
+                )}</lable>
             </div>
             <div class="column"> 
                 <p>${game.i18n.localize('npcImporter.HTML.Wildcard')}?</p>
@@ -131,12 +135,16 @@ function importerDialogue() {
                   defaultData.isWildcard,
                   true
                 )}>
-                <label for="yes">Yes</lable><br>
+                <label for="yes">${game.i18n.localize(
+                  'npcImporter.HTML.Yes'
+                )}</lable><br>
                 <input type="radio" id="no" name="isWildcard" value="false" ${isChecked(
                   defaultData.isWildcard,
                   false
                 )}>
-                <label for="no">No</lable>
+                <label for="no">${game.i18n.localize(
+                  'npcImporter.HTML.No'
+                )}</lable>
             </div>
             <div class="column"> 
                 <p>${game.i18n.localize('npcImporter.HTML.Disposition')}:</p>
@@ -144,17 +152,23 @@ function importerDialogue() {
                   defaultData.tokenData.disposition,
                   -1
                 )}>
-                <label for="hostile">Hostile</lable><br>
+                <label for="hostile">${game.i18n.localize(
+                  'npcImporter.settings.Hostile'
+                )}</lable><br>
                 <input type="radio" id="neutral" name="disposition" value="0" ${isChecked(
                   defaultData.tokenData.disposition,
                   0
                 )}>
-                <label for="neutral">Neutral</lable><br>
+                <label for="neutral">${game.i18n.localize(
+                  'npcImporter.settings.Neutral'
+                )}</lable><br>
                 <input type="radio" id="friendly" name="disposition" value="1" ${isChecked(
                   defaultData.tokenData.disposition,
                   1
                 )}>
-                <label for="friendly">Friendly</lable>
+                <label for="friendly">${game.i18n.localize(
+                  'npcImporter.settings.Friendly'
+                )}</lable>
             </div>
         </div>
         <div class="form-group">
@@ -164,7 +178,7 @@ function importerDialogue() {
             }/>
         </div>
         <div class="form-group slim">
-          <lable>Vision Radius</label>
+          <lable>${game.i18n.localize('npcImporter.HTML.VisionRadius')}</label>
           <div class="form-fields">
             <label>${game.i18n.localize('TOKEN.VisionDim')}</label>
             <input type="number" step="1" name="dimSight" value="${
@@ -178,7 +192,9 @@ function importerDialogue() {
           <div class="form-group slim">
             <label>${game.i18n.localize('TOKEN.VisionAngle')}</label>
             <div class="form-fields">
-              <label>Degress (360 if empty)</label>
+              <label>${game.i18n.localize(
+                'npcImporter.HTML.VisionAngleLable'
+              )}</label>
               <input type="number" name="sightAngle" step="1" max="360" value="${
                 defaultData.tokenData.sightAngle
               }" />

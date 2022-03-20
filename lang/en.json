@@ -17,6 +17,10 @@
   "npcImporter.HTML.FailedToImport": "Failed to import actor (see console for errors)",
   "npcImporter.HTML.DeleteActor": "Delete Actor with id {actorId}",
   "npcImporter.HTML.StatBlock": "Statblock",
+  "npcImporter.HTML.Yes": "Yes",
+  "npcImporter.HTML.No": "No",
+  "npcImporter.HTML.VisionRadius": "Vision Radius",
+  "npcImporter.HTML.VisionAngleLable": "Degrees (360 if empty)",
 
   "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "d",

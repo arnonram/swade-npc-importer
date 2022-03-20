@@ -16,6 +16,10 @@
   "npcImporter.HTML.ActorCreated": "{actorName} creado con éxito",
   "npcImporter.HTML.FailedToImport": "Ha fallada la importación del personaje (ver consola de errores)",
   "npcImporter.HTML.DeleteActor": "Borrar el personaje con la id {actorId}",
+  "npcImporter.HTML.Yes": "Si",
+  "npcImporter.HTML.No": "No",
+  "npcImporter.HTML.VisionRadius": "Radio de visión",
+  "npcImporter.HTML.VisionAngleLable": "Grados (360 por defecto)",
 
   "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "d",
