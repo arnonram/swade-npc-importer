@@ -17,6 +17,9 @@
   "npcImporter.HTML.FailedToImport": "Falha ao importar ator (veja o console para erros)",
   "npcImporter.HTML.DeleteActor": "Deletar Ator com id {actorId}",
 
+  "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
+  "npcImporter.parser.dice": "d",
+
   "npcImporter.parser.EmptyClipboard": "Área de transferência vazia",
   "npcImporter.parser.NotValidStablock": "Erro ao analisar. Não é uma ficha válida.",
   "npcImporter.parser.Attributes": "Atributos",

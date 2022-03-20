@@ -33,6 +33,8 @@ export async function skillBuilder(skillsDict) {
               modifier: skillsDict[skillName].die.modifier,
             },
           },
+          effects: JSON.stringify(data.effects) ?? [],
+          flags: data?.flags ?? {},
         });
       } catch (error) {
         log(`Could not build skill: ${error}`);
@@ -67,6 +69,8 @@ export async function edgeBuilder(edges) {
               value: data?.data?.requirements.value ?? '',
             },
           },
+          effects: JSON.stringify(data.effects) ?? [],
+          flags: data?.flags ?? {},
         });
       } catch (error) {
         log(`Could not build edge: ${error}`);
@@ -108,6 +112,8 @@ export async function hindranceBuilder(hindrances) {
             additionalStats: data?.data?.additionalStats ?? {},
             major: isMajor,
           },
+          effects: JSON.stringify(data.effects) ?? [],
+          flags: data?.flags ?? {},
         });
       } catch (error) {
         log(`Could not build hindrance: ${error}`);
@@ -138,6 +144,8 @@ export async function abilityBuilder(abilityName, abilityDescription) {
         subtype: 'special',
         grantsPowers: data?.data?.grantsPowers ?? doesGrantPowers,
       },
+      effects: JSON.stringify(data.effects) ?? [],
+      flags: data?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build ability: ${error}`);
@@ -156,6 +164,8 @@ export async function itemBuilderFromSpecAbs(name, itemDescription, type) {
       itemFromCompendium?.data?.data && itemFromCompendium?.type === type
         ? itemFromCompendium?.data?.data
         : { description: itemDescription.trim() },
+    effects: JSON.stringify(data.effects) ?? [],
+    flags: data?.flags ?? {},
   };
   if (itemFromCompendium?.type === type) {
     item.data.description = `${itemDescription.trim()}<hr>${
@@ -177,6 +187,8 @@ export async function powerBuilder(powers) {
           name: capitalizeEveryWord(powerName),
           img: data?.img ?? 'systems/swade/assets/icons/power.svg',
           data: data?.data ?? {},
+          effects: JSON.stringify(data.effects) ?? [],
+          flags: data?.flags ?? {},
         });
       } catch (error) {
         log(`Could not build power: ${error}`);
@@ -195,15 +207,17 @@ export async function weaponBuilder({
   ap,
   shots,
 }) {
-  const dmg = weaponDamage?.replace(
-    new RegExp(
-      `${game.i18n.localize('npcImporter.parser.Str')}\\.|${game.i18n.localize(
-        'npcImporter.parser.Str'
-      )}`,
-      'gi'
-    ),
-    '@str'
-  );
+  const dmg = weaponDamage
+    ?.replace(
+      new RegExp(
+        `${game.i18n.localize(
+          'npcImporter.parser.Str'
+        )}\\.|${game.i18n.localize('npcImporter.parser.Str')}`,
+        'gi'
+      ),
+      '@str'
+    )
+    .replace(game.i18n.localize('npcImporter.parser.dice'), 'd');
   const { data } = await getItemFromCompendium(weaponName, 'weapon');
   //todo Improve this so that it'll add multiple entries for weapons which are ranged && melee
   const actions = data?.data?.actions ?? {
@@ -229,6 +243,8 @@ export async function weaponBuilder({
         currentShots: shots ?? data?.data?.shots,
         actions: actions,
       },
+      effects: JSON.stringify(data.effects) ?? [],
+      flags: data?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build weapon: ${error}`);
@@ -257,6 +273,8 @@ export async function shieldBuilder(
         parry: data?.data?.parry ?? parry,
         cover: data?.data?.cover ?? cover,
       },
+      effects: JSON.stringify(data.effects) ?? [],
+      flags: data?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build shield: ${error}`);
@@ -280,6 +298,8 @@ export async function armorBuilder(armorName, armorBonus, armorDescription) {
         equippable: true,
         armor: data?.data?.armor ?? armorBonus,
       },
+      effects: JSON.stringify(data.effects) ?? [],
+      flags: data?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build armor: ${error}`);
@@ -299,6 +319,8 @@ export async function gearBuilder(gearName, description) {
         equipped: false,
         equippable: false,
       },
+      effects: JSON.stringify(data.effects) ?? [],
+      flags: data?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build gear: ${error}`);

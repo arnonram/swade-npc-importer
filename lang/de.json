@@ -18,6 +18,9 @@
   "npcImporter.HTML.DeleteActor": "Lösche Akteur mit id {actorId}",
   "npcImporter.HTML.StatBlock": "Werteblock",
 
+  "npcImporter.regex.dice": "(\\d+)?W(\\d+)([\\+\\-]\\d+)?",
+  "npcImporter.parser.dice": "W",
+
   "npcImporter.parser.EmptyClipboard": "Die Zwischenablage ist leer",
   "npcImporter.parser.NotValidStablock": "Parsing ist fehlgeschlagen. Kein gültiger Werteblock.",
   "npcImporter.parser.Attributes": "Attribute",

@@ -5,7 +5,6 @@ import {
   weaponBuilder,
 } from './itemBuilder.js';
 import {
-  diceRegex,
   settingallAsSpecialAbilities,
   settingModifiedSpecialAbs,
 } from '../global.js';
@@ -14,11 +13,12 @@ import { getModuleSettings } from '../utils/foundryActions.js';
 
 export async function specialAbilitiesParser(specialAbilitiesData) {
   const meleeDamageRegex = new RegExp(
-    `\\b${game.i18n.localize(
+    `${game.i18n.localize('npcImporter.parser.Str')}\\.|${game.i18n.localize(
       'npcImporter.parser.Str'
-    )}\\.\\b|\\b${game.i18n.localize(
-      'npcImporter.parser.Str'
-    )}\\b(\\s?[\\+\\-]\\s?(\\d+)?d?(\\d+)?){0,}`,
+    )}(\\s?[\\+\\-]\\s?(\\d+)?X?(\\d+)?){0,}`.replace(
+      'X',
+      game.i18n.localize('npcImporter.parser.dice')
+    ),
     'gi'
   );
   let specialAbitlitiesItems = [];
@@ -44,13 +44,17 @@ export async function specialAbilitiesParser(specialAbilitiesData) {
           );
         } else if (
           (meleeDamageRegex.test(specialAbilitiesData[elem]) ||
-            diceRegex.test(specialAbilitiesData[elem])) &&
+            new RegExp(game.i18n.localize('npcImporter.regex.dice'), 'i').test(
+              specialAbilitiesData[elem]
+            )) &&
           elem.toLocaleLowerCase() !=
             game.i18n.localize('npcImporter.parser.Speed').toLocaleLowerCase()
         ) {
           let meleeDamage =
             specialAbilitiesData[elem].match(meleeDamageRegex) ||
-            specialAbilitiesData[elem].match(diceRegex);
+            specialAbilitiesData[elem].match(
+              new RegExp(game.i18n.localize('npcImporter.regex.dice'), 'i')
+            );
           specialAbitlitiesItems.push(
             await weaponBuilder({
               weaponName: elem,
@@ -70,7 +74,9 @@ export async function specialAbilitiesParser(specialAbilitiesData) {
       if (elem.startsWith('@w')) {
         let meleeDamage =
           specialAbilitiesData[elem].match(meleeDamageRegex) ||
-          specialAbilitiesData[elem].match(diceRegex);
+          specialAbilitiesData[elem].match(
+            new RegExp(game.i18n.localize('npcImporter.regex.dice'), 'i')
+          );
         let name = elem.replace('@w', '').trim();
         specialAbitlitiesItems.push(
           await weaponBuilder({

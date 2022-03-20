@@ -17,6 +17,9 @@
   "npcImporter.HTML.FailedToImport": "Ha fallada la importación del personaje (ver consola de errores)",
   "npcImporter.HTML.DeleteActor": "Borrar el personaje con la id {actorId}",
 
+  "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
+  "npcImporter.parser.dice": "d",
+
   "npcImporter.parser.EmptyClipboard": "portapapeles vacío",
   "npcImporter.parser.NotValidStablock": "Ha fallado el análisis. No es un conjunto de estadísticas valido.",
   "npcImporter.parser.Attributes": "Atributos",
