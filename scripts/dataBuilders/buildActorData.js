@@ -174,8 +174,10 @@ function findRunningDie(parsedData) {
       ) {
         return parseInt(
           parsedData.SpecialAbilities[ability]
-            .match(global.diceRegex)[0]
-            .replace('d', '')
+            .match(
+              new RegExp(game.i18n.localize('npcImporter.regex.dice'), 'i')
+            )[0]
+            .replace(/[a-zA-Z]/i, '')
         );
       }
     }
