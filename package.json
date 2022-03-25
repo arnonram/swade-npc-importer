@@ -23,6 +23,5 @@
   "bugs": {
     "url": "https://github.com/arnonram/swade-npc-importer/issues"
   },
-  "homepage": "https://github.com/arnonram/swade-npc-importer#readme",
-  "packageManager": "yarn@3.2.0"
+  "homepage": "https://github.com/arnonram/swade-npc-importer#readme"
 }
