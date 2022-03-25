@@ -20,7 +20,7 @@
   "npcImporter.HTML.Yes": "Yes",
   "npcImporter.HTML.No": "No",
   "npcImporter.HTML.VisionRadius": "Vision Radius",
-  "npcImporter.HTML.VisionAngleLable": "Degrees (360 if empty)",
+  "npcImporter.HTML.VisionAngleLable": "Degrees (360 default)",
 
   "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "d",

@@ -1,7 +1,10 @@
 <form autocomplete="off">
   <div class="column">
     <label>{{localize 'TOKEN.Disposition'}}:</label>
-    <select id="disposition" name="disposition">
+    <select
+      id="disposition"
+      name="disposition"
+      style="float: right; width: 200px">
       <option name="HOSTILE" value="-1" {{this.dispositionHostile.selected}}>
         {{localize 'TOKEN.HOSTILE'}}
       </option>
@@ -13,9 +16,13 @@
       </option>
     </select>
   </div>
+  <br />
   <div class="form-group">
     <label>{{localize 'TOKEN.CharShowNameplate'}}:</label>
-    <select id="displayName" name="displayName">
+    <select
+      id="displayName"
+      name="displayName"
+      style="float: right; width: 200px">
       <option
         name="DISPLAY_NONE"
         value="0"
@@ -70,6 +77,8 @@
     <div class="form-fields">
       <label>{{localize 'TOKEN.VisionDim'}}</label>
       <input type="number" step="1" name="dimSight" value="{{this.dimSight}}" />
+    </div>
+    <div class="form-fields">
       <label>{{localize 'TOKEN.VisionBright'}}</label>
       <input
         type="number"
@@ -82,7 +91,7 @@
   <div class="form-group slim">
     <label>{{localize 'TOKEN.VisionAngle'}} </label>
     <div class="form-fields">
-      <label>0-360 (360 if empty)</label>
+      <label>{{localize 'npcImporter.HTML.VisionAngleLable'}}</label>
       <input
         type="number"
         name="sightAngle"
