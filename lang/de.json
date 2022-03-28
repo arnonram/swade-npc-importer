@@ -105,5 +105,9 @@
   "npcImporter.settings.SetSize": "Automatische Figurgröße",
   "npcImporter.settings.SetSizeHint": "Setzt automatisch Maße und Maßstab der Akteursfigur abhängig von der Größe.",
   "npcImporter.settings.AllAsSpecialAbilities": "Alles als Spezialfähigkeit setzen",
-  "npcImporter.settings.AllAsSpecialAbilitiesHint": "Alle Spezialfähigkeiten (inklusive Waffen) werden als Spezialfähigkeiten-Items importiert. Andernfalls versucht NPC Importer Waffen und Rüstungen automatisch zu erkennen und im Abschnitt Ausrüstung als Items anzulegen."
+  "npcImporter.settings.AllAsSpecialAbilitiesHint": "Alle Spezialfähigkeiten (inklusive Waffen) werden als Spezialfähigkeiten-Items importiert. Andernfalls versucht NPC Importer Waffen und Rüstungen automatisch zu erkennen und im Abschnitt Ausrüstung als Items anzulegen.",
+  "npcImporter.HTML.Yes": "Ja",
+  "npcImporter.HTML.No": "Nein",
+  "npcImporter.HTML.VisionRadius": "Sichtwinkel",
+  "npcImporter.HTML.VisionAngleLable": "Grad (360 wenn leer)",
 }
