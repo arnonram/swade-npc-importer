@@ -67,7 +67,7 @@
       min="0" />
   </div>
   <div class="form-group slim">
-    <label>Vision Radius</label>
+    <label>{{localize 'npcImporter.HTML.VisionRadius'}}</label>
     <div class="form-fields">
       <label>{{localize 'TOKEN.VisionDim'}}</label>
       <input type="number" step="1" name="dimSight" value="{{this.dimSight}}" />
@@ -94,5 +94,7 @@
         max="360" />
     </div>
   </div>
-  <button type="submit" name="submit"><i class="far fa-save"> Save</i></button>
+  <button type="submit" name="submit">
+    <i class="far fa-save">{{localize 'npcImporter.HTML.Save'}}</i>
+  </button>
 </form>

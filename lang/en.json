@@ -21,6 +21,7 @@
   "npcImporter.HTML.No": "No",
   "npcImporter.HTML.VisionRadius": "Vision Radius",
   "npcImporter.HTML.VisionAngleLable": "Degrees (360 default)",
+  "npcImporter.HTML.Save": " Save",
 
   "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "d",
@@ -86,7 +87,8 @@
   "npcImporter.settings.Character": "Character",
   "npcImporter.settings.CompendiumsSelector": "Compendiums Selector",
   "npcImporter.settings.CompendiumsSelectorHint": "Allows for selecting individual compendiums for the Importer to search through",
-  "npcImporter.settings.SelectPacks": "SelectPack",
+  "npcImporter.settings.SelectPacks": "Select Pack",
+  "npcImporter.settings.SelectCompendiums": "Select Compendiums",
   "npcImporter.settings.SelectPacksInfo": "Selecting a pack means that all associated compendiums will be used",
   "npcImporter.settings.DefaultDisposition": "Set the default disposition",
   "npcImporter.settings.DefaultActorType": "Set the default Actor Type",
