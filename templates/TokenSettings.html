@@ -1,10 +1,7 @@
 <form autocomplete="off">
-  <div class="column">
+  <div class="form-group">
     <label>{{localize 'TOKEN.Disposition'}}:</label>
-    <select
-      id="disposition"
-      name="disposition"
-      style="float: right; width: 200px">
+    <select id="disposition" name="disposition">
       <option name="HOSTILE" value="-1" {{this.dispositionHostile.selected}}>
         {{localize 'TOKEN.HOSTILE'}}
       </option>
@@ -19,10 +16,7 @@
   <br />
   <div class="form-group">
     <label>{{localize 'TOKEN.CharShowNameplate'}}:</label>
-    <select
-      id="displayName"
-      name="displayName"
-      style="float: right; width: 200px">
+    <select id="displayName" name="displayName">
       <option
         name="DISPLAY_NONE"
         value="0"

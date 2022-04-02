@@ -17,6 +17,12 @@
   "npcImporter.HTML.FailedToImport": "Akteur konnte nicht importiert werden (siehe Konsole für Fehlermeldung)",
   "npcImporter.HTML.DeleteActor": "Lösche Akteur mit id {actorId}",
   "npcImporter.HTML.StatBlock": "Werteblock",
+  "npcImporter.HTML.Yes": "Ja",
+  "npcImporter.HTML.No": "Nein",
+  "npcImporter.HTML.VisionRadius": "Sichtwinkel",
+  "npcImporter.HTML.VisionAngleLable": "Grad (360 wenn leer)",
+  "npcImporter.HTML.Save": " Speichern",
+  "npcImporter.HTML.Firefox": "Kopiere den Werteblock nur dann in dieses Feld,wenn du entweder Firefox, den Foundry Client, oder eine http Verbindung verwendest.",
 
   "npcImporter.regex.dice": "(\\d+)?W(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "W",
@@ -106,11 +112,5 @@
   "npcImporter.settings.SetSizeHint": "Setzt automatisch Maße und Maßstab der Akteursfigur abhängig von der Größe.",
   "npcImporter.settings.AllAsSpecialAbilities": "Alles als Spezialfähigkeit importieren",
   "npcImporter.settings.AllAsSpecialAbilitiesHint": "Alle Spezialfähigkeiten (inklusive Waffen) werden als Spezialfähigkeiten-Items importiert. Andernfalls versucht der Importer Waffen und Rüstungen automatisch zu erkennen und im Abschnitt Ausrüstung als Items anzulegen.",
-  "npcImporter.HTML.Yes": "Ja",
-  "npcImporter.HTML.No": "Nein",
-  "npcImporter.HTML.VisionRadius": "Sichtreichweite",
-  "npcImporter.HTML.VisionAngleLable": "Grad (360 wenn leer)",
-  "npcImporter.HTML.Save": " Speichern",
-  "npcImporter.settings.SelectCompendiums": "Wähle Kompendien",
-  "npcImporter.HTML.Firefox": "Kopiere den Werteblock nur dann in dieses Feld,wenn du entweder Firefox, den Foundry Client, oder eine http Verbindung verwendest."
+  "npcImporter.settings.SelectCompendiums": "Wähle Kompendien"
 }
