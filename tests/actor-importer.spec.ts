@@ -5,7 +5,7 @@ import { test, expect, chromium, Page } from '@playwright/test';
 import fs from 'fs';
 import { cleanActor } from './utils/cleanup';
 import { FoundryApp } from './utils/foundry-pom';
-import { Languages } from './utils/languages';
+import { ActoryType, Disposition, Languages } from './utils/enums';
 const expectedPath = `${__dirname}/testData/expected/`;
 
 let page: Page;
@@ -33,7 +33,18 @@ test.describe('Other Languages Test', () => {
   });
 
   const actors = [
-    { actorName: 'goblin', lang: Languages.English },
+    {
+      actorName: 'goblin',
+      lang: Languages.English,
+      special: {
+        actoryType: ActoryType.Character,
+        isWildcard: true,
+        disposition: Disposition.Friendly,
+        hasVision: true,
+        dimSight: 30,
+        brightSight: 30,
+      },
+    },
     { actorName: 'gregorovna', lang: Languages.English },
     { actorName: 'dragon', lang: Languages.English },
     { actorName: 'scorpion', lang: Languages.English },
@@ -52,6 +63,18 @@ test.describe('Other Languages Test', () => {
         fs.readFileSync(`${expectedPath}${testData.actorName}.json`, 'utf-8')
       );
       actorUnderTest = expectedData.name;
+
+      await foundryApp.openImporter();
+      if (testData.special) {
+        await foundryApp.selectActorType(testData.special.actoryType);
+        await foundryApp.selectIsWildCard(testData.special.isWildcard);
+        await foundryApp.selectDisposition(testData.special.disposition);
+        await foundryApp.updateVision(
+          testData.special.hasVision,
+          testData.special.dimSight,
+          testData.special.brightSight
+        );
+      }
 
       await foundryApp.importActor(testData.actorName);
       const path = await foundryApp.exportActor(actorUnderTest);

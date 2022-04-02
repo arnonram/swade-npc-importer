@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
-import { Languages } from './languages';
+import { ActoryType, Disposition, Languages } from './enums';
 import fs from 'fs';
+import { has } from 'lodash';
 
 const inputPath = `${__dirname}/../testData/input/`;
 
@@ -42,9 +43,12 @@ export class FoundryApp {
     await this.page.locator('text=Save Changes').click();
   }
 
-  async importActor(actorName: string) {
+  async openImporter() {
     await this.page.locator('a:nth-child(4) .fas').first().click();
     await this.page.locator('button:has-text("Actor Importer")').click();
+  }
+
+  async importActor(actorName: string) {
     await this.page.locator('textarea[name="statBlock"]').click();
     await this.page
       .locator('textarea[name="statBlock"]')
@@ -61,5 +65,31 @@ export class FoundryApp {
       this.page.locator('text=Export Data').click(),
     ]);
     return download.path();
+  }
+
+  async selectActorType(actorType: ActoryType) {
+    await this.page.locator(`#${actorType}`).check();
+  }
+
+  async selectIsWildCard(isWildCard: boolean = false) {
+    await this.page.locator(`#${isWildCard ? 'yes' : 'no'}`).check();
+  }
+
+  async selectDisposition(disposition: Disposition) {
+    await this.page.locator(`#${disposition}`).check();
+  }
+
+  async updateVision(
+    hasVision: boolean = false,
+    dimSight: number = 0,
+    brightSight: number = 0
+  ) {
+    if (hasVision) {
+      await this.page.locator('input[name="vision"]').check();
+    }
+    await this.page.locator('input[name="dimSight"]').fill(dimSight.toString());
+    await this.page
+      .locator('input[name="brightSight"]')
+      .fill(brightSight.toString());
   }
 }

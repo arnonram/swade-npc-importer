@@ -212,7 +212,9 @@ function importerDialogue() {
             <label for="statBlock"><b>${game.i18n.localize(
               'npcImporter.HTML.StatBlock'
             )}</b></label>
-            <textarea id="statBlock" name="statBlock" rows="10" autocomplete="off" placeholder="Paste statblock here ONLY if you're using Firefox or are over http..."></textarea>
+            <textarea id="statBlock" name="statBlock" rows="10" autocomplete="off" placeholder=${game.i18n.localize(
+              'npcImporter.HTML.Firefox'
+            )}></textarea>
         </div>
         </br>
         </form>

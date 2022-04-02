@@ -21,6 +21,7 @@
   "npcImporter.HTML.VisionRadius": "Raio de visão",
   "npcImporter.HTML.VisionAngleLable": "Graus (360 predefinição)",
   "npcImporter.HTML.Save": " Salvar",
+  "npcImporter.HTML.Firefox": "Paste statblock here if you're using Firefox, Foundry Client, or are over http...",
 
   "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "d",
