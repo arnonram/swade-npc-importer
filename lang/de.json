@@ -109,6 +109,8 @@
   "npcImporter.HTML.Yes": "Ja",
   "npcImporter.HTML.No": "Nein",
   "npcImporter.HTML.VisionRadius": "Sichtreichweite",
-  "npcImporter.HTML.VisionAngleLable": "Grad (360 wenn leer)"
+  "npcImporter.HTML.VisionAngleLable": "Grad (360 wenn leer)",
   "npcImporter.HTML.Save": " Speichern",
+  "npcImporter.settings.SelectCompendiums": "Wähle Kompendien",
+  "npcImporter.HTML.Firefox": "Kopiere den Werteblock nur dann in dieses Feld,wenn du entweder Firefox, den Foundry Client, oder eine http Verbindung verwendest."
 }
