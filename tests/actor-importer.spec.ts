@@ -10,7 +10,7 @@ const expectedPath = `${__dirname}/testData/expected/`;
 
 let page: Page;
 
-test.describe('Other Languages Test', () => {
+test.describe('Importer Test', () => {
   let actorUnderTest = '';
   let foundryApp: FoundryApp;
 

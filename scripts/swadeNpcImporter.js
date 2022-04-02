@@ -212,9 +212,9 @@ function importerDialogue() {
             <label for="statBlock"><b>${game.i18n.localize(
               'npcImporter.HTML.StatBlock'
             )}</b></label>
-            <textarea id="statBlock" name="statBlock" rows="10" autocomplete="off" placeholder=${game.i18n.localize(
+            <textarea id="statBlock" name="statBlock" rows="10" autocomplete="off" placeholder="${game.i18n.localize(
               'npcImporter.HTML.Firefox'
-            )}></textarea>
+            )}"></textarea>
         </div>
         </br>
         </form>
