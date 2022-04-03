@@ -1,5 +1,5 @@
 <form autocomplete="off">
-  <div class="column">
+  <div class="form-group">
     <label>{{localize 'TOKEN.Disposition'}}:</label>
     <select id="disposition" name="disposition">
       <option name="HOSTILE" value="-1" {{this.dispositionHostile.selected}}>
@@ -13,6 +13,7 @@
       </option>
     </select>
   </div>
+  <br />
   <div class="form-group">
     <label>{{localize 'TOKEN.CharShowNameplate'}}:</label>
     <select id="displayName" name="displayName">
@@ -66,10 +67,12 @@
       min="0" />
   </div>
   <div class="form-group slim">
-    <label>Vision Radius</label>
+    <label>{{localize 'npcImporter.HTML.VisionRadius'}}</label>
     <div class="form-fields">
       <label>{{localize 'TOKEN.VisionDim'}}</label>
       <input type="number" step="1" name="dimSight" value="{{this.dimSight}}" />
+    </div>
+    <div class="form-fields">
       <label>{{localize 'TOKEN.VisionBright'}}</label>
       <input
         type="number"
@@ -82,7 +85,7 @@
   <div class="form-group slim">
     <label>{{localize 'TOKEN.VisionAngle'}} </label>
     <div class="form-fields">
-      <label>0-360 (360 if empty)</label>
+      <label>{{localize 'npcImporter.HTML.VisionAngleLable'}}</label>
       <input
         type="number"
         name="sightAngle"
@@ -91,5 +94,7 @@
         max="360" />
     </div>
   </div>
-  <button type="submit" name="submit"><i class="far fa-save"> Save</i></button>
+  <button type="submit" name="submit">
+    <i class="far fa-save">{{localize 'npcImporter.HTML.Save'}}</i>
+  </button>
 </form>
