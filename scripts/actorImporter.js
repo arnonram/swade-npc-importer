@@ -14,7 +14,9 @@ async function whatToDo(actorData, actorId) {
   let actorExists = `
     ${game.i18n.localize('npcImporter.HTML.ActorExistText')}
     <div class="form-group-dialog newName" >
-        <label for="newName">Import with different name (current name displayed):</label>
+        <label for="newName">${game.i18n.localize(
+          'npcImporter.HTML.ChangeName'
+        )}:</label>
         <input type="text" id="newName" name="newName" value="${
           actorData.name
         }">

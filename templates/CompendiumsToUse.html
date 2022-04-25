@@ -10,7 +10,9 @@
   <label>{{this.name}}</label><br />
   {{/each}}
 
-  <h2 class="modal-header">Select Compendiums</h2>
+  <h2 class="modal-header">
+    {{localize 'npcImporter.settings.SelectCompendiums'}}
+  </h2>
   {{#each comps}}
   <input
     type="checkbox"
@@ -20,5 +22,7 @@
   <label>{{this.name}}</label><br />
   {{/each}}
   <br />
-  <button type="submit" name="submit"><i class="far fa-save"> Save</i></button>
+  <button type="submit" name="submit">
+    <i class="far fa-save">{{localize 'npcImporter.HTML.Save'}}</i>
+  </button>
 </form>

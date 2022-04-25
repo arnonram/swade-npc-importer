@@ -360,10 +360,12 @@ function getAbilities(data) {
     let abilityName = !modifiedSpecialAbs
       ? ability[0].trim()
       : `@${ability[0].trim()}`;
-    abilities[abilityName] =
-      ability.length == 2
-        ? ability[1].replace(global.newLineRegex, ' ').trim()
-        : ability[0];
+    if (abilityName) {
+      abilities[abilityName] =
+        ability.length == 2
+          ? ability[1].replace(global.newLineRegex, ' ').trim()
+          : ability[0];
+    }
   });
 
   return abilities;
