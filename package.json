@@ -1,6 +1,6 @@
 {
   "name": "swade-npc-importer",
-  "version": "0.1.0",
+  "version": "0.1.16",
   "description": "Import NPC statblocks for SWADE",
   "main": "index.js",
   "scripts": {
