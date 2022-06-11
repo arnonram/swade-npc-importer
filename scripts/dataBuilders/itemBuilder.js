@@ -161,11 +161,12 @@ export async function itemBuilderFromSpecAbs(name, itemDescription, type) {
     img:
       itemFromCompendium?.data?.img ?? `systems/swade/assets/icons/${type}.svg`,
     data:
-      itemFromCompendium?.data?.data && itemFromCompendium?.type === type
+      itemFromCompendium?.data?.data !== undefined &&
+      itemFromCompendium?.type === type
         ? itemFromCompendium?.data?.data
         : { description: itemDescription.trim() },
-    effects: data?.effects?.toJSON() ?? [],
-    flags: data?.flags ?? {},
+    effects: itemFromCompendium?.data?.effects?.toJSON() ?? [],
+    flags: itemFromCompendium?.data?.flags ?? {},
   };
   if (itemFromCompendium?.type === type) {
     item.data.description = `${itemDescription.trim()}<hr>${
