@@ -34,5 +34,16 @@
       "name": "Deutsch",
       "path": "lang/de.json"
     }
+  ],
+  "packs": [
+    {
+      "name": "swade-npc-importer-macros",
+      "label": "SWADE NPC Importer Macros",
+      "system": "swade",
+      "path": "packs/macros-importer.db",
+      "module": "swade-npc-importer",
+      "entity": "Macro",
+      "private": true
+    }
   ]
 }
