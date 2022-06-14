@@ -23,6 +23,12 @@ If you like what you see and find it uself, you can buy me a beer
 
 ---
 
+## Just a heads up about statsblocks
+
+The **_SWADE NPC Importer_** works with the official statblock as seen in any Pinnacle products (SWADE Core, Deadlands, etc..) and defined in the [Pinnacle Style Guide](https://peginc.com/store/pinnacle-style-guide-pdf/)
+
+The Importer basically searches for patterns in the text, so that means paying attention to commas, colons, etc...
+
 ## How to use it...
 
 0. Go to [Settings](#some-configurations) and look around:
@@ -100,6 +106,7 @@ Some _Prototype Token_ options may be set by default
   - Shields
   - Gear
 - **Special Abilities**
+
   - Search for "Armor" and/or any damage attack (lines with Str., Str+d\*, or dice formulas).
     - You may select from the settings to not search for these special items, and then they will all be listed as Special Abilities Items
   - Lists all others as Special Abilities Items
@@ -108,7 +115,36 @@ Some _Prototype Token_ options may be set by default
     - Add additional wounds as per the Size Table (SWADE Core)
   - Ignore wounds & Unshake bonuses for: construct, undead, elemental, combat reflexes
   - List them all in the actors' description with links to Compendium rules (if using the core-swade Compendium pack)
-  - See [NPC Importer Settings](#some-configurations) for further manipulation of the statblock
+  - See [NPC Importer Settings](#some-configurations) for further manipulation of the statblock.
+
+    - This options allows users who have set Special Abilities as Eges in their World to link them, as well as
+    - Forcing the Importer to consider some Spcial Abilities as specific Items => For example: this means that you can add a `@a` to force the Importer to consider the special ability as Armor. The existing options are:
+
+      - `@e` => Edge;
+      - `@h` => Hinrance;
+      - `@w` => Weapom;
+      - `@a` => Armor;
+      - `@sa` => listed as Special Ability item"
+      - **For example**:
+
+        ```
+        Some Monster
+        Stuff about the monster. Lots of it..
+        Attributes: Agility d8, Smarts d6, Spirit d6,
+        Strength d10, Vigor d10
+        Skills: Athletics d6, Fighting d8, Notice d6,
+        Shooting d8, Stealth d8
+        Pace: 6; Parry: 6; Toughness: 7
+        Edges: Combat Reflexes
+        Special Abilities:
+        @sa Aquatic: Pace 12″.
+        @e Burrow (10″): Some Monsters can meld
+        into and out of the ground
+        @w Slam: Str+d6, nonlethal damage.
+        @a Armor +2
+        @h Weakness(dirt): Some Monster hate being dirty
+        @sa SpecialAbs: this is a ver special Abilitiy
+        ```
 
 ---
 

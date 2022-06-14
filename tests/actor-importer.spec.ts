@@ -15,9 +15,7 @@ test.describe('Importer Test', () => {
   let foundryApp: FoundryApp;
 
   test.beforeAll(async ({ browser }) => {
-    browser = await chromium.launch({
-      executablePath: '/usr/bin/brave-browser',
-    });
+    browser = await chromium.launch();
     const context = await browser.newContext({
       bypassCSP: true,
       permissions: ['clipboard-read', 'clipboard-write'],
@@ -45,8 +43,8 @@ test.describe('Importer Test', () => {
         brightSight: 30,
       },
     },
-    { actorName: 'gregorovna', lang: Languages.English },
     { actorName: 'dragon', lang: Languages.English },
+    { actorName: 'gregorovna', lang: Languages.English },
     { actorName: 'scorpion', lang: Languages.English },
     { actorName: 'de-zombie', lang: Languages.German },
     { actorName: 'de-bull', lang: Languages.German },
@@ -83,6 +81,10 @@ test.describe('Importer Test', () => {
 
       if (path) {
         const exportedData = JSON.parse(fs.readFileSync(path, 'utf-8'));
+        await fs.writeFileSync(
+          `${expectedPath}new/${testData.actorName}.json`,
+          fs.readFileSync(path, 'utf-8')
+        );
         expect(cleanActor(exportedData)).toEqual(cleanActor(expectedData));
       }
     });

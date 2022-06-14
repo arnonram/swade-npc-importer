@@ -147,12 +147,16 @@ export function getModuleSettings(settingKey) {
 
 export async function Import(actorData) {
   try {
-    await Actor.createDocuments([actorData]);
+    const actors = await Actor.createDocuments([actorData]);
     ui.notifications.info(
       game.i18n.format('npcImporter.HTML.ActorCreated', {
         actorName: actorData.name,
       })
     );
+    // Render actor sheet (optionally):
+    if (actors && game.settings.get(thisModule, 'renderSheet') === true) {
+      actors[0].sheet.render(true);
+    }
   } catch (error) {
     log(`Failed to import: ${error}`);
     ui.notifications.error(
@@ -184,7 +188,7 @@ export async function DeleteActor(actorId) {
       game.i18n.format('npcImporter.HTML.DeleteActor', { actorId: actorId })
     );
   } catch (error) {
-    log(`Failed to delet actor: ${error}`);
+    log(`Failed to delete actor: ${error}`);
   }
 }
 
