@@ -147,12 +147,16 @@ export function getModuleSettings(settingKey) {
 
 export async function Import(actorData) {
   try {
-    await Actor.createDocuments([actorData]);
+    const actor = await Actor.createDocuments([actorData]);
     ui.notifications.info(
       game.i18n.format('npcImporter.HTML.ActorCreated', {
         actorName: actorData.name,
       })
     );
+    // Render actor sheet (optionally):
+    if (actor && game.settings.get(thisModule, 'renderSheet') === true) {
+      actor[0].sheet.render(true)
+    }
   } catch (error) {
     log(`Failed to import: ${error}`);
     ui.notifications.error(
