@@ -9,6 +9,5 @@ const config: PlaywrightTestConfig = {
   },
   testDir: './tests',
   fullyParallel: false,
-  retries: 2,
 };
 export default config;

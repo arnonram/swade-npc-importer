@@ -82,7 +82,7 @@ export async function specialAbilitiesParser(specialAbilitiesData) {
           await weaponBuilder({
             weaponName: name,
             weaponDescription: specialAbilitiesData[elem],
-            weaponDamage: meleeDamage[0],
+            weaponDamage: meleeDamage ? meleeDamage[0] : '',
           })
         );
       } else if (elem.startsWith('@a')) {

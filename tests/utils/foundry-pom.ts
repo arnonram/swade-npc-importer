@@ -57,7 +57,7 @@ export class FoundryApp {
   }
 
   async exportActor(actorName: string): Promise<string | null> {
-    await this.page.locator(`h4:has-text("${actorName}")`).click({
+    await this.page.locator(`h4:has-text("${actorName}")`).first().click({
       button: 'right',
     });
     const [download] = await Promise.all([

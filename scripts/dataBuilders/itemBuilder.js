@@ -33,7 +33,7 @@ export async function skillBuilder(skillsDict) {
               modifier: skillsDict[skillName].die.modifier,
             },
           },
-          effects: JSON.stringify(data.effects) ?? [],
+          effects: data?.effects?.toJSON() ?? [],
           flags: data?.flags ?? {},
         });
       } catch (error) {
@@ -69,7 +69,7 @@ export async function edgeBuilder(edges) {
               value: data?.data?.requirements.value ?? '',
             },
           },
-          effects: JSON.stringify(data.effects) ?? [],
+          effects: data?.effects?.toJSON() ?? [],
           flags: data?.flags ?? {},
         });
       } catch (error) {
@@ -112,7 +112,7 @@ export async function hindranceBuilder(hindrances) {
             additionalStats: data?.data?.additionalStats ?? {},
             major: isMajor,
           },
-          effects: JSON.stringify(data.effects) ?? [],
+          effects: data?.effects?.toJSON() ?? [],
           flags: data?.flags ?? {},
         });
       } catch (error) {
@@ -144,7 +144,7 @@ export async function abilityBuilder(abilityName, abilityDescription) {
         subtype: 'special',
         grantsPowers: data?.data?.grantsPowers ?? doesGrantPowers,
       },
-      effects: JSON.stringify(data.effects) ?? [],
+      effects: data?.effects?.toJSON() ?? [],
       flags: data?.flags ?? {},
     };
   } catch (error) {
@@ -161,11 +161,12 @@ export async function itemBuilderFromSpecAbs(name, itemDescription, type) {
     img:
       itemFromCompendium?.data?.img ?? `systems/swade/assets/icons/${type}.svg`,
     data:
-      itemFromCompendium?.data?.data && itemFromCompendium?.type === type
+      itemFromCompendium?.data?.data !== undefined &&
+      itemFromCompendium?.type === type
         ? itemFromCompendium?.data?.data
         : { description: itemDescription.trim() },
-    effects: JSON.stringify(data.effects) ?? [],
-    flags: data?.flags ?? {},
+    effects: itemFromCompendium?.data?.effects?.toJSON() ?? [],
+    flags: itemFromCompendium?.data?.flags ?? {},
   };
   if (itemFromCompendium?.type === type) {
     item.data.description = `${itemDescription.trim()}<hr>${
@@ -187,7 +188,7 @@ export async function powerBuilder(powers) {
           name: capitalizeEveryWord(powerName),
           img: data?.img ?? 'systems/swade/assets/icons/power.svg',
           data: data?.data ?? {},
-          effects: JSON.stringify(data.effects) ?? [],
+          effects: data?.effects?.toJSON() ?? [],
           flags: data?.flags ?? {},
         });
       } catch (error) {
@@ -243,7 +244,7 @@ export async function weaponBuilder({
         currentShots: shots ?? data?.data?.shots,
         actions: actions,
       },
-      effects: JSON.stringify(data.effects) ?? [],
+      effects: data?.effects?.toJSON() ?? [],
       flags: data?.flags ?? {},
     };
   } catch (error) {
@@ -273,7 +274,7 @@ export async function shieldBuilder(
         parry: data?.data?.parry ?? parry,
         cover: data?.data?.cover ?? cover,
       },
-      effects: JSON.stringify(data.effects) ?? [],
+      effects: data?.effects?.toJSON() ?? [],
       flags: data?.flags ?? {},
     };
   } catch (error) {
@@ -298,7 +299,7 @@ export async function armorBuilder(armorName, armorBonus, armorDescription) {
         equippable: true,
         armor: data?.data?.armor ?? armorBonus,
       },
-      effects: JSON.stringify(data.effects) ?? [],
+      effects: data?.effects?.toJSON() ?? [],
       flags: data?.flags ?? {},
     };
   } catch (error) {
@@ -319,7 +320,7 @@ export async function gearBuilder(gearName, description) {
         equipped: false,
         equippable: false,
       },
-      effects: JSON.stringify(data.effects) ?? [],
+      effects: data?.effects?.toJSON() ?? [],
       flags: data?.flags ?? {},
     };
   } catch (error) {
