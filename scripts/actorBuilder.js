@@ -61,6 +61,7 @@ async function generateActorData(parsedData, importSettings) {
     parsedData,
     importSettings.tokenSettings
   );
+  finalActor.effects = gatherAllEffects(finalActor.items);
   const powerPoints = powerPointsFromSpecialAbility(finalActor.items);
   if (powerPoints) {
     finalActor.data.powerPoints = {
@@ -79,4 +80,8 @@ function powerPointsFromSpecialAbility(abilities) {
   if (powerAbility.length > 0) {
     return getPowerPoints(powerAbility[0].data.description);
   }
+}
+
+function gatherAllEffects(data) {
+  return data.filter(x => x.effects.length > 0).map(x => x.effects[0]);
 }

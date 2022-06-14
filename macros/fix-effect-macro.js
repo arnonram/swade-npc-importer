@@ -35,38 +35,3 @@ function removeEffects(data) {
   }
   return data;
 }
-
-// const allActors = game.actors.filter(a => a.data.type == 'npc');
-
-// for (const actor of allActors) {
-//   for (let actor of game.actors) {
-//     for (let item of actor.items) {
-//       if (typeof item.toObject()['effects'] === 'string') {
-//         const update = {
-//           _id: item.toJSON()._id,
-//           effects: JSON.parse(item.toJSON()['effects']),
-//         };
-//         console.log(update);
-
-//         await item.updateEmbeddedDocuments('ActiveEffect', [update]);
-//       }
-//     }
-//   }
-//   console.log(actor.toObject());
-// }
-
-// let updates = actor.items
-// .toObject()
-// .filter(item => typeof item.effects === 'string')
-// .map(itemUpdate => ({
-//   _id: itemUpdate._id,
-//   effects: JSON.parse(itemUpdate.effects),
-// }));
-// updates.forEach(element => {
-// console.log(element);
-// });
-// if (updates.length > 0) {
-// console.log(`Updating character: ${actor.name} / ${actor.id}`);
-// await actor.updateEmbeddedDocuments('Item', updates);
-// console.log(actor.toObject());
-// }
