@@ -178,5 +178,12 @@ export class NpcImporterSettings {
       scope: 'world',
       type: String,
     });
+    game.settings.register(thisModule, 'renderSheet', {
+      name: game.i18n.localize('npcImporter.settings.RenderSheet'),
+      config: true,
+      scope: 'world',
+      type: Boolean,
+      default: false,
+    });
   }
 }
