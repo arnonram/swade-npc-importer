@@ -188,7 +188,7 @@ export async function DeleteActor(actorId) {
       game.i18n.format('npcImporter.HTML.DeleteActor', { actorId: actorId })
     );
   } catch (error) {
-    log(`Failed to delet actor: ${error}`);
+    log(`Failed to delete actor: ${error}`);
   }
 }
 
