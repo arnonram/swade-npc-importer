@@ -154,8 +154,8 @@ export async function Import(actorData) {
       })
     );
     // Render actor sheet (optionally):
-    if (actor && game.settings.get(thisModule, 'renderSheet') === true) {
-      actors[0].sheet.render(true)
+    if (actors && game.settings.get(thisModule, 'renderSheet') === true) {
+      actors[0].sheet.render(true);
     }
   } catch (error) {
     log(`Failed to import: ${error}`);
