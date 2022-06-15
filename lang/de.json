@@ -89,6 +89,7 @@
   "npcImporter.settings.CompendiumsSelector": "Kompendienauswahl",
   "npcImporter.settings.CompendiumsSelectorHint": "Steuert die für den Importer durchsuchbaren Kompendien",
   "npcImporter.settings.SelectPacks": "Modulauswahl",
+  "npcImporter.settings.SelectCompendiums": "Wähle Kompendien"
   "npcImporter.settings.SelectPacksInfo": "Durch die Auswahl eines Moduls werden alle zugehörigen Kompendien gewählt.",
   "npcImporter.settings.DefaultDisposition": "Setzt die Standard Gesinnung",
   "npcImporter.settings.DefaultActorType": "Setzt den Standard Akteurstyp",
@@ -112,5 +113,5 @@
   "npcImporter.settings.SetSizeHint": "Setzt automatisch Maße und Maßstab der Akteursfigur abhängig von der Größe.",
   "npcImporter.settings.AllAsSpecialAbilities": "Alles als Spezialfähigkeit importieren",
   "npcImporter.settings.AllAsSpecialAbilitiesHint": "Alle Spezialfähigkeiten (inklusive Waffen) werden als Spezialfähigkeiten-Items importiert. Andernfalls versucht der Importer Waffen und Rüstungen automatisch zu erkennen und im Abschnitt Ausrüstung als Items anzulegen.",
-  "npcImporter.settings.SelectCompendiums": "Wähle Kompendien"
+  "npcImporter.settings.RenderSheet": "Öffnet nach erfolgreichem Import den Charakterbogen des Akteurs."
 }
