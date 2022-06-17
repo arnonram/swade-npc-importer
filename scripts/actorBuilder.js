@@ -83,5 +83,8 @@ function powerPointsFromSpecialAbility(abilities) {
 }
 
 function gatherAllEffects(data) {
-  return data.filter(x => x.effects.length > 0).map(x => x.effects[0]);
+  return data
+    .filter(x => x.effects.length > 0)
+    .map(x => x.effects)
+    .flat(1);
 }
