@@ -4,6 +4,9 @@ on:
   push:
     tag:
       - '*'
+    types:
+      - created
+
 jobs:
   build:
     runs-on: ubuntu-latest
