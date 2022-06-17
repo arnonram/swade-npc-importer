@@ -102,7 +102,7 @@ function getNameAndDescription(nameAndDescription) {
 function descriptionByParagraph(descArray) {
   let bio = '';
   descArray.forEach(line => {
-    if (line.endsWith('.')) {
+    if (line.trim().endsWith('.')) {
       line = line + '<br/>';
     }
     bio += `${line} `;
