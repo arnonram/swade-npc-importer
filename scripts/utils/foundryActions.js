@@ -146,6 +146,8 @@ export function getModuleSettings(settingKey) {
 }
 
 export async function Import(actorData) {
+  //Throw a hook with the actorData before creation:
+  Hooks.call("npcImporter-preCreateActor", actorData);
   try {
     const actors = await Actor.createDocuments([actorData]);
     ui.notifications.info(
@@ -153,6 +155,8 @@ export async function Import(actorData) {
         actorName: actorData.name,
       })
     );
+    //Throw a hook containing the actors:
+    Hooks.call("npcImporter-ActorCreated", actors);
     // Render actor sheet (optionally):
     if (actors && game.settings.get(thisModule, 'renderSheet') === true) {
       actors[0].sheet.render(true);
