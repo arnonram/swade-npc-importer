@@ -30,13 +30,14 @@ Hooks.on('ready', async () => {
 Hooks.on('renderActorDirectory', async (app, html, data) => {
   if (game.users.get(game.userId).can('ACTOR_CREATE') == true) {
     const npcImporterButton = $(
-      `<button style="margin: 4px; padding: 1px 6px;"><i class="fas fa-file-import"> ${game.i18n.localize(
-        'npcImporter.HTML.ActorImporter'
-      )}</i></button>`
+      `<button style="width: calc(100% - 8px);"><i class="fas fa-align-left"></i>${game.i18n.localize(
+        'npcImporter.HTML.StatBlockImporterTitle'
+      )}</button>`
     );
+
     html.find('.directory-footer').append(npcImporterButton);
 
-    npcImporterButton.click(() => {
+    npcImporterButton.on('click', () => {
       new Dialog({
         title: game.i18n.localize('npcImporter.HTML.ImportTitle'),
         content: importerDialogue(),
@@ -112,7 +113,7 @@ function importerDialogue() {
         <form>
         <p>${game.i18n.localize('npcImporter.HTML.ImportDesc')}</p>
         <div class = "row">
-            <div class="column"> 
+            <div class="column">
                 <p>${game.i18n.localize('npcImporter.HTML.ActorType')}:</p>
                 <input type="radio" id="npc" name="actorType" value="npc" ${isChecked(
                   defaultData.actorType,
@@ -129,7 +130,7 @@ function importerDialogue() {
                   'npcImporter.settings.Character'
                 )}</lable>
             </div>
-            <div class="column"> 
+            <div class="column">
                 <p>${game.i18n.localize('npcImporter.HTML.Wildcard')}?</p>
                 <input type="radio" id="yes" name="isWildcard" value="true" ${isChecked(
                   defaultData.isWildcard,
@@ -146,7 +147,7 @@ function importerDialogue() {
                   'npcImporter.HTML.No'
                 )}</lable>
             </div>
-            <div class="column"> 
+            <div class="column">
                 <p>${game.i18n.localize('npcImporter.HTML.Disposition')}:</p>
                 <input type="radio" id="hostile" name="disposition" value="-1" ${isChecked(
                   defaultData.tokenData.disposition,
@@ -200,7 +201,7 @@ function importerDialogue() {
               }" />
             </div>
           </div>
-        </div> 
+        </div>
         <br>
         <div class="form-group slim">
           <label>${game.i18n.localize('npcImporter.HTML.SaveFolder')} </label>

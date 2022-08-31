@@ -1,6 +1,7 @@
 {
   "npcImporter.HTML.ActorImporter": "Actor Importer",
   "npcImporter.HTML.ImportTitle": "NPC Importer",
+  "npcImporter.HTML.StatBlockImporterTitle": "Stat Block Importer",
   "npcImporter.HTML.Import": "Import!",
   "npcImporter.HTML.Cancel": "Cancel",
   "npcImporter.HTML.ImportDesc": "Imports stats block from clipboard",
