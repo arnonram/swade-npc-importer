@@ -29,11 +29,15 @@ Hooks.on('ready', async () => {
 
 Hooks.on('renderActorDirectory', async (app, html, data) => {
   if (game.users.get(game.userId).can('ACTOR_CREATE') == true) {
-    const npcImporterButton = `<button style="width: calc(100% - 8px);"><i class="fas fa-align-left"></i>${game.i18n.localize('npcImporter.HTML.StatBlockImporterTitle')}</button>`;
+    const npcImporterButton = $(
+      `<button style="width: calc(100% - 8px);"><i class="fas fa-align-left"></i>${game.i18n.localize(
+        'npcImporter.HTML.StatBlockImporterTitle'
+      )}</button>`
+    );
 
     html.find('.directory-footer').append(npcImporterButton);
 
-    npcImporterButton.click(() => {
+    npcImporterButton.on('click', () => {
       new Dialog({
         title: game.i18n.localize('npcImporter.HTML.ImportTitle'),
         content: importerDialogue(),
