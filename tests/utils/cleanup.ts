@@ -1,7 +1,14 @@
 import _ from 'lodash';
 
 export function cleanActor(data: object) {
-  return deepOmit(data, ['_id', 'actorId', 'sort', 'flags.exportSource']);
+  return deepOmit(data, [
+    '_id',
+    'actorId',
+    'sort',
+    'flags.exportSource',
+    'coreVersion',
+    'systemVersion',
+  ]);
 }
 
 function deepOmit(obj: object, keysToOmit: string[]) {

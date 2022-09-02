@@ -7,6 +7,7 @@ const inputPath = `${__dirname}/../testData/input/`;
 
 export class FoundryApp {
   readonly page: Page;
+  saveFolder = 'Test Folder';
 
   constructor(page: Page) {
     this.page = page;
@@ -23,6 +24,14 @@ export class FoundryApp {
     await this.page.locator('button:has-text("Ok")').click();
   }
 
+  async gotoActorsTab() {
+    await this.page.locator('[title="Actors Directory"]').click();
+  }
+
+  async gotoSettingsTab() {
+    await this.page.locator('[title="Game Settings"]').click();
+  }
+
   async deleteActor(actorName: string) {
     await this.page.locator(`h4:has-text("${actorName}")`).click({
       button: 'right',
@@ -31,8 +40,8 @@ export class FoundryApp {
     await this.page.locator('button:has-text("Yes")').click();
   }
 
-  async setLanguage(language: Languages) {
-    await this.page.locator('[data-tab=settings]').first().click();
+  async setNpcImporterSettings(language: Languages) {
+    await this.gotoSettingsTab();
     await this.page.locator('[data-action=configure]').click();
     await this.page.locator('text=Module Settings').click();
     await this.page
@@ -44,8 +53,29 @@ export class FoundryApp {
     await this.page.locator('button[name=submit]').click();
   }
 
+  async createFolder() {
+    await this.gotoActorsTab();
+    await this.page.locator('#actors >> text=Create Folder').click();
+    await this.page.locator('[name=name]').type(this.saveFolder);
+    await this.page.keyboard.press('Enter');
+    await this.toggleFolderState();
+  }
+
+  async toggleFolderState() {
+    await this.page.locator(`text="Test Folder"`).click({ force: true });
+  }
+
+  async deleteFolder() {
+    await this.gotoActorsTab();
+    await this.page
+      .locator(`text="Test Folder"`)
+      .click({ button: 'right', force: true });
+    await this.page.locator(`text="Delete All"`).click();
+    await this.page.locator('button[data-button=yes]').click();
+  }
+
   async openImporter() {
-    await this.page.locator('a:nth-child(4) .fas').first().click();
+    await this.gotoActorsTab();
     await this.page.locator('button:has-text("Stat Block Importer")').click();
   }
 
@@ -92,5 +122,10 @@ export class FoundryApp {
     await this.page
       .locator('input[name="brightSight"]')
       .fill(brightSight.toString());
+  }
+
+  async setSaveFolder() {
+    await this.page.locator('[name="save-folder"]').type(this.saveFolder);
+    await this.page.keyboard.press('Enter');
   }
 }

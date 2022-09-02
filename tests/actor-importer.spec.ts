@@ -57,7 +57,7 @@ test.describe('Importer Test', () => {
 
   for (const testData of actors) {
     test(`testing with actor: ${testData.actorName}, in language: ${testData.lang}`, async () => {
-      await foundryApp.setLanguage(testData.lang);
+      await foundryApp.setNpcImporterSettings(testData.lang);
       const expectedData = JSON.parse(
         fs.readFileSync(`${expectedPath}${testData.actorName}.json`, 'utf-8')
       );
@@ -75,19 +75,18 @@ test.describe('Importer Test', () => {
         );
       }
 
+      // await foundryApp.setSaveFolder();
       await foundryApp.importActor(testData.actorName);
-      const path = await foundryApp.exportActor(actorUnderTest);
+      const path = (await foundryApp.exportActor(actorUnderTest)) as string;
 
       expect(path).not.toBeNull();
 
-      if (path) {
-        const exportedData = JSON.parse(fs.readFileSync(path, 'utf-8'));
-        await fs.writeFileSync(
-          `${expectedPath}new/${testData.actorName}.json`,
-          fs.readFileSync(path, 'utf-8')
-        );
-        expect(cleanActor(exportedData)).toEqual(cleanActor(expectedData));
-      }
+      const exportedData = JSON.parse(fs.readFileSync(path, 'utf-8'));
+      await fs.writeFileSync(
+        `${expectedPath}new/${testData.actorName}.json`,
+        fs.readFileSync(path, 'utf-8')
+      );
+      expect(cleanActor(exportedData)).toEqual(cleanActor(expectedData));
     });
   }
 });
