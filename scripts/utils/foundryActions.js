@@ -147,7 +147,7 @@ export function getModuleSettings(settingKey) {
 
 export async function Import(actorData) {
   //Throw a hook with the actorData before creation:
-  Hooks.call("npcImporter-preCreateActor", actorData);
+  Hooks.call('npcImporter-preCreateActor', actorData);
   try {
     const actors = await Actor.createDocuments([actorData]);
     ui.notifications.info(
@@ -156,7 +156,7 @@ export async function Import(actorData) {
       })
     );
     //Throw a hook containing the actors:
-    Hooks.call("npcImporter-ActorCreated", actors);
+    Hooks.call('npcImporter-ActorCreated', actors);
     // Render actor sheet (optionally):
     if (actors && game.settings.get(thisModule, 'renderSheet') === true) {
       actors[0].sheet.render(true);
@@ -194,6 +194,11 @@ export async function DeleteActor(actorId) {
   } catch (error) {
     log(`Failed to delete actor: ${error}`);
   }
+}
+
+export async function deleteAllActors() {
+  const allActors = await game.actors.map(x => x.data._id);
+  await Actor.deleteDocuments(allActors);
 }
 
 export function getAllActorFolders() {

@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { ActoryType, Disposition, Languages } from './enums';
+import { ActoryType, Disposition, Languages, users } from './enums';
 import fs from 'fs';
 import { has } from 'lodash';
 
@@ -16,12 +16,10 @@ export class FoundryApp {
     await this.page.goto('http://localhost:30000');
   }
 
-  async login() {
+  async login(user: users) {
     await this.goto();
-    await this.page.locator('select[name="userid"]').click();
-    await this.page.keyboard.press('ArrowDown');
-    await this.page.keyboard.press('Enter');
-    await this.page.locator('button:has-text("Join Game Session")').click();
+    await this.page.locator('[name="userid"]').type(user);
+    await this.page.locator('[name=join]').click();
     await this.page.locator('button:has-text("Ok")').click();
   }
 
@@ -34,18 +32,21 @@ export class FoundryApp {
   }
 
   async setLanguage(language: Languages) {
-    await this.page.locator('.fas.fa-cogs').first().click();
-    await this.page.locator('text=Configure Settings').click();
+    await this.page.locator('[data-tab=settings]').first().click();
+    await this.page.locator('[data-action=configure]').click();
     await this.page.locator('text=Module Settings').click();
     await this.page
       .locator('select[name="swade-npc-importer\\.parseLanguage"]')
       .selectOption(language);
-    await this.page.locator('text=Save Changes').click();
+    await this.page
+      .locator('input[name=swade-npc-importer\\.renderSheet]')
+      .uncheck();
+    await this.page.locator('button[name=submit]').click();
   }
 
   async openImporter() {
     await this.page.locator('a:nth-child(4) .fas').first().click();
-    await this.page.locator('button:has-text("Actor Importer")').click();
+    await this.page.locator('button:has-text("Stat Block Importer")').click();
   }
 
   async importActor(actorName: string) {

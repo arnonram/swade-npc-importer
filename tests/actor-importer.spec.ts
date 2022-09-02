@@ -5,7 +5,8 @@ import { test, expect, chromium, Page } from '@playwright/test';
 import fs from 'fs';
 import { cleanActor } from './utils/cleanup';
 import { FoundryApp } from './utils/foundry-pom';
-import { ActoryType, Disposition, Languages } from './utils/enums';
+import { ActoryType, Disposition, Languages, users } from './utils/enums';
+import { deleteAllActors } from '../scripts/utils/foundryActions';
 const expectedPath = `${__dirname}/testData/expected/`;
 
 let page: Page;
@@ -23,7 +24,7 @@ test.describe('Importer Test', () => {
 
     page = await context.newPage();
     foundryApp = new FoundryApp(page);
-    await foundryApp.login();
+    await foundryApp.login(users.GM);
   });
 
   test.afterEach(async () => {
