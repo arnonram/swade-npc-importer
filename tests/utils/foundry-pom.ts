@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { ActoryType, Disposition, Languages } from './enums';
+import { ActoryType, Disposition, Languages, users } from './enums';
 import fs from 'fs';
 import { has } from 'lodash';
 
@@ -7,6 +7,7 @@ const inputPath = `${__dirname}/../testData/input/`;
 
 export class FoundryApp {
   readonly page: Page;
+  saveFolder = 'Test Folder';
 
   constructor(page: Page) {
     this.page = page;
@@ -16,13 +17,19 @@ export class FoundryApp {
     await this.page.goto('http://localhost:30000');
   }
 
-  async login() {
+  async login(user: users) {
     await this.goto();
-    await this.page.locator('select[name="userid"]').click();
-    await this.page.keyboard.press('ArrowDown');
-    await this.page.keyboard.press('Enter');
-    await this.page.locator('button:has-text("Join Game Session")').click();
+    await this.page.locator('[name="userid"]').type(user);
+    await this.page.locator('[name=join]').click();
     await this.page.locator('button:has-text("Ok")').click();
+  }
+
+  async gotoActorsTab() {
+    await this.page.locator('[title="Actors Directory"]').click();
+  }
+
+  async gotoSettingsTab() {
+    await this.page.locator('[title="Game Settings"]').click();
   }
 
   async deleteActor(actorName: string) {
@@ -33,19 +40,43 @@ export class FoundryApp {
     await this.page.locator('button:has-text("Yes")').click();
   }
 
-  async setLanguage(language: Languages) {
-    await this.page.locator('.fas.fa-cogs').first().click();
-    await this.page.locator('text=Configure Settings').click();
+  async setNpcImporterSettings(language: Languages) {
+    await this.gotoSettingsTab();
+    await this.page.locator('[data-action=configure]').click();
     await this.page.locator('text=Module Settings').click();
     await this.page
       .locator('select[name="swade-npc-importer\\.parseLanguage"]')
       .selectOption(language);
-    await this.page.locator('text=Save Changes').click();
+    await this.page
+      .locator('input[name=swade-npc-importer\\.renderSheet]')
+      .uncheck();
+    await this.page.locator('button[name=submit]').click();
+  }
+
+  async createFolder() {
+    await this.gotoActorsTab();
+    await this.page.locator('#actors >> text=Create Folder').click();
+    await this.page.locator('[name=name]').type(this.saveFolder);
+    await this.page.keyboard.press('Enter');
+    await this.toggleFolderState();
+  }
+
+  async toggleFolderState() {
+    await this.page.locator(`text="Test Folder"`).click({ force: true });
+  }
+
+  async deleteFolder() {
+    await this.gotoActorsTab();
+    await this.page
+      .locator(`text="Test Folder"`)
+      .click({ button: 'right', force: true });
+    await this.page.locator(`text="Delete All"`).click();
+    await this.page.locator('button[data-button=yes]').click();
   }
 
   async openImporter() {
-    await this.page.locator('a:nth-child(4) .fas').first().click();
-    await this.page.locator('button:has-text("Actor Importer")').click();
+    await this.gotoActorsTab();
+    await this.page.locator('button:has-text("Stat Block Importer")').click();
   }
 
   async importActor(actorName: string) {
@@ -91,5 +122,10 @@ export class FoundryApp {
     await this.page
       .locator('input[name="brightSight"]')
       .fill(brightSight.toString());
+  }
+
+  async setSaveFolder() {
+    await this.page.locator('[name="save-folder"]').type(this.saveFolder);
+    await this.page.keyboard.press('Enter');
   }
 }

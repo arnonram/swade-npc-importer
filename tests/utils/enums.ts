@@ -15,3 +15,8 @@ export enum Disposition {
   Neutral = 'neutral',
   Friendly = 'friendly',
 }
+
+export enum users {
+  GM = 'testGM',
+  PLAYER = 'testPlayer',
+}
