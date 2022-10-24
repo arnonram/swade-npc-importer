@@ -172,42 +172,31 @@ function importerDialogue() {
                 )}</lable>
             </div>
         </div>
-        <div class="form-group">
-            <p>${game.i18n.localize('TOKEN.VisionHas')}</p>
-            <input type="checkbox" id="vision" name="vision" value="vision" ${
-              defaultData.tokenData.vision == true ? 'checked' : ''
-            }/>
+        <div class="form-group slim">
+          <p>${game.i18n.localize('TOKEN.VisionEnabled')}</p>
+          <input type="checkbox" id="vision" name="vision" value="vision" ${
+            defaultData.tokenData.vision == true ? 'checked' : ''
+          }/>
         </div>
         <div class="form-group slim">
-          <lable>${game.i18n.localize('npcImporter.HTML.VisionRadius')}</label>
-          <div class="form-fields">
-            <label>${game.i18n.localize('TOKEN.VisionDim')}</label>
-            <input type="number" step="1" name="dimSight" value="${
-              defaultData.tokenData.dimSight
+          <p>${game.i18n.localize('TOKEN.VisionRange')}</p>
+          <input type="number" step="1" name="dimSight" value="${
+            defaultData.tokenData.dimSight
+          }" />
+        </div>
+        <div class="form-group slim">
+          <p>${game.i18n.localize('TOKEN.VisionAngle')}</p>
+            <input type="number" name="sightAngle" step="1" max="360" value="${
+              defaultData.tokenData.sightAngle
             }" />
-            <label>${game.i18n.localize('TOKEN.VisionBright')}</label>
-            <input type="number" step="1" name="brightSight" value="${
-              defaultData.tokenData.brightSight
-            }" />
-          </div>
-          <div class="form-group slim">
-            <label>${game.i18n.localize('TOKEN.VisionAngle')}</label>
-            <div class="form-fields">
-              <label>${game.i18n.localize(
-                'npcImporter.HTML.VisionAngleLable'
-              )}</label>
-              <input type="number" name="sightAngle" step="1" max="360" value="${
-                defaultData.tokenData.sightAngle
-              }" />
-            </div>
           </div>
         </div>
         <br>
         <div class="form-group slim">
-          <label>${game.i18n.localize('npcImporter.HTML.SaveFolder')} </label>
-          <div class="form-fields">
-            <select name="save-folder">${folderOptions}</select>
-          </div>
+          <label>${game.i18n.localize(
+            'npcImporter.HTML.SaveFolder'
+          )} </label>          
+          <select name="save-folder" style="width: 50%">${folderOptions}</select>
         </div>
         <div class = "row">
             <label for="statBlock"><b>${game.i18n.localize(

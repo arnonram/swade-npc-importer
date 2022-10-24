@@ -84,9 +84,7 @@ export default class SelectCompendiums extends FormApplication {
 
 function isChecked(item, settingsItems) {
   if (settingsItems != undefined) {
-    return settingsItems.split(',').filter(x => x == item).length == 1
-      ? 'checked'
-      : '';
+    return settingsItems.find(x => x == item) ? 'checked' : '';
   } else {
     return '';
   }

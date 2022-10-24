@@ -11,14 +11,11 @@ import { splitAndSort } from './textUtils.js';
 export async function setAllPacks() {
   log('Getting all active compendiums into allPacks');
   let activeCompendiums = getModuleSettings(settingActiveCompendiums);
-  activeCompendiums
-    .split(',')
-    .filter(String)
-    .forEach(comp => {
-      if (game.packs.get(comp).metadata.type === 'Item') {
-        allPacks.push(game.packs.get(comp));
-      }
-    });
+  activeCompendiums.filter(String).forEach(comp => {
+    if (game.packs.get(comp).metadata.type === 'Item') {
+      allPacks.push(game.packs.get(comp));
+    }
+  });
   allPacks.filter(function (el) {
     return el != null;
   });
@@ -63,7 +60,7 @@ export async function getItemFromCompendium(itemName, expectedType = '') {
 
 export function getAllActiveCompendiums() {
   let packs = getModuleSettings(settingPackageToUse);
-  let comps = getModuleSettings(settingCompsToUse).split(',');
+  let comps = getModuleSettings(settingCompsToUse);
 
   if (packs.length + comps.length === 0) {
     return game.packs
@@ -72,10 +69,9 @@ export function getAllActiveCompendiums() {
         return comp.collection;
       });
   } else {
-    let packArray = packs.split(',');
-    packArray.forEach(packName => {
-      game.packs
-        .filter(comp => comp.metadata.package == packName)
+    packs.forEach(packName => {
+      game.packs.contents
+        .filter(x => x.metadata.packageName === packName)
         .map(comp => {
           comps.push(comp.collection);
         });
@@ -97,9 +93,9 @@ export function getAllItemCompendiums() {
 export function getAllPackageNames() {
   let uniquePackages = new Set(
     game.packs
-      .filter(comp => comp.metadata.package)
+      .filter(comp => comp.metadata.type === 'Item')
       .map(comp => {
-        return `${comp.metadata.package}`;
+        return `${comp.metadata.packageName}`;
       })
   );
   return Array.from(uniquePackages);

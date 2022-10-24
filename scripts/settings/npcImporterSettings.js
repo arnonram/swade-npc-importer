@@ -59,14 +59,14 @@ export class NpcImporterSettings {
       hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
       config: false,
       scope: 'world',
-      type: String,
+      type: Array,
     });
     game.settings.register(thisModule, settingCompsToUse, {
       name: 'Compendiums for imports',
       hint: 'NPC Importer will search through all selected Item compendiums for the correct item from the NPC statblock, and use it',
       config: false,
       scope: 'world',
-      type: String,
+      type: Array,
     });
     game.settings.register(thisModule, settingParaeLanguage, {
       name: game.i18n.localize('npcImporter.settings.parseLanguage'),
@@ -176,7 +176,7 @@ export class NpcImporterSettings {
       name: 'Compendiums in use by Importer',
       config: false,
       scope: 'world',
-      type: String,
+      type: Array,
     });
     game.settings.register(thisModule, 'renderSheet', {
       name: game.i18n.localize('npcImporter.settings.RenderSheet'),
