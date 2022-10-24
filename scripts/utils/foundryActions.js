@@ -198,10 +198,10 @@ export async function deleteAllActors() {
 }
 
 export function getAllActorFolders() {
-  return game.folders
-    .filter(x => x.data.type === 'Actor')
-    .map(comp => {
-      return `${comp.data.name}`;
+  return game.folders._source
+    .filter(x => x.type === 'Actor')
+    .map(folder => {
+      return `${folder.name}`;
     });
 }
 

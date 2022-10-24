@@ -110,18 +110,13 @@ export class FoundryApp {
     await this.page.locator(`#${disposition}`).check();
   }
 
-  async updateVision(
-    hasVision: boolean = false,
-    dimSight: number = 0,
-    brightSight: number = 0
-  ) {
+  async updateVision(hasVision: boolean = false, visionRange: number = 0) {
     if (hasVision) {
       await this.page.locator('input[name="vision"]').check();
     }
-    await this.page.locator('input[name="dimSight"]').fill(dimSight.toString());
     await this.page
-      .locator('input[name="brightSight"]')
-      .fill(brightSight.toString());
+      .locator('input[name="visionRange"]')
+      .fill(visionRange.toString());
   }
 
   async setSaveFolder() {

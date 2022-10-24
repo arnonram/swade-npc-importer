@@ -54,15 +54,12 @@ Hooks.on('renderActorDirectory', async (app, html, data) => {
                 tokenSettings: {
                   disposition: parseInt(radios[2].value),
                   vision: document.getElementsByName('vision')[0].checked,
-                  dimSight:
-                    parseInt(document.getElementsByName('dimSight')[0].value) ||
-                    0,
-                  brightSight:
+                  visionRange:
                     parseInt(
-                      document.getElementsByName('brightSight')[0].value
+                      document.getElementsByName('visionRange')[0].value
                     ) || 0,
-                  sightAngle: parseInt(
-                    document.getElementsByName('sightAngle')[0].value || 360
+                  visionAngle: parseInt(
+                    document.getElementsByName('visionAngle')[0].value || 360
                   ),
                 },
                 saveFolder: html.find('select[name="save-folder"]')[0].value,
@@ -180,14 +177,14 @@ function importerDialogue() {
         </div>
         <div class="form-group slim">
           <p>${game.i18n.localize('TOKEN.VisionRange')}</p>
-          <input type="number" step="1" name="dimSight" value="${
-            defaultData.tokenData.dimSight
+          <input type="number" step="1" name="visionRange" value="${
+            defaultData.tokenData.visionRange
           }" />
         </div>
         <div class="form-group slim">
           <p>${game.i18n.localize('TOKEN.VisionAngle')}</p>
-            <input type="number" name="sightAngle" step="1" max="360" value="${
-              defaultData.tokenData.sightAngle
+            <input type="number" name="visionAngle" step="1" max="360" value="${
+              defaultData.tokenData.visionAngle
             }" />
           </div>
         </div>

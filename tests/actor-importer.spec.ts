@@ -40,8 +40,7 @@ test.describe('Importer Test', () => {
         isWildcard: true,
         disposition: Disposition.Friendly,
         hasVision: true,
-        dimSight: 30,
-        brightSight: 30,
+        visionRange: 30,
       },
     },
     { actorName: 'dragon', lang: Languages.English },
@@ -70,8 +69,7 @@ test.describe('Importer Test', () => {
         await foundryApp.selectDisposition(testData.special.disposition);
         await foundryApp.updateVision(
           testData.special.hasVision,
-          testData.special.dimSight,
-          testData.special.brightSight
+          testData.special.visionRange
         );
       }
 
