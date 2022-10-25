@@ -55,7 +55,7 @@ export async function getItemFromCompendium(itemName, expectedType = '') {
       log(`Error when searching for ${item}: ${error}`);
     }
   }
-  return { data: {} };
+  return { system: {} };
 }
 
 export function getAllActiveCompendiums() {
@@ -216,4 +216,9 @@ export async function updateModuleSetting(settingName, newValue) {
 export async function setParsingLanguage(lang) {
   log(`Setting parsing language to: ${lang}`);
   await game.i18n.setLanguage(lang);
+}
+
+export function getImporterModuleData() {
+  const { id, version } = game.modules.get(thisModule);
+  return { id, version };
 }

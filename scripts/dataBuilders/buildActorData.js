@@ -10,10 +10,10 @@ export const buildActorData = async function (
   isWildCard,
   actorType
 ) {
-  var data = {};
+  var system = {};
 
-  (data.attributes = generateAttributes(parsedData)),
-    (data.stats = {
+  (system.attributes = generateAttributes(parsedData)),
+    (system.stats = {
       speed: {
         runningDie: findRunningDie(parsedData),
         runningMod: findRunningMod(parsedData),
@@ -26,15 +26,15 @@ export const buildActorData = async function (
       parry: { value: parsedData.Parry },
       size: parsedData.Size,
     });
-  data.details = {
+  system.details = {
     biography: parsedData.Biography,
     autoCalcToughness: getModuleSettings(global.settingAutoCalcToughness),
   };
-  data.powerPoints = {
+  system.powerPoints = {
     value: parsedData.PowerPoints,
     max: parsedData.PowerPoints,
   };
-  data.wounds = {
+  system.wounds = {
     max: calculateWoundMod(
       parsedData.Size,
       isWildCard,
@@ -42,11 +42,11 @@ export const buildActorData = async function (
     ),
     ignored: calculateIgnoredWounds(parsedData),
   };
-  data.initiative = initiativeMod(parsedData);
-  data.wildcard = isWildCard;
-  data.additionalStats = await buildAdditionalStats(parsedData);
-  data.bennies = calculateBennies(isWildCard, actorType);
-  return data;
+  system.initiative = initiativeMod(parsedData);
+  system.wildcard = isWildCard;
+  system.additionalStats = await buildAdditionalStats(parsedData);
+  system.bennies = calculateBennies(isWildCard, actorType);
+  return system;
 };
 
 function generateAttributes(parsedData) {

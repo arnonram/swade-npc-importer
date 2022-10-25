@@ -40,7 +40,7 @@ function checkBruteEdge(actorItems) {
   ) {
     actorItems.find(item => {
       if (item.name === game.i18n.localize('npcImporter.parser.Athletics')) {
-        item.data.attribute = 'strength';
+        item.system.attribute = 'strength';
       }
     });
   }

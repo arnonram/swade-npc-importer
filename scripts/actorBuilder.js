@@ -11,6 +11,7 @@ import {
   getModuleSettings,
   setAllPacks,
   resetAllPacks,
+  getImporterModuleData,
 } from './utils/foundryActions.js';
 import { getPowerPoints } from './utils/parserBuilderHelpers.js';
 
@@ -51,7 +52,7 @@ async function generateActorData(parsedData, importSettings) {
     importSettings.saveFolder == ''
       ? ''
       : getFolderId(importSettings.saveFolder);
-  finalActor.data = await buildActorData(
+  finalActor.system = await buildActorData(
     parsedData,
     importSettings.isWildCard == 'true',
     importSettings.actorType
@@ -64,11 +65,12 @@ async function generateActorData(parsedData, importSettings) {
   finalActor.effects = gatherAllEffects(finalActor.items);
   const powerPoints = powerPointsFromSpecialAbility(finalActor.items);
   if (powerPoints) {
-    finalActor.data.powerPoints = {
+    finalActor.system.powerPoints = {
       value: powerPoints,
       max: powerPoints,
     };
   }
+  finalActor.flags = { importer: getImporterModuleData() };
   log(`Actor to import: ${JSON.stringify(finalActor)}`);
   return finalActor;
 }
