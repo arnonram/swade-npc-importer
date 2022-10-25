@@ -48,11 +48,11 @@
   ],
   "packs": [
     {
-      "name": "swade-npc-importer-macros",
+      "name": "swade-stat-block-importer-macros",
       "label": "SWADE Stat Block Importer Macros",
       "system": "swade",
       "path": "packs/macros-importer.db",
-      "module": "swade-npc-importer",
+      "module": "swade-stat-block-importer",
       "type": "Macro",
       "private": true
     }

@@ -21,7 +21,8 @@ export default class SelectCompendiums extends FormApplication {
     return mergeObject(super.defaultOptions, {
       id: `${thisModule}.compendiumsSelector`,
       title: game.i18n.localize('npcImporter.settings.CompendiumsSelector'),
-      template: 'modules/swade-npc-importer/templates/CompendiumsToUse.html',
+      template:
+        'modules/swade-stat-block-importer/templates/CompendiumsToUse.html',
       width: 300,
       closeOnSubmit: true,
     });

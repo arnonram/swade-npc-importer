@@ -59,6 +59,7 @@ export class NpcImporterSettings {
       config: false,
       scope: 'world',
       type: Array,
+      default: [],
     });
     game.settings.register(thisModule, settingCompsToUse, {
       name: 'Compendiums for imports',
@@ -66,6 +67,7 @@ export class NpcImporterSettings {
       config: false,
       scope: 'world',
       type: Array,
+      default: [],
     });
     game.settings.register(thisModule, settingParaeLanguage, {
       name: game.i18n.localize('npcImporter.settings.parseLanguage'),
@@ -79,6 +81,7 @@ export class NpcImporterSettings {
         es: 'Español',
         'pt-BR': 'Português (Brasil)',
       },
+      default: 'en',
     });
     game.settings.register(thisModule, settingDefaultActorType, {
       name: game.i18n.localize('npcImporter.settings.DefaultActorType'),
@@ -170,12 +173,14 @@ export class NpcImporterSettings {
       config: false,
       scope: 'world',
       type: String,
+      default: '',
     });
     game.settings.register(thisModule, settingActiveCompendiums, {
       name: 'Compendiums in use by Importer',
       config: false,
       scope: 'world',
       type: Array,
+      default: [],
     });
     game.settings.register(thisModule, 'renderSheet', {
       name: game.i18n.localize('npcImporter.settings.RenderSheet'),
