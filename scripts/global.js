@@ -25,7 +25,7 @@ export var allPacks = [];
 
 // global logger
 export const log = function (msg) {
-  console.log(`SWADE NPC Importer | ${msg}`);
+  console.log(`SWADE Stat Block Importer | ${msg}`);
 };
 
 // regex

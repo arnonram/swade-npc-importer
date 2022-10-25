@@ -1,4 +1,4 @@
-// SWADE NPC Importer Macro
+// SWADE Stat Block Importer Macro
 // This macro is here in order to retro-fix imported characters due to a bug in version 0.1.14
 // In that version, Items with effect would have been imported incorrectly, and this macro runs on the NPCs and fixes it
 // If you want this macro to run on all characters, then change then change the first line of code to => `const allActors = game.actors`
