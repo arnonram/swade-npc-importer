@@ -114,5 +114,8 @@
   "npcImporter.settings.SetSizeHint": "Auto-sets the token size & scale according to creature size",
   "npcImporter.settings.AllAsSpecialAbilities": "Set all as Special Abilities",
   "npcImporter.settings.AllAsSpecialAbilitiesHint": "If checked all Special Abilities (including weapons) will be imported as Special Abilities items. Otherwise, NPC Importer will try to identify Weapons/Armors and create them as appropriate Gear items",
-  "npcImporter.settings.RenderSheet": "Open the actors sheet after importing."
+  "npcImporter.settings.RenderSheet": "Open the actors sheet after importing.",
+  "npcImporter.settings.TwoHandsNotationTitle": "Two Hands notation",
+  "npcImporter.settings.TwoHandsNotationHint": "How a weapon is marked as being two handed (pipe seperated, ie '|')",
+  "npcImporter.settings.TwoHandsNotation": "two hands|two-handed"
 }

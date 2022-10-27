@@ -17,6 +17,7 @@ import {
   settingCalculateAdditionalWounds,
   settingAutoCalcSize,
   settingallAsSpecialAbilities,
+  twoHandsNotaiton,
 } from '../global.js';
 import SelectCompendiums from './selectCompendiums.js';
 import TokenSettings from './tokenSettings.js';
@@ -116,6 +117,14 @@ export class NpcImporterSettings {
       scope: 'world',
       type: String,
       default: '•|',
+    });
+    game.settings.register(thisModule, twoHandsNotaiton, {
+      name: game.i18n.localize('npcImporter.settings.TwoHandsNotationTitle'),
+      hint: game.i18n.localize('npcImporter.settings.TwoHandsNotationHint'),
+      config: true,
+      scope: 'world',
+      type: String,
+      default: game.i18n.localize('npcImporter.settings.TwoHandsNotation'),
     });
     game.settings.register(thisModule, settingallAsSpecialAbilities, {
       name: game.i18n.localize('npcImporter.settings.AllAsSpecialAbilities'),

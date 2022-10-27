@@ -20,7 +20,7 @@ export const settingCalculateAdditionalWounds = 'calculateAdditionalWounds';
 export const settingAutoCalcToughness = 'autoCalcToughness';
 export const settingAutoCalcSize = 'autoCalcSize';
 export const settingallAsSpecialAbilities = 'allAsSpecialAbilities';
-
+export const twoHandsNotaiton = 'twoHandsNotaiton';
 export var allPacks = [];
 
 // global logger

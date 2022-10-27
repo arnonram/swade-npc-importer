@@ -1,9 +1,10 @@
 import {
   getItemFromCompendium,
+  getModuleSettings,
   getSpecificAdditionalStat,
   getSystemCoreSkills,
 } from '../utils/foundryActions.js';
-import { log } from '../global.js';
+import { log, twoHandsNotaiton } from '../global.js';
 import {
   capitalizeEveryWord,
   spcialAbilitiesLink,
@@ -239,7 +240,7 @@ export async function weaponBuilder({
         ...(item?.system ?? ''),
         description: generateDescription(weaponDescription, item),
         equippable: item?.system?.equippable ?? true,
-        equipStatus: checkEquipedStatus(),
+        equipStatus: checkEquipedStatus(item?.system),
         damage: dmg,
         range: range ?? item?.system?.range,
         rof: rof ?? item?.system?.rof,
@@ -407,6 +408,9 @@ function generateDescription(description, itemData, isSpecialAbility) {
   } else return '';
 }
 
-function checkEquipedStatus() {
-  return 3;
+function checkEquipedStatus(weaponData) {
+  var regEx = new RegExp(getModuleSettings(twoHandsNotaiton), 'i');
+  return regEx.test(weaponData?.description) || regEx.test(weaponData?.notes)
+    ? 5
+    : 4;
 }
