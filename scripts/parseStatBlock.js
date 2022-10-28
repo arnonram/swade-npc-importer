@@ -400,7 +400,9 @@ async function getGear(sections) {
 
 async function parseGear(gearArray) {
   let parryRegex = new RegExp(
-    `(\\+\\+d|\\-\\d+) ${game.i18n.localize('npcImporter.parser.Parry')}`
+    `([+-])\\d+ ${game.i18n.localize(
+      'npcImporter.parser.Parry'
+    )}|${game.i18n.localize('npcImporter.parser.Parry')} ([+-])\\d+`
   );
 
   let gearDict = {};
@@ -440,8 +442,8 @@ async function parseGear(gearArray) {
         .toLowerCase()
         .includes(game.i18n.localize('npcImporter.parser.Shield').toLowerCase())
     ) {
-      let parry = parserHelper.getParryBonus(splitGear[1]);
-      let cover = parserHelper.getCoverBonus(splitGear[1]);
+      let parry = parserHelper.getBonus(splitGear[1], 'parry');
+      let cover = parserHelper.getBonus(splitGear[1], 'cover');
       gearDict[splitGear[0].trim()] = { parry, cover };
     }
     // check if armor

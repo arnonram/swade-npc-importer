@@ -33,3 +33,4 @@ export const newLineRegex = /\r\n|\n|\r/g;
 export const gearParsingRegex =
   /(^[A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
 export const armorModRegex = /\+\d+/;
+export const plusMinusNumRegex = /([+-])\\d+/;
