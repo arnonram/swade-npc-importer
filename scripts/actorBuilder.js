@@ -70,7 +70,7 @@ async function generateActorData(parsedData, importSettings) {
       max: powerPoints,
     };
   }
-  finalActor.flags = { importer: getImporterModuleData() };
+  finalActor.flags = { importerApp: getImporterModuleData() };
   log(`Actor to import: ${JSON.stringify(finalActor)}`);
   return finalActor;
 }
