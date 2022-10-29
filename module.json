@@ -1,5 +1,5 @@
 {
-  "name": "swade-stat-block-importer",
+  "name": "swade-npc-importer",
   "title": "SWADE Stat Block Importer",
   "description": "Import stat blocks for SWADE (formerly SWADE NPC Importer)",
   "authors": [{ "name": "Arnon Ram" }],
@@ -48,11 +48,11 @@
   ],
   "packs": [
     {
-      "name": "swade-stat-block-importer-macros",
+      "name": "swade-npc-importer-macros",
       "label": "SWADE Stat Block Importer Macros",
       "system": "swade",
       "path": "packs/macros-importer.db",
-      "module": "swade-stat-block-importer",
+      "module": "swade-npc-importer",
       "type": "Macro",
       "private": true
     }
