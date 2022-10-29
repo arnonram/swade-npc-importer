@@ -219,6 +219,11 @@ export async function setParsingLanguage(lang) {
 }
 
 export function getImporterModuleData() {
-  const { id, version } = game.modules.get(thisModule);
-  return { app: id, appVersion: version, importDate: new Date(Date.now()) };
+  const { title, id, version } = game.modules.get(thisModule);
+  return {
+    app: title,
+    id,
+    appVersion: version,
+    importDate: new Date(Date.now()),
+  };
 }

@@ -4,6 +4,7 @@
 // If you want this macro to run on all characters, then change then change the first line of code to => `const allActors = game.actors`
 
 // !!!! IMPORTANT: !!!!!
+// ====== NO Need to run this macro on version 0.1.16 ======
 // This will go over ALL Actors in a world. I strongly recommend that you backup the World or your Actors somehow before running the fix macro.
 // For any Actor which has an `effects` fields to fix, then it will delete the Actor and create a new one. !!! IMPORTANT !!!: this might remove certain links on the affected Actor due to ID change)
 

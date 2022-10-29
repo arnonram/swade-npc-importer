@@ -1,5 +1,5 @@
 // this module... obviously
-export const thisModule = 'swade-stat-block-importer';
+export const thisModule = 'swade-npc-importer';
 
 // module defaults and registered settings
 export const defaultPackage = 'swade-compendium';
