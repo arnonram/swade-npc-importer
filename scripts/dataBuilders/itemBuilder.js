@@ -1,9 +1,10 @@
 import {
   getItemFromCompendium,
+  getModuleSettings,
   getSpecificAdditionalStat,
   getSystemCoreSkills,
 } from '../utils/foundryActions.js';
-import { log } from '../global.js';
+import { log, twoHandsNotaiton } from '../global.js';
 import {
   capitalizeEveryWord,
   spcialAbilitiesLink,
@@ -14,27 +15,28 @@ export async function skillBuilder(skillsDict) {
   if (skillsDict != undefined) {
     var allSkills = [];
     for (const skillName in skillsDict) {
-      const { data } = await checkforItem(skillName, 'skill');
+      const item = await checkforItem(skillName, 'skill');
       const isCore = coreSkills.includes(skillName);
       try {
         allSkills.push({
+          ...(item ?? ''),
           type: 'skill',
           name: capitalizeEveryWord(skillName),
-          img: data?.img ?? 'systems/swade/assets/icons/skill.svg',
-          data: {
-            ...data?.data,
-            description: data?.data?.description ?? '',
-            notes: data?.data?.notes ?? '',
-            additionalStats: data?.data?.additionalStats ?? {},
-            attribute: data?.data?.attribute ?? '',
+          img: item?.img ?? 'systems/swade/assets/icons/skill.svg',
+          system: {
+            ...(item?.system ?? ''),
+            description: item?.system?.description ?? '',
+            notes: item?.system?.notes ?? '',
+            additionalStats: item?.system?.additionalStats ?? {},
+            attribute: item?.system?.attribute ?? '',
             isCoreSkill: isCore,
             die: {
               sides: skillsDict[skillName].die.sides,
               modifier: skillsDict[skillName].die.modifier,
             },
           },
-          effects: data?.effects?.toJSON() ?? [],
-          flags: data?.flags ?? {},
+          effects: item?.effects?.toJSON() ?? [],
+          flags: item?.flags ?? {},
         });
       } catch (error) {
         log(`Could not build skill: ${error}`);
@@ -49,28 +51,29 @@ export async function edgeBuilder(edges) {
     var allEdges = [];
     for (let i = 0; i < edges.length; i++) {
       let edgeName = edges[i].trim();
-      const { data } = await checkforItem(edgeName, 'edge');
+      const item = await checkforItem(edgeName, 'edge');
       try {
         allEdges.push({
+          ...(item ?? ''),
           type: 'edge',
           name: capitalizeEveryWord(edgeName),
-          img: data?.img ?? 'systems/swade/assets/icons/edge.svg',
-          data: {
-            ...data?.data,
-            description: data?.data?.description ?? '',
-            notes: data?.data?.notes ?? '',
-            additionalStats: data?.data?.additionalStats ?? {},
+          img: item?.img ?? 'systems/swade/assets/icons/edge.svg',
+          system: {
+            ...(item?.system ?? ''),
+            description: item?.system?.description ?? '',
+            notes: item?.system?.notes ?? '',
+            additionalStats: item?.system?.additionalStats ?? {},
             isArcaneBackground:
-              data?.data?.isArcaneBackground ??
+              item?.system?.isArcaneBackground ??
               new RegExp(game.i18n.localize('npcImporter.parser.Arcane')).test(
                 edgeName
               ),
             requirements: {
-              value: data?.data?.requirements.value ?? '',
+              value: item?.system?.requirements?.value ?? '',
             },
           },
-          effects: data?.effects?.toJSON() ?? [],
-          flags: data?.flags ?? {},
+          effects: item?.effects?.toJSON() ?? [],
+          flags: item?.flags ?? {},
         });
       } catch (error) {
         log(`Could not build edge: ${error}`);
@@ -99,21 +102,22 @@ export async function hindranceBuilder(hindrances) {
         .replace(majorMinor, '')
         .replace('()', '')
         .trim();
-      const { data } = await checkforItem(hindranceName, 'hindrance');
+      const item = await checkforItem(hindranceName, 'hindrance');
       try {
         allHindrances.push({
+          ...(item ?? ''),
           type: 'hindrance',
           name: capitalizeEveryWord(hindranceName),
-          img: data?.img ?? 'systems/swade/assets/icons/hindrance.svg',
-          data: {
-            ...data?.data,
-            description: data?.data?.description ?? '',
-            notes: data?.data?.notes ?? '',
-            additionalStats: data?.data?.additionalStats ?? {},
+          img: item?.img ?? 'systems/swade/assets/icons/hindrance.svg',
+          system: {
+            ...(item?.system ?? ''),
+            description: item?.system?.description ?? '',
+            notes: item?.system?.notes ?? '',
+            additionalStats: item?.system?.additionalStats ?? {},
             major: isMajor,
           },
-          effects: data?.effects?.toJSON() ?? [],
-          flags: data?.flags ?? {},
+          effects: item?.effects?.toJSON() ?? [],
+          flags: item?.flags ?? {},
         });
       } catch (error) {
         log(`Could not build hindrance: ${error}`);
@@ -130,22 +134,23 @@ export async function abilityBuilder(abilityName, abilityDescription) {
       'npcImporter.parser.PowerPoints'
     )}|${game.i18n.localize('npcImporter.parser.Powers')}`
   ).test(abilityDescription);
-  const { data } = await checkforItem(abilityName, 'ability');
+  const item = await checkforItem(abilityName, 'ability');
   try {
     return {
+      ...(item ?? ''),
       type: 'ability',
       name: capitalizeEveryWord(abilityName),
-      img: data?.img ?? 'systems/swade/assets/icons/ability.svg',
-      data: {
-        ...data?.data,
-        description: generateDescription(abilityDescription, data, true),
-        notes: data?.data?.notes ?? '',
-        additionalStats: data?.data?.additionalStats ?? {},
+      img: item?.img ?? 'systems/swade/assets/icons/ability.svg',
+      system: {
+        ...(item?.system ?? ''),
+        description: generateDescription(abilityDescription, item, true),
+        notes: item?.system?.notes ?? '',
+        additionalStats: item?.system?.additionalStats ?? {},
         subtype: 'special',
-        grantsPowers: data?.data?.grantsPowers ?? doesGrantPowers,
+        grantsPowers: item?.system?.grantsPowers ?? doesGrantPowers,
       },
-      effects: data?.effects?.toJSON() ?? [],
-      flags: data?.flags ?? {},
+      effects: item?.effects?.toJSON() ?? [],
+      flags: item?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build ability: ${error}`);
@@ -154,23 +159,21 @@ export async function abilityBuilder(abilityName, abilityDescription) {
 
 export async function itemBuilderFromSpecAbs(name, itemDescription, type) {
   let cleanName = checkSpecificItem(name).trim();
-  let itemFromCompendium = await checkforItem(cleanName, type);
+  let itemData = await checkforItem(cleanName, type);
   const item = {
+    ...(itemData ?? ''),
     type: type,
-    name: itemFromCompendium?.data?.name ?? capitalizeEveryWord(name.trim()),
-    img:
-      itemFromCompendium?.data?.img ?? `systems/swade/assets/icons/${type}.svg`,
-    data:
-      itemFromCompendium?.data?.data !== undefined &&
-      itemFromCompendium?.type === type
-        ? itemFromCompendium?.data?.data
-        : { description: itemDescription.trim() },
-    effects: itemFromCompendium?.data?.effects?.toJSON() ?? [],
-    flags: itemFromCompendium?.data?.flags ?? {},
+    name: itemData?.name ?? capitalizeEveryWord(name.trim()),
+    img: itemData?.img ?? `systems/swade/assets/icons/${type}.svg`,
+    system: {
+      ...bilityBuilder(itemData?.system ?? ''),
+    },
+    effects: itemData?.effects?.toJSON() ?? [],
+    flags: itemData?.flags ?? {},
   };
-  if (itemFromCompendium?.type === type) {
-    item.data.description = `${itemDescription.trim()}<hr>${
-      itemFromCompendium?.data?.data?.description
+  if (itemData?.type === type) {
+    item.system.description = `${itemDescription.trim()}<hr>${
+      itemData?.system?.description
     }`;
   }
   return item;
@@ -181,15 +184,16 @@ export async function powerBuilder(powers) {
     var allPowers = [];
     for (let i = 0; i < powers.length; i++) {
       const powerName = powers[i].trim();
-      const { data } = await getItemFromCompendium(powerName, 'power');
+      const item = await getItemFromCompendium(powerName, 'power');
       try {
         allPowers.push({
+          ...(item ?? ''),
           type: 'power',
           name: capitalizeEveryWord(powerName),
-          img: data?.img ?? 'systems/swade/assets/icons/power.svg',
-          data: data?.data ?? {},
-          effects: data?.effects?.toJSON() ?? [],
-          flags: data?.flags ?? {},
+          img: item?.img ?? 'systems/swade/assets/icons/power.svg',
+          system: item?.system ?? {},
+          effects: item?.effects?.toJSON() ?? [],
+          flags: item?.flags ?? {},
         });
       } catch (error) {
         log(`Could not build power: ${error}`);
@@ -219,33 +223,34 @@ export async function weaponBuilder({
       '@str'
     )
     .replace(game.i18n.localize('npcImporter.parser.dice'), 'd');
-  const { data } = await getItemFromCompendium(weaponName, 'weapon');
+  const item = await getItemFromCompendium(weaponName, 'weapon');
   //todo Improve this so that it'll add multiple entries for weapons which are ranged && melee
-  const actions = data?.data?.actions ?? {
+  const actions = item?.system?.actions ?? {
     skill: range
       ? game.i18n.localize('npcImporter.parser.Shooting')
       : game.i18n.localize('npcImporter.parser.Fighting'),
   };
   try {
     return {
+      ...(item ?? ''),
       type: 'weapon',
-      name: data?.name ?? capitalizeEveryWord(weaponName),
-      img: data?.img ?? 'systems/swade/assets/icons/weapon.svg',
-      data: {
-        ...data?.data,
-        description: generateDescription(weaponDescription, data),
-        equippable: true,
-        equipped: true,
+      name: item?.name ?? capitalizeEveryWord(weaponName),
+      img: item?.img ?? 'systems/swade/assets/icons/weapon.svg',
+      system: {
+        ...(item?.system ?? ''),
+        description: generateDescription(weaponDescription, item),
+        equippable: item?.system?.equippable ?? true,
+        equipStatus: checkEquipedStatus(item?.system),
         damage: dmg,
-        range: range ?? data?.data?.range,
-        rof: rof ?? data?.data?.rof,
-        ap: ap ?? data?.data?.ap,
-        shots: shots ?? data?.data?.shots,
-        currentShots: shots ?? data?.data?.shots,
+        range: range ?? item?.system?.range,
+        rof: rof ?? item?.system?.rof,
+        ap: ap ?? item?.system?.ap,
+        shots: shots ?? item?.system?.shots,
+        currentShots: shots ?? item?.system?.shots,
         actions: actions,
       },
-      effects: data?.effects?.toJSON() ?? [],
-      flags: data?.flags ?? {},
+      effects: item?.effects?.toJSON() ?? [],
+      flags: item?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build weapon: ${error}`);
@@ -258,24 +263,25 @@ export async function shieldBuilder(
   parry = 0,
   cover = 0
 ) {
-  const { data } = await getItemFromCompendium(shieldName, 'shield');
+  const item = await getItemFromCompendium(shieldName, 'shield');
   try {
     return {
+      ...(item ?? ''),
       type: 'shield',
-      name: data?.name ?? capitalizeEveryWord(shieldName),
-      img: data?.img ?? 'systems/swade/assets/icons/shield.svg',
-      data: {
-        ...data?.data,
-        description: generateDescription(description, data),
-        notes: data?.data?.notes ?? '',
-        additionalStats: data?.data?.additionalStats ?? {},
-        equipped: true,
+      name: item?.name ?? capitalizeEveryWord(shieldName),
+      img: item?.img ?? 'systems/swade/assets/icons/shield.svg',
+      system: {
+        ...(item?.system ?? ''),
+        description: generateDescription(description, item),
+        notes: item?.system?.notes ?? '',
+        additionalStats: item?.system?.additionalStats ?? {},
+        equipStatus: 3,
         equippable: true,
-        parry: data?.data?.parry ?? parry,
-        cover: data?.data?.cover ?? cover,
+        parry: item?.system?.parry ?? parry,
+        cover: item?.system?.cover ?? cover,
       },
-      effects: data?.effects?.toJSON() ?? [],
-      flags: data?.flags ?? {},
+      effects: item?.effects?.toJSON() ?? [],
+      flags: item?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build shield: ${error}`);
@@ -284,23 +290,24 @@ export async function shieldBuilder(
 
 export async function armorBuilder(armorName, armorBonus, armorDescription) {
   var cleanName = checkSpecificItem(armorName);
-  const { data } = await getItemFromCompendium(cleanName, 'armor');
+  const item = await getItemFromCompendium(cleanName, 'armor');
   try {
     return {
+      ...(item ?? ''),
       type: 'armor',
-      name: data?.name ?? capitalizeEveryWord(armorName),
-      img: data?.img ?? 'systems/swade/assets/icons/armor.svg',
-      data: {
-        ...data?.data,
-        description: generateDescription(armorDescription, data),
-        notes: data?.data?.notes ?? '',
-        additionalStats: data?.data?.additionalStats ?? {},
-        equipped: true,
+      name: item?.name ?? capitalizeEveryWord(armorName),
+      img: item?.img ?? 'systems/swade/assets/icons/armor.svg',
+      system: {
+        ...(item?.system ?? ''),
+        description: generateDescription(armorDescription, item),
+        notes: item?.system?.notes ?? '',
+        additionalStats: item?.system?.additionalStats ?? {},
+        equipStatus: 3,
         equippable: true,
-        armor: data?.data?.armor ?? armorBonus,
+        armor: item?.system?.armor ?? armorBonus,
       },
-      effects: data?.effects?.toJSON() ?? [],
-      flags: data?.flags ?? {},
+      effects: item?.effects?.toJSON() ?? [],
+      flags: item?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build armor: ${error}`);
@@ -308,20 +315,21 @@ export async function armorBuilder(armorName, armorBonus, armorDescription) {
 }
 
 export async function gearBuilder(gearName, description) {
-  const { data } = await checkforItem(gearName, 'gear');
+  const item = await checkforItem(gearName, 'gear');
   try {
     return {
+      ...(item ?? ''),
       type: 'gear',
-      name: data?.name ?? capitalizeEveryWord(gearName),
-      img: data?.img ?? 'systems/swade/assets/icons/gear.svg',
-      data: {
-        ...data?.data,
-        description: generateDescription(description, data),
-        equipped: false,
+      name: item?.name ?? capitalizeEveryWord(gearName),
+      img: item?.img ?? 'systems/swade/assets/icons/gear.svg',
+      system: {
+        ...(item?.system ?? ''),
+        description: generateDescription(description, item),
+        equipStatus: 1,
         equippable: false,
       },
-      effects: data?.effects?.toJSON() ?? [],
-      flags: data?.flags ?? {},
+      effects: item?.effects?.toJSON() ?? [],
+      flags: item?.flags ?? {},
     };
   } catch (error) {
     log(`Could not build gear: ${error}`);
@@ -361,14 +369,14 @@ async function checkforItem(itemName, itemType) {
     itemName = rearrangeImprovedEdges(itemName);
   }
   let itemFromCompendium = await getItemFromCompendium(itemName, itemType);
-  if (!isObjectEmpty(itemFromCompendium.data)) return itemFromCompendium;
+  if (!isEmpty(itemFromCompendium.system)) return itemFromCompendium;
 
   itemFromCompendium = await getItemFromCompendium(
     itemName.split('(')[0].trim(),
     itemType
   );
 
-  if (isObjectEmpty(itemFromCompendium.data)) {
+  if (isEmpty(itemFromCompendium.system)) {
     itemFromCompendium = await getItemFromCompendium(
       itemName.split('(')[0].replace(new RegExp('[+-−]?\\d'), '').trim(),
       itemType
@@ -390,12 +398,19 @@ function rearrangeImprovedEdges(edgeName) {
 
 function generateDescription(description, itemData, isSpecialAbility) {
   let desc;
-  if (description && isSpecialAbility && itemData.name) {
+  if (description && isSpecialAbility && itemData?.name) {
     desc = `${description.trim()}<br>${spcialAbilitiesLink(itemData.name)}`;
   }
   if (description) {
-    return itemData?.data?.description
-      ? `${desc ?? description}<hr>${itemData?.data?.description}`
+    return itemData?.system?.description
+      ? `${desc ?? description}<hr>${itemData?.system?.description}`
       : description;
   } else return '';
+}
+
+function checkEquipedStatus(weaponData) {
+  var regEx = new RegExp(getModuleSettings(twoHandsNotaiton), 'i');
+  return regEx.test(weaponData?.description) || regEx.test(weaponData?.notes)
+    ? 5
+    : 4;
 }

@@ -1,18 +1,29 @@
 {
-  "name": "swade-npc-importer",
-  "title": "SWADE NPC Importer",
-  "description": "Import NPC statblocks for SWADE",
-  "system": ["swade"],
-  "author": "Arnon Ram",
-  "version": "0.1.18",
-  "minimumCoreVersion": "0.8.6",
-  "compatibleCoreVersion": "9",
+  "name": "swade-stat-block-importer",
+  "title": "SWADE Stat Block Importer",
+  "description": "Import stat blocks for SWADE (formerly SWADE NPC Importer)",
+  "authors": [{ "name": "Arnon Ram" }],
+  "version": "0.2.0",
+  "compatibility": {
+    "minimum": 9,
+    "verified": 10,
+    "maximum": 10
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "swade",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
   "esmodules": ["scripts/swadeNpcImporter.js"],
   "url": "https://github.com/arnonram/swade-npc-importer",
   "manifest": "https://github.com/arnonram/swade-npc-importer/releases/latest/download/module.json",
-  "download": "https://github.com/arnonram/swade-npc-importer/releases/download/v0.1.18/module.zip",
+  "download": "https://github.com/arnonram/swade-npc-importer/releases/download/v0.2.0/module.zip",
   "bugs": "https://github.com/arnonram/swade-npc-importer/issues",
-  "readme": "https://github.com/arnonram/swade-npc-importer/tree/v0.1.18#swade-npc-importer",
+  "readme": "https://github.com/arnonram/swade-npc-importer/tree/v0.2.0#swade-npc-importer",
   "languages": [
     {
       "lang": "en",
@@ -37,11 +48,11 @@
   ],
   "packs": [
     {
-      "name": "swade-npc-importer-macros",
-      "label": "SWADE NPC Importer Macros",
+      "name": "swade-stat-block-importer-macros",
+      "label": "SWADE Stat Block Importer Macros",
       "system": "swade",
       "path": "packs/macros-importer.db",
-      "module": "swade-npc-importer",
+      "module": "swade-stat-block-importer",
       "type": "Macro",
       "private": true
     }

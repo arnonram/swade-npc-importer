@@ -17,6 +17,7 @@ import {
   settingCalculateAdditionalWounds,
   settingAutoCalcSize,
   settingallAsSpecialAbilities,
+  twoHandsNotaiton,
 } from '../global.js';
 import SelectCompendiums from './selectCompendiums.js';
 import TokenSettings from './tokenSettings.js';
@@ -49,9 +50,8 @@ export class NpcImporterSettings {
         disposition: -1,
         displayName: 0,
         vision: false,
-        dimSight: 0,
-        brightSight: 0,
-        sightAngle: 360,
+        visionRange: 0,
+        visionAngle: 360,
       },
     });
     game.settings.register(thisModule, settingPackageToUse, {
@@ -59,14 +59,16 @@ export class NpcImporterSettings {
       hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
       config: false,
       scope: 'world',
-      type: String,
+      type: Array,
+      default: [],
     });
     game.settings.register(thisModule, settingCompsToUse, {
       name: 'Compendiums for imports',
       hint: 'NPC Importer will search through all selected Item compendiums for the correct item from the NPC statblock, and use it',
       config: false,
       scope: 'world',
-      type: String,
+      type: Array,
+      default: [],
     });
     game.settings.register(thisModule, settingParaeLanguage, {
       name: game.i18n.localize('npcImporter.settings.parseLanguage'),
@@ -80,6 +82,7 @@ export class NpcImporterSettings {
         es: 'Español',
         'pt-BR': 'Português (Brasil)',
       },
+      default: 'en',
     });
     game.settings.register(thisModule, settingDefaultActorType, {
       name: game.i18n.localize('npcImporter.settings.DefaultActorType'),
@@ -114,6 +117,14 @@ export class NpcImporterSettings {
       scope: 'world',
       type: String,
       default: '•|',
+    });
+    game.settings.register(thisModule, twoHandsNotaiton, {
+      name: game.i18n.localize('npcImporter.settings.TwoHandsNotationTitle'),
+      hint: game.i18n.localize('npcImporter.settings.TwoHandsNotationHint'),
+      config: true,
+      scope: 'world',
+      type: String,
+      default: game.i18n.localize('npcImporter.settings.TwoHandsNotation'),
     });
     game.settings.register(thisModule, settingallAsSpecialAbilities, {
       name: game.i18n.localize('npcImporter.settings.AllAsSpecialAbilities'),
@@ -171,12 +182,14 @@ export class NpcImporterSettings {
       config: false,
       scope: 'world',
       type: String,
+      default: '',
     });
     game.settings.register(thisModule, settingActiveCompendiums, {
       name: 'Compendiums in use by Importer',
       config: false,
       scope: 'world',
-      type: String,
+      type: Array,
+      default: [],
     });
     game.settings.register(thisModule, 'renderSheet', {
       name: game.i18n.localize('npcImporter.settings.RenderSheet'),

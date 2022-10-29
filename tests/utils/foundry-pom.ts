@@ -45,10 +45,10 @@ export class FoundryApp {
     await this.page.locator('[data-action=configure]').click();
     await this.page.locator('text=Module Settings').click();
     await this.page
-      .locator('select[name="swade-npc-importer\\.parseLanguage"]')
+      .locator('select[name="swade-stat-block-importer\\.parseLanguage"]')
       .selectOption(language);
     await this.page
-      .locator('input[name=swade-npc-importer\\.renderSheet]')
+      .locator('input[name=swade-stat-block-importer\\.renderSheet]')
       .uncheck();
     await this.page.locator('button[name=submit]').click();
   }
@@ -110,18 +110,13 @@ export class FoundryApp {
     await this.page.locator(`#${disposition}`).check();
   }
 
-  async updateVision(
-    hasVision: boolean = false,
-    dimSight: number = 0,
-    brightSight: number = 0
-  ) {
+  async updateVision(hasVision: boolean = false, visionRange: number = 0) {
     if (hasVision) {
       await this.page.locator('input[name="vision"]').check();
     }
-    await this.page.locator('input[name="dimSight"]').fill(dimSight.toString());
     await this.page
-      .locator('input[name="brightSight"]')
-      .fill(brightSight.toString());
+      .locator('input[name="visionRange"]')
+      .fill(visionRange.toString());
   }
 
   async setSaveFolder() {

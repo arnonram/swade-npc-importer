@@ -11,8 +11,9 @@ import {
   getModuleSettings,
   setAllPacks,
   resetAllPacks,
+  getImporterModuleData,
 } from './utils/foundryActions.js';
-import { getPowerPoints } from './utils/parserBuilderHelpers.js';
+import { getBonus } from './utils/parserBuilderHelpers.js';
 
 export async function buildActor(importSettings, data) {
   let clipboardText = data ? data : await getClipboardText();
@@ -51,34 +52,35 @@ async function generateActorData(parsedData, importSettings) {
     importSettings.saveFolder == ''
       ? ''
       : getFolderId(importSettings.saveFolder);
-  finalActor.data = await buildActorData(
+  finalActor.system = await buildActorData(
     parsedData,
     importSettings.isWildCard == 'true',
     importSettings.actorType
   );
   finalActor.items = await buildActorItems(parsedData);
-  finalActor.token = await buildActorToken(
+  finalActor.prototypeToken = await buildActorToken(
     parsedData,
     importSettings.tokenSettings
   );
   finalActor.effects = gatherAllEffects(finalActor.items);
   const powerPoints = powerPointsFromSpecialAbility(finalActor.items);
   if (powerPoints) {
-    finalActor.data.powerPoints = {
+    finalActor.system.powerPoints = {
       value: powerPoints,
       max: powerPoints,
     };
   }
+  finalActor.flags = { importerApp: getImporterModuleData() };
   log(`Actor to import: ${JSON.stringify(finalActor)}`);
   return finalActor;
 }
 
 function powerPointsFromSpecialAbility(abilities) {
   let powerAbility = abilities.filter(
-    items => items.data?.grantsPowers === true
+    items => items.system?.grantsPowers === true
   );
   if (powerAbility.length > 0) {
-    return getPowerPoints(powerAbility[0].data.description);
+    return getBonus(powerAbility[0].system.description, 'powerPoints');
   }
 }
 

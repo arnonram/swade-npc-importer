@@ -1,5 +1,5 @@
 // this module... obviously
-export const thisModule = 'swade-npc-importer';
+export const thisModule = 'swade-stat-block-importer';
 
 // module defaults and registered settings
 export const defaultPackage = 'swade-compendium';
@@ -20,12 +20,12 @@ export const settingCalculateAdditionalWounds = 'calculateAdditionalWounds';
 export const settingAutoCalcToughness = 'autoCalcToughness';
 export const settingAutoCalcSize = 'autoCalcSize';
 export const settingallAsSpecialAbilities = 'allAsSpecialAbilities';
-
+export const twoHandsNotaiton = 'twoHandsNotaiton';
 export var allPacks = [];
 
 // global logger
 export const log = function (msg) {
-  console.log(`SWADE NPC Importer | ${msg}`);
+  console.log(`SWADE Stat Block Importer | ${msg}`);
 };
 
 // regex
@@ -33,3 +33,4 @@ export const newLineRegex = /\r\n|\n|\r/g;
 export const gearParsingRegex =
   /(^[A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
 export const armorModRegex = /\+\d+/;
+export const plusMinusNumRegex = /([+-])\\d+/;

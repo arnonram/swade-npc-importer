@@ -13,7 +13,8 @@ export default class TokenSettings extends FormApplication {
     return mergeObject(super.defaultOptions, {
       id: `${thisModule}.tokenSettings`,
       title: game.i18n.localize('npcImporter.settings.TokenSettings'),
-      template: 'modules/swade-npc-importer/templates/TokenSettings.html',
+      template:
+        'modules/swade-stat-block-importer/templates/TokenSettings.html',
       width: '400',
       closeOnSubmit: true,
     });
@@ -61,9 +62,8 @@ export default class TokenSettings extends FormApplication {
       vision: {
         checked: currentTokenValues.vision ? 'checked' : '',
       },
-      dimSight: currentTokenValues.dimSight ?? 0,
-      brightSight: currentTokenValues.brightSight ?? 0,
-      sightAngle: currentTokenValues.sightAngle ?? 360,
+      visionRange: currentTokenValues.visionRange ?? 0,
+      visionAngle: currentTokenValues.visionAngle ?? 360,
     };
   }
 

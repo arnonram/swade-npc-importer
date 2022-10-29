@@ -57,39 +57,31 @@
   </div>
   <hr />
   <div class="form-group">
-    <label>{{localize 'TOKEN.VisionHas'}}</label>
+    <label>{{localize 'TOKEN.VisionEnabled'}}</label>
     <input
       type="checkbox"
       id="vision"
       name="vision"
-      value="vision"
       {{this.vision.checked}}
       min="0" />
   </div>
   <div class="form-group slim">
-    <label>{{localize 'npcImporter.HTML.VisionRadius'}}</label>
+    <label>{{localize 'TOKEN.VisionRange'}}</label>
     <div class="form-fields">
-      <label>{{localize 'TOKEN.VisionDim'}}</label>
-      <input type="number" step="1" name="dimSight" value="{{this.dimSight}}" />
-    </div>
-    <div class="form-fields">
-      <label>{{localize 'TOKEN.VisionBright'}}</label>
       <input
         type="number"
         step="1"
-        name="brightSight"
-        value="{{this.brightSight}}"
-        min="0" />
+        name="visionRange"
+        value="{{this.visionRange}}" />
     </div>
   </div>
   <div class="form-group slim">
     <label>{{localize 'TOKEN.VisionAngle'}} </label>
     <div class="form-fields">
-      <label>{{localize 'npcImporter.HTML.VisionAngleLable'}}</label>
       <input
         type="number"
-        name="sightAngle"
-        value="{{this.sightAngle}}"
+        name="visionAngle"
+        value="{{this.visionAngle}}"
         min="0"
         max="360" />
     </div>

@@ -21,7 +21,8 @@ export default class SelectCompendiums extends FormApplication {
     return mergeObject(super.defaultOptions, {
       id: `${thisModule}.compendiumsSelector`,
       title: game.i18n.localize('npcImporter.settings.CompendiumsSelector'),
-      template: 'modules/swade-npc-importer/templates/CompendiumsToUse.html',
+      template:
+        'modules/swade-stat-block-importer/templates/CompendiumsToUse.html',
       width: 300,
       closeOnSubmit: true,
     });
@@ -84,9 +85,7 @@ export default class SelectCompendiums extends FormApplication {
 
 function isChecked(item, settingsItems) {
   if (settingsItems != undefined) {
-    return settingsItems.split(',').filter(x => x == item).length == 1
-      ? 'checked'
-      : '';
+    return settingsItems.find(x => x == item) ? 'checked' : '';
   } else {
     return '';
   }

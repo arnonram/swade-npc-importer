@@ -1,6 +1,10 @@
-# SWADE NPC Importer
+# SWADE Stat Block Importer
 
-A Savage Worlds Adventure Edition NPC (and PC) stat block importer for [Foundry VTT](https://foundryvtt.com)
+(formerly **_SWADE NPC Importer_**)
+
+A Savage Worlds Adventure Edition stat block importer for [Foundry VTT](https://foundryvtt.com)
+
+**NOTE**: `v0.2.0+` is compatible with `Foundry v10`
 
 If you like what you see and find it uself, you can buy me a beer
 
@@ -25,7 +29,7 @@ If you like what you see and find it uself, you can buy me a beer
 
 ## Just a heads up about statsblocks
 
-The **_SWADE NPC Importer_** works with the official statblock as seen in any Pinnacle products (SWADE Core, Deadlands, etc..) and defined in the [Pinnacle Style Guide](https://peginc.com/store/pinnacle-style-guide-pdf/)
+The **_SWADE Stat Block Importer_** works with the official statblock as seen in any Pinnacle products (SWADE Core, Deadlands, etc..) and defined in the [Pinnacle Style Guide](https://peginc.com/store/pinnacle-style-guide-pdf/)
 
 The Importer basically searches for patterns in the text, so that means paying attention to commas, colons, etc...
 

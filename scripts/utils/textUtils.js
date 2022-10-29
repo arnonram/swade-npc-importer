@@ -22,7 +22,13 @@ export function spcialAbilitiesLink(specAbName) {
     .split('(')[0]
     .replace(new RegExp('[\\−\\-\\+]?[0-9]'), '')
     .trim();
-  return `@Compendium[swade-core-rules.swade-rules.Special Ability (${cleanedName})]{${specAbName}}`;
+  try {
+    return game.packs
+      .get('swade-core-rules.swade-specialabilities')
+      .contents.filter(x => x.name.includes(cleanedName))[0].link;
+  } catch (error) {
+    return '';
+  }
 }
 
 export function removeMultipleWhitespaces(text) {
