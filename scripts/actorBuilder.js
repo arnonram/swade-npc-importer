@@ -58,7 +58,7 @@ async function generateActorData(parsedData, importSettings) {
     importSettings.actorType
   );
   finalActor.items = await buildActorItems(parsedData);
-  finalActor.token = await buildActorToken(
+  finalActor.prototypeToken = await buildActorToken(
     parsedData,
     importSettings.tokenSettings
   );

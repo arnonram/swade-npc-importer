@@ -2,14 +2,21 @@ import { settingAutoCalcSize, settingToken } from '../global.js';
 import { getModuleSettings } from '../utils/foundryActions.js';
 
 export async function buildActorToken(parsedData, tokenSettings) {
-  var token = tokenSettings;
-  const squares = GetWidthHight(parsedData.Size);
+  var token = {};
   token.displayName = parseInt(getModuleSettings(settingToken).displayName);
+  token.disposition = tokenSettings.disposition;
+  const squares = GetWidthHight(parsedData.Size);
+
   if (getModuleSettings(settingAutoCalcSize)) {
     token.width = squares;
     token.height = squares;
     token.scale = CalculateScale(parsedData.Size);
   }
+  token.sight = {
+    enabled: tokenSettings.vision,
+    range: tokenSettings.visionRange,
+    angle: tokenSettings.visionAngle,
+  };
   return token;
 }
 
