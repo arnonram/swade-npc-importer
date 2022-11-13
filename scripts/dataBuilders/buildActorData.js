@@ -31,8 +31,10 @@ export const buildActorData = async function (
     autoCalcToughness: getModuleSettings(global.settingAutoCalcToughness),
   };
   system.powerPoints = {
-    value: parsedData.PowerPoints,
-    max: parsedData.PowerPoints,
+    general: {
+      value: parsedData.PowerPoints,
+      max: parsedData.PowerPoints,
+    },
   };
   system.wounds = {
     max: calculateWoundMod(
