@@ -18,6 +18,7 @@ import {
   settingAutoCalcSize,
   settingallAsSpecialAbilities,
   twoHandsNotaiton,
+  settingNumberOfBennies,
 } from '../global.js';
 import SelectCompendiums from './selectCompendiums.js';
 import TokenSettings from './tokenSettings.js';
@@ -101,6 +102,14 @@ export class NpcImporterSettings {
       scope: 'world',
       type: Boolean,
       default: false,
+    });
+    game.settings.register(thisModule, settingNumberOfBennies, {
+      name: game.i18n.localize('npcImporter.settings.NumberOfBennies'),
+      hint: game.i18n.localize('npcImporter.settings.NumberOfBenniesHint'),
+      config: true,
+      scope: 'world',
+      type: Number,
+      default: 2,
     });
     game.settings.register(thisModule, settingAdditionalTraits, {
       name: game.i18n.localize('npcImporter.settings.AdditionalTraits'),

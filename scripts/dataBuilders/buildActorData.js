@@ -31,8 +31,10 @@ export const buildActorData = async function (
     autoCalcToughness: getModuleSettings(global.settingAutoCalcToughness),
   };
   system.powerPoints = {
-    value: parsedData.PowerPoints,
-    max: parsedData.PowerPoints,
+    general: {
+      value: parsedData.PowerPoints,
+      max: parsedData.PowerPoints,
+    },
   };
   system.wounds = {
     max: calculateWoundMod(
@@ -77,7 +79,7 @@ async function buildAdditionalStats(parsedData) {
 function calculateBennies(isWildCard, actorType) {
   let numOfBennies = 0;
   if (isWildCard && actorType === 'npc') {
-    numOfBennies = 2;
+    numOfBennies = getModuleSettings(global.settingNumberOfBennies);
   } else if (isWildCard && actorType === 'character') {
     numOfBennies = 3;
   }
