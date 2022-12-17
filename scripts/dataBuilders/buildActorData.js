@@ -79,7 +79,7 @@ async function buildAdditionalStats(parsedData) {
 function calculateBennies(isWildCard, actorType) {
   let numOfBennies = 0;
   if (isWildCard && actorType === 'npc') {
-    numOfBennies = 2;
+    numOfBennies = getModuleSettings(global.settingNumberOfBennies);
   } else if (isWildCard && actorType === 'character') {
     numOfBennies = 3;
   }

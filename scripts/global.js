@@ -21,6 +21,7 @@ export const settingAutoCalcToughness = 'autoCalcToughness';
 export const settingAutoCalcSize = 'autoCalcSize';
 export const settingallAsSpecialAbilities = 'allAsSpecialAbilities';
 export const twoHandsNotaiton = 'twoHandsNotaiton';
+export const settingNumberOfBennies = 'numberOfBennies';
 export var allPacks = [];
 
 // global logger
