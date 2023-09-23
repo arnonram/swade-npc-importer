@@ -57,8 +57,7 @@
       "system": "swade",
       "path": "packs/macros-importer.db",
       "module": "swade-npc-importer",
-      "type": "Macro",
-      "private": true
+      "type": "Macro"
     }
   ]
 }

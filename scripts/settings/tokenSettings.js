@@ -34,6 +34,10 @@ export default class TokenSettings extends FormApplication {
         value: 'FRIENDLY',
         selected: currentTokenValues.disposition == 1 ? 'selected' : '',
       },
+      dispositionSecret: {
+        value: 'SECRET',
+        selected: currentTokenValues.disposition == -2 ? 'selected' : '',
+      },
       displayNameDISPLAY_NONE: {
         value: 'DISPLAY_NONE',
         selected: currentTokenValues.displayName == 0 ? 'selected' : '',
