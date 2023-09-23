@@ -81,6 +81,7 @@ export class NpcImporterSettings {
         en: 'English',
         de: 'Deutsch',
         es: 'Español',
+        fr: "Français",
         'pt-BR': 'Português (Brasil)',
       },
       default: 'en',

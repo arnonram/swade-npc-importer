@@ -3,11 +3,10 @@
   "title": "SWADE Stat Block Importer",
   "description": "Import stat blocks for SWADE (formerly SWADE NPC Importer)",
   "authors": [{ "name": "Arnon Ram" }],
-  "version": "0.2.1",
+  "version": "0.2.2",
   "compatibility": {
     "minimum": 9,
-    "verified": 10,
-    "maximum": 10
+    "verified": 11
   },
   "relationships": {
     "systems": [
@@ -44,6 +43,11 @@
       "lang": "de",
       "name": "Deutsch",
       "path": "lang/de.json"
+    },
+    {
+      "lang": "fr",
+      "name": "French",
+      "path": "lang/fr.json"
     }
   ],
   "packs": [
