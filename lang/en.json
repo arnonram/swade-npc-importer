@@ -85,6 +85,7 @@
   "npcImporter.settings.Friendly": "Friendly",
   "npcImporter.settings.Neutral": "Neutral",
   "npcImporter.settings.Hostile": "Hostile",
+  "npcImporter.settings.Secret": "Secret",
   "npcImporter.settings.NPC": "NPC",
   "npcImporter.settings.Character": "Character",
   "npcImporter.settings.CompendiumsSelector": "Compendiums Selector",

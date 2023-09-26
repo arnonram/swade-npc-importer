@@ -166,6 +166,13 @@ function importerDialogue() {
                 )}>
                 <label for="friendly">${game.i18n.localize(
                   'npcImporter.settings.Friendly'
+                )}</lable><br>
+                <input type="radio" id="secret" name="disposition" value="-2" ${isChecked(
+                  defaultData.tokenData.disposition,
+                  1
+                )}>
+                <label for="secret">${game.i18n.localize(
+                  'npcImporter.settings.Secret'
                 )}</lable>
             </div>
         </div>
