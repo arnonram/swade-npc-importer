@@ -4,8 +4,6 @@
 
 A Savage Worlds Adventure Edition stat block importer for [Foundry VTT](https://foundryvtt.com)
 
-**NOTE**: `v0.2.0+` is compatible with `Foundry v10`
-
 If you like what you see and find it uself, you can buy me a beer
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R5R2AMWC5)

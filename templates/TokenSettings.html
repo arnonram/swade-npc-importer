@@ -3,13 +3,16 @@
     <label>{{localize 'TOKEN.Disposition'}}:</label>
     <select id="disposition" name="disposition">
       <option name="HOSTILE" value="-1" {{this.dispositionHostile.selected}}>
-        {{localize 'TOKEN.HOSTILE'}}
+        {{localize 'TOKEN.DISPOSITION.HOSTILE'}}
       </option>
       <option name="NEUTRAL" value="0" {{this.dispositionNeutral.selected}}>
-        {{localize 'TOKEN.NEUTRAL'}}
+        {{localize 'TOKEN.DISPOSITION.NEUTRAL'}}
       </option>
       <option name="FRIENDLY" value="1" {{this.dispositionFriendly.selected}}>
-        {{localize 'TOKEN.FRIENDLY'}}
+        {{localize 'TOKEN.DISPOSITION.FRIENDLY'}}
+      </option>
+      <option name="SECRET" value="-2" {{this.dispositionSecret.selected}}>
+        {{localize 'TOKEN.DISPOSITION.SECRET'}}
       </option>
     </select>
   </div>
