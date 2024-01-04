@@ -41,6 +41,10 @@ async function whatToDo(actorData, actorId) {
         label: game.i18n.localize('npcImporter.HTML.Override'),
         callback: async () => {
           log('Overriding existing Actor');
+          // Keep original images
+          if(actorOriginalData.img) actorData.img = actorOriginalData.img;
+          if(actorOriginalData.token?.texture) actorData.prototypeToken.texture = actorOriginalData.token.texture;
+
           await DeleteActor(actorId);
           await Import(actorData);
         },
