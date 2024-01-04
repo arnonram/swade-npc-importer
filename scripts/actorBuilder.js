@@ -25,8 +25,14 @@ export async function buildActor(importSettings, data) {
 
     try {
       const parsedData = await statBlockParser(clipboardText);
-      const finalActor = await generateActorData(parsedData, importSettings);
-      await actorImporter(finalActor);
+      const multipleNames = parsedData.Name.split(',');
+      multipleNames.forEach(async(name) => {
+        const finalActor = await generateActorData({
+          ...parsedData,
+          Name: name
+        }, importSettings);
+        await actorImporter(finalActor);
+      })
     } catch (error) {
       log('Failed to build finalActor: ' + error);
     } finally {
