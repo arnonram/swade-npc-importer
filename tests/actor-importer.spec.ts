@@ -6,29 +6,30 @@ import fs from 'fs';
 import { cleanActor } from './utils/cleanup';
 import { FoundryApp } from './utils/foundry-pom';
 import { ActoryType, Disposition, Languages, users } from './utils/enums';
-import { deleteAllActors } from '../scripts/utils/foundryActions';
-const expectedPath = `${__dirname}/testData/expected/`;
 
-let page: Page;
+const expectedPath = `${__dirname}/testData/expected/`;
 
 test.describe('Importer Test', () => {
   let actorUnderTest = '';
   let foundryApp: FoundryApp;
 
   test.beforeAll(async ({ browser }) => {
+    fs.mkdirSync(`${expectedPath}new/`, { recursive: true });
     browser = await chromium.launch();
     const context = await browser.newContext({
       bypassCSP: true,
       permissions: ['clipboard-read', 'clipboard-write'],
     });
 
-    page = await context.newPage();
+    const page = await context.newPage();
     foundryApp = new FoundryApp(page);
     await foundryApp.login(users.GM);
   });
 
   test.afterEach(async () => {
-    await foundryApp.deleteActor(actorUnderTest);
+    if (actorUnderTest) {
+      await foundryApp.deleteActor(actorUnderTest);
+    }
   });
 
   const actors = [

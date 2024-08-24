@@ -281,22 +281,26 @@ function getListsStats(sections) {
   supportedListStats.forEach(element => {
     var line = sections.find(x => x.match(element));
     if (line && line.match(hindrances)) {
-      retrievedListStats.Hindrances = stringsToArray(line);
+      retrievedListStats.Hindrances = parseEdgesHindrances(line);
     } else if (line && line.match(edges)) {
-      retrievedListStats.Edges = stringsToArray(line);
+      retrievedListStats.Edges = parseEdgesHindrances(line);
     } else if (line && line.match(powers)) {
-      retrievedListStats.Powers = stringsToArray(line);
+      retrievedListStats.Powers = cleanLine(line).split(',');
     }
   });
   return retrievedListStats;
 }
 
-function stringsToArray(line) {
-  let data = line
+function cleanLine(line) {
+  return line
     .slice(line.indexOf(':') + 1)
     .replace(global.newLineRegex, ' ')
     .replace('.', '')
     .trim();
+}
+
+function parseEdgesHindrances(line) {
+  const data = cleanLine(line);
   if (data.length > 1) {
     return data
       .match(new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9!\-’' ]+)(\(([^\)]+)\))?/gi))
