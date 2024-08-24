@@ -369,14 +369,15 @@ async function checkforItem(itemName, itemType) {
     itemName = rearrangeImprovedEdges(itemName);
   }
   let itemFromCompendium = await getItemFromCompendium(itemName, itemType);
-  if (!isEmpty(itemFromCompendium.system)) return itemFromCompendium;
+  if (!foundry.utils.isEmpty(itemFromCompendium.system))
+    return itemFromCompendium;
 
   itemFromCompendium = await getItemFromCompendium(
     itemName.split('(')[0].trim(),
     itemType
   );
 
-  if (isEmpty(itemFromCompendium.system)) {
+  if (foundry.utils.isEmpty(itemFromCompendium.system)) {
     itemFromCompendium = await getItemFromCompendium(
       itemName.split('(')[0].replace(new RegExp('[+-−]?\\d'), '').trim(),
       itemType
