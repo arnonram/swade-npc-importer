@@ -1,7 +1,6 @@
 import { Page } from '@playwright/test';
 import { ActoryType, Disposition, Languages, users } from './enums';
 import fs from 'fs';
-import { has } from 'lodash';
 
 const inputPath = `${__dirname}/../testData/input/`;
 
@@ -19,21 +18,21 @@ export class FoundryApp {
 
   async login(user: users) {
     await this.goto();
-    await this.page.locator('[name="userid"]').type(user);
+    await this.page.locator('[name="userid"]').selectOption(user);
     await this.page.locator('[name=join]').click();
-    await this.page.locator('button:has-text("Ok")').click();
+    // await this.page.locator('button:has-text("Ok")').click();
   }
 
   async gotoActorsTab() {
-    await this.page.locator('[title="Actors Directory"]').click();
+    await this.page.getByRole('tab', { name: 'Actors' }).click();
   }
 
   async gotoSettingsTab() {
-    await this.page.locator('[title="Game Settings"]').click();
+    await this.page.getByLabel('Game Settings').click();
   }
 
   async deleteActor(actorName: string) {
-    await this.page.locator(`h4:has-text("${actorName}")`).click({
+    await this.page.getByTitle(actorName).click({
       button: 'right',
     });
     await this.page.locator('text=Delete').click();
@@ -42,15 +41,19 @@ export class FoundryApp {
 
   async setNpcImporterSettings(language: Languages) {
     await this.gotoSettingsTab();
-    await this.page.locator('[data-action=configure]').click();
-    await this.page.locator('text=Module Settings').click();
+    await this.page.waitForTimeout(1000);
     await this.page
-      .locator('select[name="swade-npc-importer\\.parseLanguage"]')
+      .getByRole('button', { name: 'Configure Settings', exact: false })
+      .click();
+    await this.page
+      .locator('[aria-label="PACKAGECONFIG.NavLabel"]')
+      .getByText('SWADE Stat Block Importer')
+      .click();
+    await this.page
+      .locator('[name="swade-npc-importer.parseLanguage"]')
       .selectOption(language);
-    await this.page
-      .locator('input[name=swade-npc-importer\\.renderSheet]')
-      .uncheck();
-    await this.page.locator('button[name=submit]').click();
+    // await this.page.getByRole('checkbox', {name: "swade-npc-importer.renderSheet"}).uncheck()
+    await this.page.getByRole('button', { name: 'Save Changes' }).click();
   }
 
   async createFolder() {

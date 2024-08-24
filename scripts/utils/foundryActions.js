@@ -175,7 +175,7 @@ export function GetActorId(actorName) {
 
 export function GetActorData(actorName) {
   try {
-    return game.actors.getName(actorName).data;
+    return game.actors.getName(actorName).system;
   } catch (error) {
     return false;
   }
