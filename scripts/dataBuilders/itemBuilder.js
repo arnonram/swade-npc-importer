@@ -166,7 +166,7 @@ export async function itemBuilderFromSpecAbs(name, itemDescription, type) {
     name: itemData?.name ?? capitalizeEveryWord(name.trim()),
     img: itemData?.img ?? `systems/swade/assets/icons/${type}.svg`,
     system: {
-      ...bilityBuilder(itemData?.system ?? ''),
+      ...abilityBuilder(itemData?.system ?? ''),
     },
     effects: itemData?.effects?.toJSON() ?? [],
     flags: itemData?.flags ?? {},
