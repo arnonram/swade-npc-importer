@@ -66,7 +66,7 @@ export async function edgeBuilder(edges) {
             isArcaneBackground:
               item?.system?.isArcaneBackground ??
               new RegExp(game.i18n.localize('npcImporter.parser.Arcane')).test(
-                edgeName
+                edgeName,
               ),
             requirements: {
               value: item?.system?.requirements?.value ?? '',
@@ -86,9 +86,9 @@ export async function edgeBuilder(edges) {
 export async function hindranceBuilder(hindrances) {
   const majorMinor = new RegExp(
     `${game.i18n.localize(
-      'npcImporter.parser.Major'
+      'npcImporter.parser.Major',
     )}(,)?\\s?|${game.i18n.localize('npcImporter.parser.Minor')}(,)?\\s?`,
-    'ig'
+    'ig',
   );
   if (hindrances != undefined) {
     var allHindrances = [];
@@ -96,7 +96,7 @@ export async function hindranceBuilder(hindrances) {
       let hindranceName = hindrances[i].trim();
       let isMajor = RegExp(
         `\\(${game.i18n.localize('npcImporter.parser.Major')}`,
-        'ig'
+        'ig',
       ).test(hindranceName);
       hindranceName = hindranceName
         .replace(majorMinor, '')
@@ -131,8 +131,8 @@ export async function hindranceBuilder(hindrances) {
 export async function abilityBuilder(abilityName, abilityDescription) {
   const doesGrantPowers = new RegExp(
     `${game.i18n.localize(
-      'npcImporter.parser.PowerPoints'
-    )}|${game.i18n.localize('npcImporter.parser.Powers')}`
+      'npcImporter.parser.PowerPoints',
+    )}|${game.i18n.localize('npcImporter.parser.Powers')}`,
   ).test(abilityDescription);
   const item = await checkforItem(abilityName, 'ability');
   try {
@@ -166,7 +166,7 @@ export async function itemBuilderFromSpecAbs(name, itemDescription, type) {
     name: itemData?.name ?? capitalizeEveryWord(name.trim()),
     img: itemData?.img ?? `systems/swade/assets/icons/${type}.svg`,
     system: {
-      ...bilityBuilder(itemData?.system ?? ''),
+      ...abilityBuilder(itemData?.system ?? ''),
     },
     effects: itemData?.effects?.toJSON() ?? [],
     flags: itemData?.flags ?? {},
@@ -193,7 +193,7 @@ export async function powerBuilder(powers) {
       if (!item || foundry.utils.isEmpty(item.system)) {
         item = await getItemFromCompendium(
           powerName.replace('/', ' / '),
-          'power'
+          'power',
         );
       }
       let system = item?.system ? structuredClone(item.system) : {};
@@ -234,11 +234,11 @@ export async function weaponBuilder({
     ?.replace(
       new RegExp(
         `${game.i18n.localize(
-          'npcImporter.parser.Str'
+          'npcImporter.parser.Str',
         )}\\.|${game.i18n.localize('npcImporter.parser.Str')}`,
-        'gi'
+        'gi',
       ),
-      '@str'
+      '@str',
     )
     .replace(game.i18n.localize('npcImporter.parser.dice'), 'd');
   const item = await getItemFromCompendium(weaponName, 'weapon');
@@ -279,7 +279,7 @@ export async function shieldBuilder(
   shieldName,
   description,
   parry = 0,
-  cover = 0
+  cover = 0,
 ) {
   const item = await getItemFromCompendium(shieldName, 'shield');
   try {
@@ -356,7 +356,7 @@ export async function gearBuilder(gearName, description) {
 
 export function additionalStatsBuilder(
   additionalStatName,
-  additionalStatValue
+  additionalStatValue,
 ) {
   let gameAditionalStat = getSpecificAdditionalStat(additionalStatName);
   if (gameAditionalStat !== undefined) {
@@ -368,10 +368,10 @@ export function additionalStatsBuilder(
 function checkSpecificItem(data) {
   const abilitiesWithMod = new RegExp(
     `${game.i18n.localize('npcImporter.parser.Armor')}|${game.i18n.localize(
-      'npcImporter.parser.Size'
+      'npcImporter.parser.Size',
     )}|${game.i18n.localize('npcImporter.parser.Fear')}|${game.i18n.localize(
-      'npcImporter.parser.Weakness'
-    )}$`
+      'npcImporter.parser.Weakness',
+    )}$`,
   );
 
   const item = data.match(abilitiesWithMod);
@@ -392,13 +392,13 @@ async function checkforItem(itemName, itemType) {
 
   itemFromCompendium = await getItemFromCompendium(
     itemName.split('(')[0].trim(),
-    itemType
+    itemType,
   );
 
   if (foundry.utils.isEmpty(itemFromCompendium.system)) {
     itemFromCompendium = await getItemFromCompendium(
       itemName.split('(')[0].replace(new RegExp('[+-−]?\\d'), '').trim(),
-      itemType
+      itemType,
     );
   }
   return itemFromCompendium;
