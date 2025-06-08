@@ -177,25 +177,23 @@ function importerDialogue() {
             </div>
         </div>
         <div class="form-group slim">
-          <p>${game.i18n.translations.TOKEN.FIELDS.sight.enabled.label}</p>
+          <p>${game.i18n.localize('TOKEN.FIELDS.sight.enabled.label')}</p>
           <input type="checkbox" id="vision" name="vision" value="vision" ${
             defaultData.tokenData.vision == true ? 'checked' : ''
           }/>
         </div>
         <div class="form-group slim">
-          <p>${game.i18n.translations.TOKEN.FIELDS.sight.range.label}</p>
+          <p>${game.i18n.localize('TOKEN.FIELDS.sight.range.label')}</p>
           <input type="number" step="1" name="visionRange" value="${
             defaultData.tokenData.visionRange
           }" />
         </div>
         <div class="form-group slim">
-          <p>${game.i18n.translations.TOKEN.FIELDS.sight.angle.label}</p>
+          <p>${game.i18n.localize('TOKEN.FIELDS.sight.angle.label')}</p>
             <input type="number" name="visionAngle" step="1" max="360" value="${
               defaultData.tokenData.visionAngle
             }" />
           </div>
-        </div>
-        <br>
         <div class="form-group slim">
           <label>${game.i18n.localize(
             'npcImporter.HTML.SaveFolder'
