@@ -49,15 +49,5 @@
       "name": "French",
       "path": "lang/fr.json"
     }
-  ],
-  "packs": [
-    {
-      "name": "swade-npc-importer-macros",
-      "label": "SWADE Stat Block Importer Macros",
-      "system": "swade",
-      "path": "packs/macros-importer.db",
-      "module": "swade-npc-importer",
-      "type": "Macro"
-    }
   ]
 }

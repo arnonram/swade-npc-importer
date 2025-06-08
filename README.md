@@ -4,10 +4,6 @@
 
 A Savage Worlds Adventure Edition stat block importer for [Foundry VTT](https://foundryvtt.com)
 
-If you like what you see and find it uself, you can buy me a beer
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R5R2AMWC5)
-
 ---
 
 ### :exclamation: **Please Note**
@@ -30,6 +26,8 @@ If you like what you see and find it uself, you can buy me a beer
 The **_SWADE Stat Block Importer_** works with the official statblock as seen in any Pinnacle products (SWADE Core, Deadlands, etc..) and defined in the [Pinnacle Style Guide](https://peginc.com/store/pinnacle-style-guide-pdf/)
 
 The Importer basically searches for patterns in the text, so that means paying attention to commas, colons, etc...
+
+:warning: When copying from PDFs you'll sometime get spaces inside words (example: `Arc ane`), at this point in time, the importer will not know how to handle these.
 
 ## How to use it...
 
