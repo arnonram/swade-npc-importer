@@ -188,10 +188,14 @@ export async function powerBuilder(powers) {
       if (powerTrapping) {
         powerName = powers[i].replace(powerTrapping[0], '').trim();
       }
-      const item = await getItemFromCompendium(
-        powerName.replace('/', ' / '),
-        'power'
-      );
+
+      let item = await getItemFromCompendium(powerName, 'power');
+      if (!item || foundry.utils.isEmpty(item.system)) {
+        item = await getItemFromCompendium(
+          powerName.replace('/', ' / '),
+          'power'
+        );
+      }
       let system = item?.system ? structuredClone(item.system) : {};
       if (powerTrapping) {
         system.trapping = powerTrapping[1];
@@ -200,13 +204,14 @@ export async function powerBuilder(powers) {
         let itemToAdd = {
           ...(item ?? ''),
           type: 'power',
-          name: `${item.system.parent.name} ${powerTrapping[0] ?? ''}`.trim(),
+          name: `${item?.system?.parent?.name ?? item?.name ?? powerName} ${
+            powerTrapping ? powerTrapping[0] : ''
+          }`.trim(),
           img: item?.img ?? 'systems/swade/assets/icons/power.svg',
           system,
           effects: item?.effects?.toJSON() ?? [],
           flags: item?.flags ?? {},
         };
-
         allPowers.push(itemToAdd);
       } catch (error) {
         log(`Could not build power: ${error}`);
