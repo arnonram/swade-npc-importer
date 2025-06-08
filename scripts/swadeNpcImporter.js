@@ -177,19 +177,19 @@ function importerDialogue() {
             </div>
         </div>
         <div class="form-group slim">
-          <p>${game.i18n.localize('TOKEN.VisionEnabled')}</p>
+          <p>${game.i18n.translations.TOKEN.FIELDS.sight.enabled.label}</p>
           <input type="checkbox" id="vision" name="vision" value="vision" ${
             defaultData.tokenData.vision == true ? 'checked' : ''
           }/>
         </div>
         <div class="form-group slim">
-          <p>${game.i18n.localize('TOKEN.VisionRange')}</p>
+          <p>${game.i18n.translations.TOKEN.FIELDS.sight.range.label}</p>
           <input type="number" step="1" name="visionRange" value="${
             defaultData.tokenData.visionRange
           }" />
         </div>
         <div class="form-group slim">
-          <p>${game.i18n.localize('TOKEN.VisionAngle')}</p>
+          <p>${game.i18n.translations.TOKEN.FIELDS.sight.angle.label}</p>
             <input type="number" name="visionAngle" step="1" max="360" value="${
               defaultData.tokenData.visionAngle
             }" />

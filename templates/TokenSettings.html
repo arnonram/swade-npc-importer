@@ -1,6 +1,6 @@
 <form autocomplete="off">
   <div class="form-group">
-    <label>{{localize 'TOKEN.Disposition'}}:</label>
+    <label>{{localize 'TOKEN.FIELDS.disposition.label'}}:</label>
     <select id="disposition" name="disposition">
       <option name="HOSTILE" value="-1" {{this.dispositionHostile.selected}}>
         {{localize 'TOKEN.DISPOSITION.HOSTILE'}}
@@ -18,7 +18,7 @@
   </div>
   <br />
   <div class="form-group">
-    <label>{{localize 'TOKEN.CharShowNameplate'}}:</label>
+    <label>{{localize 'TOKEN.FIELDS.displayName.label'}}:</label>
     <select id="displayName" name="displayName">
       <option
         name="DISPLAY_NONE"
@@ -60,7 +60,7 @@
   </div>
   <hr />
   <div class="form-group">
-    <label>{{localize 'TOKEN.VisionEnabled'}}</label>
+    <label>{{localize 'TOKEN.FIELDS.sight.enabled.label'}}</label>
     <input
       type="checkbox"
       id="vision"
@@ -69,7 +69,7 @@
       min="0" />
   </div>
   <div class="form-group slim">
-    <label>{{localize 'TOKEN.VisionRange'}}</label>
+    <label>{{localize 'TOKEN.FIELDS.sight.range.label'}}</label>
     <div class="form-fields">
       <input
         type="number"
@@ -79,7 +79,7 @@
     </div>
   </div>
   <div class="form-group slim">
-    <label>{{localize 'TOKEN.VisionAngle'}} </label>
+    <label>{{localize 'TOKEN.FIELDS.sight.angle.label'}} </label>
     <div class="form-fields">
       <input
         type="number"
