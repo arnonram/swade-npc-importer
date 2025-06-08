@@ -35,7 +35,7 @@ Hooks.on('renderActorDirectory', async (app, html, data) => {
       )}</button>`
     );
 
-    html.find('.directory-footer').append(npcImporterButton);
+    $(html).find('.directory-footer').append(npcImporterButton);
 
     npcImporterButton.on('click', () => {
       new Dialog({
@@ -62,7 +62,7 @@ Hooks.on('renderActorDirectory', async (app, html, data) => {
                     document.getElementsByName('visionAngle')[0].value || 360
                   ),
                 },
-                saveFolder: html.find('select[name="save-folder"]')[0].value,
+                saveFolder: $(html).find('select[name="save-folder"]')[0].value,
               };
               buildActor(
                 importSettings,
