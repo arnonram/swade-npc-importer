@@ -13,7 +13,7 @@ export async function statBlockParser(clipData) {
     log(`Starting statblock parsing`);
     let sections = GetSections(clipData);
     var importedActor = {};
-    Object.assign(importedActor, getNameAndDescription(sections[0]));
+    Object.assign(importedActor, getNameAndDescription(clipData));
     Object.assign(importedActor, getAttributes(sections));
     Object.assign(importedActor, getSkills(sections));
     Object.assign(importedActor, getBaseStats(sections));
@@ -37,32 +37,30 @@ export async function statBlockParser(clipData) {
   }
 }
 
-function GetSections(inData) {
-  let indexes = GetSectionsIndex(inData);
+function GetSections(clipData) {
+  let inputData = clipData.replace(/(\r\n|\n|\r)/gm, ' ').replace('/ ', '/');
+  let indexes = GetSectionsIndex(inputData);
   if (indexes.length === 0) {
     throw 'Not a valid statblcok';
   }
   var sections = [];
   for (let i = 0; i < indexes.length; i++) {
-    if (i === 0) {
-      sections.push(inData.substring(0, indexes[i]).trim());
-    }
     if (i === indexes.length - 1) {
-      sections.push(inData.substring(indexes[i]).trim());
+      sections.push(inputData.substring(indexes[i]).trim());
     } else {
-      sections.push(inData.substring(indexes[i], indexes[i + 1]).trim());
+      sections.push(inputData.substring(indexes[i], indexes[i + 1]).trim());
     }
   }
   return sections;
 }
 
-function GetSectionsIndex(inData) {
+function GetSectionsIndex(inputData) {
   const allStatBlockEntities = [
     `${game.i18n.localize('npcImporter.parser.Attributes')}:`,
     `${game.i18n.localize('npcImporter.parser.Skills')}:`,
     `${game.i18n.localize('npcImporter.parser.Hindrances')}:`,
     `${game.i18n.localize('npcImporter.parser.Edges')}:`,
-    new RegExp(`(?<! )${game.i18n.localize('npcImporter.parser.Powers')}:`),
+    `${game.i18n.localize('npcImporter.parser.Powers')}:`,
     `${game.i18n.localize('npcImporter.parser.Pace')}:`,
     `${game.i18n.localize('npcImporter.parser.Parry')}:`,
     `${game.i18n.localize('npcImporter.parser.Toughness')}:`,
@@ -76,7 +74,7 @@ function GetSectionsIndex(inData) {
   let allStats = allStatBlockEntities.concat(getActorAddtionalStatsArray());
   let sectionsIndex = [];
   allStats.forEach(element => {
-    let index = inData.search(new RegExp(element, 'i'));
+    let index = inputData.search(new RegExp(element, 'i'));
     if (index > 0) {
       sectionsIndex.push(index);
     }
@@ -86,7 +84,10 @@ function GetSectionsIndex(inData) {
   });
 }
 
-function getNameAndDescription(nameAndDescription) {
+function getNameAndDescription(data) {
+  let nameAndDescription = data
+    .split(game.i18n.localize('npcImporter.parser.Attributes'))[0]
+    .trim();
   let nameDesc = {};
   let lines = nameAndDescription.split(global.newLineRegex);
   nameDesc.Name = capitalizeEveryWord(lines[0].trim());
@@ -285,7 +286,9 @@ function getListsStats(sections) {
     } else if (line && line.match(edges)) {
       retrievedListStats.Edges = parseEdgesHindrances(line);
     } else if (line && line.match(powers)) {
-      retrievedListStats.Powers = cleanLine(line).split(',');
+      retrievedListStats.Powers = cleanLine(line.replace(', and', ',')).split(
+        ','
+      );
     }
   });
   return retrievedListStats;

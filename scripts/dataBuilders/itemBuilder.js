@@ -183,18 +183,31 @@ export async function powerBuilder(powers) {
   if (powers != undefined) {
     var allPowers = [];
     for (let i = 0; i < powers.length; i++) {
-      const powerName = powers[i].trim();
-      const item = await getItemFromCompendium(powerName, 'power');
+      let powerName = powers[i].trim();
+      const powerTrapping = powers[i].match(/\(([^)]+)\)/);
+      if (powerTrapping) {
+        powerName = powers[i].replace(powerTrapping[0], '').trim();
+      }
+      const item = await getItemFromCompendium(
+        powerName.replace('/', ' / '),
+        'power'
+      );
+      let system = item?.system ? structuredClone(item.system) : {};
+      if (powerTrapping) {
+        system.trapping = powerTrapping[1];
+      }
       try {
-        allPowers.push({
+        let itemToAdd = {
           ...(item ?? ''),
           type: 'power',
-          name: capitalizeEveryWord(powerName),
+          name: `${item.system.parent.name} ${powerTrapping[0] ?? ''}`.trim(),
           img: item?.img ?? 'systems/swade/assets/icons/power.svg',
-          system: item?.system ?? {},
+          system,
           effects: item?.effects?.toJSON() ?? [],
           flags: item?.flags ?? {},
-        });
+        };
+
+        allPowers.push(itemToAdd);
       } catch (error) {
         log(`Could not build power: ${error}`);
       }
