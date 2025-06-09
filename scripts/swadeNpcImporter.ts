@@ -1,6 +1,5 @@
 import { buildActor } from './actorBuilder';
 import {
-  log,
   settingDefaultActorType,
   settingDefaultIsWildcard,
   settingLastSaveFolder,
@@ -8,6 +7,7 @@ import {
   settingToken,
 } from './global.js';
 import { NpcImporterSettings } from './settings/npcImporterSettings';
+import { ImportSettings } from './types/importedActor';
 import {
   getModuleSettings,
   getAllActorFolders,
@@ -20,7 +20,7 @@ Hooks.on('ready', async () => {
     game.userId &&
     game.users?.get(game.userId)?.can('ACTOR_CREATE') == true
   ) {
-    log('Setting up settings...');
+    console.log('Setting up settings...');
     await NpcImporterSettings.register();
     // update Active Compendiums for Importer to use
     await updateModuleSetting(
@@ -54,7 +54,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
               let radios = document.querySelectorAll(
                 'input[type="radio"]:checked',
               );
-              let importSettings = {
+              let importSettings: ImportSettings = {
                 actorType: (radios[0] as HTMLInputElement).value,
                 isWildCard: (radios[1] as HTMLInputElement).value,
                 tokenSettings: {

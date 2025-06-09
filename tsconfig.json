@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "types": ["fvtt-types"],
+    "types": ["@types/fvtt-types"],
     "outDir": "dist",
     "moduleResolution": "bundler",
     "strictNullChecks": true,

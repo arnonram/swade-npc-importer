@@ -12,9 +12,9 @@
   "author": "Arnon Ram",
   "license": "ISC",
   "devDependencies": {
+    "@types/fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "@playwright/test": "^1.46.1",
     "@types/lodash": "^4.14.181",
-    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",

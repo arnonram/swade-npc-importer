@@ -7,6 +7,13 @@ import {
   allPacks,
 } from '../global.js';
 import { splitAndSort } from './textUtils';
+import { ParsedActor } from '../types/importedActor';
+import {
+  foundryI18nFormat,
+  foundryI18nLocalize,
+  foundryUiError,
+  foundryUiInfo,
+} from './foundryWrappers.js';
 
 export async function setAllPacks(): Promise<void> {
   log('Getting all active compendiums into allPacks');
@@ -147,26 +154,25 @@ export function getSystemCoreSkills(): string[] {
   );
 }
 
-export async function Import(actorData: any): Promise<void> {
+export async function Import(actorData: ParsedActor): Promise<void> {
   //Throw a hook with the actorData before creation:
   Hooks.call('npcImporter-preCreateActor', actorData);
   try {
     const actors = await Actor.createDocuments([actorData]);
-    ui.notifications?.info(
-      game.i18n?.format('npcImporter.HTML.ActorCreated', {
+    foundryUiInfo(
+      foundryI18nFormat('npcImporter.HTML.ActorCreated', {
         actorName: actorData.name,
-      }) ?? '',
+      }),
     );
-    Hooks.call('npcImporter-ActorCreated', actors); //Throw a hook containing the actors:
+    //Throw a hook containing the actors:
+    Hooks.call('npcImporter-ActorCreated', actors);
     // Render actor sheet (optionally):
-    if (actors[0].sheet && getModuleSettings('renderSheet') == true) {
-      actors[0].sheet.render(true);
+    if (actors[0].sheet && getModuleSettings('renderSheet') === true) {
+      actors[0]?.sheet.render(true);
     }
   } catch (error) {
     log(`Failed to import: ${error}`);
-    ui.notifications?.error(
-      game.i18n?.localize('npcImporter.HTML.FailedToImport') ?? '',
-    );
+    foundryUiError(foundryI18nLocalize('npcImporter.HTML.FailedToImport'));
   }
 }
 
@@ -191,10 +197,10 @@ export function GetActorData(actorName: string): any {
 export async function DeleteActor(actorId: string): Promise<void> {
   try {
     await Actor.deleteDocuments([actorId]);
-    ui?.notifications?.info(
-      game.i18n?.format('npcImporter.HTML.DeleteActor', {
+    foundryUiInfo(
+      foundryI18nFormat('npcImporter.HTML.DeleteActor', {
         actorId: actorId,
-      }) ?? '',
+      }),
     );
   } catch (error) {
     log(`Failed to delete actor: ${error}`);

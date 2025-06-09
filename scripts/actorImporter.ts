@@ -1,7 +1,13 @@
-import { log } from './global';
 import { Import, GetActorId, DeleteActor } from './utils/foundryActions';
+import { ParsedActor } from './types/importedActor';
 
-export async function actorImporter(actorDataToImport: any): Promise<void> {
+export async function actorImporter(
+  actorDataToImport: ParsedActor,
+): Promise<void> {
+  if (!actorDataToImport.name) {
+    console.warn('actorImporter: Missing actor name.');
+    return;
+  }
   let actorId = GetActorId(actorDataToImport.name);
   if (!actorId) {
     await Import(actorDataToImport);
@@ -10,7 +16,10 @@ export async function actorImporter(actorDataToImport: any): Promise<void> {
   }
 }
 
-async function whatToDo(actorData: any, actorId: string): Promise<void> {
+async function whatToDo(
+  actorData: ParsedActor,
+  actorId: string,
+): Promise<void> {
   let actorExists = `
     ${game.i18n?.localize('npcImporter.HTML.ActorExistText')}
     <div class="form-group-dialog newName" >
@@ -18,7 +27,7 @@ async function whatToDo(actorData: any, actorId: string): Promise<void> {
           'npcImporter.HTML.ChangeName',
         )}:</label>
         <input type="text" id="newName" name="newName" value="${
-          actorData.name
+          actorData.name ?? ''
         }">
     </dev>
     <br/>
@@ -33,7 +42,7 @@ async function whatToDo(actorData: any, actorId: string): Promise<void> {
         callback: async () => {
           let newName = (document.querySelector('#newName') as HTMLInputElement)
             .value;
-          log(`Import with new name: ${newName}`);
+          console.log(`Import with new name: ${newName}`);
           actorData.name = newName;
           await Import(actorData);
         },
@@ -41,7 +50,7 @@ async function whatToDo(actorData: any, actorId: string): Promise<void> {
       Override: {
         label: game.i18n?.localize('npcImporter.HTML.Override') as string,
         callback: async () => {
-          log('Overriding existing Actor');
+          console.log('Overriding existing Actor');
           await DeleteActor(actorId);
           await Import(actorData);
         },
