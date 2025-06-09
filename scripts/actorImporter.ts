@@ -1,8 +1,8 @@
 import { Import, GetActorId, DeleteActor } from './utils/foundryActions';
-import { ParsedActor } from './types/importedActor';
+import { ParsedActor, SwadeActorToImport } from './types/importedActor';
 
 export async function actorImporter(
-  actorDataToImport: ParsedActor,
+  actorDataToImport: SwadeActorToImport,
 ): Promise<void> {
   if (!actorDataToImport.name) {
     console.warn('actorImporter: Missing actor name.');
@@ -17,7 +17,7 @@ export async function actorImporter(
 }
 
 async function whatToDo(
-  actorData: ParsedActor,
+  actorData: SwadeActorToImport,
   actorId: string,
 ): Promise<void> {
   let actorExists = `

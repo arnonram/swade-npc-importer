@@ -32,7 +32,7 @@ export async function buildActor(
     await updateModuleSetting(settingLastSaveFolder, importSettings.saveFolder);
 
     try {
-      const parsedActor: ParsedActor = await statBlockParser(rawStatBlock);
+      const parsedActor = await statBlockParser(rawStatBlock);
       const finalActor = await generateSwadeActorData(
         parsedActor,
         importSettings,
@@ -58,7 +58,7 @@ async function getClipboardText(): Promise<string> {
 async function generateSwadeActorData(
   parsedData: ParsedActor,
   importSettings: ImportSettings,
-): Promise<any> {
+): Promise<SwadeActorToImport> {
   var finalActor: SwadeActorToImport = {
     name: parsedData.name,
     type: importSettings.actorType,

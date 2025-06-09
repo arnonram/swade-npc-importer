@@ -1,4 +1,4 @@
-import * as global from '../global.js';
+import { newLineRegex } from '../global';
 
 export function capitalize(string: string): string {
   return string.replace(/(?:^|\s)\S/g, function (a) {
@@ -50,6 +50,6 @@ export function splitAndTrim(
   separator: string,
 ): string[] {
   return stringToSplit.split(separator).map(function (item) {
-    return item.replace(global.newLineRegex, ' ').trim();
+    return item.replace(newLineRegex, ' ').trim();
   });
 }

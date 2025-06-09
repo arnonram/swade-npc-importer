@@ -11,6 +11,7 @@ import {
   settingCompsToUse,
   settingActiveCompendiums,
 } from '../global.js';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export default class SelectCompendiums extends FormApplication {
   constructor(object = {}, options = {}) {
@@ -20,7 +21,7 @@ export default class SelectCompendiums extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       id: `${thisModule}.compendiumsSelector`,
-      title: game.i18n.localize('npcImporter.settings.CompendiumsSelector'),
+      title: foundryI18nLocalize('npcImporter.settings.CompendiumsSelector'),
       template: 'modules/swade-npc-importer/templates/CompendiumsToUse.html',
       width: 300,
       closeOnSubmit: true,

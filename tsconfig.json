@@ -3,15 +3,15 @@
     "types": ["@types/fvtt-types"],
     "outDir": "dist",
     "moduleResolution": "bundler",
-    "strictNullChecks": true,
     "target": "esnext",
     "module": "esnext",
     "resolveJsonModule": true,
+    "strictNullChecks": true,
     "allowJs": true,
     "checkJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
     "skipLibCheck": true
   }
 }

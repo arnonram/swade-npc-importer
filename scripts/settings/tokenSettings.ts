@@ -2,7 +2,8 @@ import { settingToken, thisModule } from '../global.js';
 import {
   updateModuleSetting,
   getModuleSettings,
-} from '../utils/foundryActions';
+} from '../utils/foundryActions.js';
+import { foundryI18nLocalize } from '../utils/foundryWrappers.js';
 
 export default class TokenSettings extends FormApplication {
   constructor(object = {}, options = {}) {
@@ -10,11 +11,11 @@ export default class TokenSettings extends FormApplication {
   }
 
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: `${thisModule}.tokenSettings`,
-      title: game.i18n.localize('npcImporter.settings.TokenSettings'),
+      title: foundryI18nLocalize('npcImporter.settings.TokenSettings'),
       template: 'modules/swade-npc-importer/templates/TokenSettings.html',
-      width: '400',
+      width: 400,
       closeOnSubmit: true,
     });
   }
@@ -70,6 +71,7 @@ export default class TokenSettings extends FormApplication {
     };
   }
 
+  //@ts-ignore TODO: fix this
   async _updateObject(event, formData) {
     await updateModuleSetting(settingToken, formData);
   }

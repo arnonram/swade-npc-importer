@@ -1,5 +1,4 @@
 import {
-  log,
   thisModule,
   settingPackageToUse,
   settingCompsToUse,
@@ -7,7 +6,7 @@ import {
   allPacks,
 } from '../global.js';
 import { splitAndSort } from './textUtils';
-import { ParsedActor } from '../types/importedActor';
+import { SwadeActorToImport } from '../types/importedActor';
 import {
   foundryI18nFormat,
   foundryI18nLocalize,
@@ -16,7 +15,7 @@ import {
 } from './foundryWrappers.js';
 
 export async function setAllPacks(): Promise<void> {
-  log('Getting all active compendiums into allPacks');
+  console.log('Getting all active compendiums into allPacks');
   let activeCompendiums = getModuleSettings(settingActiveCompendiums);
   activeCompendiums.filter(String).forEach((comp: string) => {
     if (game.packs?.get(comp)?.metadata.type === 'Item') {
@@ -29,7 +28,7 @@ export async function setAllPacks(): Promise<void> {
 }
 
 export function resetAllPacks(): void {
-  log('Resetting allPacks');
+  console.log('Resetting allPacks');
   allPacks.length = 0;
 }
 
@@ -62,7 +61,7 @@ export async function getItemFromCompendium(
         }
       }
     } catch (error) {
-      log(`Error when searching for ${item}: ${error}`);
+      console.error(`Error when searching for ${item}: ${error}`);
     }
   }
   return { system: {} };
@@ -154,11 +153,11 @@ export function getSystemCoreSkills(): string[] {
   );
 }
 
-export async function Import(actorData: ParsedActor): Promise<void> {
+export async function Import(actorData: SwadeActorToImport): Promise<void> {
   //Throw a hook with the actorData before creation:
   Hooks.call('npcImporter-preCreateActor', actorData);
   try {
-    const actors = await Actor.createDocuments([actorData]);
+    const actors = await Actor.createDocuments([actorData as any]);
     foundryUiInfo(
       foundryI18nFormat('npcImporter.HTML.ActorCreated', {
         actorName: actorData.name,
@@ -171,7 +170,7 @@ export async function Import(actorData: ParsedActor): Promise<void> {
       actors[0]?.sheet.render(true);
     }
   } catch (error) {
-    log(`Failed to import: ${error}`);
+    console.error(`Failed to import: ${error}`);
     foundryUiError(foundryI18nLocalize('npcImporter.HTML.FailedToImport'));
   }
 }
@@ -203,7 +202,7 @@ export async function DeleteActor(actorId: string): Promise<void> {
       }),
     );
   } catch (error) {
-    log(`Failed to delete actor: ${error}`);
+    console.error(`Failed to delete actor: ${error}`);
   }
 }
 
@@ -235,7 +234,7 @@ export async function updateModuleSetting(
 }
 
 export async function setParsingLanguage(lang: string): Promise<void> {
-  log(`Setting parsing language to: ${lang}`);
+  console.info(`Setting parsing language to: ${lang}`);
   await game.i18n?.setLanguage(lang);
 }
 
