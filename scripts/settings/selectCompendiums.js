@@ -4,7 +4,7 @@ import {
   getModuleSettings,
   updateModuleSetting,
   getAllActiveCompendiums,
-} from '../utils/foundryActions.js';
+} from '../utils/foundryActions';
 import {
   settingPackageToUse,
   thisModule,
@@ -77,7 +77,7 @@ export default class SelectCompendiums extends FormApplication {
     // update Active Compendiums for Importer to use
     await updateModuleSetting(
       settingActiveCompendiums,
-      getAllActiveCompendiums()
+      getAllActiveCompendiums(),
     );
   }
 }

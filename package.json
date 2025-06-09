@@ -12,9 +12,9 @@
   "author": "Arnon Ram",
   "license": "ISC",
   "devDependencies": {
-    "@league-of-foundry-developers/foundry-vtt-types": "^9.280.0",
     "@playwright/test": "^1.46.1",
     "@types/lodash": "^4.14.181",
+    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
@@ -29,5 +29,8 @@
   "bugs": {
     "url": "https://github.com/arnonram/swade-npc-importer/issues"
   },
-  "homepage": "https://github.com/arnonram/swade-npc-importer#readme"
+  "homepage": "https://github.com/arnonram/swade-npc-importer#readme",
+  "dependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "^12.331.5"
+  }
 }

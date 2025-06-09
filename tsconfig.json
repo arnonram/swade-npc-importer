@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
-    "types": ["@league-of-foundry-developers/foundry-vtt-types"],
-    "moduleResolution": "node",
+    "types": ["fvtt-types"],
+    "outDir": "dist",
+    "moduleResolution": "bundler",
     "strictNullChecks": true,
-    "target": "es2016",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
     "resolveJsonModule": true,
     "allowJs": true,
+    "checkJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,

@@ -2,7 +2,7 @@ import { settingToken, thisModule } from '../global.js';
 import {
   updateModuleSetting,
   getModuleSettings,
-} from '../utils/foundryActions.js';
+} from '../utils/foundryActions';
 
 export default class TokenSettings extends FormApplication {
   constructor(object = {}, options = {}) {

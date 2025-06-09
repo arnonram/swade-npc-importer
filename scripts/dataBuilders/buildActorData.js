@@ -1,14 +1,14 @@
 import {
   getActorAddtionalStatsArray,
   getModuleSettings,
-} from '../utils/foundryActions.js';
+} from '../utils/foundryActions';
 import * as global from '../global.js';
 import { additionalStatsBuilder } from './itemBuilder.js';
 
 export const buildActorData = async function (
   parsedData,
   isWildCard,
-  actorType
+  actorType,
 ) {
   var system = {};
 
@@ -40,7 +40,7 @@ export const buildActorData = async function (
     max: calculateWoundMod(
       parsedData.Size,
       isWildCard,
-      parsedData.SpecialAbilities
+      parsedData.SpecialAbilities,
     ),
     ignored: calculateIgnoredWounds(parsedData),
   };
@@ -108,7 +108,7 @@ function calculateWoundMod(size, isWildCard, specialAbs) {
         `${game.i18n
           .localize('npcImporter.parser.Resilient')
           .toLowerCase()}`.includes(
-          ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim()
+          ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim(),
         )
       ) {
         baseWounds += 1;
@@ -116,7 +116,7 @@ function calculateWoundMod(size, isWildCard, specialAbs) {
         `${game.i18n
           .localize('npcImporter.parser.VeryResilient')
           .toLowerCase()}`.includes(
-          ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim()
+          ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim(),
         )
       ) {
         baseWounds += 2;
@@ -171,15 +171,15 @@ function findRunningDie(parsedData) {
         ability
           .toLowerCase()
           .includes(
-            game.i18n.localize('npcImporter.parser.Speed').toLowerCase()
+            game.i18n.localize('npcImporter.parser.Speed').toLowerCase(),
           )
       ) {
         return parseInt(
           parsedData.SpecialAbilities[ability]
             .match(
-              new RegExp(game.i18n.localize('npcImporter.regex.dice'), 'i')
+              new RegExp(game.i18n.localize('npcImporter.regex.dice'), 'i'),
             )[0]
-            .replace(/[a-zA-Z]/i, '')
+            .replace(/[a-zA-Z]/i, ''),
         );
       }
     }
@@ -188,7 +188,7 @@ function findRunningDie(parsedData) {
         edge
           .toLowerCase()
           .includes(
-            game.i18n.localize('npcImporter.parser.FleetFooted').toLowerCase()
+            game.i18n.localize('npcImporter.parser.FleetFooted').toLowerCase(),
           )
       ) {
         runningDie += 2;
@@ -207,7 +207,7 @@ function findRunningMod(parsedData) {
         edge
           .toLowerCase()
           .includes(
-            game.i18n.localize('npcImporter.parser.FleetFooted').toLowerCase()
+            game.i18n.localize('npcImporter.parser.FleetFooted').toLowerCase(),
           )
       ) {
         runningMode += 2;
@@ -229,7 +229,7 @@ function calculateIgnoredWounds(parsedData) {
     for (const ability in parsedData.SpecialAbilities) {
       if (
         ignoreWound.includes(
-          ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim()
+          ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim(),
         )
       ) {
         bonusTotal += 1;
@@ -250,7 +250,7 @@ function findUnshakeBonus(parsedData) {
   for (const ability in parsedData.SpecialAbilities) {
     if (
       unshakeBonus.includes(
-        ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim()
+        ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim(),
       )
     ) {
       bonusTotal += 2;
@@ -279,7 +279,7 @@ function toughnessBonus(parsedData) {
   for (const ability in parsedData.SpecialAbilities) {
     if (
       toughnessBonus.includes(
-        ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim()
+        ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim(),
       )
     ) {
       bonusTotal += 2;

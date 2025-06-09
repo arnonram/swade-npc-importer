@@ -1,4 +1,4 @@
-import { getActorAddtionalStatsArray } from '../utils/foundryActions.js';
+import { getActorAddtionalStatsArray } from '../utils/foundryActions';
 import {
   settingActiveCompendiums,
   thisModule,
@@ -81,7 +81,7 @@ export class NpcImporterSettings {
         en: 'English',
         de: 'Deutsch',
         es: 'Español',
-        fr: "Français",
+        fr: 'Français',
         'pt-BR': 'Português (Brasil)',
       },
       default: 'en',
@@ -139,7 +139,7 @@ export class NpcImporterSettings {
     game.settings.register(thisModule, settingallAsSpecialAbilities, {
       name: game.i18n.localize('npcImporter.settings.AllAsSpecialAbilities'),
       hint: game.i18n.localize(
-        'npcImporter.settings.AllAsSpecialAbilitiesHint'
+        'npcImporter.settings.AllAsSpecialAbilitiesHint',
       ),
       config: true,
       scope: 'world',
@@ -149,7 +149,7 @@ export class NpcImporterSettings {
     game.settings.register(thisModule, settingModifiedSpecialAbs, {
       name: game.i18n.localize('npcImporter.settings.ModifiedSpecialAbilities'),
       hint: game.i18n.localize(
-        'npcImporter.settings.ModifiedSpecialAbilitiesHint'
+        'npcImporter.settings.ModifiedSpecialAbilitiesHint',
       ),
       config: true,
       scope: 'world',

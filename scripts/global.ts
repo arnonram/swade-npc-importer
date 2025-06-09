@@ -22,10 +22,10 @@ export const settingAutoCalcSize = 'autoCalcSize';
 export const settingallAsSpecialAbilities = 'allAsSpecialAbilities';
 export const twoHandsNotaiton = 'twoHandsNotaiton';
 export const settingNumberOfBennies = 'numberOfBennies';
-export var allPacks = [];
+export const allPacks: any[] = [];
 
 // global logger
-export const log = function (msg) {
+export const log = function (msg: string): void {
   console.log(`SWADE Stat Block Importer | ${msg}`);
 };
 

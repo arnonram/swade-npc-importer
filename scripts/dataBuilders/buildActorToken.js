@@ -1,5 +1,5 @@
 import { settingAutoCalcSize, settingToken } from '../global.js';
-import { getModuleSettings } from '../utils/foundryActions.js';
+import { getModuleSettings } from '../utils/foundryActions';
 
 export async function buildActorToken(parsedData, tokenSettings) {
   var token = {};

@@ -3,7 +3,7 @@ import {
   getModuleSettings,
   getSpecificAdditionalStat,
   getSystemCoreSkills,
-} from '../utils/foundryActions.js';
+} from '../utils/foundryActions';
 import { log, twoHandsNotaiton } from '../global.js';
 import {
   capitalizeEveryWord,
