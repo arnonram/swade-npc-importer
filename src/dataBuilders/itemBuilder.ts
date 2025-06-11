@@ -4,12 +4,13 @@ import {
   getSpecificAdditionalStat,
   getSystemCoreSkills,
 } from '../utils/foundryActions';
-import { log, twoHandsNotaiton } from '../global.js';
+import { twoHandsNotaiton } from '../global.js';
 import {
   capitalizeEveryWord,
   specialAbilitiesLink,
 } from '../utils/textUtils.js';
 import { WeaponBuilderProps } from '../types/actorToImport';
+import { Logger } from '../utils/logger';
 
 export async function skillBuilder(skillsDict) {
   const coreSkills = getSystemCoreSkills();
@@ -40,7 +41,7 @@ export async function skillBuilder(skillsDict) {
           flags: item?.flags ?? {},
         });
       } catch (error) {
-        log(`Could not build skill: ${error}`);
+        Logger.error(`Could not build skill: ${error}`);
       }
     }
     return allSkills;
@@ -77,7 +78,7 @@ export async function edgeBuilder(edges) {
           flags: item?.flags ?? {},
         });
       } catch (error) {
-        log(`Could not build edge: ${error}`);
+        Logger.error(`Could not build edge: ${error}`);
       }
     }
     return allEdges;
@@ -121,7 +122,7 @@ export async function hindranceBuilder(hindrances) {
           flags: item?.flags ?? {},
         });
       } catch (error) {
-        log(`Could not build hindrance: ${error}`);
+        Logger.error(`Could not build hindrance: ${error}`);
       }
     }
 
@@ -157,7 +158,7 @@ export async function abilityBuilder(
       flags: item?.flags ?? {},
     };
   } catch (error) {
-    log(`Could not build ability: ${error}`);
+    Logger.error(`Could not build ability: ${error}`);
   }
 }
 
@@ -222,7 +223,7 @@ export async function powerBuilder(powers: string[]) {
         };
         allPowers.push(itemToAdd);
       } catch (error) {
-        log(`Could not build power: ${error}`);
+        Logger.error(`Could not build power: ${error}`);
       }
     }
     return allPowers;
@@ -271,7 +272,7 @@ export async function weaponBuilder(props: WeaponBuilderProps) {
       flags: item?.flags ?? {},
     };
   } catch (error) {
-    log(`Could not build weapon: ${error}`);
+    Logger.error(`Could not build weapon: ${error}`);
   }
 }
 
@@ -302,7 +303,7 @@ export async function shieldBuilder(
       flags: item?.flags ?? {},
     };
   } catch (error) {
-    log(`Could not build shield: ${error}`);
+    Logger.error(`Could not build shield: ${error}`);
   }
 }
 
@@ -332,7 +333,7 @@ export async function armorBuilder(
       flags: item?.flags ?? {},
     };
   } catch (error) {
-    log(`Could not build armor: ${error}`);
+    Logger.error(`Could not build armor: ${error}`);
   }
 }
 
@@ -354,7 +355,7 @@ export async function gearBuilder(gearName: string, description: string = '') {
       flags: item?.flags ?? {},
     };
   } catch (error) {
-    log(`Could not build gear: ${error}`);
+    Logger.error(`Could not build gear: ${error}`);
   }
 }
 

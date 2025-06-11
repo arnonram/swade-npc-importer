@@ -7,20 +7,21 @@ export function getAttributes(sections: string[]): Attributes {
     'i',
   );
 
-  const attrSection = sections.find(x => x.match(attrTranslation));
+  let attrSection = sections.find(x => x.match(attrTranslation));
   if (!attrSection) {
     return {} as Attributes;
   }
 
   const isAnimal = attrSection.includes('(A)');
-  attrSection.replace('(A)', '');
+  attrSection = attrSection.replace('(A)', '');
   let attributes = splitAndTrim(attrSection.replace(attrTranslation, ''), ',');
 
   let attr: Partial<Attributes> = {};
 
   attributes.forEach(singleTrait => {
-    switch (singleTrait.trim().toLowerCase()) {
-      case game.i18n?.localize('npcImporter.parser.Agility'):
+    const traitName = singleTrait.split(' ')[0].trim().toLowerCase();
+    switch (traitName) {
+      case game.i18n?.localize('npcImporter.parser.Agility').toLowerCase():
         attr.agility = buildTrait(
           singleTrait
             .replace(
@@ -30,7 +31,7 @@ export function getAttributes(sections: string[]): Attributes {
             .trim(),
         );
 
-      case game.i18n?.localize('npcImporter.parser.Smarts'):
+      case game.i18n?.localize('npcImporter.parser.Smarts').toLowerCase():
         attr.smarts = buildTrait(
           singleTrait
             .replace(
@@ -41,7 +42,7 @@ export function getAttributes(sections: string[]): Attributes {
         );
         attr.smarts.animal = isAnimal;
 
-      case game.i18n?.localize('npcImporter.parser.Spirit'):
+      case game.i18n?.localize('npcImporter.parser.Spirit').toLowerCase():
         attr.spirit = buildTrait(
           singleTrait
             .replace(
@@ -51,7 +52,7 @@ export function getAttributes(sections: string[]): Attributes {
             .trim(),
         );
 
-      case game.i18n?.localize('npcImporter.parser.Strength'):
+      case game.i18n?.localize('npcImporter.parser.Strength').toLowerCase():
         attr.strength = buildTrait(
           singleTrait
             .replace(
@@ -61,7 +62,7 @@ export function getAttributes(sections: string[]): Attributes {
             .trim(),
         );
 
-      case game.i18n?.localize('npcImporter.parser.Vigor'):
+      case game.i18n?.localize('npcImporter.parser.Vigor').toLowerCase():
         attr.vigor = buildTrait(
           singleTrait
             .replace(

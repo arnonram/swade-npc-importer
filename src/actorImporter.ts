@@ -1,11 +1,12 @@
 import { Import, GetActorId, DeleteActor } from './utils/foundryActions';
 import { ParsedActor, SwadeActorToImport } from './types/importedActor';
+import { Logger } from './utils/logger';
 
 export async function actorImporter(
   actorDataToImport: SwadeActorToImport,
 ): Promise<void> {
   if (!actorDataToImport.name) {
-    console.warn('actorImporter: Missing actor name.');
+    Logger.warn('actorImporter: Missing actor name.');
     return;
   }
   let actorId = GetActorId(actorDataToImport.name);
@@ -42,7 +43,7 @@ async function whatToDo(
         callback: async () => {
           let newName = (document.querySelector('#newName') as HTMLInputElement)
             .value;
-          console.log(`Import with new name: ${newName}`);
+          Logger.info(`Import with new name: ${newName}`);
           actorData.name = newName;
           await Import(actorData);
         },
@@ -50,7 +51,7 @@ async function whatToDo(
       Override: {
         label: game.i18n?.localize('npcImporter.HTML.Override') as string,
         callback: async () => {
-          console.log('Overriding existing Actor');
+          Logger.info('Overriding existing Actor');
           await DeleteActor(actorId);
           await Import(actorData);
         },

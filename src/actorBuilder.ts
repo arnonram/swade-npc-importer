@@ -17,6 +17,7 @@ import {
   ParsedActor,
   ImportSettings,
 } from './types/importedActor';
+import { Logger } from './utils/logger';
 
 export async function buildActor(
   importSettings: ImportSettings,
@@ -39,7 +40,7 @@ export async function buildActor(
       );
       await actorImporter(finalActor);
     } catch (error) {
-      console.error('Failed to build finalActor: ' + error);
+      Logger.error('Failed to build finalActor: ', error);
     } finally {
       await setParsingLanguage(currentLang);
       resetAllPacks();
@@ -83,6 +84,6 @@ async function generateSwadeActorData(
     };
   }
 
-  console.log(`Actor to import: ${JSON.stringify(finalActor)}`);
+  Logger.info(`Actor to import: ${JSON.stringify(finalActor)}`);
   return finalActor;
 }

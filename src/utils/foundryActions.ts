@@ -13,9 +13,10 @@ import {
   foundryUiError,
   foundryUiInfo,
 } from './foundryWrappers.js';
+import { Logger } from './logger.js';
 
 export async function setAllPacks(): Promise<void> {
-  console.log('Getting all active compendiums into allPacks');
+  Logger.info('Getting all active compendiums into allPacks');
   let activeCompendiums = getModuleSettings(settingActiveCompendiums);
   activeCompendiums.filter(String).forEach((comp: string) => {
     if (game.packs?.get(comp)?.metadata.type === 'Item') {
@@ -28,7 +29,7 @@ export async function setAllPacks(): Promise<void> {
 }
 
 export function resetAllPacks(): void {
-  console.log('Resetting allPacks');
+  Logger.info('Resetting allPacks');
   allPacks.length = 0;
 }
 
@@ -61,7 +62,7 @@ export async function getItemFromCompendium(
         }
       }
     } catch (error) {
-      console.error(`Error when searching for ${item}: ${error}`);
+      Logger.error(`Error when searching for ${item}: ${error}`);
     }
   }
   return { system: {} };
@@ -170,7 +171,7 @@ export async function Import(actorData: SwadeActorToImport): Promise<void> {
       actors[0]?.sheet.render(true);
     }
   } catch (error) {
-    console.error(`Failed to import: ${error}`);
+    Logger.error(`Failed to import: ${error}`);
     foundryUiError(foundryI18nLocalize('npcImporter.HTML.FailedToImport'));
   }
 }
@@ -202,7 +203,7 @@ export async function DeleteActor(actorId: string): Promise<void> {
       }),
     );
   } catch (error) {
-    console.error(`Failed to delete actor: ${error}`);
+    Logger.error(`Failed to delete actor: ${error}`);
   }
 }
 
@@ -234,7 +235,7 @@ export async function updateModuleSetting(
 }
 
 export async function setParsingLanguage(lang: string): Promise<void> {
-  console.info(`Setting parsing language to: ${lang}`);
+  Logger.info(`Setting parsing language to: ${lang}`);
   await game.i18n?.setLanguage(lang);
 }
 

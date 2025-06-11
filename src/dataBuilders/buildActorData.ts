@@ -2,9 +2,14 @@ import {
   getActorAddtionalStatsArray,
   getModuleSettings,
 } from '../utils/foundryActions';
-import * as global from '../global.js';
 import { additionalStatsBuilder } from './itemBuilder.js';
 import { ParsedActor } from '../types/importedActor';
+import {
+  settingAutoCalcToughness,
+  settingCalculateAdditionalWounds,
+  settingCalculateIgnoredWounds,
+  settingNumberOfBennies,
+} from '../global';
 
 export const buildActorData = async function (
   parsedData: ParsedActor,
@@ -18,30 +23,30 @@ export const buildActorData = async function (
       speed: {
         runningDie: findRunningDie(parsedData),
         runningMod: findRunningMod(parsedData),
-        value: parsedData.Pace,
+        value: parsedData.pace,
       },
       toughness: {
-        value: parsedData.Toughness,
+        value: parsedData.toughness,
         modifier: toughnessBonus(parsedData),
       },
-      parry: { value: parsedData.Parry },
-      size: parsedData.Size,
+      parry: { value: parsedData.parry },
+      size: parsedData.size,
     });
   system.details = {
-    biography: parsedData.Biography,
-    autoCalcToughness: getModuleSettings(global.settingAutoCalcToughness),
+    biography: parsedData.biography,
+    autoCalcToughness: getModuleSettings(settingAutoCalcToughness),
   };
   system.powerPoints = {
     general: {
-      value: parsedData.PowerPoints,
-      max: parsedData.PowerPoints,
+      value: parsedData.powerpoints,
+      max: parsedData.powerpoints,
     },
   };
   system.wounds = {
     max: calculateWoundMod(
-      parsedData.Size,
+      parsedData.size,
       isWildCard,
-      parsedData.SpecialAbilities,
+      parsedData.specialabilities,
     ),
     ignored: calculateIgnoredWounds(parsedData),
   };
@@ -53,7 +58,7 @@ export const buildActorData = async function (
 };
 
 function generateAttributes(parsedData) {
-  let attributesData = parsedData.Attributes;
+  let attributesData = parsedData.attributes;
 
   let unShakeBonus = findUnshakeBonus(parsedData);
   if (unShakeBonus != undefined) {
@@ -80,7 +85,7 @@ async function buildAdditionalStats(parsedData) {
 function calculateBennies(isWildCard, actorType) {
   let numOfBennies = 0;
   if (isWildCard && actorType === 'npc') {
-    numOfBennies = getModuleSettings(global.settingNumberOfBennies);
+    numOfBennies = getModuleSettings(settingNumberOfBennies);
   } else if (isWildCard && actorType === 'character') {
     numOfBennies = 3;
   }
@@ -93,7 +98,7 @@ function calculateBennies(isWildCard, actorType) {
 
 function calculateWoundMod(size, isWildCard, specialAbs) {
   var baseWounds = isWildCard ? 3 : 0;
-  if (getModuleSettings(global.settingCalculateAdditionalWounds)) {
+  if (getModuleSettings(settingCalculateAdditionalWounds)) {
     if (size >= 4 && size <= 7) {
       baseWounds += 1;
     }
@@ -134,8 +139,8 @@ function initiativeMod(parsedData) {
   let hasImpLevelHeaded = false;
   let hasQuick = false;
 
-  if (parsedData.Edges != undefined) {
-    parsedData.Edges.forEach(element => {
+  if (parsedData.edges != undefined) {
+    parsedData.edges.forEach(element => {
       if (
         element === game.i18n?.localize('npcImporter.parser.LevelHeadedImp')
       ) {
@@ -150,8 +155,8 @@ function initiativeMod(parsedData) {
       }
     });
   }
-  if (parsedData.Hindrances != undefined) {
-    parsedData.Hindrances.forEach(element => {
+  if (parsedData.hindrances != undefined) {
+    parsedData.hindrances.forEach(element => {
       if (element === game.i18n?.localize('npcImporter.parser.Hesitant')) {
         hasHesitant = true;
       }
@@ -169,7 +174,7 @@ function findRunningDie(parsedData) {
   let runningDie = 6;
 
   try {
-    for (const ability in parsedData.SpecialAbilities) {
+    for (const ability in parsedData.specialabilities) {
       if (
         ability
           .toLowerCase()
@@ -180,7 +185,7 @@ function findRunningDie(parsedData) {
           )
       ) {
         return parseInt(
-          parsedData.SpecialAbilities[ability]
+          parsedData.specialabilities[ability]
             .match(
               new RegExp(
                 game.i18n?.localize('npcImporter.regex.dice') as string,
@@ -191,7 +196,7 @@ function findRunningDie(parsedData) {
         );
       }
     }
-    parsedData.Edges.forEach(edge => {
+    parsedData.edges.forEach(edge => {
       if (
         edge
           .toLowerCase()
@@ -210,7 +215,7 @@ function findRunningDie(parsedData) {
 function findRunningMod(parsedData) {
   try {
     let runningMode = 0;
-    parsedData.Edges.forEach(edge => {
+    parsedData.edges.forEach(edge => {
       if (
         edge
           .toLowerCase()
@@ -227,14 +232,14 @@ function findRunningMod(parsedData) {
 
 function calculateIgnoredWounds(parsedData) {
   let bonusTotal = 0;
-  if (getModuleSettings(global.settingCalculateIgnoredWounds)) {
+  if (getModuleSettings(settingCalculateIgnoredWounds)) {
     const ignoreWound = [
       game.i18n?.localize('npcImporter.parser.Undead'),
       game.i18n?.localize('npcImporter.parser.Construct'),
       game.i18n?.localize('npcImporter.parser.Elemental'),
     ];
 
-    for (const ability in parsedData.SpecialAbilities) {
+    for (const ability in parsedData.specialabilities) {
       if (
         ignoreWound.includes(
           ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim(),
@@ -255,7 +260,7 @@ function findUnshakeBonus(parsedData) {
   ];
 
   let bonusTotal = 0;
-  for (const ability in parsedData.SpecialAbilities) {
+  for (const ability in parsedData.specialabilities) {
     if (
       unshakeBonus.includes(
         ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim(),
@@ -265,8 +270,8 @@ function findUnshakeBonus(parsedData) {
     }
   }
 
-  if (parsedData.Edges != undefined) {
-    parsedData.Edges.forEach(edge => {
+  if (parsedData.edges != undefined) {
+    parsedData.edges.forEach(edge => {
       if (unshakeBonus.includes(edge.toLowerCase())) {
         bonusTotal += 2;
       }
@@ -284,7 +289,7 @@ function toughnessBonus(parsedData) {
     game.i18n?.localize('npcImporter.parser.Bruiser'),
   ];
   let bonusTotal = 0;
-  for (const ability in parsedData.SpecialAbilities) {
+  for (const ability in parsedData.specialabilities) {
     if (
       toughnessBonus.includes(
         ability.replace(new RegExp('^@([aehw]|sa)'), '').toLowerCase().trim(),
@@ -294,8 +299,8 @@ function toughnessBonus(parsedData) {
     }
   }
 
-  if (parsedData.Edges != undefined) {
-    parsedData.Edges.forEach(edge => {
+  if (parsedData.ddges != undefined) {
+    parsedData.ddges.forEach(edge => {
       if (toughnessBonus.includes(edge.toLowerCase())) {
         bonusTotal += 1;
       }

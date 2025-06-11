@@ -5,14 +5,14 @@ import { ParsedActor } from '../types/importedActor.js';
 
 export async function buildActorItems(parsedData: ParsedActor) {
   let items: any[] = [];
-  let skills = (await itemBuilder.skillBuilder(parsedData.Skills)) ?? [];
-  let edges = (await itemBuilder.edgeBuilder(parsedData.Edges)) ?? [];
+  let skills = (await itemBuilder.skillBuilder(parsedData.skills)) ?? [];
+  let edges = (await itemBuilder.edgeBuilder(parsedData.edges)) ?? [];
   let hindrances =
-    (await itemBuilder.hindranceBuilder(parsedData.Hindrances)) ?? [];
-  let powers = (await itemBuilder.powerBuilder(parsedData.Powers)) ?? [];
+    (await itemBuilder.hindranceBuilder(parsedData.hindrances)) ?? [];
+  let powers = (await itemBuilder.powerBuilder(parsedData.powers ?? [])) ?? [];
   let specialAbilities =
-    (await specialAbilitiesParser(parsedData.SpecialAbilities)) ?? [];
-  let gear = (await itemGearBuilder(parsedData.Gear)) ?? [];
+    (await specialAbilitiesParser(parsedData.specialabilities)) ?? [];
+  let gear = (await itemGearBuilder(parsedData.gear)) ?? [];
 
   items = items.concat(
     skills,

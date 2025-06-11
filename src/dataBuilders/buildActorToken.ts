@@ -10,11 +10,11 @@ export async function buildActorToken(
   token.displayName = parseInt(getModuleSettings(settingToken).displayName);
   token.disposition = tokenSettings.disposition;
 
-  const squares = GetWidthHight(parsedData.Size);
+  const squares = GetWidthHight(parsedData.size ?? 0);
   if (getModuleSettings(settingAutoCalcSize)) {
     token.width = squares;
     token.height = squares;
-    token.scale = CalculateScale(parsedData.Size);
+    token.scale = CalculateScale(parsedData.size ?? 0);
   }
 
   token.sight = {

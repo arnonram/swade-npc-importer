@@ -14,13 +14,14 @@ import {
   updateModuleSetting,
   getAllActiveCompendiums,
 } from './utils/foundryActions';
+import { Logger } from './utils/logger';
 
 Hooks.on('ready', async () => {
   if (
     game.userId &&
     game.users?.get(game.userId)?.can('ACTOR_CREATE') == true
   ) {
-    console.log('Setting up settings...');
+    Logger.info('Setting up settings...');
     await NpcImporterSettings.register();
     // update Active Compendiums for Importer to use
     await updateModuleSetting(
@@ -84,8 +85,8 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
                   ),
                 },
                 saveFolder: (
-                  $(html).find(
-                    'select[name="save-folder"]',
+                  document.getElementsByName(
+                    'save-folder',
                   )[0] as HTMLSelectElement
                 ).value,
               };

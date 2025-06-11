@@ -12,12 +12,13 @@ import {
   getSize,
   powerPointsFromSpecialAbility,
 } from './getDerivedStats';
+import { Logger } from '../utils/logger';
 
 export async function statBlockParser(
   rarStatBlock: string,
 ): Promise<ParsedActor> {
   try {
-    console.log(`Starting statblock parsing`);
+    Logger.info(`Starting statblock parsing`);
 
     let sections = getSections(rarStatBlock);
     var importedActor: ParsedActor = {
@@ -49,10 +50,10 @@ export async function statBlockParser(
       );
     }
 
-    console.info(`Parsed data: ${JSON.stringify(importedActor, null, 4)}`);
+    Logger.info(`Parsed data: ${JSON.stringify(importedActor, null, 4)}`);
     return importedActor;
   } catch (error) {
-    console.error(`Failed to parse: ${error}`);
+    Logger.error(`Failed to parse: ${error}`);
     ui.notifications?.error(
       game.i18n?.localize('npcImporter.parser.NotValidStablock') as string,
     );
