@@ -7,11 +7,10 @@
     "module": "esnext",
     "resolveJsonModule": true,
     "strictNullChecks": true,
-    "allowJs": true,
-    "checkJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*", "rollup.config.ts"]
 }
