@@ -1,30 +1,31 @@
 import { newLineRegex } from '../global';
 
-export function getListStat(
-  sections: string[],
-  labelKey: ListType,
-): string[] | undefined {
-  const label = `${game.i18n?.localize(`npcImporter.parser.${labelKey}`)}:`;
+/**
+ * Extracts a list stat (e.g., Hindrances, Edges, Powers) from the stat block sections.
+ */
+export function getListStat(sections: string[], labelKey: ListType): string[] {
+  const label = `${game.i18n?.localize(`npcImporter.parser.${labelKey}`) || labelKey}:`;
   const line = sections.find(x => x.startsWith(label));
-  return line ? handleSpecialCharacters(line) : undefined;
+  return line ? handleSpecialCharacters(line) : [];
 }
 
 function cleanLine(line: string): string {
   return line
     .slice(line.indexOf(':') + 1)
     .replace(newLineRegex, ' ')
-    .replace('.', '')
+    .replace(/\.$/, '')
     .trim();
 }
 
-function handleSpecialCharacters(line: string): string[] | undefined {
+function handleSpecialCharacters(line: string): string[] {
   const data = cleanLine(line);
   if (data.length > 1) {
     const matches = data.match(
-      new RegExp(/([A-Za-zÀ-ÖØ-öø-ÿ0-9!\-’' ]+)(\(([^\)]+)\))?/gi),
+      /([A-Za-zÀ-ÖØ-öø-ÿ0-9!\-’' ]+)(\(([^\)]+)\))?/gi,
     );
     return matches ? matches.map(s => s.trim()) : [];
   }
+  return [];
 }
 
 export enum ListType {

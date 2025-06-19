@@ -42,7 +42,7 @@ export async function statBlockParser(
       ...importedActor,
       ...getSystemDefinedStats(sections),
     };
-    importedActor.size = getSize(importedActor.specialAbilities);
+    importedActor.size = getSize(importedActor.specialAbilities ?? {});
 
     if (!importedActor.powerPoints && importedActor.specialAbilities) {
       importedActor.powerPoints = powerPointsFromSpecialAbility(

@@ -1,23 +1,21 @@
 import { getActorAddtionalStatsArray } from '../utils/foundryActions';
 
+/**
+ * Splits a statblock string into its sections based on known labels.
+ */
 export function getSections(clipData: string): string[] {
-  let inputData = clipData.replace(/(\r\n|\n|\r)/gm, ' ').replace('/ ', '/');
-  let indexes = getSectionsIndex(inputData);
+  const inputData = clipData.replace(/(\r\n|\n|\r)/gm, ' ').replace('/ ', '/');
+  const indexes = getSectionsIndex(inputData);
   if (indexes.length === 0) {
-    throw 'Not a valid statblock';
+    throw new Error('Not a valid statblock');
   }
-  var sections: string[] = [];
-  for (let i = 0; i < indexes.length; i++) {
-    if (i === indexes.length - 1) {
-      sections.push(inputData.substring(indexes[i]).trim());
-    } else {
-      sections.push(inputData.substring(indexes[i], indexes[i + 1]).trim());
-    }
-  }
+  const sections: string[] = indexes.map((start, i) =>
+    inputData.substring(start, indexes[i + 1] ?? undefined).trim(),
+  );
   return sections;
 }
 
-function getSectionsIndex(inputData: string) {
+function getSectionsIndex(inputData: string): number[] {
   const allStatBlockEntities = [
     `${game?.i18n?.localize('npcImporter.parser.Attributes')}:`,
     `${game?.i18n?.localize('npcImporter.parser.Skills')}:`,
@@ -34,15 +32,13 @@ function getSectionsIndex(inputData: string) {
     `${game?.i18n?.localize('npcImporter.parser.Conviction')}:`,
   ];
 
-  let allStats = allStatBlockEntities.concat(getActorAddtionalStatsArray());
-  let sectionsIndex: number[] = [];
+  const allStats = allStatBlockEntities.concat(getActorAddtionalStatsArray());
+  const sectionsIndex: number[] = [];
   allStats.forEach(element => {
-    let index = inputData.search(new RegExp(element, 'i'));
-    if (index > 0) {
+    const index = inputData.search(new RegExp(element, 'i'));
+    if (index >= 0) {
       sectionsIndex.push(index);
     }
   });
-  return sectionsIndex.sort(function (a, b) {
-    return a - b;
-  });
+  return sectionsIndex.sort((a, b) => a - b);
 }
