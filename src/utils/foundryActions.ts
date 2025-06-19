@@ -17,15 +17,16 @@ import { Logger } from './logger.js';
 
 export async function setAllPacks(): Promise<void> {
   Logger.info('Getting all active compendiums into allPacks');
-  let activeCompendiums = getModuleSettings(settingActiveCompendiums);
-  activeCompendiums.filter(String).forEach((comp: string) => {
-    if (game.packs?.get(comp)?.metadata.type === 'Item') {
-      allPacks.push(game.packs.get(comp));
+  const activeCompendiums = getModuleSettings(settingActiveCompendiums).filter(
+    Boolean,
+  );
+  allPacks.length = 0;
+  for (const comp of activeCompendiums) {
+    const pack = game.packs?.get(comp);
+    if (pack?.metadata.type === 'Item') {
+      allPacks.push(pack);
     }
-  });
-  allPacks.filter(function (el: any) {
-    return el != null;
-  });
+  }
 }
 
 export function resetAllPacks(): void {
@@ -37,32 +38,31 @@ export async function getItemFromCompendium(
   itemName: string,
   expectedType = '',
 ): Promise<any> {
-  let item = splitAndSort(itemName);
-  for (let i = 0; i < allPacks.length; i++) {
+  const item = splitAndSort(itemName);
+  for (const pack of allPacks) {
     try {
       let resultId: any = '';
       if (expectedType === 'weapon') {
-        resultId = allPacks[i].index.contents.find(
-          (it: any) => splitAndSort(it.name) == item,
-        );
-        if (resultId === undefined) {
-          resultId = allPacks[i].index.contents.find((it: any) =>
-            item.includes(splitAndSort(it.name)),
+        resultId =
+          pack.index.contents.find(
+            (it: any) => splitAndSort(it.name) == item,
+          ) ??
+          pack.index.contents.find((it: any) =>
+            item.join(' ').includes(splitAndSort(it.name).join(' ')),
           );
-        }
       } else {
-        resultId = allPacks[i].index.contents.find(
+        resultId = pack.index.contents.find(
           (it: any) => splitAndSort(it.name) === item,
         );
       }
-      if (resultId != undefined) {
-        const item = await allPacks[i].getDocument(resultId['_id']);
-        if (item.type === expectedType) {
-          return item;
+      if (resultId !== undefined) {
+        const foundItem = await pack.getDocument(resultId['_id']);
+        if (foundItem.type === expectedType) {
+          return foundItem;
         }
       }
     } catch (error) {
-      Logger.error(`Error when searching for ${item}: ${error}`);
+      Logger.error(`Error when searching for ${item}:`, error);
     }
   }
   return { system: {} };
