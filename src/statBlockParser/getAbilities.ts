@@ -33,12 +33,14 @@ function getAbilities(data: string): { [key: string]: string } {
   let abilities: { [key: string]: any } = {};
   let line: string[] = [];
   if (!modifiedSpecialAbs) {
-    line = splitAndTrim(data, getModuleSettings(settingBulletPointIcons));
+    line = splitAndTrim(
+      data,
+      new RegExp(getModuleSettings(settingBulletPointIcons), 'ig'),
+    );
   } else {
     line = splitAndTrim(data, '@');
   }
 
-  line.shift();
   line.forEach(element => {
     let ability = element.split(':');
     let abilityName = !modifiedSpecialAbs

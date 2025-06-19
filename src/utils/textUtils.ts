@@ -47,9 +47,12 @@ export function splitAndSort(text: string): string {
 
 export function splitAndTrim(
   stringToSplit: string,
-  separator: string,
+  separator: string | RegExp,
 ): string[] {
-  return stringToSplit.split(separator).map(function (item) {
-    return item.replace(newLineRegex, ' ').trim();
-  });
+  return stringToSplit
+    .split(separator)
+    .map(function (item) {
+      return item.replace(newLineRegex, ' ').trim();
+    })
+    .filter(item => item !== '');
 }

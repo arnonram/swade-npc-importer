@@ -12,7 +12,9 @@ import {
 import { getArmorBonus } from '../utils/parserBuilderHelpers.js';
 import { getModuleSettings } from '../utils/foundryActions.js';
 
-export async function specialAbilitiesParser(specialAbilitiesData) {
+export async function specialAbilitiesParser(
+  specialAbilitiesData: Record<string, string> | undefined,
+) {
   const meleeDamageRegex = new RegExp(
     `${game.i18n?.localize('npcImporter.parser.Str')}\\.|${game.i18n?.localize(
       'npcImporter.parser.Str',
@@ -66,7 +68,7 @@ export async function specialAbilitiesParser(specialAbilitiesData) {
             await weaponBuilder({
               weaponName: elem,
               weaponDescription: specialAbilitiesData[elem],
-              weaponDamage: meleeDamage[0],
+              weaponDamage: meleeDamage ? meleeDamage[0] : '',
             }),
           );
         } else {

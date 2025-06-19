@@ -10,8 +10,9 @@ export async function buildActorItems(parsedData: ParsedActor) {
   let hindrances =
     (await itemBuilder.hindranceBuilder(parsedData.hindrances)) ?? [];
   let powers = (await itemBuilder.powerBuilder(parsedData.powers ?? [])) ?? [];
-  let specialAbilities =
-    (await specialAbilitiesParser(parsedData.specialabilities)) ?? [];
+  let specialAbilities = await specialAbilitiesParser(
+    parsedData.specialAbilities,
+  );
   let gear = (await itemGearBuilder(parsedData.gear)) ?? [];
 
   items = items.concat(

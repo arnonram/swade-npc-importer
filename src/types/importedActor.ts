@@ -2,7 +2,7 @@ export interface ParsedActor {
   name: string;
   biography?: string;
   attributes: Attributes;
-  skills?: Record<string, Trait>;
+  skills?: Record<string, ImportedDie>;
   pace?: number;
   parry?: number;
   toughness?: number;
@@ -18,14 +18,33 @@ export interface ParsedActor {
 }
 
 export interface Attributes {
-  agility: Trait;
-  smarts: Trait & { animal?: boolean };
-  spirit: Trait;
-  strength: Trait;
-  vigor: Trait;
+  agility: {
+    die: ImportedDie;
+  };
+  smarts: {
+    die: ImportedDie;
+    animal: boolean;
+  };
+  spirit: {
+    die: ImportedDie;
+    unShakeBonus?: number;
+  };
+  strength: {
+    die: ImportedDie;
+    encumbranceSteps?: number;
+  };
+  vigor: {
+    die: ImportedDie;
+    unStunBonus?: number;
+    soakBonus?: number;
+    bleedOut?: {
+      modifier: number;
+      ignoreWounds: boolean;
+    };
+  };
 }
 
-export interface Trait {
+export interface ImportedDie {
   sides: number;
   modifier: number;
 }

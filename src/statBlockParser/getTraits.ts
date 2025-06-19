@@ -1,4 +1,4 @@
-import { Attributes, Trait } from '../types/importedActor';
+import { Attributes, ImportedDie } from '../types/importedActor';
 import { splitAndTrim } from '../utils/textUtils';
 
 export function getAttributes(sections: string[]): Attributes {
@@ -16,68 +16,88 @@ export function getAttributes(sections: string[]): Attributes {
   attrSection = attrSection.replace('(A)', '');
   let attributes = splitAndTrim(attrSection.replace(attrTranslation, ''), ',');
 
-  let attr: Partial<Attributes> = {};
+  const attr: Attributes = {
+    agility: {
+      die: buildTraitDie(
+        (
+          attributes.find(x =>
+            x
+              .toLowerCase()
+              .startsWith(
+                game.i18n
+                  ?.localize('npcImporter.parser.Agility')
+                  .toLowerCase() || '',
+              ),
+          ) || ''
+        ).trim(),
+      ),
+    },
+    smarts: {
+      die: buildTraitDie(
+        (
+          attributes.find(x =>
+            x
+              .toLowerCase()
+              .startsWith(
+                game.i18n
+                  ?.localize('npcImporter.parser.Smarts')
+                  .toLowerCase() || '',
+              ),
+          ) || ''
+        ).trim(),
+      ),
+      animal: isAnimal,
+    },
+    spirit: {
+      die: buildTraitDie(
+        (
+          attributes.find(x =>
+            x
+              .toLowerCase()
+              .startsWith(
+                game.i18n
+                  ?.localize('npcImporter.parser.Spirit')
+                  .toLowerCase() || '',
+              ),
+          ) || ''
+        ).trim(),
+      ),
+    },
+    strength: {
+      die: buildTraitDie(
+        (
+          attributes.find(x =>
+            x
+              .toLowerCase()
+              .startsWith(
+                game.i18n
+                  ?.localize('npcImporter.parser.Strength')
+                  .toLowerCase() || '',
+              ),
+          ) || ''
+        ).trim(),
+      ),
+    },
+    vigor: {
+      die: buildTraitDie(
+        (
+          attributes.find(x =>
+            x
+              .toLowerCase()
+              .startsWith(
+                game.i18n?.localize('npcImporter.parser.Vigor').toLowerCase() ||
+                  '',
+              ),
+          ) || ''
+        ).trim(),
+      ),
+    },
+  };
 
-  attributes.forEach(singleTrait => {
-    const traitName = singleTrait.split(' ')[0].trim().toLowerCase();
-    switch (traitName) {
-      case game.i18n?.localize('npcImporter.parser.Agility').toLowerCase():
-        attr.agility = buildTrait(
-          singleTrait
-            .replace(
-              game.i18n?.localize('npcImporter.parser.Agility') as string,
-              '',
-            )
-            .trim(),
-        );
-
-      case game.i18n?.localize('npcImporter.parser.Smarts').toLowerCase():
-        attr.smarts = buildTrait(
-          singleTrait
-            .replace(
-              game.i18n?.localize('npcImporter.parser.Smarts') as string,
-              '',
-            )
-            .trim(),
-        );
-        attr.smarts.animal = isAnimal;
-
-      case game.i18n?.localize('npcImporter.parser.Spirit').toLowerCase():
-        attr.spirit = buildTrait(
-          singleTrait
-            .replace(
-              game.i18n?.localize('npcImporter.parser.Spirit') as string,
-              '',
-            )
-            .trim(),
-        );
-
-      case game.i18n?.localize('npcImporter.parser.Strength').toLowerCase():
-        attr.strength = buildTrait(
-          singleTrait
-            .replace(
-              game.i18n?.localize('npcImporter.parser.Strength') as string,
-              '',
-            )
-            .trim(),
-        );
-
-      case game.i18n?.localize('npcImporter.parser.Vigor').toLowerCase():
-        attr.vigor = buildTrait(
-          singleTrait
-            .replace(
-              game.i18n?.localize('npcImporter.parser.Vigor') as string,
-              '',
-            )
-            .trim(),
-        );
-    }
-  });
-
-  return attr as Attributes;
+  return attr;
 }
 
-export function getSkills(sections: string[]): { [key: string]: Trait } {
+export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
   let trait = new RegExp(
     `${game.i18n?.localize('npcImporter.parser.Skills')}:`,
     'i',
@@ -86,7 +106,7 @@ export function getSkills(sections: string[]): { [key: string]: Trait } {
   let skills = skillsSection
     ? splitAndTrim(skillsSection.replace(trait, ''), ',')
     : [];
-  let skillsDict: { [key: string]: Trait } = {};
+  let skillsDict: { [key: string]: ImportedDie } = {};
   skills.forEach(singleTrait => {
     const matchResult = singleTrait.match(
       new RegExp(game.i18n?.localize('npcImporter.regex.dice') || '', 'i'),
@@ -98,13 +118,13 @@ export function getSkills(sections: string[]): { [key: string]: Trait } {
       .replace(' )', ')');
     if (traitName) {
       skillsDict[traitName.toLowerCase().replace(':', '').replace('.', '')] =
-        buildTrait(diceAndMode);
+        buildTraitDie(diceAndMode);
     }
   });
   return skillsDict;
 }
 
-function buildTrait(data: string): Trait {
+function buildTraitDie(data: string): ImportedDie {
   let diceAndMode = '';
   try {
     const diceRegex = game.i18n?.localize('npcImporter.regex.dice') || '';
@@ -122,9 +142,8 @@ function buildTrait(data: string): Trait {
     : diceAndMode.includes('-')
       ? `-${diceAndMode.split('-')[1]}`
       : '0';
-  var trait: Trait = {
+  return {
     sides: parseInt(traitDice.trim().replace(/[A-Za-z]/i, '')),
     modifier: parseInt(traitMod.trim()),
   };
-  return trait;
 }

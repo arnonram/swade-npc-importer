@@ -57,7 +57,7 @@ export const buildActorData = async function (
   return system;
 };
 
-function generateAttributes(parsedData) {
+function generateAttributes(parsedData: ParsedActor) {
   let attributesData = parsedData.attributes;
 
   let unShakeBonus = findUnshakeBonus(parsedData);
@@ -65,11 +65,11 @@ function generateAttributes(parsedData) {
     attributesData.spirit.unShakeBonus = unShakeBonus;
   }
 
-  delete attributesData.animalSmarts;
+  // delete attributesData.animalSmarts; TODO: why?
   return attributesData;
 }
 
-async function buildAdditionalStats(parsedData) {
+async function buildAdditionalStats(parsedData: ParsedActor) {
   let additionalStats = {};
   let actorSystemStats = getActorAddtionalStatsArray();
   actorSystemStats.forEach(element => {
@@ -82,7 +82,7 @@ async function buildAdditionalStats(parsedData) {
   return additionalStats;
 }
 
-function calculateBennies(isWildCard, actorType) {
+function calculateBennies(isWildCard: boolean, actorType: string) {
   let numOfBennies = 0;
   if (isWildCard && actorType === 'npc') {
     numOfBennies = getModuleSettings(settingNumberOfBennies);
@@ -96,7 +96,11 @@ function calculateBennies(isWildCard, actorType) {
   };
 }
 
-function calculateWoundMod(size, isWildCard, specialAbs) {
+function calculateWoundMod(
+  size: number = 0,
+  isWildCard: boolean,
+  specialAbs: any,
+) {
   var baseWounds = isWildCard ? 3 : 0;
   if (getModuleSettings(settingCalculateAdditionalWounds)) {
     if (size >= 4 && size <= 7) {
@@ -133,14 +137,14 @@ function calculateWoundMod(size, isWildCard, specialAbs) {
   return baseWounds;
 }
 
-function initiativeMod(parsedData) {
+function initiativeMod(parsedData: ParsedActor) {
   let hasHesitant = false;
   let hasLevelHeaded = false;
   let hasImpLevelHeaded = false;
   let hasQuick = false;
 
   if (parsedData.edges != undefined) {
-    parsedData.edges.forEach(element => {
+    parsedData.edges.forEach((element: string | undefined) => {
       if (
         element === game.i18n?.localize('npcImporter.parser.LevelHeadedImp')
       ) {
@@ -156,7 +160,7 @@ function initiativeMod(parsedData) {
     });
   }
   if (parsedData.hindrances != undefined) {
-    parsedData.hindrances.forEach(element => {
+    parsedData.hindrances.forEach((element: string | undefined) => {
       if (element === game.i18n?.localize('npcImporter.parser.Hesitant')) {
         hasHesitant = true;
       }
@@ -170,7 +174,7 @@ function initiativeMod(parsedData) {
   };
 }
 
-function findRunningDie(parsedData) {
+function findRunningDie(parsedData: ParsedActor) {
   let runningDie = 6;
 
   try {
@@ -196,26 +200,28 @@ function findRunningDie(parsedData) {
         );
       }
     }
-    parsedData.edges.forEach(edge => {
+    for (const edge in parsedData.edges) {
       if (
         edge
           .toLowerCase()
           .includes(
-            game.i18n?.localize('npcImporter.parser.FleetFooted').toLowerCase(),
+            game.i18n
+              ?.localize('npcImporter.parser.FleetFooted')
+              .toLowerCase() as string,
           )
       ) {
         runningDie += 2;
       }
-    });
+    }
   } catch (error) {}
 
   return runningDie;
 }
 
-function findRunningMod(parsedData) {
+function findRunningMod(parsedData: ParsedActor) {
   try {
     let runningMode = 0;
-    parsedData.edges.forEach(edge => {
+    parsedData.edges.forEach((edge: string) => {
       if (
         edge
           .toLowerCase()
@@ -230,7 +236,7 @@ function findRunningMod(parsedData) {
   } catch (error) {}
 }
 
-function calculateIgnoredWounds(parsedData) {
+function calculateIgnoredWounds(parsedData: ParsedActor) {
   let bonusTotal = 0;
   if (getModuleSettings(settingCalculateIgnoredWounds)) {
     const ignoreWound = [
@@ -252,7 +258,7 @@ function calculateIgnoredWounds(parsedData) {
   return bonusTotal;
 }
 
-function findUnshakeBonus(parsedData) {
+function findUnshakeBonus(parsedData: ParsedActor) {
   const unshakeBonus = [
     game.i18n?.localize('npcImporter.parser.Undead'),
     game.i18n?.localize('npcImporter.parser.Construct'),
@@ -281,7 +287,7 @@ function findUnshakeBonus(parsedData) {
   return bonusTotal;
 }
 
-function toughnessBonus(parsedData) {
+function toughnessBonus(parsedData: ParsedActor) {
   const toughnessBonus = [
     game.i18n?.localize('npcImporter.parser.Undead'),
     game.i18n?.localize('npcImporter.parser.Brawny'),
@@ -300,7 +306,7 @@ function toughnessBonus(parsedData) {
   }
 
   if (parsedData.ddges != undefined) {
-    parsedData.ddges.forEach(edge => {
+    parsedData.ddges.forEach((edge: string) => {
       if (toughnessBonus.includes(edge.toLowerCase())) {
         bonusTotal += 1;
       }

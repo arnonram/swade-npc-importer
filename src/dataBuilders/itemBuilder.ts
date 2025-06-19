@@ -33,8 +33,8 @@ export async function skillBuilder(skillsDict) {
             attribute: item?.system?.attribute ?? '',
             isCoreSkill: isCore,
             die: {
-              sides: skillsDict[skillName].die.sides,
-              modifier: skillsDict[skillName].die.modifier,
+              sides: skillsDict[skillName].sides,
+              modifier: skillsDict[skillName].modifier,
             },
           },
           effects: item?.effects?.toJSON() ?? [],
