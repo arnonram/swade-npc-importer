@@ -18,10 +18,10 @@ export async function statBlockParser(
   rarStatBlock: string,
 ): Promise<ParsedActor> {
   try {
-    Logger.info(`Starting statblock parsing`);
+    Logger.info('Starting statblock parsing');
 
-    let sections = getSections(rarStatBlock);
-    var importedActor: ParsedActor = {
+    const sections = getSections(rarStatBlock);
+    let importedActor: ParsedActor = {
       name: getName(rarStatBlock),
       biography: getBio(rarStatBlock, sections),
       attributes: getAttributes(sections),
@@ -53,7 +53,7 @@ export async function statBlockParser(
     Logger.info(`Parsed data: ${JSON.stringify(importedActor, null, 4)}`);
     return importedActor;
   } catch (error) {
-    Logger.error(`Failed to parse: ${error}`);
+    Logger.error('Failed to parse:', error);
     ui.notifications?.error(
       game.i18n?.localize('npcImporter.parser.NotValidStablock') as string,
     );
