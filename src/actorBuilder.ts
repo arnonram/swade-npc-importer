@@ -23,57 +23,51 @@ export async function buildActor(
   importSettings: ImportSettings,
   textBoxStatBlock: string,
 ): Promise<void> {
-  const rawStatBlock = textBoxStatBlock
-    ? textBoxStatBlock
-    : await getClipboardText();
-  if (rawStatBlock) {
-    await setAllPacks();
-    const currentLang = game.i18n?.lang ?? 'en';
-    await setParsingLanguage(getModuleSettings(settingParaeLanguage));
-    await updateModuleSetting(settingLastSaveFolder, importSettings.saveFolder);
-
-    try {
-      const parsedActor = await statBlockParser(rawStatBlock);
-      const finalActor = await generateSwadeActorData(
-        parsedActor,
-        importSettings,
-      );
-      await actorImporter(finalActor);
-    } catch (error) {
-      Logger.error('Failed to build finalActor: ', error);
-    } finally {
-      await setParsingLanguage(currentLang);
-      resetAllPacks();
-    }
-  } else {
+  const rawStatBlock = textBoxStatBlock || (await getClipboardText());
+  if (!rawStatBlock) {
     ui.notifications?.error(
       game.i18n?.localize('npcImporter.parser.EmptyClipboard') as string,
     );
+    return;
+  }
+
+  await setAllPacks();
+  const currentLang = game.i18n?.lang ?? 'en';
+  await setParsingLanguage(getModuleSettings(settingParaeLanguage));
+  await updateModuleSetting(settingLastSaveFolder, importSettings.saveFolder);
+
+  try {
+    const parsedActor = await statBlockParser(rawStatBlock);
+    const finalActor = await generateSwadeActorData(
+      parsedActor,
+      importSettings,
+    );
+    await actorImporter(finalActor);
+  } catch (error) {
+    Logger.error('Failed to build finalActor: ', error);
+    ui.notifications?.error('Failed to build actor. See console for details.');
+  } finally {
+    await setParsingLanguage(currentLang);
+    resetAllPacks();
   }
 }
 
 async function getClipboardText(): Promise<string> {
-  return await navigator.clipboard.readText();
+  return navigator.clipboard.readText();
 }
 
 async function generateSwadeActorData(
   parsedData: ParsedActor,
   importSettings: ImportSettings,
 ): Promise<SwadeActorToImport> {
-  var finalActor: SwadeActorToImport = {
+  const { actorType, saveFolder, isWildCard, tokenSettings } = importSettings;
+  const finalActor: SwadeActorToImport = {
     name: parsedData.name,
-    type: importSettings.actorType,
-    folder: importSettings.saveFolder,
-    system: await buildActorData(
-      parsedData,
-      importSettings.isWildCard == 'true',
-      importSettings.actorType,
-    ),
+    type: actorType,
+    folder: saveFolder,
+    system: await buildActorData(parsedData, isWildCard === 'true', actorType),
     items: await buildActorItems(parsedData),
-    prototypeToken: await buildActorToken(
-      parsedData,
-      importSettings.tokenSettings,
-    ),
+    prototypeToken: await buildActorToken(parsedData, tokenSettings),
     flags: { importerApp: getImporterModuleData() },
   };
 

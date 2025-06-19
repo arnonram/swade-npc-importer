@@ -1,5 +1,5 @@
 import { Import, GetActorId, DeleteActor } from './utils/foundryActions';
-import { ParsedActor, SwadeActorToImport } from './types/importedActor';
+import { SwadeActorToImport } from './types/importedActor';
 import { Logger } from './utils/logger';
 
 export async function actorImporter(
@@ -30,7 +30,7 @@ async function whatToDo(
         <input type="text" id="newName" name="newName" value="${
           actorData.name ?? ''
         }">
-    </dev>
+    </div>
     <br/>
     `;
 
