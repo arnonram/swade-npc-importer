@@ -1,16 +1,17 @@
 import { armorModRegex, gearParsingRegex, newLineRegex } from '../global';
 import { getBonus, getArmorBonus } from '../utils/parserBuilderHelpers';
 
+/**
+ * Parses the gear section from stat block sections.
+ */
 export async function getGear(
   sections: string[],
 ): Promise<Record<string, any>> {
-  let gearString = new RegExp(
+  const gearString = new RegExp(
     `${game.i18n?.localize('npcImporter.parser.Gear')}:`,
     'i',
   );
-
-  let characterGear: string[] = [];
-  let foundGearLine = sections.find(x => x.match(gearString));
+  const foundGearLine = sections.find(x => x.match(gearString));
   if (!foundGearLine) {
     return { Gear: {} };
   }
@@ -18,11 +19,13 @@ export async function getGear(
     .replace(newLineRegex, ' ')
     .replace(gearString, '')
     .trim();
+
+  const characterGear: string[] = [];
   while (gearLine.length > 1) {
     if (gearParsingRegex.test(gearLine)) {
       const matchResult = gearLine.match(gearParsingRegex);
       if (matchResult && matchResult[0]) {
-        let match = matchResult[0];
+        const match = matchResult[0];
         characterGear.push(match.trim());
         gearLine = gearLine.replace(match, '');
       } else {
@@ -38,30 +41,31 @@ export async function getGear(
   return parseGear(characterGear);
 }
 
-async function parseGear(gearArray: string[]): Promise<Record<string, any>> {
-  let parryRegex = new RegExp(
+/**
+ * Parses an array of gear strings into a gear dictionary.
+ */
+function parseGear(gearArray: string[]): Record<string, any> {
+  const parryRegex = new RegExp(
     `([+-])\\d+ ${game.i18n?.localize(
       'npcImporter.parser.Parry',
     )}|${game.i18n?.localize('npcImporter.parser.Parry')} ([+-])\\d+`,
   );
 
-  let gearDict: Record<string, any> = {};
-  gearArray.forEach(async gear => {
-    let splitGear = gear.replace(')', '').split('(');
+  const gearDict: Record<string, any> = {};
+  for (const gear of gearArray) {
+    const splitGear = gear.replace(')', '').split('(');
 
-    // normal gear
-    if (splitGear.length == 1) {
-      let normalGear = splitGear[0];
-      if (normalGear != '.') {
-        if (normalGear.slice(-1) == ',' || normalGear.slice(-1) == '.') {
-          normalGear = normalGear.replace(',', '').replace('.', '');
-        }
-
+    // Normal gear
+    if (splitGear.length === 1) {
+      let normalGear = splitGear[0].replace(/[.,]$/, '');
+      if (normalGear !== '.') {
         gearDict[normalGear.trim()] = null;
       }
+      continue;
     }
-    // parse weapon
-    else if (
+
+    // Weapon
+    if (
       splitGear[1] &&
       (splitGear[1].includes(
         game.i18n?.localize('npcImporter.parser.Str') as string,
@@ -73,13 +77,13 @@ async function parseGear(gearArray: string[]): Promise<Record<string, any>> {
         splitGear[1]
           .split(',')
           .filter(n => n)
-          .map(function (x) {
-            return x.trim();
-          }),
+          .map(x => x.trim()),
       );
+      continue;
     }
-    // check if shield
-    else if (
+
+    // Shield
+    if (
       parryRegex.test(splitGear[1]) ||
       splitGear[0]
         .toLowerCase()
@@ -89,49 +93,57 @@ async function parseGear(gearArray: string[]): Promise<Record<string, any>> {
           ).toLowerCase(),
         )
     ) {
-      let parry = getBonus(splitGear[1], 'parry');
-      let cover = getBonus(splitGear[1], 'cover');
+      const parry = getBonus(splitGear[1], 'parry');
+      const cover = getBonus(splitGear[1], 'cover');
       gearDict[splitGear[0].trim()] = { parry, cover };
+      continue;
     }
-    // check if armor
-    else if (
+
+    // Armor
+    if (
       armorModRegex.test(splitGear[1]) ||
       splitGear[0]
         .toLowerCase()
-        .includes(game.i18n?.localize('npcImporter.parser.Armor') as string)
+        .includes(
+          (game.i18n?.localize('npcImporter.parser.Armor') || '').toLowerCase(),
+        )
     ) {
       gearDict[splitGear[0].trim()] = {
         armorBonus: getArmorBonus(splitGear[1]),
       };
+      continue;
     }
-  });
+  }
   return gearDict;
 }
 
-function weaponParser(weapon: string[]): any {
-  let weaponStats: { [key: string]: any } = {};
-  weapon.forEach(stat => {
-    if (new RegExp('^Str', 'i').test(stat)) {
+/**
+ * Parses weapon stats from an array of weapon strings.
+ */
+function weaponParser(weapon: string[]): Record<string, any> {
+  const weaponStats: Record<string, any> = {};
+  for (const stat of weapon) {
+    if (/^Str/i.test(stat)) {
       weaponStats.damage = stat;
-    } else {
-      if (
-        stat.includes(
+    } else if (
+      stat
+        .toLowerCase()
+        .includes(
           (game.i18n?.localize('npcImporter.parser.Shots') || '').toLowerCase(),
         )
-      ) {
-        weaponStats['shots'] = stat
-          .replace(game.i18n?.localize('npcImporter.parser.Shots') || '', '')
+    ) {
+      weaponStats['shots'] = stat
+        .replace(game.i18n?.localize('npcImporter.parser.Shots') || '', '')
+        .trim();
+    } else if (/^[A-Za-z]+/.test(stat)) {
+      const match = stat.match(/^[A-Za-z]+/);
+      if (match && match[0]) {
+        const statName = match[0];
+        weaponStats[statName.toLowerCase().trim()] = stat
+          .replace(statName, '')
           .trim();
-      } else if (stat.match(new RegExp('^[A-Za-z]+'))) {
-        const match = stat.match(new RegExp('^[A-Za-z]+'));
-        if (match && match[0]) {
-          let statName = match[0];
-          weaponStats[statName.toLowerCase().trim()] = stat
-            .replace(statName, '')
-            .trim();
-        }
       }
     }
-  });
+  }
   return weaponStats;
 }
