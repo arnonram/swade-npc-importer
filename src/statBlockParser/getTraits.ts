@@ -2,99 +2,51 @@ import { Attributes, ImportedDie } from '../types/importedActor';
 import { splitAndTrim } from '../utils/textUtils';
 
 export function getAttributes(sections: string[]): Attributes {
-  const attrTranslation = new RegExp(
-    `${game.i18n?.localize('npcImporter.parser.Attributes')}:`,
-    'i',
-  );
-
+  const attrLabel =
+    game.i18n?.localize('npcImporter.parser.Attributes') || 'Attributes';
+  const attrTranslation = new RegExp(`${attrLabel}:`, 'i');
   let attrSection = sections.find(x => x.match(attrTranslation));
-  if (!attrSection) {
-    return {} as Attributes;
-  }
+  if (!attrSection) return {} as Attributes;
 
   const isAnimal = attrSection.includes('(A)');
   attrSection = attrSection.replace('(A)', '');
-  let attributes = splitAndTrim(attrSection.replace(attrTranslation, ''), ',');
+  const attributes = splitAndTrim(
+    attrSection.replace(attrTranslation, ''),
+    ',',
+  );
 
-  const attr: Attributes = {
-    agility: {
-      die: buildTraitDie(
-        (
-          attributes.find(x =>
-            x
-              .toLowerCase()
-              .startsWith(
-                game.i18n
-                  ?.localize('npcImporter.parser.Agility')
-                  .toLowerCase() || '',
-              ),
-          ) || ''
-        ).trim(),
-      ),
+  const attrKeys = [
+    {
+      key: 'agility',
+      label: game.i18n?.localize('npcImporter.parser.Agility') || 'Agility',
     },
-    smarts: {
-      die: buildTraitDie(
-        (
-          attributes.find(x =>
-            x
-              .toLowerCase()
-              .startsWith(
-                game.i18n
-                  ?.localize('npcImporter.parser.Smarts')
-                  .toLowerCase() || '',
-              ),
-          ) || ''
-        ).trim(),
-      ),
-      animal: isAnimal,
+    {
+      key: 'smarts',
+      label: game.i18n?.localize('npcImporter.parser.Smarts') || 'Smarts',
     },
-    spirit: {
-      die: buildTraitDie(
-        (
-          attributes.find(x =>
-            x
-              .toLowerCase()
-              .startsWith(
-                game.i18n
-                  ?.localize('npcImporter.parser.Spirit')
-                  .toLowerCase() || '',
-              ),
-          ) || ''
-        ).trim(),
-      ),
+    {
+      key: 'spirit',
+      label: game.i18n?.localize('npcImporter.parser.Spirit') || 'Spirit',
     },
-    strength: {
-      die: buildTraitDie(
-        (
-          attributes.find(x =>
-            x
-              .toLowerCase()
-              .startsWith(
-                game.i18n
-                  ?.localize('npcImporter.parser.Strength')
-                  .toLowerCase() || '',
-              ),
-          ) || ''
-        ).trim(),
-      ),
+    {
+      key: 'strength',
+      label: game.i18n?.localize('npcImporter.parser.Strength') || 'Strength',
     },
-    vigor: {
-      die: buildTraitDie(
-        (
-          attributes.find(x =>
-            x
-              .toLowerCase()
-              .startsWith(
-                game.i18n?.localize('npcImporter.parser.Vigor').toLowerCase() ||
-                  '',
-              ),
-          ) || ''
-        ).trim(),
-      ),
+    {
+      key: 'vigor',
+      label: game.i18n?.localize('npcImporter.parser.Vigor') || 'Vigor',
     },
-  };
+  ];
 
-  return attr;
+  const attr: any = {};
+  for (const { key, label } of attrKeys) {
+    const found =
+      attributes.find(x => x.toLowerCase().startsWith(label.toLowerCase())) ||
+      '';
+    attr[key] = { die: buildTraitDie(found.trim()) };
+  }
+  attr.smarts.animal = isAnimal;
+  return attr as Attributes;
 }
 
 export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
@@ -127,11 +79,12 @@ export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
 function buildTraitDie(data: string): ImportedDie {
   let diceAndMode = '';
   try {
-    const diceRegex = game.i18n?.localize('npcImporter.regex.dice') || '';
+    const diceRegex =
+      game.i18n?.localize('npcImporter.regex.dice') || '\\d+d\\d+';
     const matchResult = data.match(new RegExp(diceRegex, 'i'));
     diceAndMode = matchResult ? matchResult[0].toString() : '';
   } catch (error) {
-    diceAndMode = '1'; // usually will be 1, if not then we'll need to think about it.
+    diceAndMode = '1';
   }
 
   let traitDice = diceAndMode.includes('+')
@@ -142,8 +95,9 @@ function buildTraitDie(data: string): ImportedDie {
     : diceAndMode.includes('-')
       ? `-${diceAndMode.split('-')[1]}`
       : '0';
-  return {
-    sides: parseInt(traitDice.trim().replace(/[A-Za-z]/i, '')),
-    modifier: parseInt(traitMod.trim()),
-  };
+
+  const sides = parseInt(traitDice.trim().replace(/[A-Za-z]/gi, '')) || 0;
+  const modifier = parseInt(traitMod.trim()) || 0;
+
+  return { sides, modifier };
 }

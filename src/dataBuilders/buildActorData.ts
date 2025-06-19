@@ -20,20 +20,25 @@ export const buildActorData = async function (
 
   (system.attributes = generateAttributes(parsedData)),
     (system.stats = {
+      toughness: {
+        value: parsedData.toughness,
+        modifier: toughnessBonus(parsedData),
+        armor: 0, //TODO
+      },
+      parry: {
+        value: parsedData.parry,
+        shield: 0, //TODO
+        modifier: 0, //TODO
+      },
+      size: parsedData.size,
       speed: {
         runningDie: findRunningDie(parsedData),
         runningMod: findRunningMod(parsedData),
         value: parsedData.pace,
       },
-      toughness: {
-        value: parsedData.toughness,
-        modifier: toughnessBonus(parsedData),
-      },
-      parry: { value: parsedData.parry },
-      size: parsedData.size,
     });
   system.details = {
-    biography: parsedData.biography,
+    biography: { value: parsedData.biography },
     autoCalcToughness: getModuleSettings(settingAutoCalcToughness),
   };
   system.powerPoints = {
@@ -54,6 +59,18 @@ export const buildActorData = async function (
   system.wildcard = isWildCard;
   system.additionalStats = await buildAdditionalStats(parsedData);
   system.bennies = calculateBennies(isWildCard, actorType);
+  system.pace = {
+    //TODO: find all the other pace methods
+    base: 'ground',
+    ground: parsedData.pace,
+    fly: null,
+    swim: null,
+    burrow: null,
+    running: {
+      die: findRunningDie(parsedData),
+      mod: findRunningMod(parsedData),
+    },
+  };
   return system;
 };
 
@@ -221,12 +238,14 @@ function findRunningDie(parsedData: ParsedActor) {
 function findRunningMod(parsedData: ParsedActor) {
   try {
     let runningMode = 0;
-    parsedData.edges.forEach((edge: string) => {
+    parsedData.edges?.forEach((edge: string) => {
       if (
         edge
           .toLowerCase()
           .includes(
-            game.i18n?.localize('npcImporter.parser.FleetFooted').toLowerCase(),
+            game.i18n
+              ?.localize('npcImporter.parser.FleetFooted')
+              .toLowerCase() || '',
           )
       ) {
         runningMode += 2;

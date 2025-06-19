@@ -46,7 +46,8 @@ export function powerPointsFromSpecialAbility(
 }
 
 function getStatNumber(data: string): number {
-  return parseInt(data.split(':')[1].replace(';', '').trim());
+  const num = parseInt(data.split(':')[1].replace(';', '').trim());
+  return isNaN(num) ? 0 : num;
 }
 
 export enum DerivedStatType {

@@ -1,36 +1,44 @@
 import { capitalizeEveryWord } from '../utils/textUtils';
 import { newLineRegex } from '../global';
 
-export function getName(rawData: string): string {
-  let nameAndDescription = rawData
-    .split(game.i18n?.localize('npcImporter.parser.Attributes') as string)[0]
-    .trim();
-  let lines = nameAndDescription.split(newLineRegex);
-  return capitalizeEveryWord(lines[0].trim());
+function extractNameAndDescription(rawData: string): string[] {
+  const attrLabel =
+    game.i18n?.localize('npcImporter.parser.Attributes') || 'Attributes';
+  const nameAndDescription = rawData.split(attrLabel)[0].trim();
+  return nameAndDescription.split(newLineRegex);
 }
 
-export function getBio(rawData: string, sections: string[]): string {
-  let nameAndDescription = rawData
-    .split(game.i18n?.localize('npcImporter.parser.Attributes') as string)[0]
-    .trim();
-  let lines = nameAndDescription.split(newLineRegex);
-  lines.shift();
-  let bio = '';
-  lines.forEach(line => {
-    if (line.trim().endsWith('.')) {
-      line = line + '<br/>';
-    }
-    bio += `${line} `;
-  });
+/**
+ * Extracts and capitalizes the name from the raw stat block.
+ */
+export function getName(rawData: string): string {
+  const lines = extractNameAndDescription(rawData);
+  return capitalizeEveryWord((lines[0] || '').trim());
+}
 
+/**
+ * Extracts the biography from the raw stat block and appends conviction if present.
+ */
+export function getBio(rawData: string, sections: string[]): string {
+  const lines = extractNameAndDescription(rawData);
+  const bioLines = lines
+    .slice(1)
+    .map(line => {
+      const trimmed = line.trim();
+      return trimmed
+        ? trimmed.endsWith('.')
+          ? trimmed + '<br/>'
+          : trimmed
+        : '';
+    })
+    .filter(Boolean);
+  const bio = bioLines.join(' ').trim();
   return getConviction(sections, bio);
 }
 
 function getConviction(sections: string[], biography: string): string {
-  const conviction = sections.find(x =>
-    x.startsWith(
-      game.i18n?.localize('npcImporter.parser.Conviction') as string,
-    ),
-  );
+  const convictionLabel =
+    game.i18n?.localize('npcImporter.parser.Conviction') || 'Conviction';
+  const conviction = sections.find(x => x.startsWith(convictionLabel));
   return conviction ? `${conviction}<hr>${biography}` : biography;
 }
