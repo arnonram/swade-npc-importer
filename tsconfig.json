@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "types": ["@types/fvtt-types"],
+    "types": ["@types/fvtt-types", "vitest/globals"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "outDir": "dist",
     "moduleResolution": "bundler",
     "target": "esnext",

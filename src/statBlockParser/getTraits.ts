@@ -1,3 +1,4 @@
+import { Logger } from '@/utils/logger';
 import { Attributes, ImportedDie } from '../types/importedActor';
 import { splitAndTrim } from '../utils/textUtils';
 
@@ -63,6 +64,13 @@ export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
     const matchResult = singleTrait.match(
       new RegExp(game.i18n?.localize('npcImporter.regex.dice') || '', 'i'),
     );
+    if (!matchResult) {
+      Logger.warn(
+        `Following trait was not imported since it was malformed: ${singleTrait}`,
+      );
+      return;
+    }
+
     let diceAndMode = matchResult ? matchResult[0].toString() : '';
     let traitName = singleTrait
       .replace(diceAndMode, '')
@@ -81,7 +89,7 @@ function buildTraitDie(data: string): ImportedDie {
   try {
     const diceRegex =
       game.i18n?.localize('npcImporter.regex.dice') || '\\d+d\\d+';
-    const matchResult = data.match(new RegExp(diceRegex, 'i'));
+    const matchResult = data.match(new RegExp(diceRegex));
     diceAndMode = matchResult ? matchResult[0].toString() : '';
   } catch (error) {
     diceAndMode = '1';
