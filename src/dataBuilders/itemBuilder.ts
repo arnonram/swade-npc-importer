@@ -198,11 +198,11 @@ export async function powerBuilder(powers: string[]) {
         powerName = powers[i].replace(powerTrapping[0], '').trim();
       }
 
-      let item = await getItemFromCompendium(powerName, 'power');
+      let item = await getItemFromCompendium(powerName, ItemType.POWER);
       if (!item || foundry.utils.isEmpty(item.system)) {
         item = await getItemFromCompendium(
           powerName.replace('/', ' / '),
-          'power',
+          ItemType.POWER,
         );
       }
       let system = item?.system ? structuredClone(item.system) : {};
@@ -241,9 +241,9 @@ export async function weaponBuilder(props: WeaponBuilderProps) {
       ),
       '@str',
     )
-    .replace(game.i18n?.localize('npcImporter.parser.dice') as string, 'd');
-  const item = await getItemFromCompendium(props.weaponName, 'weapon');
-  //todo Improve this so that it'll add multiple entries for weapons which are ranged && melee
+    .replace(game.i18n?.localize('npcImporter.parser.dice') || '', 'd');
+  const item = await getItemFromCompendium(props.weaponName, ItemType.WEAPON);
+  //TODO: Improve this so that it'll add multiple entries for weapons which are ranged && melee
   const actions = item?.system?.actions ?? {
     skill: props.range
       ? game.i18n?.localize('npcImporter.parser.Shooting')
@@ -282,7 +282,7 @@ export async function shieldBuilder(
   parry: number = 0,
   cover: number = 0,
 ) {
-  const item = await getItemFromCompendium(shieldName, 'shield');
+  const item = await getItemFromCompendium(shieldName, ItemType.SHIELD);
   try {
     return {
       ...(item ?? ''),
@@ -313,7 +313,7 @@ export async function armorBuilder(
   armorDescription: string,
 ) {
   var cleanName = checkSpecificItem(armorName);
-  const item = await getItemFromCompendium(cleanName, 'armor');
+  const item = await getItemFromCompendium(cleanName, ItemType.ARMOR);
   try {
     return {
       ...(item ?? ''),
@@ -328,6 +328,7 @@ export async function armorBuilder(
         equipStatus: 3,
         equippable: true,
         armor: item?.system?.armor ?? armorBonus,
+        isNaturalArmor: true,
       },
       effects: item?.effects?.toJSON() ?? [],
       flags: item?.flags ?? {},

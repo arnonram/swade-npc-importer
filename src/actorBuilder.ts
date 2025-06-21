@@ -11,6 +11,7 @@ import {
   setAllPacks,
   resetAllPacks,
   getImporterModuleData,
+  getFolderId,
 } from './utils/foundryActions';
 import {
   SwadeActorToImport,
@@ -64,8 +65,8 @@ async function generateSwadeActorData(
   const finalActor: SwadeActorToImport = {
     name: parsedData.name,
     type: actorType,
-    folder: saveFolder,
-    system: await buildActorData(parsedData, isWildCard === 'true', actorType),
+    folder: getFolderId(saveFolder),
+    system: await buildActorData(parsedData, isWildCard, actorType),
     items: await buildActorItems(parsedData),
     prototypeToken: await buildActorToken(parsedData, tokenSettings),
     flags: { importerApp: getImporterModuleData() },

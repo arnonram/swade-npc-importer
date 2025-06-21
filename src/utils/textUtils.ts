@@ -47,3 +47,10 @@ export function splitAndTrim(
     .map(item => item.replace(newLineRegex, ' ').trim())
     .filter(item => item.length > 0);
 }
+
+export function lowerCaseShishKebab(string: string): string {
+  return string
+    .split(/[\s,]+/)[0]
+    .toLowerCase()
+    .replaceAll(' ', '-');
+}

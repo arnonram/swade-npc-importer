@@ -5,7 +5,7 @@ import {
   settingActiveCompendiums,
   allPacks,
 } from '../global.js';
-import { splitAndSort } from './textUtils.js';
+import { lowerCaseShishKebab, splitAndSort } from './textUtils.js';
 import { SwadeActorToImport } from '../types/importedActor.js';
 import {
   foundryI18nFormat,
@@ -14,6 +14,7 @@ import {
   foundryUiInfo,
 } from './foundryWrappers.js';
 import { Logger } from './logger.js';
+import { ItemType } from '../dataBuilders/itemBuilder.js';
 
 export async function setAllPacks(): Promise<void> {
   Logger.info('Getting all active compendiums into allPacks');
@@ -36,25 +37,23 @@ export function resetAllPacks(): void {
 
 export async function getItemFromCompendium(
   itemName: string,
-  expectedType = '',
+  expectedType: ItemType,
 ): Promise<any> {
   const item = splitAndSort(itemName);
+  const itemKebab = item.join('-');
   for (const pack of allPacks) {
     try {
       let resultId: any = '';
-      if (expectedType === 'weapon') {
-        resultId =
-          pack.index.contents.find(
-            (it: any) => splitAndSort(it.name) == item,
-          ) ??
-          pack.index.contents.find((it: any) =>
-            item.join(' ').includes(splitAndSort(it.name).join(' ')),
-          );
+      if (expectedType === ItemType.WEAPON) {
+        resultId = pack.index.contents.find(it => it.system.swid === itemKebab);
+        // ?? pack.index.contents.find(it => it.system.swid.includes(item[0]));
       } else {
         resultId = pack.index.contents.find(
-          (it: any) => splitAndSort(it.name) === item,
+          it =>
+            typeof it.system.swid === 'string' && it.system.swid === itemKebab,
         );
       }
+
       if (resultId !== undefined) {
         const foundItem = await pack.getDocument(resultId['_id']);
         if (foundItem.type === expectedType) {
@@ -62,10 +61,11 @@ export async function getItemFromCompendium(
         }
       }
     } catch (error) {
-      Logger.error(`Error when searching for ${item}:`, error);
+      Logger.error(`Error when searching for ${itemKebab}:`, error);
     }
   }
-  return { system: {} };
+
+  return {};
 }
 
 export function getAllActiveCompendiums(): string[] {

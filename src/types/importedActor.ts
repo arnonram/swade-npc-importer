@@ -51,7 +51,7 @@ export interface ImportedDie {
 
 export interface ImportSettings {
   actorType: string;
-  isWildCard: string;
+  isWildCard: boolean;
   tokenSettings: TokenSettings;
   saveFolder: string;
 }
