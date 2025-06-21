@@ -50,7 +50,10 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
           title: game.i18n?.localize('npcImporter.HTML.ImportTitle') as string,
           resizable: true,
         },
-        content: importerDialogue(),
+        position: {
+          width: 400,
+        },
+        content: importerDialog(),
         buttons: [
           {
             action: 'importActor',
@@ -105,7 +108,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
   }
 });
 
-function importerDialogue(): string {
+function importerDialog(): string {
   const defaultData = {
     actorType: getModuleSettings(settingDefaultActorType),
     isWildcard: getModuleSettings(settingDefaultIsWildcard),

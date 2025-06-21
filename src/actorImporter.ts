@@ -34,11 +34,17 @@ async function whatToDo(
     <br/>
     `;
 
-  new Dialog({
-    title: game.i18n?.localize('npcImporter.HTML.ActorImporter') as string,
+  new foundry.applications.api.DialogV2({
+    window: {
+      title: game.i18n?.localize('npcImporter.HTML.ActorImporter') as string,
+    },
+    position: {
+      width: 400,
+    },
     content: actorExists,
-    buttons: {
-      Import: {
+    buttons: [
+      {
+        action: 'import',
         label: game.i18n?.localize('npcImporter.HTML.Rename') as string,
         callback: async () => {
           let newName = (document.querySelector('#newName') as HTMLInputElement)
@@ -48,15 +54,18 @@ async function whatToDo(
           await Import(actorData);
         },
       },
-      Override: {
+      {
+        action: 'override',
         label: game.i18n?.localize('npcImporter.HTML.Override') as string,
         callback: async () => {
           Logger.info('Overriding existing Actor');
           await DeleteActor(actorId);
           await Import(actorData);
         },
+        default: true,
       },
-      Cancel: {
+      {
+        action: 'cancel',
         label: 'Cancel',
         callback: () => {
           ui.notifications?.info(
@@ -66,6 +75,6 @@ async function whatToDo(
           );
         },
       },
-    },
-  }).render(true);
+    ],
+  }).render({ force: true });
 }

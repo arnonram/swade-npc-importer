@@ -10,7 +10,7 @@ export default class TokenSettings extends FormApplication {
     super(object, options);
   }
 
-  static get defaultOptions() {
+  static override get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: `${thisModule}.tokenSettings`,
       title: foundryI18nLocalize('npcImporter.settings.TokenSettings'),
