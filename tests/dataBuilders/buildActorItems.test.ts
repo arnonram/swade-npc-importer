@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { buildActorItems } from '../../src/dataBuilders/buildActorItems';
 import { ParsedActor } from '../../src/types/importedActor';
-import * as itemBuilder from '../../src/dataBuilders/itemBuilder';
+import * as itemBuilder from '../../src/dataBuilders/itemBuilders';
 import { specialAbilitiesParser } from '../../src/dataBuilders/buildActorItemsSpecialAbilities';
 import { itemGearBuilder } from '../../src/dataBuilders/buildActorGear';
 

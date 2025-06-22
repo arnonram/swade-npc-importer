@@ -4,7 +4,7 @@ import {
   itemBuilderFromSpecAbs,
   ItemType,
   weaponBuilder,
-} from './itemBuilder.js';
+} from './itemBuilders.js';
 import {
   settingallAsSpecialAbilities,
   settingModifiedSpecialAbs,

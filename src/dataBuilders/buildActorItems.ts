@@ -1,4 +1,4 @@
-import * as itemBuilder from './itemBuilder.js';
+import * as itemBuilder from './itemBuilders.js';
 import { specialAbilitiesParser } from './buildActorItemsSpecialAbilities.js';
 import { itemGearBuilder } from './buildActorGear.js';
 import { ParsedActor } from '../types/importedActor.js';

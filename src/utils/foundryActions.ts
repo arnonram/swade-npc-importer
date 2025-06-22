@@ -13,7 +13,7 @@ import {
   foundryUiInfo,
 } from './foundryWrappers.js';
 import { Logger } from './logger.js';
-import { ItemType } from '../dataBuilders/itemBuilder.js';
+import { ItemType } from '../dataBuilders/itemBuilders.js';
 
 // Holds all active compendium packs of type 'Item'
 const allPacks: any[] = [];

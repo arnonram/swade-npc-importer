@@ -3,7 +3,7 @@ import {
   armorBuilder,
   gearBuilder,
   shieldBuilder,
-} from './itemBuilder.js';
+} from './itemBuilders.js';
 
 export async function itemGearBuilder(gear: Record<string, any>) {
   if (!gear || typeof gear !== 'object') return [];

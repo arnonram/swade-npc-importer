@@ -13,7 +13,7 @@ import {
   weaponBuilder,
   armorBuilder,
   shieldBuilder,
-} from '../../src/dataBuilders/itemBuilder';
+} from '../../src/dataBuilders/itemBuilders';
 
 describe('itemGearBuilder', () => {
   beforeEach(() => {
