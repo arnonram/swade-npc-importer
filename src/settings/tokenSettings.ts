@@ -14,7 +14,7 @@ export default class TokenSettings extends FormApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: `${thisModule}.tokenSettings`,
       title: foundryI18nLocalize('npcImporter.settings.TokenSettings'),
-      template: 'modules/swade-npc-importer/templates/TokenSettings.html',
+      template: 'modules/swade-npc-importer/templates/TokenSettings.hbs',
       width: 400,
       closeOnSubmit: true,
     });

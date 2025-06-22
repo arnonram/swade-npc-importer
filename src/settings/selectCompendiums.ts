@@ -23,7 +23,7 @@ export default class SelectCompendiums extends FormApplication {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: `${thisModule}.compendiumsSelector`,
       title: foundryI18nLocalize('npcImporter.settings.CompendiumsSelector'),
-      template: 'modules/swade-npc-importer/templates/CompendiumsToUse.html',
+      template: 'modules/swade-npc-importer/templates/CompendiumsToUse.hbs',
       width: 300,
       closeOnSubmit: true,
     });
