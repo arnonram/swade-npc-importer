@@ -3,7 +3,7 @@ import {
   getArmorBonus,
   getBonus,
 } from '../../src/statBlockParser/parserBuilderHelpers.js';
-import { vi, describe, it, expect } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 describe('GetMeleeDamage', () => {
   it('extracts basic melee damage', () => {
