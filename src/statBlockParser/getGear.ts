@@ -1,6 +1,8 @@
-import { removeEmptyArrayProp } from '@/utils/textUtils';
-import { armorModRegex, gearParsingRegex, newLineRegex } from '../global';
+import { removeEmptyArrayProp } from '../utils/textUtils';
+import { armorModRegex, newLineRegex } from '../global';
 import { getBonus, getArmorBonus } from '../utils/parserBuilderHelpers';
+
+const gearParsingRegex = /([A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
 
 /**
  * Parses the gear section from stat block sections.

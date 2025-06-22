@@ -14,9 +14,4 @@ export default defineConfig({
       reportOnFailure: true,
     },
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
 });

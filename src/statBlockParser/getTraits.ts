@@ -1,4 +1,4 @@
-import { Logger } from '@/utils/logger';
+import { Logger } from '../utils/logger';
 import { Attributes, ImportedDie } from '../types/importedActor';
 import { splitAndTrim } from '../utils/textUtils';
 
