@@ -1,4 +1,6 @@
 name: Mod Builder
+description: |
+  This workflow builds the mod and creates a release when a new tag is pushed.
 
 on:
   push:
@@ -10,14 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
+      - uses: actions/setup-node@v4
+        with:
+          cache: yarn
+          cache-dependency-path: yarn.lock
+      - run: yarn
+      - run: yarn build
       - name: Zip Files
         working-directory: ./
-        run: zip -r ./module.zip ./* -x "tests/*" -x "*.git*" -x ".husky" -x "playwright.config.ts"
-
+        run: zip -r ./module.zip ./dist/*
       - name: Create Release
         id: create-release
-        uses: ncipollo/release-action@v1.10.0
+        uses: ncipollo/release-action@v1.16.0
         with:
           allowUpdates: true
           draft: false

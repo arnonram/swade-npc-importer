@@ -23,3 +23,24 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           json-summary-path: '.coverage/coverage-summary.json'
+
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          cache: yarn
+          cache-dependency-path: yarn.lock
+      - run: yarn
+      - run: yarn build
+      - name: Zip module
+        working-directory: ./
+        run: zip -r ./module.zip ./dist/*
+      - name: upload module
+        uses: actions/upload-artifact@v4
+        with:
+          path: ./module-${{ github.sha }}.zip
+          name: module-${{ github.sha }}.zip
