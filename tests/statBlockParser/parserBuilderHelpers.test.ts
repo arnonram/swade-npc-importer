@@ -2,7 +2,7 @@ import {
   GetMeleeDamage,
   getArmorBonus,
   getBonus,
-} from '../../src/utils/parserBuilderHelpers';
+} from '../../src/statBlockParser/parserBuilderHelpers.js';
 import { vi, describe, it, expect } from 'vitest';
 
 describe('GetMeleeDamage', () => {
