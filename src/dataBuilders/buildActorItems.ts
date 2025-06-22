@@ -15,7 +15,7 @@ export async function buildActorItems(parsedData: ParsedActor) {
   const specialAbilities = await specialAbilitiesParser(
     parsedData.specialAbilities,
   );
-  const gear = (await itemGearBuilder(parsedData.gear)) ?? [];
+  const gear = (await itemGearBuilder(parsedData.gear ?? {})) ?? [];
 
   items = items.concat(
     skills,
