@@ -5,42 +5,36 @@ import {
   shieldBuilder,
 } from './itemBuilder.js';
 
-export async function itemGearBuilder(gear) {
-  let gearItems: any[] = [];
-  for (const item in gear) {
-    if (gear[item] == null) {
-      // check for other gear
-      gearItems.push(await gearBuilder(item));
-    } else if (
-      Object.keys(gear[item]).includes('range') ||
-      Object.keys(gear[item]).includes('damage')
-    ) {
-      // check for weapon
+export async function itemGearBuilder(gear: Record<string, any>) {
+  if (!gear || typeof gear !== 'object') return [];
+
+  const gearItems: any[] = [];
+
+  for (const [name, data] of Object.entries(gear)) {
+    if (data == null) {
+      // Misc gear
+      gearItems.push(await gearBuilder(name));
+    } else if ('damage' in data || 'range' in data) {
+      // Weapon
       gearItems.push(
         await weaponBuilder({
-          weaponName: item,
-          weaponDescription: item,
-          weaponDamage: gear[item]['damage'],
-          range: gear[item]['range'],
-          rof: gear[item]['rof'],
-          ap: gear[item]['ap'],
-          shots: gear[item]['shots'],
+          weaponName: name,
+          weaponDescription: name,
+          weaponDamage: data.damage,
+          range: data.range,
+          rof: data.rof,
+          ap: data.ap,
+          shots: data.shots,
         }),
       );
-    } else if (Object.keys(gear[item]).includes('armorBonus')) {
-      // check for armor
-      gearItems.push(await armorBuilder(item, gear[item]['armorBonus'], item));
-    } else if (Object.keys(gear[item]).includes('parry')) {
-      //check for shield
-      gearItems.push(
-        await shieldBuilder(
-          item,
-          item,
-          gear[item]['parry'],
-          gear[item]['cover'],
-        ),
-      );
+    } else if ('armorBonus' in data) {
+      // Armor
+      gearItems.push(await armorBuilder(name, data.armorBonus, name));
+    } else if ('parry' in data) {
+      // Shield
+      gearItems.push(await shieldBuilder(name, name, data.parry, data.cover));
     }
   }
+
   return gearItems;
 }
