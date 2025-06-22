@@ -1,33 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { getAttributes, getSkills } from '../../src/statBlockParser/getTraits';
-
-// Mock `splitAndTrim`
-vi.mock('../../src/utils/textUtils', () => ({
-  splitAndTrim: (text: string, sep: string) =>
-    text.split(sep).map(s => s.trim()),
-}));
-
-beforeEach(() => {
-  // Reset game.i18n localization mock before each test
-  //@ts-ignore
-  globalThis.game = {
-    i18n: {
-      localize: (key: string) => {
-        const map: Record<string, string> = {
-          'npcImporter.parser.Attributes': 'Attributes',
-          'npcImporter.parser.Skills': 'Skills',
-          'npcImporter.parser.Agility': 'Agility',
-          'npcImporter.parser.Smarts': 'Smarts',
-          'npcImporter.parser.Spirit': 'Spirit',
-          'npcImporter.parser.Strength': 'Strength',
-          'npcImporter.parser.Vigor': 'Vigor',
-          'npcImporter.regex.dice': '(\\d+)?d(\\d+)([\\+\\-]\\d+)?',
-        };
-        return map[key] || key;
-      },
-    },
-  };
-});
 
 describe('getAttributes', () => {
   it('should parse attributes correctly', () => {

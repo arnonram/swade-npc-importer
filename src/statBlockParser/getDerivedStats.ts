@@ -8,7 +8,7 @@ export function getDerivedStats(
     `npcImporter.parser.${derivedStatToGet}`,
   ) as string;
   const data = sections.find(x => x.startsWith(`${label}:`));
-  return data ? getStatNumber(data) : undefined;
+  return data ? getStatNumber(data) : 0;
 }
 
 export function getSize(abilities: Record<string, string>): number {

@@ -1,3 +1,4 @@
+import { removeEmptyArrayProp } from '@/utils/textUtils';
 import { armorModRegex, gearParsingRegex, newLineRegex } from '../global';
 import { getBonus, getArmorBonus } from '../utils/parserBuilderHelpers';
 
@@ -7,36 +8,23 @@ import { getBonus, getArmorBonus } from '../utils/parserBuilderHelpers';
 export async function getGear(
   sections: string[],
 ): Promise<Record<string, any>> {
-  const gearString = new RegExp(
-    `${game.i18n?.localize('npcImporter.parser.Gear')}:`,
-    'i',
-  );
-  const foundGearLine = sections.find(x => x.match(gearString));
-  if (!foundGearLine) {
-    return { Gear: {} };
-  }
-  let gearLine = foundGearLine
+  const gearLabel = game.i18n?.localize('npcImporter.parser.Gear') || 'Gear';
+  const gearRegex = new RegExp(`${gearLabel}:`, 'i');
+
+  const foundGearLine = sections.find(line => gearRegex.test(line));
+  if (!foundGearLine) return { Gear: {} };
+
+  const rawGear = foundGearLine
+    .replace(gearRegex, '')
     .replace(newLineRegex, ' ')
-    .replace(gearString, '')
     .trim();
 
-  const characterGear: string[] = [];
-  while (gearLine.length > 1) {
-    if (gearParsingRegex.test(gearLine)) {
-      const matchResult = gearLine.match(gearParsingRegex);
-      if (matchResult && matchResult[0]) {
-        const match = matchResult[0];
-        characterGear.push(match.trim());
-        gearLine = gearLine.replace(match, '');
-      } else {
-        characterGear.push(gearLine.trim());
-        break;
-      }
-    } else {
-      characterGear.push(gearLine.trim());
-      break;
-    }
-  }
+  // Extract matches using the global regex
+  let matches = [...rawGear.matchAll(gearParsingRegex)].map(m => m[0].trim());
+  matches = removeEmptyArrayProp(matches);
+
+  // Fallback: if no matches (edge case), use the entire line
+  const characterGear = matches.length > 0 ? matches : [rawGear];
 
   return parseGear(characterGear);
 }

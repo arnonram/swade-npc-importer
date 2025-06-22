@@ -2,27 +2,38 @@ import { newLineRegex } from '../global';
 import { getActorAddtionalStats } from '../utils/foundryActions';
 
 export function getSystemDefinedStats(sections: string[]): Record<string, any> {
-  let additionalStats = getActorAddtionalStats();
-  let systemStats: Record<string, any> = {};
+  const additionalStats = getActorAddtionalStats();
+  const systemStats: Record<string, any> = {};
+
   for (const key in additionalStats) {
-    if (additionalStats.hasOwnProperty(key)) {
-      const element = additionalStats[key];
-      let stat = sections.find(x => x.startsWith(element.label));
-      if (stat != undefined) {
-        stat = stat.replace(newLineRegex, ' ');
-        const statParts = stat.split(':');
-        if (element.dtype === 'String') {
-          systemStats[statParts[0]] = statParts[1].replace(';', '').trim();
-        } else if (element.dtype === 'Number') {
-          systemStats[statParts[0]] = parseInt(
-            statParts[1].replace(';', '').trim().replace('–', '-'),
-          );
-        } else if (element.dtype === 'Boolean') {
-          systemStats[statParts[0]] =
-            statParts[1].replace(';', '').trim() == 'true';
-        }
-      }
+    if (!Object.prototype.hasOwnProperty.call(additionalStats, key)) continue;
+
+    const { label, dtype } = additionalStats[key];
+    const sectionLine = sections.find(line => line.startsWith(label));
+    if (!sectionLine) continue;
+
+    const cleanLine = sectionLine.replace(newLineRegex, ' ');
+    const [statKey, statValueRaw] = cleanLine.split(':');
+
+    if (!statKey || statValueRaw === undefined) continue;
+
+    const statValue = statValueRaw.replace(';', '').trim().replace('–', '-');
+
+    switch (dtype) {
+      case 'String':
+        systemStats[statKey.trim()] = statValue;
+        break;
+      case 'Number':
+        systemStats[statKey.trim()] = parseInt(statValue, 10);
+        break;
+      case 'Boolean':
+        systemStats[statKey.trim()] = statValue.toLowerCase() === 'true';
+        break;
+      default:
+        console.warn(`Unhandled data type: ${dtype}`);
+        break;
     }
   }
+
   return systemStats;
 }

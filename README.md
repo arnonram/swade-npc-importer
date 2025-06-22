@@ -98,6 +98,7 @@ Some _Prototype Token_ options may be set by default
   | Character  |    Yes    |         3/3         |
 
 - **Gear**
+
   - _Equipped_ by default
   - Weapons (melee & ranged)
     - If weapon does not have Range, then related skill will be _Fighting_
@@ -105,6 +106,7 @@ Some _Prototype Token_ options may be set by default
   - Armors
   - Shields
   - Gear
+
 - **Special Abilities**
 
   - Search for "Armor" and/or any damage attack (lines with Str., Str+d\*, or dice formulas).

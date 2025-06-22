@@ -54,3 +54,7 @@ export function lowerCaseShishKebab(string: string): string {
     .toLowerCase()
     .replaceAll(' ', '-');
 }
+
+export function removeEmptyArrayProp(arr: string[]): string[] {
+  return arr.filter(str => /[a-zA-Z]/.test(str));
+}
