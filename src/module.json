@@ -2,7 +2,12 @@
   "id": "swade-npc-importer",
   "title": "SWADE Stat Block Importer",
   "description": "Import stat blocks for SWADE (formerly SWADE NPC Importer)",
-  "authors": [{ "name": "Arnon Ram", "discord": "arnon" }],
+  "authors": [
+    {
+      "name": "Arnon Ram",
+      "discord": "arnon"
+    }
+  ],
   "version": "1.0.0",
   "compatibility": {
     "minimum": 12,
