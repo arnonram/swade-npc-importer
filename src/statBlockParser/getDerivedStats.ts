@@ -1,10 +1,11 @@
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { getBonus } from '../utils/parserBuilderHelpers';
 
 export function getDerivedStats(
   sections: string[],
   derivedStatToGet: DerivedStatType,
 ): number | undefined {
-  const label = game.i18n?.localize(
+  const label = foundryI18nLocalize(
     `npcImporter.parser.${derivedStatToGet}`,
   ) as string;
   const data = sections.find(x => x.startsWith(`${label}:`));
@@ -13,7 +14,7 @@ export function getDerivedStats(
 
 export function getSize(abilities: Record<string, string>): number {
   const sizeLabel = (
-    game.i18n?.localize('npcImporter.parser.Size') || ''
+    foundryI18nLocalize('npcImporter.parser.Size') || ''
   ).toLowerCase();
   for (const ability of Object.keys(abilities)) {
     if (ability.toLowerCase().includes(sizeLabel)) {

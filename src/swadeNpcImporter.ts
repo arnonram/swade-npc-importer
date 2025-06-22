@@ -14,6 +14,7 @@ import {
   updateModuleSetting,
   getAllActiveCompendiums,
 } from './utils/foundryActions';
+import { foundryI18nLocalize } from './utils/foundryWrappers';
 import { Logger } from './utils/logger';
 
 Hooks.on('ready', async () => {
@@ -37,7 +38,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
     game.users?.get(game.userId)?.can('ACTOR_CREATE') == true
   ) {
     const npcImporterButton = $(
-      `<button id="StatBlockImporterButton" style="width: calc(100% - 8px);"><i class="fas fa-align-left"></i>${game.i18n?.localize(
+      `<button id="StatBlockImporterButton" style="width: calc(100% - 8px);"><i class="fas fa-align-left"></i>${foundryI18nLocalize(
         'npcImporter.HTML.StatBlockImporterTitle',
       )}</button>`,
     );
@@ -47,7 +48,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
     npcImporterButton.on('click', () => {
       new foundry.applications.api.DialogV2({
         window: {
-          title: game.i18n?.localize('npcImporter.HTML.ImportTitle') as string,
+          title: foundryI18nLocalize('npcImporter.HTML.ImportTitle') as string,
           resizable: true,
         },
         position: {
@@ -57,7 +58,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
         buttons: [
           {
             action: 'importActor',
-            label: game.i18n?.localize('npcImporter.HTML.Import') as string,
+            label: foundryI18nLocalize('npcImporter.HTML.Import') as string,
             default: true,
             callback: (html: any) => {
               let importSettings: ImportSettings = {
@@ -132,19 +133,19 @@ function importerDialog(): string {
 
   const npcImporterDialog = `
   <form>
-    <p>${game.i18n?.localize('npcImporter.HTML.ImportDesc')}</p>
+    <p>${foundryI18nLocalize('npcImporter.HTML.ImportDesc')}</p>
 
     <!-- Actor Options -->
     <div class="form-group">
-      <label class="form-header"><b>${game.i18n?.localize('npcImporter.HTML.ActorType')}</b></label>
+      <label class="form-header"><b>${foundryI18nLocalize('npcImporter.HTML.ActorType')}</b></label>
       <div class="flexrow">
         <label>
           <input type="radio" id="swade-stat-imp-actorType" name="actorType" value="npc" ${isChecked(defaultData.actorType, 'npc')} />
-          ${game.i18n?.localize('npcImporter.settings.NPC')}
+          ${foundryI18nLocalize('npcImporter.settings.NPC')}
         </label>
         <label>
           <input type="radio" id="swade-stat-imp-actorType" name="actorType" value="character" ${isChecked(defaultData.actorType, 'character')} />
-          ${game.i18n?.localize('npcImporter.settings.Character')}
+          ${foundryI18nLocalize('npcImporter.settings.Character')}
         </label>
       </div>
     </div>
@@ -153,29 +154,29 @@ function importerDialog(): string {
     <div class="form-group">
       <label>
         <input type="checkbox" id="swade-stat-imp-isWildCard" name="isWildcard" value="true" ${defaultData.isWildcard ? 'checked' : ''} />
-        ${game.i18n?.localize('npcImporter.HTML.Wildcard')}
+        ${foundryI18nLocalize('npcImporter.HTML.Wildcard')}
       </label>
     </div>
 
     <!-- Disposition -->
     <div class="form-group">
-      <label class="form-header"><b>${game.i18n?.localize('npcImporter.HTML.Disposition')}</b></label>
+      <label class="form-header"><b>${foundryI18nLocalize('npcImporter.HTML.Disposition')}</b></label>
       <div class="flexrow">
         <label>
           <input type="radio" id="swade-stat-imp-disposition" name="disposition" value="-1" ${isChecked(defaultData.tokenData.disposition, -1)} />
-          ${game.i18n?.localize('npcImporter.settings.Hostile')}
+          ${foundryI18nLocalize('npcImporter.settings.Hostile')}
         </label>
         <label>
           <input type="radio" id="swade-stat-imp-disposition" name="disposition" value="0" ${isChecked(defaultData.tokenData.disposition, 0)} />
-          ${game.i18n?.localize('npcImporter.settings.Neutral')}
+          ${foundryI18nLocalize('npcImporter.settings.Neutral')}
         </label>
         <label>
           <input type="radio" id="swade-stat-imp-disposition" name="disposition" value="1" ${isChecked(defaultData.tokenData.disposition, 1)} />
-          ${game.i18n?.localize('npcImporter.settings.Friendly')}
+          ${foundryI18nLocalize('npcImporter.settings.Friendly')}
         </label>
         <label>
           <input type="radio" id="swade-stat-imp-disposition" name="disposition" value="-2" ${isChecked(defaultData.tokenData.disposition, -2)} />
-          ${game.i18n?.localize('npcImporter.settings.Secret')}
+          ${foundryI18nLocalize('npcImporter.settings.Secret')}
         </label>
       </div>
     </div>
@@ -184,16 +185,16 @@ function importerDialog(): string {
     <div class="form-group">
       <label>
         <input type="checkbox" id="swade-stat-imp-vision" name="vision" ${defaultData.tokenData.vision ? 'checked' : ''} />
-        ${game.i18n?.localize('TOKEN.FIELDS.sight.enabled.label')}
+        ${foundryI18nLocalize('TOKEN.FIELDS.sight.enabled.label')}
       </label>
     </div>
     <div class="form-group flexrow">
       <label style="flex: 1;">
-        ${game.i18n?.localize('TOKEN.FIELDS.sight.range.label')}
+        ${foundryI18nLocalize('TOKEN.FIELDS.sight.range.label')}
         <input type="number" id="swade-stat-imp-visionRange" name="visionRange" step="1" value="${defaultData.tokenData.visionRange}" />
       </label>
       <label style="flex: 1;">
-        ${game.i18n?.localize('TOKEN.FIELDS.sight.angle.label')}
+        ${foundryI18nLocalize('TOKEN.FIELDS.sight.angle.label')}
         <input type="number" id="swade-stat-imp-visionAngle" name="visionAngle" step="1" max="360" value="${defaultData.tokenData.visionAngle}" />
       </label>
     </div>
@@ -201,21 +202,21 @@ function importerDialog(): string {
     <!-- Save Folder -->
     <div class="form-group">
       <label>
-        ${game.i18n?.localize('npcImporter.HTML.SaveFolder')}
+        ${foundryI18nLocalize('npcImporter.HTML.SaveFolder')}
         <select id="swade-stat-imp-save-folder" name="save-folder" style="width: 100%;">${folderOptions}</select>
       </label>
     </div>
 
     <!-- Statblock -->
     <div class="form-group">
-      <label for="statBlock"><b>${game.i18n?.localize('npcImporter.HTML.StatBlock')}</b></label>
+      <label for="statBlock"><b>${foundryI18nLocalize('npcImporter.HTML.StatBlock')}</b></label>
       <textarea
         id="statBlock"
         name="statBlock"
         rows="10"
         style="width: 100%;"
         autocomplete="off"
-        placeholder="${game.i18n?.localize('npcImporter.HTML.Firefox')}"
+        placeholder="${foundryI18nLocalize('npcImporter.HTML.Firefox')}"
       ></textarea>
     </div>
   </form>

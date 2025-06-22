@@ -1,11 +1,12 @@
-import { armorModRegex, plusMinusNumRegex } from '../global.js';
+import { armorModRegex } from '../global.js';
+import { foundryI18nLocalize } from './foundryWrappers.js';
 
 /**
  * Extracts melee damage from an ability description.
  */
 export function GetMeleeDamage(abilityDescription: string): string {
-  const strLabel = game.i18n?.localize('npcImporter.parser.Str') || 'Str';
-  const diceLabel = game.i18n?.localize('npcImporter.parser.dice') || 'd';
+  const strLabel = foundryI18nLocalize('npcImporter.parser.Str') || 'Str';
+  const diceLabel = foundryI18nLocalize('npcImporter.parser.dice') || 'd';
   const meleeDamagePattern = `${strLabel}\\.|${strLabel}(\\s?[\\+\\-]?\\s?(\\d+)?${diceLabel}?(\\d+)?){0,}`;
   const meleeDamageRegex = new RegExp(meleeDamagePattern, 'gi');
 
@@ -40,8 +41,8 @@ export function getBonus(data: string, bonusType: string): number | undefined {
 }
 
 const bonusLabelMap: Record<string, string> = {
-  parry: game.i18n?.localize('npcImporter.parser.Parry') || 'Parry',
-  cover: game.i18n?.localize('npcImporter.parser.Cover') || 'Cover',
+  parry: foundryI18nLocalize('npcImporter.parser.Parry') || 'Parry',
+  cover: foundryI18nLocalize('npcImporter.parser.Cover') || 'Cover',
   powerPoints:
-    game.i18n?.localize('npcImporter.parser.PowerPoints') || 'Power Points',
+    foundryI18nLocalize('npcImporter.parser.PowerPoints') || 'Power Points',
 };

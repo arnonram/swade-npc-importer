@@ -3,9 +3,8 @@ import {
   settingPackageToUse,
   settingCompsToUse,
   settingActiveCompendiums,
-  allPacks,
 } from '../global.js';
-import { lowerCaseShishKebab, splitAndSort } from './textUtils.js';
+import { splitAndSort } from './textUtils.js';
 import { SwadeActorToImport } from '../types/importedActor.js';
 import {
   foundryI18nFormat,
@@ -15,6 +14,9 @@ import {
 } from './foundryWrappers.js';
 import { Logger } from './logger.js';
 import { ItemType } from '../dataBuilders/itemBuilder.js';
+
+// Holds all active compendium packs of type 'Item'
+const allPacks: any[] = [];
 
 export async function setAllPacks(): Promise<void> {
   Logger.info('Getting all active compendiums into allPacks');

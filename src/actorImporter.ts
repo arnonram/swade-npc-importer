@@ -1,6 +1,7 @@
 import { Import, GetActorId, DeleteActor } from './utils/foundryActions';
 import { SwadeActorToImport } from './types/importedActor';
 import { Logger } from './utils/logger';
+import { foundryI18nLocalize } from './utils/foundryWrappers';
 
 export async function actorImporter(
   actorDataToImport: SwadeActorToImport,
@@ -22,9 +23,9 @@ async function whatToDo(
   actorId: string,
 ): Promise<void> {
   let actorExists = `
-    ${game.i18n?.localize('npcImporter.HTML.ActorExistText')}
+    ${foundryI18nLocalize('npcImporter.HTML.ActorExistText')}
     <div class="form-group-dialog newName" >
-        <label for="newName">${game.i18n?.localize(
+        <label for="newName">${foundryI18nLocalize(
           'npcImporter.HTML.ChangeName',
         )}:</label>
         <input type="text" id="newName" name="newName" value="${
@@ -36,7 +37,7 @@ async function whatToDo(
 
   new foundry.applications.api.DialogV2({
     window: {
-      title: game.i18n?.localize('npcImporter.HTML.ActorImporter') as string,
+      title: foundryI18nLocalize('npcImporter.HTML.ActorImporter') as string,
     },
     position: {
       width: 400,
@@ -45,7 +46,7 @@ async function whatToDo(
     buttons: [
       {
         action: 'import',
-        label: game.i18n?.localize('npcImporter.HTML.Rename') as string,
+        label: foundryI18nLocalize('npcImporter.HTML.Rename') as string,
         callback: async () => {
           let newName = (document.querySelector('#newName') as HTMLInputElement)
             .value;
@@ -56,7 +57,7 @@ async function whatToDo(
       },
       {
         action: 'override',
-        label: game.i18n?.localize('npcImporter.HTML.Override') as string,
+        label: foundryI18nLocalize('npcImporter.HTML.Override') as string,
         callback: async () => {
           Logger.info('Overriding existing Actor');
           await DeleteActor(actorId);
@@ -69,7 +70,7 @@ async function whatToDo(
         label: 'Cancel',
         callback: () => {
           ui.notifications?.info(
-            game.i18n?.localize(
+            foundryI18nLocalize(
               'npcImporter.HTML.ActorNotImportedMsg',
             ) as string,
           );

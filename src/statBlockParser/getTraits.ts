@@ -1,10 +1,11 @@
 import { Logger } from '../utils/logger';
 import { Attributes, ImportedDie } from '../types/importedActor';
 import { splitAndTrim } from '../utils/textUtils';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export function getAttributes(sections: string[]): Attributes {
   const attrLabel =
-    game.i18n?.localize('npcImporter.parser.Attributes') || 'Attributes';
+    foundryI18nLocalize('npcImporter.parser.Attributes') || 'Attributes';
   const attrTranslation = new RegExp(`${attrLabel}:`, 'i');
   let attrSection = sections.find(x => x.match(attrTranslation));
   if (!attrSection) return {} as Attributes;
@@ -19,23 +20,23 @@ export function getAttributes(sections: string[]): Attributes {
   const attrKeys = [
     {
       key: 'agility',
-      label: game.i18n?.localize('npcImporter.parser.Agility') || 'Agility',
+      label: foundryI18nLocalize('npcImporter.parser.Agility') || 'Agility',
     },
     {
       key: 'smarts',
-      label: game.i18n?.localize('npcImporter.parser.Smarts') || 'Smarts',
+      label: foundryI18nLocalize('npcImporter.parser.Smarts') || 'Smarts',
     },
     {
       key: 'spirit',
-      label: game.i18n?.localize('npcImporter.parser.Spirit') || 'Spirit',
+      label: foundryI18nLocalize('npcImporter.parser.Spirit') || 'Spirit',
     },
     {
       key: 'strength',
-      label: game.i18n?.localize('npcImporter.parser.Strength') || 'Strength',
+      label: foundryI18nLocalize('npcImporter.parser.Strength') || 'Strength',
     },
     {
       key: 'vigor',
-      label: game.i18n?.localize('npcImporter.parser.Vigor') || 'Vigor',
+      label: foundryI18nLocalize('npcImporter.parser.Vigor') || 'Vigor',
     },
   ];
 
@@ -52,7 +53,7 @@ export function getAttributes(sections: string[]): Attributes {
 
 export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
   let trait = new RegExp(
-    `${game.i18n?.localize('npcImporter.parser.Skills')}:`,
+    `${foundryI18nLocalize('npcImporter.parser.Skills')}:`,
     'i',
   );
   const skillsSection = sections.find(x => x.match(trait));
@@ -62,7 +63,7 @@ export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
   let skillsDict: { [key: string]: ImportedDie } = {};
   skills.forEach(singleTrait => {
     const matchResult = singleTrait.match(
-      new RegExp(game.i18n?.localize('npcImporter.regex.dice') || '', 'i'),
+      new RegExp(foundryI18nLocalize('npcImporter.regex.dice') || '', 'i'),
     );
     if (!matchResult) {
       Logger.warn(
@@ -88,7 +89,7 @@ function buildTraitDie(data: string): ImportedDie {
   let diceAndMode = '';
   try {
     const diceRegex =
-      game.i18n?.localize('npcImporter.regex.dice') || '\\d+d\\d+';
+      foundryI18nLocalize('npcImporter.regex.dice') || '\\d+d\\d+';
     const matchResult = data.match(new RegExp(diceRegex));
     diceAndMode = matchResult ? matchResult[0].toString() : '';
   } catch (error) {

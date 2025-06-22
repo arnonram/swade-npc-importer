@@ -10,6 +10,7 @@ import {
   settingCalculateIgnoredWounds,
   settingNumberOfBennies,
 } from '../global';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export const buildActorData = async function (
   parsedData: ParsedActor,
@@ -163,22 +164,22 @@ function initiativeMod(parsedData: ParsedActor) {
   if (parsedData.edges != undefined) {
     parsedData.edges.forEach((element: string | undefined) => {
       if (
-        element === game.i18n?.localize('npcImporter.parser.LevelHeadedImp')
+        element === foundryI18nLocalize('npcImporter.parser.LevelHeadedImp')
       ) {
         hasImpLevelHeaded = true;
       } else if (
-        element === game.i18n?.localize('npcImporter.parser.LevelHeaded')
+        element === foundryI18nLocalize('npcImporter.parser.LevelHeaded')
       ) {
         hasLevelHeaded = true;
       }
-      if (element === game.i18n?.localize('npcImporter.parser.Quick')) {
+      if (element === foundryI18nLocalize('npcImporter.parser.Quick')) {
         hasQuick = true;
       }
     });
   }
   if (parsedData.hindrances != undefined) {
     parsedData.hindrances.forEach((element: string | undefined) => {
-      if (element === game.i18n?.localize('npcImporter.parser.Hesitant')) {
+      if (element === foundryI18nLocalize('npcImporter.parser.Hesitant')) {
         hasHesitant = true;
       }
     });
@@ -209,7 +210,7 @@ function findRunningDie(parsedData: ParsedActor) {
           parsedData.specialabilities[ability]
             .match(
               new RegExp(
-                game.i18n?.localize('npcImporter.regex.dice') as string,
+                foundryI18nLocalize('npcImporter.regex.dice') as string,
                 'i',
               ),
             )[0]
@@ -259,9 +260,9 @@ function calculateIgnoredWounds(parsedData: ParsedActor) {
   let bonusTotal = 0;
   if (getModuleSettings(settingCalculateIgnoredWounds)) {
     const ignoreWound = [
-      game.i18n?.localize('npcImporter.parser.Undead'),
-      game.i18n?.localize('npcImporter.parser.Construct'),
-      game.i18n?.localize('npcImporter.parser.Elemental'),
+      foundryI18nLocalize('npcImporter.parser.Undead'),
+      foundryI18nLocalize('npcImporter.parser.Construct'),
+      foundryI18nLocalize('npcImporter.parser.Elemental'),
     ];
 
     for (const ability in parsedData.specialabilities) {
@@ -279,9 +280,9 @@ function calculateIgnoredWounds(parsedData: ParsedActor) {
 
 function findUnshakeBonus(parsedData: ParsedActor) {
   const unshakeBonus = [
-    game.i18n?.localize('npcImporter.parser.Undead'),
-    game.i18n?.localize('npcImporter.parser.Construct'),
-    game.i18n?.localize('npcImporter.parser.CombatReflexes'),
+    foundryI18nLocalize('npcImporter.parser.Undead'),
+    foundryI18nLocalize('npcImporter.parser.Construct'),
+    foundryI18nLocalize('npcImporter.parser.CombatReflexes'),
   ];
 
   let bonusTotal = 0;
@@ -308,10 +309,10 @@ function findUnshakeBonus(parsedData: ParsedActor) {
 
 function toughnessBonus(parsedData: ParsedActor) {
   const toughnessBonus = [
-    game.i18n?.localize('npcImporter.parser.Undead'),
-    game.i18n?.localize('npcImporter.parser.Brawny'),
-    game.i18n?.localize('npcImporter.parser.Brawler'),
-    game.i18n?.localize('npcImporter.parser.Bruiser'),
+    foundryI18nLocalize('npcImporter.parser.Undead'),
+    foundryI18nLocalize('npcImporter.parser.Brawny'),
+    foundryI18nLocalize('npcImporter.parser.Brawler'),
+    foundryI18nLocalize('npcImporter.parser.Bruiser'),
   ];
   let bonusTotal = 0;
   for (const ability in parsedData.specialabilities) {

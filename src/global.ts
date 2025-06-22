@@ -2,10 +2,8 @@
 export const thisModule = 'swade-npc-importer';
 
 // module defaults and registered settings
-export const defaultPackage = 'swade-compendium';
 export const settingPackageToUse = 'packageToUse';
 export const settingAdditionalTraits = 'additionalStats';
-export const settingDefaultDisposition = 'defaultDisposition';
 export const settingDefaultActorType = 'defaultActorType';
 export const settingDefaultIsWildcard = 'defaultIsWildcard';
 export const settingBulletPointIcons = 'bulletPointIcons';
@@ -22,11 +20,7 @@ export const settingAutoCalcSize = 'autoCalcSize';
 export const settingallAsSpecialAbilities = 'allAsSpecialAbilities';
 export const twoHandsNotaiton = 'twoHandsNotaiton';
 export const settingNumberOfBennies = 'numberOfBennies';
-export const allPacks: any[] = [];
 
 // regex
 export const newLineRegex = /\r\n|\n|\r/g;
-export const gearParsingRegex =
-  /([A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
 export const armorModRegex = /\+\d+/;
-export const plusMinusNumRegex = /([+-])\\d+/;

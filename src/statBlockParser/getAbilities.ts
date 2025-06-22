@@ -5,13 +5,14 @@ import {
   settingBulletPointIcons,
   settingModifiedSpecialAbs,
 } from '../global';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export function getAbilityList(
   sections: string[],
   abilityType: AbilityType,
 ): Record<string, string> {
   const abilityLine = sections.find(x =>
-    x.includes(`${game.i18n?.localize(`npcImporter.parser.${abilityType}`)}:`),
+    x.includes(`${foundryI18nLocalize(`npcImporter.parser.${abilityType}`)}:`),
   );
 
   if (!abilityLine) {
@@ -21,7 +22,7 @@ export function getAbilityList(
   return getAbilities(
     abilityLine
       .replace(
-        `${game.i18n?.localize(`npcImporter.parser.${abilityType}`)}:`,
+        `${foundryI18nLocalize(`npcImporter.parser.${abilityType}`)}:`,
         '',
       )
       .trim(),

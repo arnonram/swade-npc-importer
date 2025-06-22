@@ -13,6 +13,7 @@ import {
   powerPointsFromSpecialAbility,
 } from './getDerivedStats';
 import { Logger } from '../utils/logger';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export async function statBlockParser(
   rarStatBlock: string,
@@ -55,7 +56,7 @@ export async function statBlockParser(
   } catch (error) {
     Logger.error('Failed to parse:', error);
     ui.notifications?.error(
-      game.i18n?.localize('npcImporter.parser.NotValidStablock') as string,
+      foundryI18nLocalize('npcImporter.parser.NotValidStablock') as string,
     );
     return {} as ParsedActor;
   }

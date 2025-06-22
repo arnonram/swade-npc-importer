@@ -1,6 +1,7 @@
 import { removeEmptyArrayProp } from '../utils/textUtils';
 import { armorModRegex, newLineRegex } from '../global';
 import { getBonus, getArmorBonus } from '../utils/parserBuilderHelpers';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 const gearParsingRegex = /([A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
 
@@ -10,7 +11,7 @@ const gearParsingRegex = /([A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi
 export async function getGear(
   sections: string[],
 ): Promise<Record<string, any>> {
-  const gearLabel = game.i18n?.localize('npcImporter.parser.Gear') || 'Gear';
+  const gearLabel = foundryI18nLocalize('npcImporter.parser.Gear') || 'Gear';
   const gearRegex = new RegExp(`${gearLabel}:`, 'i');
 
   const foundGearLine = sections.find(line => gearRegex.test(line));
@@ -36,9 +37,9 @@ export async function getGear(
  */
 function parseGear(gearArray: string[]): Record<string, any> {
   const parryRegex = new RegExp(
-    `([+-])\\d+ ${game.i18n?.localize(
+    `([+-])\\d+ ${foundryI18nLocalize(
       'npcImporter.parser.Parry',
-    )}|${game.i18n?.localize('npcImporter.parser.Parry')} ([+-])\\d+`,
+    )}|${foundryI18nLocalize('npcImporter.parser.Parry')} ([+-])\\d+`,
   );
 
   const gearDict: Record<string, any> = {};
@@ -58,7 +59,7 @@ function parseGear(gearArray: string[]): Record<string, any> {
     if (
       splitGear[1] &&
       (splitGear[1].includes(
-        game.i18n?.localize('npcImporter.parser.Str') as string,
+        foundryI18nLocalize('npcImporter.parser.Str') as string,
       ) ||
         splitGear[1].toLowerCase().includes('damage') ||
         splitGear[1].toLowerCase().includes('range'))
@@ -79,7 +80,7 @@ function parseGear(gearArray: string[]): Record<string, any> {
         .toLowerCase()
         .includes(
           (
-            game.i18n?.localize('npcImporter.parser.Shield') || ''
+            foundryI18nLocalize('npcImporter.parser.Shield') || ''
           ).toLowerCase(),
         )
     ) {
@@ -95,7 +96,7 @@ function parseGear(gearArray: string[]): Record<string, any> {
       splitGear[0]
         .toLowerCase()
         .includes(
-          (game.i18n?.localize('npcImporter.parser.Armor') || '').toLowerCase(),
+          (foundryI18nLocalize('npcImporter.parser.Armor') || '').toLowerCase(),
         )
     ) {
       gearDict[splitGear[0].trim()] = {
@@ -119,11 +120,11 @@ function weaponParser(weapon: string[]): Record<string, any> {
       stat
         .toLowerCase()
         .includes(
-          (game.i18n?.localize('npcImporter.parser.Shots') || '').toLowerCase(),
+          (foundryI18nLocalize('npcImporter.parser.Shots') || '').toLowerCase(),
         )
     ) {
       weaponStats['shots'] = stat
-        .replace(game.i18n?.localize('npcImporter.parser.Shots') || '', '')
+        .replace(foundryI18nLocalize('npcImporter.parser.Shots') || '', '')
         .trim();
     } else if (/^[A-Za-z]+/.test(stat)) {
       const match = stat.match(/^[A-Za-z]+/);

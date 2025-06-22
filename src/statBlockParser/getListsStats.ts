@@ -1,10 +1,11 @@
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { newLineRegex } from '../global';
 
 /**
  * Extracts a list stat (e.g., Hindrances, Edges, Powers) from the stat block sections.
  */
 export function getListStat(sections: string[], labelKey: ListType): string[] {
-  const label = `${game.i18n?.localize(`npcImporter.parser.${labelKey}`) || labelKey}:`;
+  const label = `${foundryI18nLocalize(`npcImporter.parser.${labelKey}`) || labelKey}:`;
   const line = sections.find(x => x.startsWith(label));
   return line ? handleSpecialCharacters(line) : [];
 }

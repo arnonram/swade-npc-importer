@@ -1,9 +1,10 @@
 import { capitalizeEveryWord } from '../utils/textUtils';
 import { newLineRegex } from '../global';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 function extractNameAndDescription(rawData: string): string[] {
   const attrLabel =
-    game.i18n?.localize('npcImporter.parser.Attributes') || 'Attributes';
+    foundryI18nLocalize('npcImporter.parser.Attributes') || 'Attributes';
   const nameAndDescription = rawData.split(attrLabel)[0].trim();
   return nameAndDescription.split(newLineRegex);
 }
@@ -38,7 +39,7 @@ export function getBio(rawData: string, sections: string[]): string {
 
 function getConviction(sections: string[], biography: string): string {
   const convictionLabel =
-    game.i18n?.localize('npcImporter.parser.Conviction') || 'Conviction';
+    foundryI18nLocalize('npcImporter.parser.Conviction') || 'Conviction';
   const conviction = sections.find(x => x.startsWith(convictionLabel));
   return conviction ? `${conviction}<hr>${biography}` : biography;
 }

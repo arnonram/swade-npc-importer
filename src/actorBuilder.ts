@@ -19,6 +19,7 @@ import {
   ImportSettings,
 } from './types/importedActor';
 import { Logger } from './utils/logger';
+import { foundryI18nLocalize } from './utils/foundryWrappers';
 
 export async function buildActor(
   importSettings: ImportSettings,
@@ -27,7 +28,7 @@ export async function buildActor(
   const rawStatBlock = textBoxStatBlock || (await getClipboardText());
   if (!rawStatBlock) {
     ui.notifications?.error(
-      game.i18n?.localize('npcImporter.parser.EmptyClipboard') as string,
+      foundryI18nLocalize('npcImporter.parser.EmptyClipboard') as string,
     );
     return;
   }

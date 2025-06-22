@@ -11,16 +11,17 @@ import {
 } from '../global.js';
 import { getArmorBonus } from '../utils/parserBuilderHelpers.js';
 import { getModuleSettings } from '../utils/foundryActions.js';
+import { foundryI18nLocalize } from '../utils/foundryWrappers.js';
 
 export async function specialAbilitiesParser(
   specialAbilitiesData: Record<string, string> | undefined,
 ) {
   const meleeDamageRegex = new RegExp(
-    `${game.i18n?.localize('npcImporter.parser.Str')}\\.|${game.i18n?.localize(
+    `${foundryI18nLocalize('npcImporter.parser.Str')}\\.|${foundryI18nLocalize(
       'npcImporter.parser.Str',
     )}(\\s?[\\+\\-]\\s?(\\d+)?X?(\\d+)?){0,}`.replace(
       'X',
-      game.i18n?.localize('npcImporter.parser.dice') as string,
+      foundryI18nLocalize('npcImporter.parser.dice') as string,
     ),
     'gi',
   );
@@ -39,7 +40,7 @@ export async function specialAbilitiesParser(
             .toLocaleLowerCase()
             .startsWith(
               (
-                game.i18n?.localize('npcImporter.parser.Armor') as string
+                foundryI18nLocalize('npcImporter.parser.Armor') as string
               ).toLocaleLowerCase(),
             )
         ) {
@@ -50,17 +51,17 @@ export async function specialAbilitiesParser(
         } else if (
           (meleeDamageRegex.test(specialAbilitiesData[elem]) ||
             new RegExp(
-              game.i18n?.localize('npcImporter.regex.dice') as string,
+              foundryI18nLocalize('npcImporter.regex.dice') as string,
               'i',
             ).test(specialAbilitiesData[elem])) &&
           elem.toLocaleLowerCase() !=
-            game.i18n?.localize('npcImporter.parser.Speed').toLocaleLowerCase()
+            foundryI18nLocalize('npcImporter.parser.Speed').toLocaleLowerCase()
         ) {
           let meleeDamage =
             specialAbilitiesData[elem].match(meleeDamageRegex) ||
             specialAbilitiesData[elem].match(
               new RegExp(
-                game.i18n?.localize('npcImporter.regex.dice') as string,
+                foundryI18nLocalize('npcImporter.regex.dice') as string,
                 'i',
               ),
             );
@@ -85,7 +86,7 @@ export async function specialAbilitiesParser(
           specialAbilitiesData[elem].match(meleeDamageRegex) ||
           specialAbilitiesData[elem].match(
             new RegExp(
-              game.i18n?.localize('npcImporter.regex.dice') as string,
+              foundryI18nLocalize('npcImporter.regex.dice') as string,
               'i',
             ),
           );

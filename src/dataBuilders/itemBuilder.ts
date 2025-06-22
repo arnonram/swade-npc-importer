@@ -11,6 +11,7 @@ import {
 } from '../utils/textUtils.js';
 import { WeaponBuilderProps } from '../types/actorToImport';
 import { Logger } from '../utils/logger';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export async function skillBuilder(skillsDict) {
   const coreSkills = getSystemCoreSkills();
@@ -68,7 +69,7 @@ export async function edgeBuilder(edges) {
             isArcaneBackground:
               item?.system?.isArcaneBackground ??
               new RegExp(
-                game.i18n?.localize('npcImporter.parser.Arcane') as string,
+                foundryI18nLocalize('npcImporter.parser.Arcane') as string,
               ).test(edgeName),
             requirements: {
               value: item?.system?.requirements?.value ?? '',
@@ -87,9 +88,9 @@ export async function edgeBuilder(edges) {
 
 export async function hindranceBuilder(hindrances) {
   const majorMinor = new RegExp(
-    `${game.i18n?.localize(
+    `${foundryI18nLocalize(
       'npcImporter.parser.Major',
-    )}(,)?\\s?|${game.i18n?.localize('npcImporter.parser.Minor')}(,)?\\s?`,
+    )}(,)?\\s?|${foundryI18nLocalize('npcImporter.parser.Minor')}(,)?\\s?`,
     'ig',
   );
   if (hindrances != undefined) {
@@ -97,7 +98,7 @@ export async function hindranceBuilder(hindrances) {
     for (let i = 0; i < hindrances.length; i++) {
       let hindranceName = hindrances[i].trim();
       let isMajor = RegExp(
-        `\\(${game.i18n?.localize('npcImporter.parser.Major')}`,
+        `\\(${foundryI18nLocalize('npcImporter.parser.Major')}`,
         'ig',
       ).test(hindranceName);
       hindranceName = hindranceName
@@ -135,9 +136,9 @@ export async function abilityBuilder(
   abilityDescription: string = '',
 ): Promise<any> {
   const doesGrantPowers = new RegExp(
-    `${game.i18n?.localize(
+    `${foundryI18nLocalize(
       'npcImporter.parser.PowerPoints',
-    )}|${game.i18n?.localize('npcImporter.parser.Powers')}`,
+    )}|${foundryI18nLocalize('npcImporter.parser.Powers')}`,
   ).test(abilityDescription);
   const item = await checkforItem(abilityName, ItemType.ABILITY);
   try {
@@ -234,20 +235,20 @@ export async function weaponBuilder(props: WeaponBuilderProps) {
   const dmg = props.weaponDamage
     ?.replace(
       new RegExp(
-        `${game.i18n?.localize(
+        `${foundryI18nLocalize(
           'npcImporter.parser.Str',
-        )}\\.|${game.i18n?.localize('npcImporter.parser.Str')}`,
+        )}\\.|${foundryI18nLocalize('npcImporter.parser.Str')}`,
         'gi',
       ),
       '@str',
     )
-    .replace(game.i18n?.localize('npcImporter.parser.dice') || '', 'd');
+    .replace(foundryI18nLocalize('npcImporter.parser.dice') || '', 'd');
   const item = await getItemFromCompendium(props.weaponName, ItemType.WEAPON);
   //TODO: Improve this so that it'll add multiple entries for weapons which are ranged && melee
   const actions = item?.system?.actions ?? {
     skill: props.range
-      ? game.i18n?.localize('npcImporter.parser.Shooting')
-      : game.i18n?.localize('npcImporter.parser.Fighting'),
+      ? foundryI18nLocalize('npcImporter.parser.Shooting')
+      : foundryI18nLocalize('npcImporter.parser.Fighting'),
   };
   try {
     return {
@@ -373,9 +374,9 @@ export function additionalStatsBuilder(
 
 function checkSpecificItem(data: string) {
   const abilitiesWithMod = new RegExp(
-    `${game.i18n?.localize('npcImporter.parser.Armor')}|${game.i18n?.localize(
+    `${foundryI18nLocalize('npcImporter.parser.Armor')}|${foundryI18nLocalize(
       'npcImporter.parser.Size',
-    )}|${game.i18n?.localize('npcImporter.parser.Fear')}|${game.i18n?.localize(
+    )}|${foundryI18nLocalize('npcImporter.parser.Fear')}|${foundryI18nLocalize(
       'npcImporter.parser.Weakness',
     )}$`,
   );
@@ -413,12 +414,12 @@ async function checkforItem(itemName: string, itemType: ItemType) {
 function rearrangeImprovedEdges(edgeName: string): string {
   let edge = edgeName;
   if (
-    edgeName.includes(game.i18n?.localize('npcImporter.parser.Imp') as string)
+    edgeName.includes(foundryI18nLocalize('npcImporter.parser.Imp') as string)
   ) {
     edge = edgeName
-      .replace(game.i18n?.localize('npcImporter.parser.Imp') as string, '')
+      .replace(foundryI18nLocalize('npcImporter.parser.Imp') as string, '')
       .trim();
-    edge = `${game.i18n?.localize('npcImporter.parser.Improved') as string} ${edge}`;
+    edge = `${foundryI18nLocalize('npcImporter.parser.Improved') as string} ${edge}`;
   }
   return edge;
 }
