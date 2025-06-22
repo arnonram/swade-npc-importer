@@ -61,40 +61,54 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
             default: true,
             callback: (html: any) => {
               let importSettings: ImportSettings = {
-                actorType: document.querySelector(
-                  'input[name="actorType"]:checked',
-                  //@ts-ignore
+                actorType: (
+                  document.querySelector(
+                    'input[name="actorType"]:checked',
+                  ) as HTMLInputElement
                 )?.value,
-                isWildCard: !!document.getElementById(
-                  'swade-stat-imp-isWildCard',
-                  //@ts-ignore
+                isWildCard: !!(
+                  document.getElementById(
+                    'swade-stat-imp-isWildCard',
+                  ) as HTMLInputElement
                 )?.checked,
                 tokenSettings: {
                   disposition: parseInt(
-                    //@ts-ignore
-                    document.querySelector('input[name="disposition"]:checked')
-                      ?.value,
+                    (
+                      document.querySelector(
+                        'input[name="disposition"]:checked',
+                      ) as HTMLInputElement
+                    )?.value,
                   ),
-                  vision: !!//@ts-ignore
-                  document.getElementById('swade-stat-imp-vision')?.checked,
+                  vision: !!(
+                    document.getElementById(
+                      'swade-stat-imp-vision',
+                    ) as HTMLInputElement
+                  )?.checked,
                   visionRange: parseInt(
-                    //@ts-ignore
-                    document.querySelector('input[name="visionRange"]')?.value,
+                    (
+                      document.querySelector(
+                        'input[name="visionRange"]',
+                      ) as HTMLInputElement
+                    )?.value,
                   ),
                   visionAngle: parseInt(
-                    //@ts-ignore
-                    document.querySelector('input[name="visionAngle"]')?.value,
+                    (
+                      document.querySelector(
+                        'input[name="visionAngle"]',
+                      ) as HTMLInputElement
+                    )?.value,
                   ),
                 },
-                saveFolder: document.getElementById(
-                  'swade-stat-imp-save-folder',
-                  //@ts-ignore
+                saveFolder: (
+                  document.getElementById(
+                    'swade-stat-imp-save-folder',
+                  ) as HTMLInputElement
                 )?.value,
               };
               buildActor(
                 importSettings,
-                //@ts-ignore
-                document.getElementById('statBlock')?.value,
+                (document.getElementById('statBlock') as HTMLInputElement)
+                  ?.value,
               );
             },
           },
