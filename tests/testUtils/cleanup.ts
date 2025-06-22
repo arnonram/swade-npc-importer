@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export function cleanActor(data: object) {
   return deepOmit(data, [
     '_id',
@@ -11,19 +9,23 @@ export function cleanActor(data: object) {
   ]);
 }
 
-function deepOmit(obj: object, keysToOmit: string[]) {
-  var keysToOmitIndex = _.keyBy(
+function deepOmit(obj: any, keysToOmit: string[]): any {
+  const keysToOmitSet = new Set(
     Array.isArray(keysToOmit) ? keysToOmit : [keysToOmit],
   );
 
-  function omitFromObject(obj: object) {
-    return _.transform(obj, function (result, value, key) {
-      if (key in keysToOmitIndex) {
-        return;
+  function omitFromObject(obj: any): any {
+    if (Array.isArray(obj)) {
+      return obj.map(omitFromObject);
+    } else if (obj && typeof obj === 'object') {
+      const result: any = {};
+      for (const [key, value] of Object.entries(obj)) {
+        if (keysToOmitSet.has(key)) continue;
+        result[key] = omitFromObject(value);
       }
-
-      result[key] = _.isObject(value) ? omitFromObject(value) : value;
-    });
+      return result;
+    }
+    return obj;
   }
 
   return omitFromObject(obj);
