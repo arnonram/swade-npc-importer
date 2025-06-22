@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@4
       - uses: actions/setup-node@4
         with:
-          cahce: yarn
+          cache: yarn
           cache-dependency-path: yarn.lock
       - run: yarn
       - run: yarn test
