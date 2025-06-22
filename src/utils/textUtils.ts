@@ -32,20 +32,23 @@ export const removeMultipleWhitespaces = (text: string): string =>
   text.replace(/\s+/g, ' ');
 
 export function splitAndSort(text: string): string[] {
-  return text
+  let arr = text
     .split(/[\s,]+/)
     .map(x => x.toLowerCase().trim())
     .sort();
+
+  return removeEmptyArrayProp(arr);
 }
 
 export function splitAndTrim(
   stringToSplit: string,
   separator: string | RegExp,
 ): string[] {
-  return stringToSplit
+  let arr = stringToSplit
     .split(separator)
     .map(item => item.replace(newLineRegex, ' ').trim())
     .filter(item => item.length > 0);
+  return removeEmptyArrayProp(arr);
 }
 
 export function lowerCaseShishKebab(string: string): string {

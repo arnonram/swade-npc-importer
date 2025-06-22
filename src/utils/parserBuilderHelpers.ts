@@ -27,31 +27,21 @@ export function getArmorBonus(data: string): number {
  * Extracts a numeric bonus of a given type from a string.
  */
 export function getBonus(data: string, bonusType: string): number | undefined {
-  let type: string | undefined;
-  switch (bonusType) {
-    case 'parry':
-      type = game.i18n?.localize('npcImporter.parser.Parry');
-      break;
-    case 'cover':
-      type = game.i18n?.localize('npcImporter.parser.Cover');
-      break;
-    case 'powerPoints':
-      type = game.i18n?.localize('npcImporter.parser.PowerPoints');
-      break;
-  }
+  const label = bonusLabelMap[bonusType];
+  if (!label) return undefined;
 
-  if (!type) return undefined;
+  const match = data.match(
+    new RegExp(`([+-]?\\d+)\\s*${label}|${label}\\s*([+-]?\\d+)`, 'i'),
+  );
+  const rawNum = match?.[1] || match?.[2];
+  const parsed = rawNum ? parseInt(rawNum) : undefined;
 
-  try {
-    const matchRegex = new RegExp(
-      `${plusMinusNumRegex} ${type}|${type} ${plusMinusNumRegex}`,
-    );
-    const match = data.match(matchRegex)?.[0];
-    if (!match) return undefined;
-    const num = match.match(plusMinusNumRegex)?.[0];
-    const parsed = num ? parseInt(num) : undefined;
-    return typeof parsed === 'number' && !isNaN(parsed) ? parsed : undefined;
-  } catch {
-    return undefined;
-  }
+  return Number.isNaN(parsed) ? undefined : parsed;
 }
+
+const bonusLabelMap: Record<string, string> = {
+  parry: game.i18n?.localize('npcImporter.parser.Parry') || 'Parry',
+  cover: game.i18n?.localize('npcImporter.parser.Cover') || 'Cover',
+  powerPoints:
+    game.i18n?.localize('npcImporter.parser.PowerPoints') || 'Power Points',
+};

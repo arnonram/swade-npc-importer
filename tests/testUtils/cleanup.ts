@@ -13,7 +13,7 @@ export function cleanActor(data: object) {
 
 function deepOmit(obj: object, keysToOmit: string[]) {
   var keysToOmitIndex = _.keyBy(
-    Array.isArray(keysToOmit) ? keysToOmit : [keysToOmit]
+    Array.isArray(keysToOmit) ? keysToOmit : [keysToOmit],
   );
 
   function omitFromObject(obj: object) {
