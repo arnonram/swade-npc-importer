@@ -5,48 +5,38 @@ import { ParsedActor } from '../types/importedActor';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export async function buildActorItems(parsedData: ParsedActor) {
-  let items: any[] = [];
-  const skills = (await itemBuilder.skillBuilder(parsedData.skills)) ?? [];
-  const edges = (await itemBuilder.edgeBuilder(parsedData.edges)) ?? [];
-  const hindrances =
-    (await itemBuilder.hindranceBuilder(parsedData.hindrances)) ?? [];
-  const powers =
-    (await itemBuilder.powerBuilder(parsedData.powers ?? [])) ?? [];
-  const specialAbilities = await specialAbilitiesParser(
-    parsedData.specialAbilities,
-  );
-  const gear = (await itemGearBuilder(parsedData.gear ?? {})) ?? [];
+  const [skills, edges, hindrances, powers, specialAbilities, gear] =
+    await Promise.all([
+      itemBuilder.skillBuilder(parsedData.skills),
+      itemBuilder.edgeBuilder(parsedData.edges),
+      itemBuilder.hindranceBuilder(parsedData.hindrances),
+      itemBuilder.powerBuilder(parsedData.powers ?? []),
+      specialAbilitiesParser(parsedData.specialAbilities),
+      itemGearBuilder(parsedData.gear ?? {}),
+    ]);
 
-  items = items.concat(
-    skills,
-    edges,
-    hindrances,
-    powers,
-    specialAbilities,
-    gear,
-  );
+  const items = [
+    ...(skills ?? []),
+    ...(edges ?? []),
+    ...(hindrances ?? []),
+    ...(powers ?? []),
+    ...(specialAbilities ?? []),
+    ...(gear ?? []),
+  ];
   return postProcessChecks(items);
 }
 
 function postProcessChecks(actorItems: any[]) {
-  let finalItems = checkBruteEdge(actorItems);
-  return finalItems;
+  return checkBruteEdge(actorItems);
 }
 
 function checkBruteEdge(actorItems: any[]) {
-  if (
-    actorItems.find(
-      item => item.name === foundryI18nLocalize('npcImporter.parser.Brute'),
-    ) &&
-    actorItems.find(
-      item => item.name === foundryI18nLocalize('npcImporter.parser.Athletics'),
-    )
-  ) {
-    actorItems.find(item => {
-      if (item.name === foundryI18nLocalize('npcImporter.parser.Athletics')) {
-        item.system.attribute = 'strength';
-      }
-    });
+  const bruteName = foundryI18nLocalize('npcImporter.parser.Brute');
+  const athleticsName = foundryI18nLocalize('npcImporter.parser.Athletics');
+  const hasBrute = actorItems.some(item => item.name === bruteName);
+  const athletics = actorItems.find(item => item.name === athleticsName);
+  if (hasBrute && athletics) {
+    athletics.system.attribute = 'strength';
   }
   return actorItems;
 }
