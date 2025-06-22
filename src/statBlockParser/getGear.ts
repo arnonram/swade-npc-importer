@@ -58,9 +58,7 @@ function parseGear(gearArray: string[]): Record<string, any> {
     // Weapon
     if (
       splitGear[1] &&
-      (splitGear[1].includes(
-        foundryI18nLocalize('npcImporter.parser.Str') as string,
-      ) ||
+      (splitGear[1].includes(foundryI18nLocalize('npcImporter.parser.Str')) ||
         splitGear[1].toLowerCase().includes('damage') ||
         splitGear[1].toLowerCase().includes('range'))
     ) {
@@ -79,9 +77,7 @@ function parseGear(gearArray: string[]): Record<string, any> {
       splitGear[0]
         .toLowerCase()
         .includes(
-          (
-            foundryI18nLocalize('npcImporter.parser.Shield') || ''
-          ).toLowerCase(),
+          foundryI18nLocalize('npcImporter.parser.Shield').toLowerCase(),
         )
     ) {
       const parry = getBonus(splitGear[1], 'parry');
@@ -95,9 +91,7 @@ function parseGear(gearArray: string[]): Record<string, any> {
       armorModRegex.test(splitGear[1]) ||
       splitGear[0]
         .toLowerCase()
-        .includes(
-          (foundryI18nLocalize('npcImporter.parser.Armor') || '').toLowerCase(),
-        )
+        .includes(foundryI18nLocalize('npcImporter.parser.Armor').toLowerCase())
     ) {
       gearDict[splitGear[0].trim()] = {
         armorBonus: getArmorBonus(splitGear[1]),
@@ -119,12 +113,10 @@ function weaponParser(weapon: string[]): Record<string, any> {
     } else if (
       stat
         .toLowerCase()
-        .includes(
-          (foundryI18nLocalize('npcImporter.parser.Shots') || '').toLowerCase(),
-        )
+        .includes(foundryI18nLocalize('npcImporter.parser.Shots').toLowerCase())
     ) {
       weaponStats['shots'] = stat
-        .replace(foundryI18nLocalize('npcImporter.parser.Shots') || '', '')
+        .replace(foundryI18nLocalize('npcImporter.parser.Shots'), '')
         .trim();
     } else if (/^[A-Za-z]+/.test(stat)) {
       const match = stat.match(/^[A-Za-z]+/);

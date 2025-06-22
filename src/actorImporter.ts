@@ -1,7 +1,7 @@
 import { Import, GetActorId, DeleteActor } from './utils/foundryActions';
 import { SwadeActorToImport } from './types/importedActor';
 import { Logger } from './utils/logger';
-import { foundryI18nLocalize } from './utils/foundryWrappers';
+import { foundryI18nLocalize, foundryUiInfo } from './utils/foundryWrappers';
 
 export async function actorImporter(
   actorDataToImport: SwadeActorToImport,
@@ -37,7 +37,7 @@ async function whatToDo(
 
   new foundry.applications.api.DialogV2({
     window: {
-      title: foundryI18nLocalize('npcImporter.HTML.ActorImporter') as string,
+      title: foundryI18nLocalize('npcImporter.HTML.ActorImporter'),
     },
     position: {
       width: 400,
@@ -46,7 +46,7 @@ async function whatToDo(
     buttons: [
       {
         action: 'import',
-        label: foundryI18nLocalize('npcImporter.HTML.Rename') as string,
+        label: foundryI18nLocalize('npcImporter.HTML.Rename'),
         callback: async () => {
           let newName = (document.querySelector('#newName') as HTMLInputElement)
             .value;
@@ -57,7 +57,7 @@ async function whatToDo(
       },
       {
         action: 'override',
-        label: foundryI18nLocalize('npcImporter.HTML.Override') as string,
+        label: foundryI18nLocalize('npcImporter.HTML.Override'),
         callback: async () => {
           Logger.info('Overriding existing Actor');
           await DeleteActor(actorId);
@@ -69,10 +69,8 @@ async function whatToDo(
         action: 'cancel',
         label: 'Cancel',
         callback: () => {
-          ui.notifications?.info(
-            foundryI18nLocalize(
-              'npcImporter.HTML.ActorNotImportedMsg',
-            ) as string,
+          foundryUiInfo(
+            foundryI18nLocalize('npcImporter.HTML.ActorNotImportedMsg'),
           );
         },
       },

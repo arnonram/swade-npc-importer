@@ -68,9 +68,9 @@ export async function edgeBuilder(edges) {
             additionalStats: item?.system?.additionalStats ?? {},
             isArcaneBackground:
               item?.system?.isArcaneBackground ??
-              new RegExp(
-                foundryI18nLocalize('npcImporter.parser.Arcane') as string,
-              ).test(edgeName),
+              new RegExp(foundryI18nLocalize('npcImporter.parser.Arcane')).test(
+                edgeName,
+              ),
             requirements: {
               value: item?.system?.requirements?.value ?? '',
             },
@@ -242,7 +242,7 @@ export async function weaponBuilder(props: WeaponBuilderProps) {
       ),
       '@str',
     )
-    .replace(foundryI18nLocalize('npcImporter.parser.dice') || '', 'd');
+    .replace(foundryI18nLocalize('npcImporter.parser.dice'), 'd');
   const item = await getItemFromCompendium(props.weaponName, ItemType.WEAPON);
   //TODO: Improve this so that it'll add multiple entries for weapons which are ranged && melee
   const actions = item?.system?.actions ?? {
@@ -413,13 +413,11 @@ async function checkforItem(itemName: string, itemType: ItemType) {
 
 function rearrangeImprovedEdges(edgeName: string): string {
   let edge = edgeName;
-  if (
-    edgeName.includes(foundryI18nLocalize('npcImporter.parser.Imp') as string)
-  ) {
+  if (edgeName.includes(foundryI18nLocalize('npcImporter.parser.Imp'))) {
     edge = edgeName
-      .replace(foundryI18nLocalize('npcImporter.parser.Imp') as string, '')
+      .replace(foundryI18nLocalize('npcImporter.parser.Imp'), '')
       .trim();
-    edge = `${foundryI18nLocalize('npcImporter.parser.Improved') as string} ${edge}`;
+    edge = `${foundryI18nLocalize('npcImporter.parser.Improved')} ${edge}`;
   }
   return edge;
 }

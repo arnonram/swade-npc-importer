@@ -19,7 +19,7 @@ import {
   ImportSettings,
 } from './types/importedActor';
 import { Logger } from './utils/logger';
-import { foundryI18nLocalize } from './utils/foundryWrappers';
+import { foundryI18nLocalize, foundryUiError } from './utils/foundryWrappers';
 
 export async function buildActor(
   importSettings: ImportSettings,
@@ -27,9 +27,7 @@ export async function buildActor(
 ): Promise<void> {
   const rawStatBlock = textBoxStatBlock || (await getClipboardText());
   if (!rawStatBlock) {
-    ui.notifications?.error(
-      foundryI18nLocalize('npcImporter.parser.EmptyClipboard') as string,
-    );
+    foundryUiError(foundryI18nLocalize('npcImporter.parser.EmptyClipboard'));
     return;
   }
 
@@ -47,7 +45,7 @@ export async function buildActor(
     await actorImporter(finalActor);
   } catch (error) {
     Logger.error('Failed to build finalActor: ', error);
-    ui.notifications?.error('Failed to build actor. See console for details.');
+    foundryUiError('Failed to build actor. See console for details.');
   } finally {
     await setParsingLanguage(currentLang);
     resetAllPacks();

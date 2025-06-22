@@ -13,8 +13,8 @@ export function getDerivedStats(
 }
 
 export function getSize(abilities: Record<string, string>): number {
-  const sizeLabel = (
-    foundryI18nLocalize('npcImporter.parser.Size') || ''
+  const sizeLabel = foundryI18nLocalize(
+    'npcImporter.parser.Size',
   ).toLowerCase();
   for (const ability of Object.keys(abilities)) {
     if (ability.toLowerCase().includes(sizeLabel)) {

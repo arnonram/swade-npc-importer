@@ -48,7 +48,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
     npcImporterButton.on('click', () => {
       new foundry.applications.api.DialogV2({
         window: {
-          title: foundryI18nLocalize('npcImporter.HTML.ImportTitle') as string,
+          title: foundryI18nLocalize('npcImporter.HTML.ImportTitle'),
           resizable: true,
         },
         position: {
@@ -58,7 +58,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
         buttons: [
           {
             action: 'importActor',
-            label: foundryI18nLocalize('npcImporter.HTML.Import') as string,
+            label: foundryI18nLocalize('npcImporter.HTML.Import'),
             default: true,
             callback: (html: any) => {
               let importSettings: ImportSettings = {

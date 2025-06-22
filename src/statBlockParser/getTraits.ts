@@ -63,7 +63,7 @@ export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
   let skillsDict: { [key: string]: ImportedDie } = {};
   skills.forEach(singleTrait => {
     const matchResult = singleTrait.match(
-      new RegExp(foundryI18nLocalize('npcImporter.regex.dice') || '', 'i'),
+      new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
     );
     if (!matchResult) {
       Logger.warn(

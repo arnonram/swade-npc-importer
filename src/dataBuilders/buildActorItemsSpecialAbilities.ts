@@ -21,7 +21,7 @@ export async function specialAbilitiesParser(
       'npcImporter.parser.Str',
     )}(\\s?[\\+\\-]\\s?(\\d+)?X?(\\d+)?){0,}`.replace(
       'X',
-      foundryI18nLocalize('npcImporter.parser.dice') as string,
+      foundryI18nLocalize('npcImporter.parser.dice'),
     ),
     'gi',
   );
@@ -39,8 +39,8 @@ export async function specialAbilitiesParser(
           elem
             .toLocaleLowerCase()
             .startsWith(
-              (
-                foundryI18nLocalize('npcImporter.parser.Armor') as string
+              foundryI18nLocalize(
+                'npcImporter.parser.Armor',
               ).toLocaleLowerCase(),
             )
         ) {
@@ -50,20 +50,16 @@ export async function specialAbilitiesParser(
           );
         } else if (
           (meleeDamageRegex.test(specialAbilitiesData[elem]) ||
-            new RegExp(
-              foundryI18nLocalize('npcImporter.regex.dice') as string,
-              'i',
-            ).test(specialAbilitiesData[elem])) &&
+            new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i').test(
+              specialAbilitiesData[elem],
+            )) &&
           elem.toLocaleLowerCase() !=
             foundryI18nLocalize('npcImporter.parser.Speed').toLocaleLowerCase()
         ) {
           let meleeDamage =
             specialAbilitiesData[elem].match(meleeDamageRegex) ||
             specialAbilitiesData[elem].match(
-              new RegExp(
-                foundryI18nLocalize('npcImporter.regex.dice') as string,
-                'i',
-              ),
+              new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
             );
           specialAbitlitiesItems.push(
             await weaponBuilder({
@@ -85,10 +81,7 @@ export async function specialAbilitiesParser(
         let meleeDamage =
           specialAbilitiesData[elem].match(meleeDamageRegex) ||
           specialAbilitiesData[elem].match(
-            new RegExp(
-              foundryI18nLocalize('npcImporter.regex.dice') as string,
-              'i',
-            ),
+            new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
           );
         let name = elem.replace('@w', '').trim();
         specialAbitlitiesItems.push(

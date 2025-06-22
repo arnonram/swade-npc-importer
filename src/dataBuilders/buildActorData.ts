@@ -201,18 +201,13 @@ function findRunningDie(parsedData: ParsedActor) {
         ability
           .toLowerCase()
           .includes(
-            game.i18n
-              ?.localize('npcImporter.parser.Speed')
-              .toLowerCase() as string,
+            foundryI18nLocalize('npcImporter.parser.Speed').toLowerCase(),
           )
       ) {
         return parseInt(
           parsedData.specialabilities[ability]
             .match(
-              new RegExp(
-                foundryI18nLocalize('npcImporter.regex.dice') as string,
-                'i',
-              ),
+              new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
             )[0]
             .replace(/[a-zA-Z]/i, ''),
         );
@@ -223,9 +218,7 @@ function findRunningDie(parsedData: ParsedActor) {
         edge
           .toLowerCase()
           .includes(
-            game.i18n
-              ?.localize('npcImporter.parser.FleetFooted')
-              .toLowerCase() as string,
+            foundryI18nLocalize('npcImporter.parser.FleetFooted').toLowerCase(),
           )
       ) {
         runningDie += 2;
@@ -244,9 +237,7 @@ function findRunningMod(parsedData: ParsedActor) {
         edge
           .toLowerCase()
           .includes(
-            game.i18n
-              ?.localize('npcImporter.parser.FleetFooted')
-              .toLowerCase() || '',
+            foundryI18nLocalize('npcImporter.parser.FleetFooted').toLowerCase(),
           )
       ) {
         runningMode += 2;
