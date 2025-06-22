@@ -7,6 +7,12 @@ export default defineConfig({
     environment: 'jsdom', // or 'happy-dom' or 'node'
     include: ['tests/**/*.test.ts'],
     setupFiles: ['./tests/vitest.setup.ts'],
+    coverage: {
+      include: ['src/*'],
+      reportsDirectory: '.coverage',
+      reporter: ['text', 'json-summary', 'lcov'],
+      reportOnFailure: true,
+    },
   },
   resolve: {
     alias: {
