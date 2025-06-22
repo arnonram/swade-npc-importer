@@ -1,0 +1,30 @@
+<form autocomplete='off'>
+  <h2 class='modal-header'>{{localize 'npcImporter.settings.SelectPacks'}}</h2>
+  <p><em>{{localize 'npcImporter.settings.SelectPacksInfo'}}</em></p>
+  {{#each packs}}
+    <input
+      type='checkbox'
+      name='pack.{{this.name}}'
+      value='{${this.name}}'
+      {{this.checked}}
+    />
+    <label>{{this.name}}</label><br />
+  {{/each}}
+
+  <h2 class='modal-header'>
+    {{localize 'npcImporter.settings.SelectCompendiums'}}
+  </h2>
+  {{#each comps}}
+    <input
+      type='checkbox'
+      name='comp.{{this.name}}'
+      value='{{this.name}}'
+      {{this.checked}}
+    />
+    <label>{{this.name}}</label><br />
+  {{/each}}
+  <br />
+  <button type='submit' name='submit'>
+    <i class='far fa-save'>{{localize 'npcImporter.HTML.Save'}}</i>
+  </button>
+</form>

@@ -41,5 +41,6 @@ jobs:
       - name: upload module
         uses: actions/upload-artifact@v4
         with:
-          path: ./module-${{ github.sha }}.zip
-          name: module-${{ github.sha }}.zip
+          path: ./module.zip
+          name: module-${{ github.ref_name }}.zip
+          retention-days: 7

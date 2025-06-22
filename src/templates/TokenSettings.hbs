@@ -1,0 +1,104 @@
+<form autocomplete='off'>
+  <div class='form-group'>
+    <label>{{localize 'TOKEN.FIELDS.disposition.label'}}:</label>
+    <select id='disposition' name='disposition'>
+      <option name='HOSTILE' value='-1' {{this.dispositionHostile.selected}}>
+        {{localize 'TOKEN.DISPOSITION.HOSTILE'}}
+      </option>
+      <option name='NEUTRAL' value='0' {{this.dispositionNeutral.selected}}>
+        {{localize 'TOKEN.DISPOSITION.NEUTRAL'}}
+      </option>
+      <option name='FRIENDLY' value='1' {{this.dispositionFriendly.selected}}>
+        {{localize 'TOKEN.DISPOSITION.FRIENDLY'}}
+      </option>
+      <option name='SECRET' value='-2' {{this.dispositionSecret.selected}}>
+        {{localize 'TOKEN.DISPOSITION.SECRET'}}
+      </option>
+    </select>
+  </div>
+  <br />
+  <div class='form-group'>
+    <label>{{localize 'TOKEN.FIELDS.displayName.label'}}:</label>
+    <select id='displayName' name='displayName'>
+      <option
+        name='DISPLAY_NONE'
+        value='0'
+        {{this.displayNameDISPLAY_NONE.selected}}
+      >
+        {{localize 'TOKEN.DISPLAY_NONE'}}
+      </option>
+      <option
+        name='DISPLAY_CONTROL'
+        value='10'
+        {{this.displayNameDISPLAY_CONTROL.selected}}
+      >
+        {{localize 'TOKEN.DISPLAY_CONTROL'}}
+      </option>
+      <option
+        name='DISPLAY_OWNER_HOVER'
+        value='20'
+        {{this.displayNameDISPLAY_OWNER_HOVER.selected}}
+      >
+        {{localize 'TOKEN.DISPLAY_OWNER_HOVER'}}
+      </option>
+      <option
+        name='DISPLAY_HOVER'
+        value='30'
+        {{this.displayNameDISPLAY_HOVER.selected}}
+      >
+        {{localize 'TOKEN.DISPLAY_HOVER'}}
+      </option>
+      <option
+        name='DISPLAY_OWNER'
+        value='40'
+        {{this.displayNameDISPLAY_OWNER.selected}}
+      >
+        {{localize 'TOKEN.DISPLAY_OWNER'}}
+      </option>
+      <option
+        name='DISPLAY_ALWAYS'
+        value='50'
+        {{this.displayNameDISPLAY_ALWAYS.selected}}
+      >
+        {{localize 'TOKEN.DISPLAY_ALWAYS'}}
+      </option>
+    </select>
+  </div>
+  <hr />
+  <div class='form-group'>
+    <label>{{localize 'TOKEN.FIELDS.sight.enabled.label'}}</label>
+    <input
+      type='checkbox'
+      id='vision'
+      name='vision'
+      {{this.vision.checked}}
+      min='0'
+    />
+  </div>
+  <div class='form-group slim'>
+    <label>{{localize 'TOKEN.FIELDS.sight.range.label'}}</label>
+    <div class='form-fields'>
+      <input
+        type='number'
+        step='1'
+        name='visionRange'
+        value='{{this.visionRange}}'
+      />
+    </div>
+  </div>
+  <div class='form-group slim'>
+    <label>{{localize 'TOKEN.FIELDS.sight.angle.label'}} </label>
+    <div class='form-fields'>
+      <input
+        type='number'
+        name='visionAngle'
+        value='{{this.visionAngle}}'
+        min='0'
+        max='360'
+      />
+    </div>
+  </div>
+  <button type='submit' name='submit'>
+    <i class='far fa-save'>{{localize 'npcImporter.HTML.Save'}}</i>
+  </button>
+</form>
