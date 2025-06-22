@@ -4,7 +4,10 @@ import { getActorAddtionalStatsArray } from '../utils/foundryActions';
  * Splits a statblock string into its sections based on known labels.
  */
 export function getSections(clipData: string): string[] {
-  const inputData = clipData.replace(/(\r\n|\n|\r)/gm, ' ').replace('/ ', '/');
+  const inputData = clipData
+    .replace(/(\r\n|\n|\r)/gm, ' ')
+    .replace('/ ', '/')
+    .replace(/[−–]/gi, '-');
   const indexes = getSectionsIndex(inputData);
   if (indexes.length === 0) {
     throw new Error('Not a valid statblock');

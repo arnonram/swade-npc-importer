@@ -1,9 +1,9 @@
-import { settingToken, thisModule } from '../global.js';
+import { settingToken, thisModule } from '../global';
 import {
   updateModuleSetting,
   getModuleSettings,
-} from '../utils/foundryActions.js';
-import { foundryI18nLocalize } from '../utils/foundryWrappers.js';
+} from '../utils/foundryActions';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export default class TokenSettings extends FormApplication {
   constructor(object = {}, options = {}) {

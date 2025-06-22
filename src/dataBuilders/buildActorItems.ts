@@ -1,8 +1,8 @@
-import * as itemBuilder from './itemBuilders.js';
-import { specialAbilitiesParser } from './buildActorItemsSpecialAbilities.js';
-import { itemGearBuilder } from './buildActorGear.js';
-import { ParsedActor } from '../types/importedActor.js';
-import { foundryI18nLocalize } from '../utils/foundryWrappers.js';
+import * as itemBuilder from './itemBuilders';
+import { specialAbilitiesParser } from './buildActorItemsSpecialAbilities';
+import { itemGearBuilder } from './buildActorGear';
+import { ParsedActor } from '../types/importedActor';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export async function buildActorItems(parsedData: ParsedActor) {
   let items: any[] = [];

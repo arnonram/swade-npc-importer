@@ -1,5 +1,6 @@
-import { armorModRegex } from '../global.js';
-import { foundryI18nLocalize } from './foundryWrappers.js';
+import { BonusType } from '../types/enums';
+import { foundryI18nLocalize } from '../../src/utils/foundryWrappers';
+import { armorModRegex } from '../global';
 
 /**
  * Extracts melee damage from an ability description.
@@ -27,12 +28,15 @@ export function getArmorBonus(data: string): number {
 /**
  * Extracts a numeric bonus of a given type from a string.
  */
-export function getBonus(data: string, bonusType: string): number | undefined {
+export function getBonus(
+  data: string,
+  bonusType: BonusType,
+): number | undefined {
   const label = bonusLabelMap[bonusType];
   if (!label) return undefined;
 
   const match = data.match(
-    new RegExp(`([+-]?\\d+)\\s*${label}|${label}\\s*([+-]?\\d+)`, 'i'),
+    new RegExp(`([+-]?\\d+)\\s*${label}|${label}:?\\s*([+-]?\\d+)`, 'i'),
   );
   const rawNum = match?.[1] || match?.[2];
   const parsed = rawNum ? parseInt(rawNum) : undefined;

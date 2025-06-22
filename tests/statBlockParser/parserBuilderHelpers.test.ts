@@ -2,7 +2,7 @@ import {
   GetMeleeDamage,
   getArmorBonus,
   getBonus,
-} from '../../src/statBlockParser/parserBuilderHelpers.js';
+} from '../../src/statBlockParser/parserBuilderHelpers';
 import { describe, it, expect } from 'vitest';
 
 describe('GetMeleeDamage', () => {
@@ -44,7 +44,7 @@ describe('getArmorBonus', () => {
 
 describe('getBonus', () => {
   it('extracts parry bonus', () => {
-    expect(getBonus('Parry +2', 'parry')).toBe(2);
+    expect(getBonus('Parry: +2', 'parry')).toBe(2);
     expect(getBonus('+3 Parry', 'parry')).toBe(3);
   });
 
@@ -53,7 +53,7 @@ describe('getBonus', () => {
   });
 
   it('extracts power points', () => {
-    expect(getBonus('Power Points 15', 'powerPoints')).toBe(15);
+    expect(getBonus('Power Points: 15', 'powerPoints')).toBe(15);
   });
 
   it('returns undefined on missing or malformed bonus', () => {

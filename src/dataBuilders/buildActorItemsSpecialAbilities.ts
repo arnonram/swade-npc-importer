@@ -2,16 +2,17 @@ import {
   abilityBuilder,
   armorBuilder,
   itemBuilderFromSpecAbs,
-  ItemType,
   weaponBuilder,
-} from './itemBuilders.js';
+} from './itemBuilders';
 import {
   settingallAsSpecialAbilities,
   settingModifiedSpecialAbs,
-} from '../global.js';
-import { getArmorBonus } from '../utils/parserBuilderHelpers.js';
-import { getModuleSettings } from '../utils/foundryActions.js';
-import { foundryI18nLocalize } from '../utils/foundryWrappers.js';
+} from '../global';
+
+import { getModuleSettings } from '../utils/foundryActions';
+import { foundryI18nLocalize } from '../utils/foundryWrappers';
+import { getArmorBonus } from 'src/statBlockParser/parserBuilderHelpers';
+import { ItemType } from '../../src/types/enums';
 
 export async function specialAbilitiesParser(
   specialAbilitiesData: Record<string, string> | undefined,

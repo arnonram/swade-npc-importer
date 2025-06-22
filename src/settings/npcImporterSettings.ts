@@ -20,9 +20,9 @@ import {
   settingallAsSpecialAbilities,
   twoHandsNotaiton,
   settingNumberOfBennies,
-} from '../global.js';
-import SelectCompendiums from './selectCompendiums.js';
-import TokenSettings from './tokenSettings.js';
+} from '../global';
+import SelectCompendiums from './selectCompendiums';
+import TokenSettings from './tokenSettings';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
 export class NpcImporterSettings {

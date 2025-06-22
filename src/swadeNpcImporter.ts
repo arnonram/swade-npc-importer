@@ -5,7 +5,7 @@ import {
   settingLastSaveFolder,
   settingActiveCompendiums,
   settingToken,
-} from './global.js';
+} from './global';
 import { NpcImporterSettings } from './settings/npcImporterSettings';
 import { ImportSettings } from './types/importedActor';
 import {

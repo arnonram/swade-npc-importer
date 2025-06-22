@@ -8,7 +8,7 @@ vi.mock('../../src/utils/foundryActions', () => ({
   getModuleSettings: vi.fn(),
 }));
 
-vi.mock('../../src/global.js', () => ({
+vi.mock('../../src/global', () => ({
   settingAutoCalcSize: 'npcImporter.autoSize',
   settingToken: 'npcImporter.tokenSettings',
 }));

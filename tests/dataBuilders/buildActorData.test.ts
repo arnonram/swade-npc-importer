@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { buildActorData } from '../../src/dataBuilders/buildActorData';
 import * as foundryActions from '../../src/utils/foundryActions';
-import * as foundryWrappers from '../../src/utils/foundryWrappers';
 
 // Mock i18n and Foundry settings
 vi.mock('../../src/utils/foundryActions', async () => {

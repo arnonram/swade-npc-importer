@@ -42,12 +42,12 @@ describe('getSize', () => {
     };
     expect(getSize(abilities)).toBe(2);
 
-    abilities['Size −1'] = '';
+    abilities['Size -1'] = '';
     delete (abilities as any)['Size +2'];
     expect(getSize(abilities)).toBe(-1);
 
-    abilities['Size –3'] = ''; // en-dash
-    delete abilities['Size −1'];
+    abilities['Size -3'] = ''; // en-dash
+    delete abilities['Size -1'];
     expect(getSize(abilities)).toBe(-3);
   });
 

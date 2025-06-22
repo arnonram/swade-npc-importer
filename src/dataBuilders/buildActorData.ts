@@ -2,7 +2,7 @@ import {
   getActorAddtionalStatsArray,
   getModuleSettings,
 } from '../utils/foundryActions';
-import { additionalStatsBuilder } from './itemBuilders.js';
+import { additionalStatsBuilder } from './itemBuilders';
 import { ParsedActor } from '../types/importedActor';
 import {
   settingAutoCalcToughness,

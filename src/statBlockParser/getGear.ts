@@ -1,7 +1,8 @@
 import { removeEmptyArrayProp } from '../utils/textUtils';
 import { armorModRegex, newLineRegex } from '../global';
-import { getBonus, getArmorBonus } from '../utils/parserBuilderHelpers';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
+import { getBonus, getArmorBonus } from './parserBuilderHelpers';
+import { BonusType } from '../types/enums';
 
 const gearParsingRegex = /([A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
 
@@ -80,8 +81,8 @@ function parseGear(gearArray: string[]): Record<string, any> {
           foundryI18nLocalize('npcImporter.parser.Shield').toLowerCase(),
         )
     ) {
-      const parry = getBonus(splitGear[1], 'parry');
-      const cover = getBonus(splitGear[1], 'cover');
+      const parry = getBonus(splitGear[1], BonusType.PARRY);
+      const cover = getBonus(splitGear[1], BonusType.COVER);
       gearDict[splitGear[0].trim()] = { parry, cover };
       continue;
     }

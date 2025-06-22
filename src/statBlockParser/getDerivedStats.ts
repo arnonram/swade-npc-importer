@@ -1,5 +1,6 @@
+import { BonusType } from '../types/enums';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
-import { getBonus } from '../utils/parserBuilderHelpers';
+import { getBonus } from './parserBuilderHelpers';
 
 export function getDerivedStats(
   sections: string[],
@@ -23,7 +24,7 @@ export function getSize(abilities: Record<string, string>): number {
         .trim()
         .split(' ');
       if (parts.length > 1) {
-        const num = parseInt(parts[1].replace('−', '-').replace('–', '-'));
+        const num = parseInt(parts[1]);
         return isNaN(num) ? 0 : num;
       }
     }
@@ -38,7 +39,7 @@ export function powerPointsFromSpecialAbility(
     items => items.system?.grantsPowers === true,
   );
   if (powerAbility) {
-    return getBonus(powerAbility.system.description, 'powerPoints');
+    return getBonus(powerAbility.system.description, BonusType.POWER_POINTS);
   }
   return undefined;
 }

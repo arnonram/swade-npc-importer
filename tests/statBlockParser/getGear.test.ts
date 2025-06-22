@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { getGear } from '../../src/statBlockParser/getGear';
 
 vi.mock('../../src/global', async mod => ({
@@ -11,7 +11,7 @@ vi.mock('../../src/global', async mod => ({
 vi.mock('../../src/utils/parserBuilderHelpers', async mod => ({
   ...(await mod),
   getBonus: vi.fn((input: string, type: string) => {
-    if (type === 'parry') return input.includes('−1 Parry') ? -1 : 0;
+    if (type === 'parry') return input.includes('-1 Parry') ? -1 : 0;
     if (type === 'cover') return input.includes('2 Cover') ? 2 : 0;
     return 0;
   }),
@@ -21,7 +21,7 @@ vi.mock('../../src/utils/parserBuilderHelpers', async mod => ({
 describe('getGear()', () => {
   it('parses weapon with multiple stats', async () => {
     const result = await getGear([
-      'Gear: Great Axe (Str+d10, −1 Parry, 2 hands), Healing Kit',
+      'Gear: Great Axe (Str+d10, -1 Parry, 2 hands), Healing Kit',
     ]);
 
     expect(result).toEqual({
@@ -48,7 +48,7 @@ describe('getGear()', () => {
   });
 
   it('parses shield with parry and cover', async () => {
-    const result = await getGear(['Gear: Wooden Shield (+2 Cover, −1 Parry)']);
+    const result = await getGear(['Gear: Wooden Shield (+2 Cover, -1 Parry)']);
 
     expect(result).toEqual({
       'Wooden Shield': {

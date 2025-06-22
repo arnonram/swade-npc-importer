@@ -17,7 +17,7 @@ export function getSystemDefinedStats(sections: string[]): Record<string, any> {
 
     if (!statKey || statValueRaw === undefined) continue;
 
-    const statValue = statValueRaw.replace(';', '').trim().replace('–', '-');
+    const statValue = statValueRaw.replace(';', '').trim();
 
     switch (dtype) {
       case 'String':

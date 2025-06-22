@@ -3,17 +3,18 @@ import {
   settingPackageToUse,
   settingCompsToUse,
   settingActiveCompendiums,
-} from '../global.js';
-import { splitAndSort } from './textUtils.js';
-import { SwadeActorToImport } from '../types/importedActor.js';
+} from '../global';
+import { splitAndSort } from './textUtils';
+import { SwadeActorToImport } from '../types/importedActor';
+
+import { Logger } from './logger';
 import {
-  foundryI18nFormat,
-  foundryI18nLocalize,
-  foundryUiError,
   foundryUiInfo,
-} from './foundryWrappers.js';
-import { Logger } from './logger.js';
-import { ItemType } from '../dataBuilders/itemBuilders.js';
+  foundryI18nFormat,
+  foundryUiError,
+  foundryI18nLocalize,
+} from './foundryWrappers';
+import { ItemType } from '../../src/types/enums';
 
 // Holds all active compendium packs of type 'Item'
 const allPacks: any[] = [];

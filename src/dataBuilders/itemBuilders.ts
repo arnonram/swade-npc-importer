@@ -4,14 +4,12 @@ import {
   getSpecificAdditionalStat,
   getSystemCoreSkills,
 } from '../utils/foundryActions';
-import { twoHandsNotaiton } from '../global.js';
-import {
-  capitalizeEveryWord,
-  specialAbilitiesLink,
-} from '../utils/textUtils.js';
+import { twoHandsNotaiton } from '../global';
+import { capitalizeEveryWord, specialAbilitiesLink } from '../utils/textUtils';
 import { WeaponBuilderProps } from '../types/actorToImport';
 import { Logger } from '../utils/logger';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
+import { ItemType } from '../../src/types/enums';
 
 export async function skillBuilder(skillsDict) {
   const coreSkills = getSystemCoreSkills();
@@ -404,7 +402,7 @@ async function checkforItem(itemName: string, itemType: ItemType) {
 
   if (foundry.utils.isEmpty(itemFromCompendium.system)) {
     itemFromCompendium = await getItemFromCompendium(
-      itemName.split('(')[0].replace(new RegExp('[+-−]?\\d'), '').trim(),
+      itemName.split('(')[0].replace(new RegExp('[+-]?\\d'), '').trim(),
       itemType,
     );
   }
@@ -446,16 +444,4 @@ function checkEquipedStatus(weaponData: {
   return regEx.test(weaponData?.description) || regEx.test(weaponData?.notes)
     ? 5
     : 4;
-}
-
-export enum ItemType {
-  SKILL = 'skill',
-  EDGE = 'edge',
-  HINDRANCE = 'hindrance',
-  ABILITY = 'ability',
-  POWER = 'power',
-  WEAPON = 'weapon',
-  SHIELD = 'shield',
-  ARMOR = 'armor',
-  GEAR = 'gear',
 }

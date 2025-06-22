@@ -10,7 +10,7 @@ import {
   thisModule,
   settingCompsToUse,
   settingActiveCompendiums,
-} from '../global.js';
+} from '../global';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { SettingsData } from '../types/settingsData';
 

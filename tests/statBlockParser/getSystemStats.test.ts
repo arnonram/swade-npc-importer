@@ -35,7 +35,7 @@ describe('getSystemDefinedStats', () => {
   });
 
   it('parses with extra symbols and dash normalization', () => {
-    const sections = ['XP: 30;', 'Conviction: true;', 'Rank: Hero – Veteran'];
+    const sections = ['XP: 30;', 'Conviction: true;', 'Rank: Hero - Veteran'];
     const result = getSystemDefinedStats(sections);
     expect(result).toEqual({
       XP: 30,
