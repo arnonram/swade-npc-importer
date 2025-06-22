@@ -15,6 +15,7 @@ import {
   checkforItem,
   buildItemObject,
 } from './itemBuilderHelpers';
+import { isEmpty } from '../utils/objectUtils';
 
 export async function skillBuilder(
   skillsDict: Record<string, any>,
@@ -327,7 +328,7 @@ export async function powerBuilder(powers: string[]): Promise<any[]> {
         powerName = power.replace(powerTrapping[0], '').trim();
       }
       let item = await getItemFromCompendium(powerName, ItemType.POWER);
-      if (!item || foundry.utils.isEmpty(item.system)) {
+      if (!item || isEmpty(item.system)) {
         item = await getItemFromCompendium(
           powerName.replace('/', ' / '),
           ItemType.POWER,

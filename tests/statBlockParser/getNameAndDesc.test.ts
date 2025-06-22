@@ -1,13 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { getName, getBio } from '../../src/statBlockParser/getNameAndDesc';
 
-vi.mock('../../src/utils/textUtils', async () => {
-  return {
-    capitalizeEveryWord: (s: string) =>
-      s.replace(/\b\w/g, c => c.toUpperCase()), // basic version
-  };
-});
-
 describe('getName', () => {
   it('extracts and capitalizes the first line as name', () => {
     const input = `redcap\nredcaps are vicious creatures.\nAttributes: Agility d6`;

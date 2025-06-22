@@ -18,14 +18,6 @@ vi.mock('../../src/dataBuilders/buildActorGear', () => ({
   itemGearBuilder: vi.fn(async gear => [{ name: 'Sword', type: 'weapon' }]),
 }));
 
-vi.mock('../../src/utils/foundryWrappers', () => ({
-  foundryI18nLocalize: (key: string) => {
-    if (key === 'npcImporter.parser.Brute') return 'Brute';
-    if (key === 'npcImporter.parser.Athletics') return 'Athletics';
-    return key;
-  },
-}));
-
 describe('buildActorItems', () => {
   beforeEach(() => {
     vi.clearAllMocks();

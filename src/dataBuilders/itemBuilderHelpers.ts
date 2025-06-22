@@ -6,6 +6,7 @@ import {
 import { twoHandsNotaiton } from '../global';
 import { specialAbilitiesLink } from '../utils/textUtils';
 import { ItemType } from '../../src/types/enums';
+import { isEmpty } from '../utils/objectUtils';
 
 /**
  * Checks for a specific item name pattern and returns the matched or original string.
@@ -91,15 +92,14 @@ export async function checkforItem(
     itemName = rearrangeImprovedEdges(itemName);
   }
   let itemFromCompendium = await getItemFromCompendium(itemName, itemType);
-  if (!foundry.utils.isEmpty(itemFromCompendium.system))
-    return itemFromCompendium;
+  if (!isEmpty(itemFromCompendium.system)) return itemFromCompendium;
 
   itemFromCompendium = await getItemFromCompendium(
     itemName.split('(')[0].trim(),
     itemType,
   );
 
-  if (foundry.utils.isEmpty(itemFromCompendium.system)) {
+  if (isEmpty(itemFromCompendium.system)) {
     itemFromCompendium = await getItemFromCompendium(
       itemName.split('(')[0].replace(new RegExp('[+-]?\\d'), '').trim(),
       itemType,
