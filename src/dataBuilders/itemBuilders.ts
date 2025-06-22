@@ -10,57 +10,67 @@ import { WeaponBuilderProps } from '../types/actorToImport';
 import { Logger } from '../utils/logger';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { ItemType } from '../../src/types/enums';
+import {
+  checkSpecificItem,
+  rearrangeImprovedEdges,
+  generateDescription,
+  checkEquipedStatus,
+  checkforItem,
+} from './itemBuilderHelpers';
 
-export async function skillBuilder(skillsDict) {
+export async function skillBuilder(
+  skillsDict: Record<string, any>,
+): Promise<any[]> {
+  if (!skillsDict) return [];
   const coreSkills = getSystemCoreSkills();
-  if (skillsDict != undefined) {
-    var allSkills: any[] = [];
-    for (const skillName in skillsDict) {
+  const allSkills = await Promise.all(
+    Object.entries(skillsDict).map(async ([skillName, skillData]) => {
       const item = await checkforItem(skillName, ItemType.SKILL);
       const isCore = coreSkills.includes(skillName);
       try {
-        allSkills.push({
-          ...(item ?? ''),
+        return {
+          ...(item ?? {}),
           type: ItemType.SKILL,
           name: capitalizeEveryWord(skillName),
           img: item?.img ?? 'systems/swade/assets/icons/skill.svg',
           system: {
-            ...(item?.system ?? ''),
+            ...(item?.system ?? {}),
             description: item?.system?.description ?? '',
             notes: item?.system?.notes ?? '',
             additionalStats: item?.system?.additionalStats ?? {},
             attribute: item?.system?.attribute ?? '',
             isCoreSkill: isCore,
             die: {
-              sides: skillsDict[skillName].sides,
-              modifier: skillsDict[skillName].modifier,
+              sides: skillData.sides,
+              modifier: skillData.modifier,
             },
           },
           effects: item?.effects?.toJSON() ?? [],
           flags: item?.flags ?? {},
-        });
+        };
       } catch (error) {
         Logger.error(`Could not build skill: ${error}`);
+        return null;
       }
-    }
-    return allSkills;
-  }
+    }),
+  );
+  return allSkills.filter(Boolean);
 }
 
-export async function edgeBuilder(edges) {
-  if (edges != undefined) {
-    var allEdges: any[] = [];
-    for (let i = 0; i < edges.length; i++) {
-      let edgeName = edges[i].trim();
+export async function edgeBuilder(edges: string[]): Promise<any[]> {
+  if (!edges) return [];
+  const allEdges = await Promise.all(
+    edges.map(async edge => {
+      const edgeName = edge.trim();
       const item = await checkforItem(edgeName, ItemType.EDGE);
       try {
-        allEdges.push({
-          ...(item ?? ''),
+        return {
+          ...(item ?? {}),
           type: ItemType.EDGE,
           name: capitalizeEveryWord(edgeName),
           img: item?.img ?? 'systems/swade/assets/icons/edge.svg',
           system: {
-            ...(item?.system ?? ''),
+            ...(item?.system ?? {}),
             description: item?.system?.description ?? '',
             notes: item?.system?.notes ?? '',
             additionalStats: item?.system?.additionalStats ?? {},
@@ -75,27 +85,26 @@ export async function edgeBuilder(edges) {
           },
           effects: item?.effects?.toJSON() ?? [],
           flags: item?.flags ?? {},
-        });
+        };
       } catch (error) {
         Logger.error(`Could not build edge: ${error}`);
+        return null;
       }
-    }
-    return allEdges;
-  }
+    }),
+  );
+  return allEdges.filter(Boolean);
 }
 
-export async function hindranceBuilder(hindrances) {
+export async function hindranceBuilder(hindrances: string[]): Promise<any[]> {
+  if (!hindrances) return [];
   const majorMinor = new RegExp(
-    `${foundryI18nLocalize(
-      'npcImporter.parser.Major',
-    )}(,)?\\s?|${foundryI18nLocalize('npcImporter.parser.Minor')}(,)?\\s?`,
+    `${foundryI18nLocalize('npcImporter.parser.Major')}(,)?\\s?|${foundryI18nLocalize('npcImporter.parser.Minor')}(,)?\\s?`,
     'ig',
   );
-  if (hindrances != undefined) {
-    var allHindrances: any[] = [];
-    for (let i = 0; i < hindrances.length; i++) {
-      let hindranceName = hindrances[i].trim();
-      let isMajor = RegExp(
+  const allHindrances = await Promise.all(
+    hindrances.map(async hindrance => {
+      let hindranceName = hindrance.trim();
+      const isMajor = RegExp(
         `\\(${foundryI18nLocalize('npcImporter.parser.Major')}`,
         'ig',
       ).test(hindranceName);
@@ -105,13 +114,13 @@ export async function hindranceBuilder(hindrances) {
         .trim();
       const item = await checkforItem(hindranceName, ItemType.HINDRANCE);
       try {
-        allHindrances.push({
-          ...(item ?? ''),
+        return {
+          ...(item ?? {}),
           type: ItemType.HINDRANCE,
           name: capitalizeEveryWord(hindranceName),
           img: item?.img ?? 'systems/swade/assets/icons/hindrance.svg',
           system: {
-            ...(item?.system ?? ''),
+            ...(item?.system ?? {}),
             description: item?.system?.description ?? '',
             notes: item?.system?.notes ?? '',
             additionalStats: item?.system?.additionalStats ?? {},
@@ -119,14 +128,14 @@ export async function hindranceBuilder(hindrances) {
           },
           effects: item?.effects?.toJSON() ?? [],
           flags: item?.flags ?? {},
-        });
+        };
       } catch (error) {
         Logger.error(`Could not build hindrance: ${error}`);
+        return null;
       }
-    }
-
-    return allHindrances;
-  }
+    }),
+  );
+  return allHindrances.filter(Boolean);
 }
 
 export async function abilityBuilder(
@@ -134,19 +143,17 @@ export async function abilityBuilder(
   abilityDescription: string = '',
 ): Promise<any> {
   const doesGrantPowers = new RegExp(
-    `${foundryI18nLocalize(
-      'npcImporter.parser.PowerPoints',
-    )}|${foundryI18nLocalize('npcImporter.parser.Powers')}`,
+    `${foundryI18nLocalize('npcImporter.parser.PowerPoints')}|${foundryI18nLocalize('npcImporter.parser.Powers')}`,
   ).test(abilityDescription);
   const item = await checkforItem(abilityName, ItemType.ABILITY);
   try {
     return {
-      ...(item ?? ''),
+      ...(item ?? {}),
       type: ItemType.ABILITY,
       name: capitalizeEveryWord(abilityName),
       img: item?.img ?? 'systems/swade/assets/icons/ability.svg',
       system: {
-        ...(item?.system ?? ''),
+        ...(item?.system ?? {}),
         description: generateDescription(abilityDescription, item, true),
         notes: item?.system?.notes ?? '',
         additionalStats: item?.system?.additionalStats ?? {},
@@ -158,6 +165,7 @@ export async function abilityBuilder(
     };
   } catch (error) {
     Logger.error(`Could not build ability: ${error}`);
+    return null;
   }
 }
 
@@ -165,38 +173,42 @@ export async function itemBuilderFromSpecAbs(
   name: string,
   itemDescription: string,
   type: ItemType,
-) {
-  let cleanName = checkSpecificItem(name).trim();
-  let itemData = await checkforItem(cleanName, type);
-  const item = {
-    ...(itemData ?? ''),
-    type: type,
-    name: itemData?.name ?? capitalizeEveryWord(name.trim()),
-    img: itemData?.img ?? `systems/swade/assets/icons/${type}.svg`,
-    system: {
-      ...abilityBuilder(itemData?.system ?? ''),
-    },
-    effects: itemData?.effects?.toJSON() ?? [],
-    flags: itemData?.flags ?? {},
-  };
-  if (itemData?.type === type) {
-    item.system.description = `${itemDescription.trim()}<hr>${
-      itemData?.system?.description
-    }`;
+): Promise<any> {
+  const cleanName = checkSpecificItem(name).trim();
+  const itemData = await checkforItem(cleanName, type);
+  try {
+    const item = {
+      ...(itemData ?? {}),
+      type,
+      name: itemData?.name ?? capitalizeEveryWord(name.trim()),
+      img: itemData?.img ?? `systems/swade/assets/icons/${type}.svg`,
+      system: {
+        ...(itemData?.system && typeof itemData.system === 'object'
+          ? itemData.system
+          : {}),
+        description: itemData?.system?.description
+          ? `${itemDescription.trim()}<hr>${itemData.system.description}`
+          : itemDescription.trim(),
+      },
+      effects: itemData?.effects?.toJSON() ?? [],
+      flags: itemData?.flags ?? {},
+    };
+    return item;
+  } catch (error) {
+    Logger.error(`Could not build item from spec abs: ${error}`);
+    return null;
   }
-  return item;
 }
 
-export async function powerBuilder(powers: string[]) {
-  if (powers != undefined) {
-    var allPowers: any[] = [];
-    for (let i = 0; i < powers.length; i++) {
-      let powerName = powers[i].trim();
-      const powerTrapping = powers[i].match(/\(([^)]+)\)/);
+export async function powerBuilder(powers: string[]): Promise<any[]> {
+  if (!powers) return [];
+  const allPowers = await Promise.all(
+    powers.map(async power => {
+      let powerName = power.trim();
+      const powerTrapping = power.match(/\(([^)]+)\)/);
       if (powerTrapping) {
-        powerName = powers[i].replace(powerTrapping[0], '').trim();
+        powerName = power.replace(powerTrapping[0], '').trim();
       }
-
       let item = await getItemFromCompendium(powerName, ItemType.POWER);
       if (!item || foundry.utils.isEmpty(item.system)) {
         item = await getItemFromCompendium(
@@ -209,8 +221,8 @@ export async function powerBuilder(powers: string[]) {
         system.trapping = powerTrapping[1];
       }
       try {
-        const itemToAdd = {
-          ...(item ?? ''),
+        return {
+          ...(item ?? {}),
           type: ItemType.POWER,
           name: `${item?.system?.parent?.name ?? item?.name ?? powerName} ${
             powerTrapping ? powerTrapping[0] : ''
@@ -220,29 +232,26 @@ export async function powerBuilder(powers: string[]) {
           effects: item?.effects?.toJSON() ?? [],
           flags: item?.flags ?? {},
         };
-        allPowers.push(itemToAdd);
       } catch (error) {
         Logger.error(`Could not build power: ${error}`);
+        return null;
       }
-    }
-    return allPowers;
-  }
+    }),
+  );
+  return allPowers.filter(Boolean);
 }
 
-export async function weaponBuilder(props: WeaponBuilderProps) {
+export async function weaponBuilder(props: WeaponBuilderProps): Promise<any> {
   const dmg = props.weaponDamage
     ?.replace(
       new RegExp(
-        `${foundryI18nLocalize(
-          'npcImporter.parser.Str',
-        )}\\.|${foundryI18nLocalize('npcImporter.parser.Str')}`,
+        `${foundryI18nLocalize('npcImporter.parser.Str')}.|${foundryI18nLocalize('npcImporter.parser.Str')}`,
         'gi',
       ),
       '@str',
     )
     .replace(foundryI18nLocalize('npcImporter.parser.dice'), 'd');
-  const item = await getItemFromCompendium(props.weaponName, ItemType.WEAPON);
-  //TODO: Improve this so that it'll add multiple entries for weapons which are ranged && melee
+  const item = await checkforItem(props.weaponName, ItemType.WEAPON);
   const actions = item?.system?.actions ?? {
     skill: props.range
       ? foundryI18nLocalize('npcImporter.parser.Shooting')
@@ -250,28 +259,29 @@ export async function weaponBuilder(props: WeaponBuilderProps) {
   };
   try {
     return {
-      ...(item ?? ''),
+      ...(item ?? {}),
       type: ItemType.WEAPON,
       name: item?.name ?? capitalizeEveryWord(props.weaponName),
       img: item?.img ?? 'systems/swade/assets/icons/weapon.svg',
       system: {
-        ...(item?.system ?? ''),
+        ...(item?.system ?? {}),
         description: generateDescription(props.weaponDescription || '', item),
         equippable: item?.system?.equippable ?? true,
-        equipStatus: checkEquipedStatus(item?.system),
+        equipStatus: checkEquipedStatus(item?.system ?? {}),
         damage: dmg,
         range: props.range ?? item?.system?.range,
         rof: props.rof ?? item?.system?.rof,
         ap: props.ap ?? item?.system?.ap,
         shots: props.shots ?? item?.system?.shots,
         currentShots: props.shots ?? item?.system?.shots,
-        actions: actions,
+        actions,
       },
       effects: item?.effects?.toJSON() ?? [],
       flags: item?.flags ?? {},
     };
   } catch (error) {
     Logger.error(`Could not build weapon: ${error}`);
+    return null;
   }
 }
 
@@ -280,16 +290,16 @@ export async function shieldBuilder(
   description: string = '',
   parry: number = 0,
   cover: number = 0,
-) {
-  const item = await getItemFromCompendium(shieldName, ItemType.SHIELD);
+): Promise<any> {
+  const item = await checkforItem(shieldName, ItemType.SHIELD);
   try {
     return {
-      ...(item ?? ''),
+      ...(item ?? {}),
       type: ItemType.SHIELD,
       name: item?.name ?? capitalizeEveryWord(shieldName),
       img: item?.img ?? 'systems/swade/assets/icons/shield.svg',
       system: {
-        ...(item?.system ?? ''),
+        ...(item?.system ?? {}),
         description: generateDescription(description, item),
         notes: item?.system?.notes ?? '',
         additionalStats: item?.system?.additionalStats ?? {},
@@ -303,6 +313,7 @@ export async function shieldBuilder(
     };
   } catch (error) {
     Logger.error(`Could not build shield: ${error}`);
+    return null;
   }
 }
 
@@ -310,17 +321,17 @@ export async function armorBuilder(
   armorName: string,
   armorBonus: number,
   armorDescription: string,
-) {
-  var cleanName = checkSpecificItem(armorName);
-  const item = await getItemFromCompendium(cleanName, ItemType.ARMOR);
+): Promise<any> {
+  const cleanName = checkSpecificItem(armorName);
+  const item = await checkforItem(cleanName, ItemType.ARMOR);
   try {
     return {
-      ...(item ?? ''),
+      ...(item ?? {}),
       type: ItemType.ARMOR,
       name: item?.name ?? capitalizeEveryWord(armorName),
       img: item?.img ?? 'systems/swade/assets/icons/armor.svg',
       system: {
-        ...(item?.system ?? ''),
+        ...(item?.system ?? {}),
         description: generateDescription(armorDescription, item),
         notes: item?.system?.notes ?? '',
         additionalStats: item?.system?.additionalStats ?? {},
@@ -334,19 +345,23 @@ export async function armorBuilder(
     };
   } catch (error) {
     Logger.error(`Could not build armor: ${error}`);
+    return null;
   }
 }
 
-export async function gearBuilder(gearName: string, description: string = '') {
+export async function gearBuilder(
+  gearName: string,
+  description: string = '',
+): Promise<any> {
   const item = await checkforItem(gearName, ItemType.GEAR);
   try {
     return {
-      ...(item ?? ''),
+      ...(item ?? {}),
       type: ItemType.GEAR,
       name: item?.name ?? capitalizeEveryWord(gearName),
       img: item?.img ?? 'systems/swade/assets/icons/gear.svg',
       system: {
-        ...(item?.system ?? ''),
+        ...(item?.system ?? {}),
         description: generateDescription(description, item),
         equipStatus: 1,
         equippable: false,
@@ -356,92 +371,18 @@ export async function gearBuilder(gearName: string, description: string = '') {
     };
   } catch (error) {
     Logger.error(`Could not build gear: ${error}`);
+    return null;
   }
 }
 
 export function additionalStatsBuilder(
   additionalStatName: string,
   additionalStatValue: number,
-) {
-  let gameAditionalStat = getSpecificAdditionalStat(additionalStatName);
+): any {
+  const gameAditionalStat = getSpecificAdditionalStat(additionalStatName);
   if (gameAditionalStat !== undefined) {
     gameAditionalStat['value'] = additionalStatValue;
     return gameAditionalStat;
   }
-}
-
-function checkSpecificItem(data: string) {
-  const abilitiesWithMod = new RegExp(
-    `${foundryI18nLocalize('npcImporter.parser.Armor')}|${foundryI18nLocalize(
-      'npcImporter.parser.Size',
-    )}|${foundryI18nLocalize('npcImporter.parser.Fear')}|${foundryI18nLocalize(
-      'npcImporter.parser.Weakness',
-    )}$`,
-  );
-
-  const item = data.match(abilitiesWithMod);
-
-  if (item != null) {
-    return item[0];
-  }
-  return data;
-}
-
-async function checkforItem(itemName: string, itemType: ItemType) {
-  if (itemType === ItemType.EDGE) {
-    itemName = rearrangeImprovedEdges(itemName);
-  }
-  let itemFromCompendium = await getItemFromCompendium(itemName, itemType);
-  if (!foundry.utils.isEmpty(itemFromCompendium.system))
-    return itemFromCompendium;
-
-  itemFromCompendium = await getItemFromCompendium(
-    itemName.split('(')[0].trim(),
-    itemType,
-  );
-
-  if (foundry.utils.isEmpty(itemFromCompendium.system)) {
-    itemFromCompendium = await getItemFromCompendium(
-      itemName.split('(')[0].replace(new RegExp('[+-]?\\d'), '').trim(),
-      itemType,
-    );
-  }
-  return itemFromCompendium;
-}
-
-function rearrangeImprovedEdges(edgeName: string): string {
-  let edge = edgeName;
-  if (edgeName.includes(foundryI18nLocalize('npcImporter.parser.Imp'))) {
-    edge = edgeName
-      .replace(foundryI18nLocalize('npcImporter.parser.Imp'), '')
-      .trim();
-    edge = `${foundryI18nLocalize('npcImporter.parser.Improved')} ${edge}`;
-  }
-  return edge;
-}
-
-function generateDescription(
-  description: string,
-  itemData: { name: string; system: { description: any } },
-  isSpecialAbility?: boolean,
-) {
-  let desc;
-  if (description && isSpecialAbility && itemData?.name) {
-    desc = `${description.trim()}<br>${specialAbilitiesLink(itemData.name)}`;
-  }
-  if (description) {
-    return itemData?.system?.description
-      ? `${desc ?? description}<hr>${itemData?.system?.description}`
-      : description;
-  } else return '';
-}
-
-function checkEquipedStatus(weaponData: {
-  description: string;
-  notes: string;
-}) {
-  var regEx = new RegExp(getModuleSettings(twoHandsNotaiton), 'i');
-  return regEx.test(weaponData?.description) || regEx.test(weaponData?.notes)
-    ? 5
-    : 4;
+  return undefined;
 }

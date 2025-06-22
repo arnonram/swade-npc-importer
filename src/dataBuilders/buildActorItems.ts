@@ -7,9 +7,9 @@ import { foundryI18nLocalize } from '../utils/foundryWrappers';
 export async function buildActorItems(parsedData: ParsedActor) {
   const [skills, edges, hindrances, powers, specialAbilities, gear] =
     await Promise.all([
-      itemBuilder.skillBuilder(parsedData.skills),
-      itemBuilder.edgeBuilder(parsedData.edges),
-      itemBuilder.hindranceBuilder(parsedData.hindrances),
+      itemBuilder.skillBuilder(parsedData.skills ?? {}),
+      itemBuilder.edgeBuilder(parsedData.edges ?? []),
+      itemBuilder.hindranceBuilder(parsedData.hindrances ?? []),
       itemBuilder.powerBuilder(parsedData.powers ?? []),
       specialAbilitiesParser(parsedData.specialAbilities),
       itemGearBuilder(parsedData.gear ?? {}),
