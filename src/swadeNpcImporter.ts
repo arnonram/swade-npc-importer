@@ -16,6 +16,7 @@ import {
 } from './utils/foundryActions';
 import { foundryI18nLocalize } from './utils/foundryWrappers';
 import { Logger } from './utils/logger';
+import { buildFolderOptions, isChecked } from './utils/dialogUtils';
 
 Hooks.on('ready', async () => {
   if (
@@ -45,7 +46,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
 
     $(html).find('.directory-footer').append(npcImporterButton);
 
-    npcImporterButton.on('click', () => {
+    npcImporterButton.on('click', async () => {
       new foundry.applications.api.DialogV2({
         window: {
           title: foundryI18nLocalize('npcImporter.HTML.ImportTitle'),
@@ -54,7 +55,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
         position: {
           width: 400,
         },
-        content: importerDialog(),
+        content: await importerDialog(),
         buttons: [
           {
             action: 'importActor',
@@ -123,135 +124,48 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
   }
 });
 
-function importerDialog(): string {
+async function importerDialog(): Promise<string> {
   const defaultData = {
     actorType: getModuleSettings(settingDefaultActorType),
     isWildcard: getModuleSettings(settingDefaultIsWildcard),
     tokenData: getModuleSettings(settingToken),
   };
-  const folderOptions = buildFolderOptions();
+  const lastSave = getModuleSettings(settingLastSaveFolder);
+  const folders = getAllActorFolders();
+  const folderOptions = buildFolderOptions(lastSave, folders);
 
-  const npcImporterDialog = `
-  <form>
-    <p>${foundryI18nLocalize('npcImporter.HTML.ImportDesc')}</p>
+  // Prepare template data
+  const templateData = {
+    importDesc: foundryI18nLocalize('npcImporter.HTML.ImportDesc'),
+    actorTypeLabel: foundryI18nLocalize('npcImporter.HTML.ActorType'),
+    npcLabel: foundryI18nLocalize('npcImporter.settings.NPC'),
+    characterLabel: foundryI18nLocalize('npcImporter.settings.Character'),
+    actorType: defaultData.actorType,
+    isWildcard: defaultData.isWildcard,
+    wildcardLabel: foundryI18nLocalize('npcImporter.HTML.Wildcard'),
+    dispositionLabel: foundryI18nLocalize('npcImporter.HTML.Disposition'),
+    disposition: defaultData.tokenData.disposition,
+    hostileLabel: foundryI18nLocalize('npcImporter.settings.Hostile'),
+    neutralLabel: foundryI18nLocalize('npcImporter.settings.Neutral'),
+    friendlyLabel: foundryI18nLocalize('npcImporter.settings.Friendly'),
+    secretLabel: foundryI18nLocalize('npcImporter.settings.Secret'),
+    vision: defaultData.tokenData.vision,
+    sightEnabledLabel: foundryI18nLocalize('TOKEN.FIELDS.sight.enabled.label'),
+    visionRange: defaultData.tokenData.visionRange,
+    sightRangeLabel: foundryI18nLocalize('TOKEN.FIELDS.sight.range.label'),
+    visionAngle: defaultData.tokenData.visionAngle,
+    sightAngleLabel: foundryI18nLocalize('TOKEN.FIELDS.sight.angle.label'),
+    saveFolderLabel: foundryI18nLocalize('npcImporter.HTML.SaveFolder'),
+    folderOptions,
+    statBlockLabel: foundryI18nLocalize('npcImporter.HTML.StatBlock'),
+    firefoxLabel: foundryI18nLocalize('npcImporter.HTML.Firefox'),
+    isChecked,
+  };
 
-    <!-- Actor Options -->
-    <div class="form-group">
-      <label class="form-header"><b>${foundryI18nLocalize('npcImporter.HTML.ActorType')}</b></label>
-      <div class="flexrow">
-        <label>
-          <input type="radio" id="swade-stat-imp-actorType" name="actorType" value="npc" ${isChecked(defaultData.actorType, 'npc')} />
-          ${foundryI18nLocalize('npcImporter.settings.NPC')}
-        </label>
-        <label>
-          <input type="radio" id="swade-stat-imp-actorType" name="actorType" value="character" ${isChecked(defaultData.actorType, 'character')} />
-          ${foundryI18nLocalize('npcImporter.settings.Character')}
-        </label>
-      </div>
-    </div>
-
-    <!-- Wildcard -->
-    <div class="form-group">
-      <label>
-        <input type="checkbox" id="swade-stat-imp-isWildCard" name="isWildcard" value="true" ${defaultData.isWildcard ? 'checked' : ''} />
-        ${foundryI18nLocalize('npcImporter.HTML.Wildcard')}
-      </label>
-    </div>
-
-    <!-- Disposition -->
-    <div class="form-group">
-      <label class="form-header"><b>${foundryI18nLocalize('npcImporter.HTML.Disposition')}</b></label>
-      <div class="flexrow">
-        <label>
-          <input type="radio" id="swade-stat-imp-disposition" name="disposition" value="-1" ${isChecked(defaultData.tokenData.disposition, -1)} />
-          ${foundryI18nLocalize('npcImporter.settings.Hostile')}
-        </label>
-        <label>
-          <input type="radio" id="swade-stat-imp-disposition" name="disposition" value="0" ${isChecked(defaultData.tokenData.disposition, 0)} />
-          ${foundryI18nLocalize('npcImporter.settings.Neutral')}
-        </label>
-        <label>
-          <input type="radio" id="swade-stat-imp-disposition" name="disposition" value="1" ${isChecked(defaultData.tokenData.disposition, 1)} />
-          ${foundryI18nLocalize('npcImporter.settings.Friendly')}
-        </label>
-        <label>
-          <input type="radio" id="swade-stat-imp-disposition" name="disposition" value="-2" ${isChecked(defaultData.tokenData.disposition, -2)} />
-          ${foundryI18nLocalize('npcImporter.settings.Secret')}
-        </label>
-      </div>
-    </div>
-
-    <!-- Vision Settings -->
-    <div class="form-group">
-      <label>
-        <input type="checkbox" id="swade-stat-imp-vision" name="vision" ${defaultData.tokenData.vision ? 'checked' : ''} />
-        ${foundryI18nLocalize('TOKEN.FIELDS.sight.enabled.label')}
-      </label>
-    </div>
-    <div class="form-group flexrow">
-      <label style="flex: 1;">
-        ${foundryI18nLocalize('TOKEN.FIELDS.sight.range.label')}
-        <input type="number" id="swade-stat-imp-visionRange" name="visionRange" step="1" value="${defaultData.tokenData.visionRange}" />
-      </label>
-      <label style="flex: 1;">
-        ${foundryI18nLocalize('TOKEN.FIELDS.sight.angle.label')}
-        <input type="number" id="swade-stat-imp-visionAngle" name="visionAngle" step="1" max="360" value="${defaultData.tokenData.visionAngle}" />
-      </label>
-    </div>
-
-    <!-- Save Folder -->
-    <div class="form-group">
-      <label>
-        ${foundryI18nLocalize('npcImporter.HTML.SaveFolder')}
-        <select id="swade-stat-imp-save-folder" name="save-folder" style="width: 100%;">${folderOptions}</select>
-      </label>
-    </div>
-
-    <!-- Statblock -->
-    <div class="form-group">
-      <label for="statBlock"><b>${foundryI18nLocalize('npcImporter.HTML.StatBlock')}</b></label>
-      <textarea
-        id="statBlock"
-        name="statBlock"
-        rows="10"
-        style="width: 100%;"
-        autocomplete="off"
-        placeholder="${foundryI18nLocalize('npcImporter.HTML.Firefox')}"
-      ></textarea>
-    </div>
-  </form>
-        `;
-  return npcImporterDialog;
-}
-
-function isChecked(setValue: any, html_value: any): string {
-  if (setValue == html_value) {
-    return 'checked';
-  } else {
-    return '';
-  }
-}
-
-function buildFolderOptions(): string {
-  let lastSave = getModuleSettings(settingLastSaveFolder);
-  let folders = getAllActorFolders();
-  let folderOptions = `<option value='' ${isLastSavedFolder(
-    lastSave,
-    '',
-  )}>--</option>`;
-  folders.forEach(folder => {
-    folderOptions += `<option value="${folder.trim()}" ${isLastSavedFolder(
-      lastSave,
-      folder.trim(),
-    )}>${folder.trim()}</option>`;
-  });
-  return folderOptions;
-}
-
-function isLastSavedFolder(lastFolder: any, folderName: any): string {
-  if (lastFolder != undefined && lastFolder === folderName) {
-    return 'selected';
-  } else {
-    return '';
-  }
+  // Render Handlebars template
+  const html = await foundry.applications.handlebars.renderTemplate(
+    'modules/swade-npc-importer/templates/ImporterDialog.hbs',
+    templateData,
+  );
+  return html;
 }

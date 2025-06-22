@@ -1,0 +1,146 @@
+<form>
+  <p>{{importDesc}}</p>
+  <!-- Actor Options -->
+  <div class='form-group'>
+    <label class='form-header'><b>{{actorTypeLabel}}</b></label>
+    <div class='flexrow'>
+      <label>
+        <input
+          type='radio'
+          id='swade-stat-imp-actorType'
+          name='actorType'
+          value='npc'
+          {{isChecked actorType 'npc'}}
+        />
+        {{npcLabel}}
+      </label>
+      <label>
+        <input
+          type='radio'
+          id='swade-stat-imp-actorType'
+          name='actorType'
+          value='character'
+          {{isChecked actorType 'character'}}
+        />
+        {{characterLabel}}
+      </label>
+    </div>
+  </div>
+  <!-- Wildcard -->
+  <div class='form-group'>
+    <label>
+      <input
+        type='checkbox'
+        id='swade-stat-imp-isWildCard'
+        name='isWildcard'
+        value='true'
+        {{isChecked isWildcard true}}
+      />
+      {{wildcardLabel}}
+    </label>
+  </div>
+  <!-- Disposition -->
+  <div class='form-group'>
+    <label class='form-header'><b>{{dispositionLabel}}</b></label>
+    <div class='flexrow'>
+      <label>
+        <input
+          type='radio'
+          id='swade-stat-imp-disposition'
+          name='disposition'
+          value='-1'
+          {{isChecked disposition -1}}
+        />
+        {{hostileLabel}}
+      </label>
+      <label>
+        <input
+          type='radio'
+          id='swade-stat-imp-disposition'
+          name='disposition'
+          value='0'
+          {{isChecked disposition 0}}
+        />
+        {{neutralLabel}}
+      </label>
+      <label>
+        <input
+          type='radio'
+          id='swade-stat-imp-disposition'
+          name='disposition'
+          value='1'
+          {{isChecked disposition 1}}
+        />
+        {{friendlyLabel}}
+      </label>
+      <label>
+        <input
+          type='radio'
+          id='swade-stat-imp-disposition'
+          name='disposition'
+          value='-2'
+          {{isChecked disposition -2}}
+        />
+        {{secretLabel}}
+      </label>
+    </div>
+  </div>
+  <!-- Vision Settings -->
+  <div class='form-group'>
+    <label>
+      <input
+        type='checkbox'
+        id='swade-stat-imp-vision'
+        name='vision'
+        {{isChecked vision true}}
+      />
+      {{sightEnabledLabel}}
+    </label>
+  </div>
+  <div class='form-group flexrow'>
+    <label style='flex: 1;'>
+      {{sightRangeLabel}}
+      <input
+        type='number'
+        id='swade-stat-imp-visionRange'
+        name='visionRange'
+        step='1'
+        value='{{visionRange}}'
+      />
+    </label>
+    <label style='flex: 1;'>
+      {{sightAngleLabel}}
+      <input
+        type='number'
+        id='swade-stat-imp-visionAngle'
+        name='visionAngle'
+        step='1'
+        max='360'
+        value='{{visionAngle}}'
+      />
+    </label>
+  </div>
+  <!-- Save Folder -->
+  <div class='form-group'>
+    <label>
+      {{saveFolderLabel}}
+      <select
+        id='swade-stat-imp-save-folder'
+        name='save-folder'
+        style='width: 100%;'
+      >{{{folderOptions}}}</select>
+    </label>
+  </div>
+  <!-- Statblock -->
+  <div class='form-group'>
+    <label for='statBlock'><b>{{statBlockLabel}}</b></label>
+    <textarea
+      id='statBlock'
+      name='statBlock'
+      rows='10'
+      style='width: 100%;'
+      autocomplete='off'
+      placeholder='{{firefoxLabel}}'
+    ></textarea>
+  </div>
+</form>
