@@ -24,10 +24,8 @@
   "npcImporter.HTML.VisionAngleLable": "Degrees (360 default)",
   "npcImporter.HTML.Save": " Save",
   "npcImporter.HTML.Firefox": "Paste statblock here if you're using Firefox, Foundry Client, or are over http...",
-
   "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "d",
-
   "npcImporter.parser.EmptyClipboard": "Clipboard empty",
   "npcImporter.parser.NotValidStablock": "Failed to parse. Not a valid statblock.",
   "npcImporter.parser.Attributes": "Attributes",
@@ -56,7 +54,6 @@
   "npcImporter.parser.Imp": "(Imp)",
   "npcImporter.parser.Improved": "Improved",
   "npcImporter.parser.Conviction": "Conviction",
-
   "npcImporter.parser.Shield": "Shield",
   "npcImporter.parser.Armor": "Armor",
   "npcImporter.parser.Speed": "Speed",
@@ -67,7 +64,6 @@
   "npcImporter.parser.Athletics": "Athletics",
   "npcImporter.parser.Fighting": "Fighting",
   "npcImporter.parser.Shooting": "Shooting",
-
   "npcImporter.parser.CombatReflexes": "combat reflexes",
   "npcImporter.parser.FleetFooted": "Fleet-Footed",
   "npcImporter.parser.Hesitant": "Hesitant",
@@ -81,7 +77,6 @@
   "npcImporter.parser.Knowledge": "Knowledge",
   "npcImporter.parser.Minor": "Minor",
   "npcImporter.parser.Major": "Major",
-
   "npcImporter.settings.Friendly": "Friendly",
   "npcImporter.settings.Neutral": "Neutral",
   "npcImporter.settings.Hostile": "Hostile",
@@ -120,5 +115,7 @@
   "npcImporter.settings.TwoHandsNotationHint": "How a weapon is marked as being two handed (pipe seperated, ie '|')",
   "npcImporter.settings.TwoHandsNotation": "two hands|two-handed",
   "npcImporter.settings.NumberOfBenniesHint": "How many Bennies each NPC Wild Card recieves",
-  "npcImporter.settings.NumberOfBennies": "NPC Wild Card Bennies"
+  "npcImporter.settings.NumberOfBennies": "NPC Wild Card Bennies",
+  "npcImporter.HTML.ActorImportError": "Failed to import actor (see console for errors)",
+  "npcImporter.HTML.NameInputMissing": "Name input field is missing. Please try again."
 }

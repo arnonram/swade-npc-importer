@@ -12,9 +12,18 @@ export async function actorImporter(
   }
   let actorId = GetActorId(actorDataToImport.name);
   if (!actorId) {
-    await Import(actorDataToImport);
+    await safeImport(actorDataToImport);
   } else {
     await whatToDo(actorDataToImport, actorId);
+  }
+}
+
+async function safeImport(actorData: SwadeActorToImport) {
+  try {
+    await Import(actorData);
+  } catch (error) {
+    Logger.error('Failed to import actor:', error);
+    foundryUiInfo(foundryI18nLocalize('npcImporter.HTML.ActorImportError'));
   }
 }
 
@@ -35,7 +44,7 @@ async function whatToDo(
     <br/>
     `;
 
-  new foundry.applications.api.DialogV2({
+  const dialog = new foundry.applications.api.DialogV2({
     window: {
       title: foundryI18nLocalize('npcImporter.HTML.ActorImporter'),
     },
@@ -48,26 +57,48 @@ async function whatToDo(
         action: 'import',
         label: foundryI18nLocalize('npcImporter.HTML.Rename'),
         callback: async () => {
-          let newName = (document.querySelector('#newName') as HTMLInputElement)
-            .value;
-          Logger.info(`Import with new name: ${newName}`);
-          actorData.name = newName;
-          await Import(actorData);
+          try {
+            const newNameInput = document.querySelector(
+              '#newName',
+            ) as HTMLInputElement | null;
+            if (!newNameInput) {
+              foundryUiInfo(
+                foundryI18nLocalize('npcImporter.HTML.NameInputMissing'),
+              );
+              return;
+            }
+            let newName = newNameInput.value;
+            Logger.info(`Import with new name: ${newName}`);
+            actorData.name = newName;
+            await safeImport(actorData);
+          } catch (error) {
+            Logger.error('Rename import failed:', error);
+            foundryUiInfo(
+              foundryI18nLocalize('npcImporter.HTML.ActorImportError'),
+            );
+          }
         },
       },
       {
         action: 'override',
         label: foundryI18nLocalize('npcImporter.HTML.Override'),
         callback: async () => {
-          Logger.info('Overriding existing Actor');
-          await DeleteActor(actorId);
-          await Import(actorData);
+          try {
+            Logger.info('Overriding existing Actor');
+            await DeleteActor(actorId);
+            await safeImport(actorData);
+          } catch (error) {
+            Logger.error('Override import failed:', error);
+            foundryUiInfo(
+              foundryI18nLocalize('npcImporter.HTML.ActorImportError'),
+            );
+          }
         },
         default: true,
       },
       {
         action: 'cancel',
-        label: 'Cancel',
+        label: foundryI18nLocalize('npcImporter.HTML.Cancel'),
         callback: () => {
           foundryUiInfo(
             foundryI18nLocalize('npcImporter.HTML.ActorNotImportedMsg'),
@@ -75,5 +106,18 @@ async function whatToDo(
         },
       },
     ],
-  }).render({ force: true });
+  });
+
+  dialog.render({ force: true });
+
+  // Focus the input field when the dialog is rendered
+  setTimeout(() => {
+    const newNameInput = document.querySelector(
+      '#newName',
+    ) as HTMLInputElement | null;
+    if (newNameInput) {
+      newNameInput.focus();
+      newNameInput.select();
+    }
+  }, 100);
 }
