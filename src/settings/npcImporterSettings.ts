@@ -10,7 +10,7 @@ import {
   settingBulletPointIcons,
   settingLastSaveFolder,
   settingCompsToUse,
-  settingParaeLanguage,
+  settingParseLanguage,
   settingToken,
   settingModifiedSpecialAbs,
   settingAutoCalcToughness,
@@ -73,7 +73,7 @@ export class NpcImporterSettings {
       type: Array,
       default: [],
     });
-    game.settings?.register(thisModule, settingParaeLanguage, {
+    game.settings?.register(thisModule, settingParseLanguage, {
       name: foundryI18nLocalize('npcImporter.settings.parseLanguage'),
       hint: foundryI18nLocalize('npcImporter.settings.parseLanguageHint'),
       config: true,

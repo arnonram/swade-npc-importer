@@ -1,4 +1,4 @@
-import { settingLastSaveFolder, settingParaeLanguage } from './global';
+import { settingLastSaveFolder, settingParseLanguage } from './global';
 import { statBlockParser } from './statBlockParser/parseStatBlock';
 import { actorImporter } from './actorImporter';
 import { buildActorData } from './dataBuilders/buildActorData';
@@ -29,7 +29,7 @@ function logActorSummary(actor: SwadeActorToImport) {
 
 export async function buildActor(
   importSettings: ImportSettings,
-  textBoxStatBlock: string,
+  textBoxStatBlock?: string,
 ): Promise<void> {
   let rawStatBlock = textBoxStatBlock;
   if (!rawStatBlock) {
@@ -50,7 +50,7 @@ export async function buildActor(
 
   await setAllPacks();
   const currentLang = game.i18n?.lang ?? 'en';
-  await setParsingLanguage(getModuleSettings(settingParaeLanguage));
+  await setParsingLanguage(getModuleSettings(settingParseLanguage));
   await updateModuleSetting(settingLastSaveFolder, importSettings.saveFolder);
 
   try {

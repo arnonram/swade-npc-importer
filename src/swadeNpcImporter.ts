@@ -18,11 +18,14 @@ import { foundryI18nLocalize } from './utils/foundryWrappers';
 import { Logger } from './utils/logger';
 import { buildFolderOptions, isChecked } from './utils/dialogUtils';
 
+function canCreateActor(): boolean {
+  return !!(
+    game.userId && game.users?.get(game.userId)?.can('ACTOR_CREATE') === true
+  );
+}
+
 Hooks.on('ready', async () => {
-  if (
-    game.userId &&
-    game.users?.get(game.userId)?.can('ACTOR_CREATE') == true
-  ) {
+  if (canCreateActor()) {
     Logger.info('Setting up settings...');
     await NpcImporterSettings.register();
     // update Active Compendiums for Importer to use
@@ -34,10 +37,7 @@ Hooks.on('ready', async () => {
 });
 
 Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
-  if (
-    game.userId &&
-    game.users?.get(game.userId)?.can('ACTOR_CREATE') == true
-  ) {
+  if (canCreateActor()) {
     const npcImporterButton = $(
       `<button id="StatBlockImporterButton" style="width: calc(100% - 8px);"><i class="fas fa-align-left"></i>${foundryI18nLocalize(
         'npcImporter.HTML.StatBlockImporterTitle',
@@ -61,62 +61,72 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
             action: 'importActor',
             label: foundryI18nLocalize('npcImporter.HTML.Import'),
             default: true,
-            callback: (html: any) => {
-              let importSettings: ImportSettings = {
-                actorType: (
-                  document.querySelector(
-                    'input[name="actorType"]:checked',
-                  ) as HTMLInputElement
-                )?.value,
-                isWildCard: !!(
-                  document.getElementById(
-                    'swade-stat-imp-isWildCard',
-                  ) as HTMLInputElement
-                )?.checked,
-                tokenSettings: {
-                  disposition: parseInt(
+            callback: async (html: any) => {
+              try {
+                let importSettings: ImportSettings = {
+                  actorType:
                     (
                       document.querySelector(
-                        'input[name="disposition"]:checked',
-                      ) as HTMLInputElement
-                    )?.value,
-                  ),
-                  vision: !!(
+                        'input[name="actorType"]:checked',
+                      ) as HTMLInputElement | null
+                    )?.value ?? '',
+                  isWildCard: !!(
                     document.getElementById(
-                      'swade-stat-imp-vision',
-                    ) as HTMLInputElement
+                      'swade-stat-imp-isWildCard',
+                    ) as HTMLInputElement | null
                   )?.checked,
-                  visionRange: parseInt(
+                  tokenSettings: {
+                    disposition: parseInt(
+                      (
+                        document.querySelector(
+                          'input[name="disposition"]:checked',
+                        ) as HTMLInputElement | null
+                      )?.value ?? '0',
+                    ),
+                    vision: !!(
+                      document.getElementById(
+                        'swade-stat-imp-vision',
+                      ) as HTMLInputElement | null
+                    )?.checked,
+                    visionRange: parseInt(
+                      (
+                        document.querySelector(
+                          'input[name="visionRange"]',
+                        ) as HTMLInputElement | null
+                      )?.value ?? '0',
+                    ),
+                    visionAngle: parseInt(
+                      (
+                        document.querySelector(
+                          'input[name="visionAngle"]',
+                        ) as HTMLInputElement | null
+                      )?.value ?? '360',
+                    ),
+                  },
+                  saveFolder:
                     (
-                      document.querySelector(
-                        'input[name="visionRange"]',
-                      ) as HTMLInputElement
-                    )?.value,
-                  ),
-                  visionAngle: parseInt(
-                    (
-                      document.querySelector(
-                        'input[name="visionAngle"]',
-                      ) as HTMLInputElement
-                    )?.value,
-                  ),
-                },
-                saveFolder: (
-                  document.getElementById(
-                    'swade-stat-imp-save-folder',
-                  ) as HTMLInputElement
-                )?.value,
-              };
-              buildActor(
-                importSettings,
-                (document.getElementById('statBlock') as HTMLInputElement)
-                  ?.value,
-              );
+                      document.getElementById(
+                        'swade-stat-imp-save-folder',
+                      ) as HTMLInputElement | null
+                    )?.value ?? '',
+                };
+                const statBlock = (
+                  document.getElementById('statBlock') as
+                    | HTMLInputElement
+                    | undefined
+                )?.value;
+                await buildActor(importSettings, statBlock);
+              } catch (err) {
+                Logger.error('Import failed:', err);
+                ui.notifications?.error(
+                  foundryI18nLocalize('npcImporter.HTML.FailedToImport'),
+                );
+              }
             },
           },
           {
             action: 'cancel',
-            label: 'Cancel',
+            label: foundryI18nLocalize('npcImporter.HTML.Cancel'),
           },
         ],
       }).render({ force: true });
