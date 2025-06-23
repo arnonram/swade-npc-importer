@@ -117,5 +117,7 @@
   "npcImporter.settings.NumberOfBenniesHint": "How many Bennies each NPC Wild Card recieves",
   "npcImporter.settings.NumberOfBennies": "NPC Wild Card Bennies",
   "npcImporter.HTML.ActorImportError": "Failed to import actor (see console for errors)",
-  "npcImporter.HTML.NameInputMissing": "Name input field is missing. Please try again."
+  "npcImporter.HTML.NameInputMissing": "Name input field is missing. Please try again.",
+  "npcImporter.parser.ClipboardPermissionError": "Clipboard access denied. Please allow clipboard permissions or paste the statblock manually.",
+  "npcImporter.parser.BuildActorError": "Failed to build actor. See console for details."
 }

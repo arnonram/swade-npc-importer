@@ -21,11 +21,28 @@ import {
 import { Logger } from './utils/logger';
 import { foundryI18nLocalize, foundryUiError } from './utils/foundryWrappers';
 
+function logActorSummary(actor: SwadeActorToImport) {
+  Logger.info(
+    `Actor to import: name=${actor.name}, type=${actor.type}, folder=${actor.folder}`,
+  );
+}
+
 export async function buildActor(
   importSettings: ImportSettings,
   textBoxStatBlock: string,
 ): Promise<void> {
-  const rawStatBlock = textBoxStatBlock || (await getClipboardText());
+  let rawStatBlock = textBoxStatBlock;
+  if (!rawStatBlock) {
+    try {
+      rawStatBlock = await getClipboardText();
+    } catch (err) {
+      Logger.error('Clipboard read failed:', err);
+      foundryUiError(
+        foundryI18nLocalize('npcImporter.parser.ClipboardPermissionError'),
+      );
+      return;
+    }
+  }
   if (!rawStatBlock) {
     foundryUiError(foundryI18nLocalize('npcImporter.parser.EmptyClipboard'));
     return;
@@ -42,13 +59,17 @@ export async function buildActor(
       parsedActor,
       importSettings,
     );
+    logActorSummary(finalActor);
     await actorImporter(finalActor);
-  } catch (error) {
+  } catch (error: any) {
     Logger.error('Failed to build finalActor: ', error);
-    foundryUiError('Failed to build actor. See console for details.');
+    foundryUiError(
+      foundryI18nLocalize('npcImporter.parser.BuildActorError') +
+        (error?.message ? `: ${error.message}` : ''),
+    );
   } finally {
     await setParsingLanguage(currentLang);
-    resetAllPacks();
+    await resetAllPacks();
   }
 }
 
@@ -71,13 +92,12 @@ async function generateSwadeActorData(
     flags: { importerApp: getImporterModuleData() },
   };
 
-  if (parsedData.powerPoints) {
+  if (typeof parsedData.powerPoints === 'number') {
     finalActor.system.powerPoints = {
       value: parsedData.powerPoints,
       max: parsedData.powerPoints,
     };
   }
 
-  Logger.info(`Actor to import: ${JSON.stringify(finalActor)}`);
   return finalActor;
 }
