@@ -27,8 +27,6 @@ describe('getGear()', () => {
     expect(result).toEqual({
       'Great Axe': {
         damage: 'Str+d10',
-        // parry: '-1', //TODO? maybe only if no compendium data found
-        // hands: '2',
       },
       'Healing Kit': null,
     });
