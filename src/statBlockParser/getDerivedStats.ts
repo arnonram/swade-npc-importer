@@ -1,3 +1,4 @@
+import { Logger } from 'src/utils/logger';
 import { BonusType } from '../types/enums';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { getBonus } from './parserBuilderHelpers';
@@ -49,6 +50,23 @@ function getStatNumber(data: string): number {
   if (parts.length < 2) return 0;
   const num = parseInt(parts[1].replace(';', '').trim());
   return isNaN(num) ? 0 : num;
+}
+
+export function getToughness(data: string[]) {
+  const toughnessData = data
+    .find(x =>
+      x.startsWith(`${foundryI18nLocalize(`npcImporter.parser.Toughness`)}:`),
+    )
+    ?.split(':')[1];
+  if (toughnessData) {
+    const match = toughnessData.match(/(\d+)\s*(?:\((\d+)\))?\s*;?/);
+    if (match) {
+      const value = parseInt(match[1]);
+      const armor = match[2] ? parseInt(match[2]) : 0;
+      return { value, modifier: 0, armor };
+    }
+  }
+  return { value: 0, modifier: 0, armor: 0 };
 }
 
 export enum DerivedStatType {

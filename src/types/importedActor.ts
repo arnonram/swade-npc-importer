@@ -5,7 +5,10 @@ export interface ParsedActor {
   skills?: Record<string, ImportedDie>;
   pace?: number;
   parry?: number;
-  toughness?: number;
+  toughness?: {
+    value: number;
+    armor?: number;
+  };
   hindrances?: string[];
   edges?: string[];
   powers?: string[];

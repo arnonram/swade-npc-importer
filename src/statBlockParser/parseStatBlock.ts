@@ -11,6 +11,7 @@ import {
   DerivedStatType,
   getSize,
   powerPointsFromSpecialAbility,
+  getToughness,
 } from './getDerivedStats';
 import { Logger } from '../utils/logger';
 import { foundryI18nLocalize, foundryUiError } from '../utils/foundryWrappers';
@@ -28,7 +29,7 @@ export async function statBlockParser(
       attributes: getAttributes(sections),
       skills: getSkills(sections),
       pace: getDerivedStats(sections, DerivedStatType.Pace),
-      toughness: getDerivedStats(sections, DerivedStatType.Toughness),
+      toughness: getToughness(sections),
       parry: getDerivedStats(sections, DerivedStatType.Parry),
       powerPoints: getDerivedStats(sections, DerivedStatType.PowerPoints),
       edges: getListStat(sections, ListType.Edges),

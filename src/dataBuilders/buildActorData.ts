@@ -30,9 +30,9 @@ export const buildActorData = async function (
   system.attributes = generateAttributes(parsedData);
   system.stats = {
     toughness: {
-      value: parsedData.toughness,
+      value: parsedData.toughness?.value,
       modifier: toughnessBonus(parsedData),
-      armor: 0, // TODO
+      armor: parsedData.toughness?.armor,
     },
     parry: {
       value: parsedData.parry,

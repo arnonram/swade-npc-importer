@@ -1,5 +1,4 @@
 import { defineConfig } from 'vitest/config';
-import path from 'path';
 
 export default defineConfig({
   test: {
@@ -12,6 +11,12 @@ export default defineConfig({
       reportsDirectory: '.coverage',
       reporter: ['text', 'json-summary', 'lcov'],
       reportOnFailure: true,
+      thresholds: {
+        lines: 60,
+        branches: 60,
+        functions: 60,
+        statements: 60,
+      },
     },
   },
 });

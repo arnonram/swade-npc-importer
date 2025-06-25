@@ -3,6 +3,7 @@ import {
   getSize,
   powerPointsFromSpecialAbility,
   DerivedStatType,
+  getToughness,
 } from '../../src/statBlockParser/getDerivedStats';
 
 import { describe, expect, it, vi } from 'vitest';
@@ -17,10 +18,9 @@ vi.mock('../../src/utils/parserBuilderHelpers', () => ({
 
 describe('getDerivedStats', () => {
   it('should extract numeric value from matching section', () => {
-    const sections = ['Pace: 6', 'Parry: 5', 'Toughness: 8'];
+    const sections = ['Pace: 6', 'Parry: 5'];
     expect(getDerivedStats(sections, DerivedStatType.Pace)).toBe(6);
     expect(getDerivedStats(sections, DerivedStatType.Parry)).toBe(5);
-    expect(getDerivedStats(sections, DerivedStatType.Toughness)).toBe(8);
   });
 
   it('returns undefined if label is not present', () => {
@@ -31,6 +31,24 @@ describe('getDerivedStats', () => {
   it('handles malformed stat line gracefully', () => {
     const sections = ['Pace - fast'];
     expect(getDerivedStats(sections, DerivedStatType.Pace)).toBe(0);
+  });
+});
+
+describe('getToughness', () => {
+  const label = 'Toughness';
+
+  it.each([
+    // [input, expected]
+    [[`${label}: 6(2)`], { value: 6, modifier: 0, armor: 2 }],
+    [[`${label}: 6 (2)`], { value: 6, modifier: 0, armor: 2 }],
+    [[`${label}: 6(2);`], { value: 6, modifier: 0, armor: 2 }],
+    [[`${label}: 6 (2);`], { value: 6, modifier: 0, armor: 2 }],
+    [[`${label}: 5`], { value: 5, modifier: 0, armor: 0 }],
+    [[`${label}: 5;`], { value: 5, modifier: 0, armor: 0 }],
+    [['Parry: 7'], { value: 0, modifier: 0, armor: 0 }],
+    [[`${label}: foo(bar)`], { value: 0, modifier: 0, armor: 0 }],
+  ])('parses %j as %j', (input, expected) => {
+    expect(getToughness(input)).toEqual(expected);
   });
 });
 
