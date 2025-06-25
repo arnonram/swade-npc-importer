@@ -14,7 +14,7 @@ import {
   updateModuleSetting,
   getAllActiveCompendiums,
 } from './utils/foundryActions';
-import { foundryI18nLocalize } from './utils/foundryWrappers';
+import { foundryI18nLocalize, foundryUiError } from './utils/foundryWrappers';
 import { Logger } from './utils/logger';
 import { buildFolderOptions, isChecked } from './utils/dialogUtils';
 
@@ -118,7 +118,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
                 await buildActor(importSettings, statBlock);
               } catch (err) {
                 Logger.error('Import failed:', err);
-                ui.notifications?.error(
+                foundryUiError(
                   foundryI18nLocalize('npcImporter.HTML.FailedToImport'),
                 );
               }
