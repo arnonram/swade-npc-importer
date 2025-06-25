@@ -30,7 +30,10 @@ describe('buildActorData', () => {
         strength: { die: 6 },
         vigor: { die: 6 },
       },
-      toughness: 5,
+      toughness: {
+        value: 5,
+        armor: 2,
+      },
       parry: 6,
       size: 0,
       pace: 6,
@@ -45,6 +48,7 @@ describe('buildActorData', () => {
   it('should build basic system data for an NPC wildcard', async () => {
     const result = await buildActorData(parsedData, true, 'npc');
     expect(result.stats.toughness.value).toBe(5);
+    expect(result.stats.toughness.armor).toBe(2);
     expect(result.stats.parry.value).toBe(6);
     expect(result.wildcard).toBe(true);
     expect(result.bennies.value).toBe(2);

@@ -53,29 +53,14 @@ describe('getToughness', () => {
 });
 
 describe('getSize', () => {
-  it('extracts positive or negative size from key string', () => {
-    const abilities = {
-      'Size +2': '',
-      Fear: '',
-    };
-    expect(getSize(abilities)).toBe(2);
-
-    abilities['Size -1'] = '';
-    delete (abilities as any)['Size +2'];
-    expect(getSize(abilities)).toBe(-1);
-
-    abilities['Size -3'] = ''; // en-dash
-    delete abilities['Size -1'];
-    expect(getSize(abilities)).toBe(-3);
-  });
-
-  it('returns 0 if size cannot be parsed', () => {
-    const abilities = { 'Size Unknown': '' };
-    expect(getSize(abilities)).toBe(0);
-  });
-
-  it('returns 0 if size key is not present', () => {
-    expect(getSize({ Fear: '' })).toBe(0);
+  it.each([
+    [{ 'Size +2': '', Fear: '' }, 2, 'extracts positive size'],
+    [{ 'Size -1': '', Fear: '' }, -1, 'extracts negative size'],
+    [{ 'Size -3': '', Fear: '' }, -3, 'extracts large negative size'],
+    [{ 'Size Unknown': '' }, 0, 'returns 0 if size cannot be parsed'],
+    [{ Fear: '' }, 0, 'returns 0 if size key is not present'],
+  ])('returns %i for %j (%s)', (abilities, expected, _desc) => {
+    expect(getSize(abilities)).toBe(expected);
   });
 });
 
