@@ -8,6 +8,7 @@ export interface ParsedActor {
   toughness?: {
     value: number;
     armor?: number;
+    modifier?: number;
   };
   hindrances?: string[];
   edges?: string[];

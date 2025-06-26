@@ -17,15 +17,15 @@ import { Logger } from '../utils/logger';
 import { foundryI18nLocalize, foundryUiError } from '../utils/foundryWrappers';
 
 export async function statBlockParser(
-  rarStatBlock: string,
+  rawStatBlock: string,
 ): Promise<ParsedActor> {
   try {
     Logger.info('Starting statblock parsing');
 
-    const sections = getSections(rarStatBlock);
+    const sections = getSections(rawStatBlock);
     let importedActor: ParsedActor = {
-      name: getName(rarStatBlock),
-      biography: getBio(rarStatBlock, sections),
+      name: getName(rawStatBlock),
+      biography: getBio(rawStatBlock, sections),
       attributes: getAttributes(sections),
       skills: getSkills(sections),
       pace: getDerivedStats(sections, DerivedStatType.Pace),
