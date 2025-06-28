@@ -178,18 +178,6 @@ export async function gearBuilder(
   }
 }
 
-export function additionalStatsBuilder(
-  additionalStatName: string,
-  additionalStatValue: number,
-): any {
-  const gameAditionalStat = getSpecificAdditionalStat(additionalStatName);
-  if (gameAditionalStat !== undefined) {
-    gameAditionalStat['value'] = additionalStatValue;
-    return gameAditionalStat;
-  }
-  return undefined;
-}
-
 export async function abilityBuilder(
   abilityName: string,
   abilityDescription: string = '',

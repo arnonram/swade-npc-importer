@@ -80,4 +80,37 @@ describe('buildActorToken', () => {
     expect(token.height).toBe(1);
     expect(token.scale).toBe(0.75);
   });
+
+  const testCases = [
+    // [size, expectedWidth, expectedHeight, expectedScale]
+    { size: -5, width: 1, height: 1, scale: 0.5 },
+    { size: -4, width: 1, height: 1, scale: 0.5 },
+    { size: -3, width: 1, height: 1, scale: 0.75 },
+    { size: -2, width: 1, height: 1, scale: 0.75 },
+    { size: -1, width: 1, height: 1, scale: 0.85 },
+    { size: 0, width: 1, height: 1, scale: 1 },
+    { size: 2, width: 1, height: 1, scale: 1 },
+    { size: 3, width: 2, height: 2, scale: 1 },
+    { size: 5, width: 2, height: 2, scale: 1 },
+    { size: 6, width: 4, height: 4, scale: 1 },
+    { size: 8, width: 4, height: 4, scale: 1 },
+    { size: 9, width: 8, height: 8, scale: 1 },
+    { size: 11, width: 8, height: 8, scale: 1 },
+    { size: 12, width: 16, height: 16, scale: 1 },
+    { size: 20, width: 16, height: 16, scale: 1 },
+  ];
+
+  for (const { size, width, height, scale } of testCases) {
+    it(`returns width=${width}, height=${height}, scale=${scale} for size=${size} (auto-size on)`, async () => {
+      (getModuleSettings as any).mockImplementation(key => {
+        if (key === 'npcImporter.tokenSettings') return { displayName: '1' };
+        if (key === 'npcImporter.autoSize') return true;
+      });
+      const parsed: ParsedActor = { size, name: '', attributes: {} as any };
+      const token = await buildActorToken(parsed, tokenSettings);
+      expect(token.width).toBe(width);
+      expect(token.height).toBe(height);
+      expect(token.scale).toBe(scale);
+    });
+  }
 });

@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as itemBuilders from '../../src/dataBuilders/itemBuilders';
+import * as itemBuilderHelpers from '../../src/dataBuilders/itemBuilderHelpers';
+import * as foundryActions from '../../src/utils/foundryActions';
 import { ItemType } from '../../src/types/enums';
 
 vi.mock('../../src/dataBuilders/itemBuilderHelpers', async () => {
@@ -29,6 +31,7 @@ vi.mock('../../src/dataBuilders/itemBuilderHelpers', async () => {
 
 vi.mock('../../src/utils/foundryActions', () => ({
   getItemFromCompendium: vi.fn(async (name, type) => ({ name, type })),
+  getSystemCoreSkills: vi.fn(),
 }));
 
 describe('itemBuilders', () => {
@@ -130,5 +133,82 @@ describe('itemBuilders', () => {
     const result = await itemBuilders.powerBuilder(['Bolt']);
     expect(result[0].type).toBe(ItemType.POWER);
     expect(result[0].name).toBe('Bolt');
+  });
+
+  describe('skillBuilder', () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+    });
+
+    it('returns empty array if skillsDict is falsy', async () => {
+      const { skillBuilder } = await import(
+        '../../src/dataBuilders/itemBuilders'
+      );
+      expect(await skillBuilder(undefined as any)).toEqual([]);
+      expect(await skillBuilder(null as any)).toEqual([]);
+    });
+
+    it('builds skills with correct properties', async () => {
+      const { skillBuilder } = await import(
+        '../../src/dataBuilders/itemBuilders'
+      );
+      // Mock core skills and checkforItem
+      const coreSkills = ['Fighting', 'Shooting'];
+      const checkforItem = vi
+        .spyOn(itemBuilderHelpers, 'checkforItem')
+        .mockImplementation(async (name: string) => {
+          if (name === 'Fighting')
+            return {
+              img: 'f.png',
+              system: {
+                attribute: 'agility',
+                description: 'desc',
+                notes: 'note',
+                additionalStats: { foo: 1 },
+              },
+              effects: { toJSON: () => ['e1'] },
+              flags: { bar: 2 },
+            };
+          return undefined;
+        });
+      vi.spyOn(foundryActions, 'getSystemCoreSkills').mockReturnValue(
+        coreSkills,
+      );
+      const skillsDict = {
+        Fighting: { sides: 6, modifier: 1 },
+        Stealth: { sides: 8, modifier: 0 },
+      };
+      const result = await skillBuilder(skillsDict);
+      expect(result).toHaveLength(2);
+      const fighting = result.find((s: any) => s.name === 'Fighting');
+      expect(fighting).toMatchObject({
+        type: ItemType.SKILL,
+        name: 'Fighting',
+        img: 'f.png',
+        system: expect.objectContaining({
+          attribute: 'agility',
+          isCoreSkill: true,
+          die: { sides: 6, modifier: 1 },
+          description: 'desc',
+          notes: 'note',
+          additionalStats: { foo: 1 },
+        }),
+        effects: ['e1'],
+        flags: { bar: 2 },
+      });
+      const stealth = result.find((s: any) => s.name === 'Stealth');
+      expect(stealth).toMatchObject({
+        type: ItemType.SKILL,
+        name: 'Stealth',
+        img: 'systems/swade/assets/icons/skill.svg',
+        system: expect.objectContaining({
+          isCoreSkill: false,
+          die: { sides: 8, modifier: 0 },
+        }),
+        effects: [],
+        flags: {},
+      });
+      checkforItem.mockRestore();
+    });
   });
 });

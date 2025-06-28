@@ -73,14 +73,14 @@ export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
       return;
     }
 
-    let diceAndMode = matchResult ? matchResult[0].toString() : '';
+    let diceAndMod = matchResult ? matchResult[0].toString() : '';
     let traitName = singleTrait
-      .replace(diceAndMode, '')
+      .replace(diceAndMod, '')
       .trim()
       .replace(' )', ')');
     if (traitName) {
       skillsDict[traitName.toLowerCase().replace(':', '').replace('.', '')] =
-        buildTraitDie(diceAndMode);
+        buildTraitDie(diceAndMod);
     }
   });
   return skillsDict;
