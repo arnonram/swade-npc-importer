@@ -71,7 +71,6 @@ export default class TokenSettings extends FormApplication {
     };
   }
 
-  //@ts-ignore TODO: fix this
   override async _updateObject(
     event: Event,
     formData: Record<string, unknown>,

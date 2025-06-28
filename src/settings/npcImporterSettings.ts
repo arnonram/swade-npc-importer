@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { getActorAddtionalStatsArray } from '../utils/foundryActions';
 import {
   settingActiveCompendiums,
@@ -43,6 +42,7 @@ export class NpcImporterSettings {
       type: TokenSettings,
       restricted: false,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingToken, {
       name: 'Token settings',
       hint: 'Some default token settings',
@@ -57,6 +57,7 @@ export class NpcImporterSettings {
         visionAngle: 360,
       },
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingPackageToUse, {
       name: 'Package for imports',
       hint: "Selecting a package will search through all its' Item compendiums for the correct item from the NPC statblock, and use it",
@@ -65,6 +66,7 @@ export class NpcImporterSettings {
       type: Array,
       default: [],
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingCompsToUse, {
       name: 'Compendiums for imports',
       hint: 'NPC Importer will search through all selected Item compendiums for the correct item from the NPC statblock, and use it',
@@ -73,6 +75,7 @@ export class NpcImporterSettings {
       type: Array,
       default: [],
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingParseLanguage, {
       name: foundryI18nLocalize('npcImporter.settings.parseLanguage'),
       hint: foundryI18nLocalize('npcImporter.settings.parseLanguageHint'),
@@ -88,6 +91,7 @@ export class NpcImporterSettings {
       },
       default: 'en',
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingDefaultActorType, {
       name: foundryI18nLocalize('npcImporter.settings.DefaultActorType'),
       config: true,
@@ -99,6 +103,7 @@ export class NpcImporterSettings {
       },
       default: 'npc',
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingDefaultIsWildcard, {
       name: foundryI18nLocalize('npcImporter.settings.DefaultIsWildcard'),
       config: true,
@@ -106,6 +111,7 @@ export class NpcImporterSettings {
       type: Boolean,
       default: false,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingNumberOfBennies, {
       name: foundryI18nLocalize('npcImporter.settings.NumberOfBennies'),
       hint: foundryI18nLocalize('npcImporter.settings.NumberOfBenniesHint'),
@@ -114,6 +120,7 @@ export class NpcImporterSettings {
       type: Number,
       default: 2,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingAdditionalTraits, {
       name: foundryI18nLocalize('npcImporter.settings.AdditionalTraits'),
       hint: foundryI18nLocalize('npcImporter.settings.AdditionalTraitsHint'),
@@ -122,6 +129,7 @@ export class NpcImporterSettings {
       type: String,
       default: getActorAddtionalStatsArray(),
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingBulletPointIcons, {
       name: foundryI18nLocalize('npcImporter.settings.BulletPointIcons'),
       hint: foundryI18nLocalize('npcImporter.settings.BulletPointIconsHint'),
@@ -130,6 +138,7 @@ export class NpcImporterSettings {
       type: String,
       default: '•|',
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, twoHandsNotaiton, {
       name: foundryI18nLocalize('npcImporter.settings.TwoHandsNotationTitle'),
       hint: foundryI18nLocalize('npcImporter.settings.TwoHandsNotationHint'),
@@ -138,6 +147,7 @@ export class NpcImporterSettings {
       type: String,
       default: foundryI18nLocalize('npcImporter.settings.TwoHandsNotation'),
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingallAsSpecialAbilities, {
       name: foundryI18nLocalize('npcImporter.settings.AllAsSpecialAbilities'),
       hint: foundryI18nLocalize(
@@ -148,6 +158,7 @@ export class NpcImporterSettings {
       type: Boolean,
       default: false,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingModifiedSpecialAbs, {
       name: foundryI18nLocalize(
         'npcImporter.settings.ModifiedSpecialAbilities',
@@ -160,6 +171,7 @@ export class NpcImporterSettings {
       type: Boolean,
       default: false,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingCalculateIgnoredWounds, {
       name: foundryI18nLocalize('npcImporter.settings.IgnoredWounds'),
       hint: foundryI18nLocalize('npcImporter.settings.IgnoredWoundsHint'),
@@ -168,6 +180,7 @@ export class NpcImporterSettings {
       type: Boolean,
       default: true,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingCalculateAdditionalWounds, {
       name: foundryI18nLocalize('npcImporter.settings.AdditionalWounds'),
       hint: foundryI18nLocalize('npcImporter.settings.AdditionalWoundsHint'),
@@ -176,6 +189,7 @@ export class NpcImporterSettings {
       type: Boolean,
       default: true,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingAutoCalcToughness, {
       name: foundryI18nLocalize('npcImporter.settings.AutoCalcToughness'),
       config: true,
@@ -183,6 +197,7 @@ export class NpcImporterSettings {
       type: Boolean,
       default: false,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingAutoCalcSize, {
       name: foundryI18nLocalize('npcImporter.settings.SetSize'),
       hint: foundryI18nLocalize('npcImporter.settings.SetSizeHint'),
@@ -191,6 +206,7 @@ export class NpcImporterSettings {
       type: Boolean,
       default: true,
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingLastSaveFolder, {
       name: 'Set the last save folder',
       config: false,
@@ -198,6 +214,7 @@ export class NpcImporterSettings {
       type: String,
       default: '',
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, settingActiveCompendiums, {
       name: 'Compendiums in use by Importer',
       config: false,
@@ -205,6 +222,7 @@ export class NpcImporterSettings {
       type: Array,
       default: [],
     });
+    //@ts-expect-error foundry-types
     game.settings?.register(thisModule, 'renderSheet', {
       name: foundryI18nLocalize('npcImporter.settings.RenderSheet'),
       config: true,

@@ -11,8 +11,8 @@
     "test:watch": "vitest",
     "prepare": "husky",
     "clean": "rm -rf dist",
-    "lint": "eslint . --ext .ts,.js",
-    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

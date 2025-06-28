@@ -1,4 +1,5 @@
 import { newLineRegex } from '../global';
+import { Logger } from './logger';
 
 export function capitalize(input: string): string {
   return input.replace(/(?:^|\s)\S/g, a => a.toUpperCase());
@@ -24,6 +25,10 @@ export function specialAbilitiesLink(specAbName: string): string | null {
         ?.contents.find((x: any) => x.name.includes(cleanedName))?.link || null
     );
   } catch (error) {
+    Logger.error(
+      `Error finding special ability link for "${cleanedName}":`,
+      error,
+    );
     return null;
   }
 }

@@ -1,4 +1,3 @@
-import { Logger } from 'src/utils/logger';
 import { BonusType } from '../types/enums';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { getBonus } from './parserBuilderHelpers';
@@ -40,7 +39,7 @@ export function powerPointsFromSpecialAbility(
     items => items.system?.grantsPowers === true,
   );
   if (powerAbility) {
-    return getBonus(powerAbility.system.description, BonusType.POWER_POINTS);
+    return getBonus(powerAbility.system.description, BonusType.POWERPOINTS);
   }
   return undefined;
 }
@@ -55,7 +54,7 @@ function getStatNumber(data: string): number {
 export function getToughness(data: string[]) {
   const toughnessData = data
     .find(x =>
-      x.startsWith(`${foundryI18nLocalize(`npcImporter.parser.Toughness`)}:`),
+      x.startsWith(`${foundryI18nLocalize('npcImporter.parser.Toughness')}:`),
     )
     ?.split(':')[1];
   if (toughnessData) {

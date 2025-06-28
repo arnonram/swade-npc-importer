@@ -1,4 +1,4 @@
-import { Import, GetActorId, DeleteActor } from './utils/foundryActions';
+import { getActorId, deleteActor, importActor } from './utils/foundryActions';
 import { SwadeActorToImport } from './types/importedActor';
 import { Logger } from './utils/logger';
 import { foundryI18nLocalize, foundryUiInfo } from './utils/foundryWrappers';
@@ -10,7 +10,7 @@ export async function actorImporter(
     Logger.warn('actorImporter: Missing actor name.');
     return;
   }
-  let actorId = GetActorId(actorDataToImport.name);
+  let actorId = getActorId(actorDataToImport.name);
   if (!actorId) {
     await safeImport(actorDataToImport);
   } else {
@@ -20,7 +20,7 @@ export async function actorImporter(
 
 async function safeImport(actorData: SwadeActorToImport) {
   try {
-    await Import(actorData);
+    await importActor(actorData);
   } catch (error) {
     Logger.error('Failed to import actor:', error);
     foundryUiInfo(foundryI18nLocalize('npcImporter.HTML.ActorImportError'));
@@ -85,7 +85,7 @@ async function whatToDo(
         callback: async () => {
           try {
             Logger.info('Overriding existing Actor');
-            await DeleteActor(actorId);
+            await deleteActor(actorId);
             await safeImport(actorData);
           } catch (error) {
             Logger.error('Override import failed:', error);

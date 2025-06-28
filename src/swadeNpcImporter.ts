@@ -36,7 +36,7 @@ Hooks.on('ready', async () => {
   }
 });
 
-Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
+Hooks.on('renderActorDirectory', async (app: any, html: any, _data: any) => {
   if (canCreateActor()) {
     const npcImporterButton = $(
       `<button id="StatBlockImporterButton" style="width: calc(100% - 8px);"><i class="fas fa-align-left"></i>${foundryI18nLocalize(
@@ -61,7 +61,7 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, data: any) => {
             action: 'importActor',
             label: foundryI18nLocalize('npcImporter.HTML.Import'),
             default: true,
-            callback: async (html: any) => {
+            callback: async (_html: any) => {
               try {
                 let importSettings: ImportSettings = {
                   actorType:

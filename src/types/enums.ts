@@ -13,7 +13,7 @@ export enum ItemType {
 export enum BonusType {
   PARRY = 'parry',
   COVER = 'cover',
-  POWER_POINTS = 'powerPoints',
+  POWERPOINTS = 'powerPoints',
   ARMOR = 'armor',
   DAMAGE = 'damage',
 }

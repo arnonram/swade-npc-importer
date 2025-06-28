@@ -1,5 +1,5 @@
 import {
-  GetMeleeDamage,
+  getMeleeDamage,
   getArmorBonus,
   getBonus,
   buildTraitDie,
@@ -9,22 +9,22 @@ import { BonusType } from '../../src/types/enums';
 
 describe('GetMeleeDamage', () => {
   it('extracts basic melee damage', () => {
-    const result = GetMeleeDamage('Attacks with Str+d6');
+    const result = getMeleeDamage('Attacks with Str+d6');
     expect(result).toBe('@str+d6');
   });
 
   it('handles missing dice', () => {
-    const result = GetMeleeDamage('Deals Str+2');
+    const result = getMeleeDamage('Deals Str+2');
     expect(result).toBe('@str+2');
   });
 
   it('removes trailing period', () => {
-    const result = GetMeleeDamage('Slash: Str+d8.');
+    const result = getMeleeDamage('Slash: Str+d8.');
     expect(result).toBe('@str+d8');
   });
 
   it('returns empty if nothing matches', () => {
-    const result = GetMeleeDamage('Deals psychic damage.');
+    const result = getMeleeDamage('Deals psychic damage.');
     expect(result).toBe('@');
   });
 });
@@ -55,7 +55,7 @@ describe('getBonus', () => {
   });
 
   it('extracts power points', () => {
-    expect(getBonus('Power Points: 15', BonusType.POWER_POINTS)).toBe(15);
+    expect(getBonus('Power Points: 15', BonusType.POWERPOINTS)).toBe(15);
   });
 
   it('returns undefined on missing or malformed bonus', () => {

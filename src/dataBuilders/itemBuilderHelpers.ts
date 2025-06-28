@@ -121,7 +121,7 @@ export function buildItemObject({
   system,
 }: {
   item: any;
-  type: import('../../src/types/enums').ItemType;
+  type: ItemType;
   name: string;
   img: string;
   system: any;

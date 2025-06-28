@@ -16,9 +16,9 @@ describe('actorImporter', () => {
   const mockFoundryUiInfo = vi.fn();
 
   beforeEach(() => {
-    vi.spyOn(foundryActions, 'Import').mockImplementation(mockImport);
-    vi.spyOn(foundryActions, 'GetActorId').mockImplementation(mockGetActorId);
-    vi.spyOn(foundryActions, 'DeleteActor').mockImplementation(mockDeleteActor);
+    vi.spyOn(foundryActions, 'importActor').mockImplementation(mockImport);
+    vi.spyOn(foundryActions, 'getActorId').mockImplementation(mockGetActorId);
+    vi.spyOn(foundryActions, 'deleteActor').mockImplementation(mockDeleteActor);
     vi.spyOn(logger.Logger, 'warn').mockImplementation(mockLoggerWarn);
     vi.spyOn(logger.Logger, 'info').mockImplementation(mockLoggerInfo);
     vi.spyOn(logger.Logger, 'error').mockImplementation(mockLoggerError);

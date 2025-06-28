@@ -116,7 +116,7 @@ export function getAllPackageNames(): string[] {
 }
 
 export function getSpecificAdditionalStat(additionalStatName: string): any {
-  //@ts-ignore
+  //@ts-expect-error foundry-types
   let additionalStats = game.settings?.get('swade', 'settingFields')?.actor;
   for (const stat in additionalStats) {
     if (
@@ -141,23 +141,25 @@ export function getActorAddtionalStatsArray(): string[] {
 }
 
 export function getActorAddtionalStats(): any {
-  //@ts-ignore
+  //@ts-expect-error foundry-types
   return game.settings?.get('swade', 'settingFields')?.actor;
 }
 
 export function getSystemCoreSkills(): string[] {
   return (
     game.settings
-      //@ts-ignore
+      //@ts-expect-error foundry-types
       ?.get('swade', 'coreSkills')
-      //@ts-ignore
+      //@ts-expect-error foundry-types
       ?.toLowerCase()
       ?.split(',')
       ?.map(Function.prototype.call, String.prototype.trim) ?? []
   );
 }
 
-export async function Import(actorData: SwadeActorToImport): Promise<void> {
+export async function importActor(
+  actorData: SwadeActorToImport,
+): Promise<void> {
   //Throw a hook with the actorData before creation:
   Hooks.call('npcImporter-preCreateActor', actorData);
   try {
@@ -179,25 +181,27 @@ export async function Import(actorData: SwadeActorToImport): Promise<void> {
   }
 }
 
-export function GetActorId(actorName: string): string | false {
+export function getActorId(actorName: string): string | false {
   try {
     const actor = game.actors?.getName(actorName);
     return actor ? actor.id : false;
   } catch (error) {
+    Logger.error(`Failed to get actor ID for ${actorName}: ${error}`);
     return false;
   }
 }
 
-export function GetActorData(actorName: string): any {
+export function getActorData(actorName: string): any {
   try {
     const actor = game.actors?.getName(actorName);
     return actor ? actor.system : false;
   } catch (error) {
+    Logger.error(`Failed to get actor data for ${actorName}: ${error}`);
     return false;
   }
 }
 
-export async function DeleteActor(actorId: string): Promise<void> {
+export async function deleteActor(actorId: string): Promise<void> {
   try {
     await Actor.deleteDocuments([actorId]);
     foundryUiInfo(
@@ -233,7 +237,7 @@ export async function updateModuleSetting(
   settingName: string,
   newValue: any,
 ): Promise<void> {
-  //@ts-ignore
+  //@ts-expect-error foundry-types
   await game.settings?.set(thisModule, settingName, newValue);
 }
 
@@ -248,7 +252,7 @@ export function getImporterModuleData(): {
   appVersion: string;
   importDate: Date;
 } {
-  //@ts-ignore
+  //@ts-expect-error foundry-types
   const { title, id, version } = game.modules?.get(thisModule);
   return {
     app: title,
@@ -259,6 +263,6 @@ export function getImporterModuleData(): {
 }
 
 export function getModuleSettings(settingKey: string): any {
-  //@ts-ignore
+  //@ts-expect-error foundry-types
   return game.settings?.get(thisModule, settingKey);
 }

@@ -10,11 +10,11 @@ export async function buildActorToken(
   token.displayName = parseInt(getModuleSettings(settingToken).displayName);
   token.disposition = tokenSettings.disposition;
 
-  const squares = GetWidthHight(parsedData.size ?? 0);
+  const squares = getWidthHight(parsedData.size ?? 0);
   if (getModuleSettings(settingAutoCalcSize)) {
     token.width = squares;
     token.height = squares;
-    token.scale = CalculateScale(parsedData.size ?? 0);
+    token.scale = calculateScale(parsedData.size ?? 0);
   }
 
   token.sight = {
@@ -26,7 +26,7 @@ export async function buildActorToken(
   return token;
 }
 
-function GetWidthHight(size: number) {
+function getWidthHight(size: number) {
   if (size <= 2) {
     return 1;
   }
@@ -44,7 +44,7 @@ function GetWidthHight(size: number) {
   }
 }
 
-function CalculateScale(size: number) {
+function calculateScale(size: number) {
   if (size >= 0) {
     return 1;
   }

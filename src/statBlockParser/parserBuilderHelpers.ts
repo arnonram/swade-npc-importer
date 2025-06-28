@@ -6,7 +6,7 @@ import { ImportedDie } from 'src/types/importedActor';
 /**
  * Extracts melee damage from an ability description.
  */
-export function GetMeleeDamage(abilityDescription: string): string {
+export function getMeleeDamage(abilityDescription: string): string {
   const strLabel = foundryI18nLocalize('npcImporter.parser.Str') || 'Str';
   const diceLabel = foundryI18nLocalize('npcImporter.parser.dice') || 'd';
   const meleeDamagePattern = `${strLabel}\\.|${strLabel}(\\s?[\\+\\-]?\\s?(\\d+)?${diceLabel}?(\\d+)?){0,}`;
