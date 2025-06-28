@@ -29,31 +29,24 @@ export function getAbilityList(
   );
 }
 
-function getAbilities(data: string): { [key: string]: string } {
+function getAbilities(data: string): Record<string, string> {
   const modifiedSpecialAbs = getModuleSettings(settingModifiedSpecialAbs);
-  let abilities: { [key: string]: any } = {};
-  let line: string[] = [];
-  if (!modifiedSpecialAbs) {
-    line = splitAndTrim(
-      data,
-      new RegExp(getModuleSettings(settingBulletPointIcons), 'ig'),
-    );
-  } else {
-    line = splitAndTrim(data, '@');
-  }
+  const delimiter = modifiedSpecialAbs
+    ? /@/
+    : new RegExp(getModuleSettings(settingBulletPointIcons), 'ig');
+  const lines = splitAndTrim(data, delimiter);
+  const abilities: Record<string, string> = {};
 
-  line.forEach(element => {
-    let ability = element.split(':');
-    let abilityName = !modifiedSpecialAbs
-      ? ability[0].trim()
-      : `@${ability[0].trim()}`;
-    if (abilityName) {
-      abilities[abilityName] =
-        ability.length == 2
-          ? ability[1].replace(newLineRegex, ' ').trim()
-          : ability[0];
-    }
-  });
+  for (const element of lines) {
+    const [name, ...rest] = element.split(':');
+    const abilityName = modifiedSpecialAbs ? `@${name.trim()}` : name.trim();
+    if (!abilityName) continue;
+    const value =
+      rest.length > 0
+        ? rest.join(':').replace(newLineRegex, ' ').trim()
+        : name.replace(/^.* /, '').trim();
+    abilities[abilityName] = value;
+  }
 
   return abilities;
 }

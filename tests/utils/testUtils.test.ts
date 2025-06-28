@@ -49,13 +49,13 @@ describe('specialAbilitiesLink', () => {
     expect(specialAbilitiesLink('Size -1')).toBe('@UUID[sizeLink]');
   });
 
-  it('returns null when nothing matches', () => {
-    expect(specialAbilitiesLink('Unknown Ability')).toBeNull();
+  it('returns an empty string when nothing matches', () => {
+    expect(specialAbilitiesLink('Unknown Ability')).toBe('');
   });
 
-  it('returns null on error', () => {
+  it('returns an empty string on error', () => {
     vi.stubGlobal('game', {}); // simulate broken `game.packs`
-    expect(specialAbilitiesLink('Fear')).toBeNull();
+    expect(specialAbilitiesLink('Fear')).toBe('');
   });
 });
 

@@ -22,14 +22,15 @@ export function specialAbilitiesLink(specAbName: string): string | null {
     return (
       game.packs
         ?.get('swade-core-rules.swade-specialabilities')
-        ?.contents.find((x: any) => x.name.includes(cleanedName))?.link || null
+        ?.contents.find((x: { name: string }) => x.name.includes(cleanedName))
+        ?.link || ''
     );
   } catch (error) {
     Logger.error(
       `Error finding special ability link for "${cleanedName}":`,
       error,
     );
-    return null;
+    return '';
   }
 }
 

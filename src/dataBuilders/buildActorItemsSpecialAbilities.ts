@@ -128,9 +128,9 @@ export async function specialAbilitiesParser(
   } else {
     specialAbilitiesItems = await Promise.all(
       Object.entries(specialAbilitiesData).map(async ([elem, desc]) => {
-        const prefix = ['@w', '@a', '@e', '@h', '@sa'].find(p =>
-          elem.startsWith(p),
-        );
+        const prefix = ['@w', '@a', '@e', '@h', '@sa']
+          .find(p => elem.startsWith(p))
+          ?.trim();
         if (prefix) {
           return parseItemByPrefix(prefix, elem, desc, meleeDamageRegex);
         }
