@@ -1,8 +1,7 @@
 import {
-  getActorAddtionalStatsArray,
+  getActorAddtionalStats,
   getModuleSettings,
 } from '../utils/foundryActions';
-import { additionalStatsBuilder } from './itemBuilders';
 import { ParsedActor } from '../types/importedActor';
 import {
   settingAutoCalcToughness,
@@ -98,16 +97,26 @@ function generateAttributes(parsedData: ParsedActor) {
 }
 
 async function buildAdditionalStats(parsedData: ParsedActor) {
-  const stats: Record<string, any> = {};
-  const systemStats = getActorAddtionalStatsArray();
-  systemStats.forEach(stat => {
-    const key = stat.replace(':', '');
-    const value = parsedData[key];
-    if (value !== undefined) {
-      stats[key] = additionalStatsBuilder(key, value);
+  const additionalStats = getActorAddtionalStats();
+  if (!additionalStats) return {};
+
+  for (const key in additionalStats) {
+    const stat = additionalStats[key];
+    if (!parsedData[stat.label]) continue;
+    if (stat.dtype === 'Die') {
+      additionalStats[key].modifier = parsedData[stat.label].modifier;
+      additionalStats[key].value = `d${parsedData[stat.label].sides}`;
+    } else if (stat.dtype === 'Number') {
+      const value = parsedData[stat.label];
+      additionalStats[key].max = stat.hasMaxValue ? value : undefined;
+      additionalStats[key].value = value;
+    } else if (stat.dtype === 'String') {
+      const value = parsedData[stat.label];
+      additionalStats[key].value = value ?? '';
     }
-  });
-  return stats;
+  }
+
+  return additionalStats;
 }
 
 function calculateBennies(isWildCard: boolean, actorType: string) {

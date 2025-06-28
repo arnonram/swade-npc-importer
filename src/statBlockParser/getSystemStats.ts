@@ -1,5 +1,6 @@
 import { newLineRegex } from '../global';
 import { getActorAddtionalStats } from '../utils/foundryActions';
+import { buildTraitDie } from './parserBuilderHelpers';
 
 export function getSystemDefinedStats(sections: string[]): Record<string, any> {
   const additionalStats = getActorAddtionalStats();
@@ -26,8 +27,8 @@ export function getSystemDefinedStats(sections: string[]): Record<string, any> {
       case 'Number':
         systemStats[statKey.trim()] = parseInt(statValue, 10);
         break;
-      case 'Boolean':
-        systemStats[statKey.trim()] = statValue.toLowerCase() === 'true';
+      case 'Die':
+        systemStats[statKey.trim()] = buildTraitDie(statValue);
         break;
       default:
         console.warn(`Unhandled data type: ${dtype}`);

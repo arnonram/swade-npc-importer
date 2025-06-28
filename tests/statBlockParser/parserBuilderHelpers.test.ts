@@ -2,8 +2,10 @@ import {
   GetMeleeDamage,
   getArmorBonus,
   getBonus,
+  buildTraitDie,
 } from '../../src/statBlockParser/parserBuilderHelpers';
 import { describe, it, expect } from 'vitest';
+import { BonusType } from '../../src/types/enums';
 
 describe('GetMeleeDamage', () => {
   it('extracts basic melee damage', () => {
@@ -44,21 +46,36 @@ describe('getArmorBonus', () => {
 
 describe('getBonus', () => {
   it('extracts parry bonus', () => {
-    expect(getBonus('Parry: +2', 'parry')).toBe(2);
-    expect(getBonus('+3 Parry', 'parry')).toBe(3);
+    expect(getBonus('Parry: +2', BonusType.PARRY)).toBe(2);
+    expect(getBonus('+3 Parry', BonusType.PARRY)).toBe(3);
   });
 
   it('extracts cover bonus', () => {
-    expect(getBonus('Cover +50', 'cover')).toBe(50);
+    expect(getBonus('Cover +50', BonusType.COVER)).toBe(50);
   });
 
   it('extracts power points', () => {
-    expect(getBonus('Power Points: 15', 'powerPoints')).toBe(15);
+    expect(getBonus('Power Points: 15', BonusType.POWER_POINTS)).toBe(15);
   });
 
   it('returns undefined on missing or malformed bonus', () => {
-    expect(getBonus('AP +2', 'parry')).toBeUndefined();
-    expect(getBonus('', 'cover')).toBeUndefined();
-    expect(getBonus('Cover', 'cover')).toBeUndefined();
+    expect(getBonus('AP +2', BonusType.PARRY)).toBeUndefined();
+    expect(getBonus('', BonusType.COVER)).toBeUndefined();
+    expect(getBonus('Cover', BonusType.COVER)).toBeUndefined();
+  });
+});
+
+describe('buildTraitDie', () => {
+  it.each([
+    ['d6', { sides: 6, modifier: 0 }],
+    ['d8+5', { sides: 8, modifier: 5 }],
+    ['d8-1', { sides: 8, modifier: -1 }],
+    ['not a die', { sides: 0, modifier: 0 }],
+    [' d6 + 3 ', { sides: 6, modifier: 3 }],
+    ['5', { sides: 0, modifier: 0 }],
+    ['d8 + 2', { sides: 8, modifier: 2 }],
+    ['d8 -2', { sides: 8, modifier: -2 }],
+  ])('parses "%s" as %j', (input, expected) => {
+    expect(buildTraitDie(input)).toEqual(expected);
   });
 });

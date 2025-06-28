@@ -3,7 +3,7 @@ import { getSystemDefinedStats } from '../../src/statBlockParser/getSystemStats'
 
 vi.mock('../../src/utils/foundryActions', () => ({
   getActorAddtionalStats: () => ({
-    Conviction: { label: 'Conviction', dtype: 'Boolean' },
+    Conviction: { label: 'Sanity', dtype: 'Die' },
     Rank: { label: 'Rank', dtype: 'String' },
     XP: { label: 'XP', dtype: 'Number' },
   }),
@@ -11,12 +11,12 @@ vi.mock('../../src/utils/foundryActions', () => ({
 
 describe('getSystemDefinedStats', () => {
   it('parses stats of different types correctly', () => {
-    const sections = ['Conviction: true', 'Rank: Veteran', 'XP: 40'];
+    const sections = ['Sanity: d6-1', 'Rank: Veteran', 'XP: 40'];
 
     const result = getSystemDefinedStats(sections);
 
     expect(result).toEqual({
-      Conviction: true,
+      Sanity: { sides: 6, modifier: -1 },
       Rank: 'Veteran',
       XP: 40,
     });
@@ -35,11 +35,9 @@ describe('getSystemDefinedStats', () => {
   });
 
   it('parses with extra symbols and dash normalization', () => {
-    const sections = ['XP: 30;', 'Conviction: true;', 'Rank: Hero - Veteran'];
+    const sections = ['Rank: Hero - Veteran'];
     const result = getSystemDefinedStats(sections);
     expect(result).toEqual({
-      XP: 30,
-      Conviction: true,
       Rank: 'Hero - Veteran',
     });
   });

@@ -20,6 +20,9 @@ Hindrances: Arrogant, Evil Bastard
 Powers: Bolt (2d6). Power Points: 10
 Gear: Long sword (Str+d8), bow (Range
 12/24/48, Damage 2d6), leather armor (+1).
+num Stat: 99
+text Stat: some text for testing
+die Stat: d6+5
 Special Abilities:
 • Infravision: Halve penalties for
 Illumination when attacking warm
@@ -109,6 +112,12 @@ const expectedParsedActor: ParsedActor = {
     },
   },
   size: -1,
+  'die Stat': {
+    modifier: 5,
+    sides: 6,
+  },
+  'num Stat': 99,
+  'text Stat': 'some text for testing',
 };
 
 vi.mock('../../src/utils/foundryActions', async () => {
@@ -117,7 +126,12 @@ vi.mock('../../src/utils/foundryActions', async () => {
   >('../../src/utils/foundryActions');
   return {
     ...actual,
-    getActorAddtionalStatsArray: () => [],
+    getActorAddtionalStatsArray: () => ['num Stat', 'text Stat', 'die Stat'],
+    getActorAddtionalStats: () => ({
+      numStat: { label: 'num Stat', dtype: 'Number', hasMaxValue: true },
+      dieStat: { label: 'die Stat', dtype: 'Die' },
+      textStat: { label: 'text Stat', dtype: 'String', hasMaxValue: false },
+    }),
     getModuleSettings: (key: string) => {
       if (key === settingBulletPointIcons) return '•';
       if (key === settingModifiedSpecialAbs) return false;
@@ -132,7 +146,6 @@ describe('statBlockParser integration', () => {
   });
 
   it('returns an empty object and calls foundryUiError on error', async () => {
-    // Provide a statblock that will cause an error (simulate by mocking getSections to throw)
     const getSectionsSpy = vi
       .spyOn(getSectionsModule, 'getSections')
       .mockImplementation(() => {
@@ -140,6 +153,7 @@ describe('statBlockParser integration', () => {
       });
     const result = await statBlockParser('bad input');
     expect(result).toEqual({});
+    //@ts-ignore
     expect(globalThis.ui.notifications.error).toHaveBeenCalled();
     getSectionsSpy.mockRestore();
   });

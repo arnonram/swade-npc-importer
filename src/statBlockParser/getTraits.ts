@@ -2,6 +2,7 @@ import { Logger } from '../utils/logger';
 import { Attributes, ImportedDie } from '../types/importedActor';
 import { splitAndTrim } from '../utils/textUtils';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
+import { buildTraitDie } from './parserBuilderHelpers';
 
 export function getAttributes(sections: string[]): Attributes {
   const attrLabel =
@@ -83,30 +84,4 @@ export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
     }
   });
   return skillsDict;
-}
-
-function buildTraitDie(data: string): ImportedDie {
-  let diceAndMode = '';
-  try {
-    const diceRegex =
-      foundryI18nLocalize('npcImporter.regex.dice') || '\\d+d\\d+';
-    const matchResult = data.match(new RegExp(diceRegex));
-    diceAndMode = matchResult ? matchResult[0].toString() : '';
-  } catch (error) {
-    diceAndMode = '1';
-  }
-
-  let traitDice = diceAndMode.includes('+')
-    ? diceAndMode.split('+')[0]
-    : diceAndMode.split('-')[0];
-  let traitMod = diceAndMode.includes('+')
-    ? `+${diceAndMode.split('+')[1]}`
-    : diceAndMode.includes('-')
-      ? `-${diceAndMode.split('-')[1]}`
-      : '0';
-
-  const sides = parseInt(traitDice.trim().replace(/[A-Za-z]/gi, '')) || 0;
-  const modifier = parseInt(traitMod.trim()) || 0;
-
-  return { sides, modifier };
 }

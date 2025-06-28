@@ -1,6 +1,7 @@
 import { BonusType } from '../types/enums';
 import { foundryI18nLocalize } from '../../src/utils/foundryWrappers';
 import { armorModRegex } from '../global';
+import { ImportedDie } from 'src/types/importedActor';
 
 /**
  * Extracts melee damage from an ability description.
@@ -50,3 +51,17 @@ const bonusLabelMap: Record<string, string> = {
   powerPoints:
     foundryI18nLocalize('npcImporter.parser.PowerPoints') || 'Power Points',
 };
+
+/**
+ * Builds a trait die object from a string.
+ * The string should contain a die notation like "d6" or "1d8+2".
+ * Returns an object with sides and modifier properties.
+ */
+export function buildTraitDie(data: string): ImportedDie {
+  const cleaned = data.replace(/\s+/g, '');
+  const match = cleaned.match(/d(\d+)([+-]\d+)?/i);
+  if (!match) return { sides: 0, modifier: 0 };
+  const sides = parseInt(match[1], 10);
+  const modifier = match[2] ? parseInt(match[2], 10) : 0;
+  return { sides, modifier };
+}

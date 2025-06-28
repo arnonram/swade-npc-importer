@@ -34,17 +34,16 @@ describe('getSections', () => {
     expect(result).toHaveLength(3);
     expect(result[2]).toContain('armor'); // replaced '/ ' with '/'
   });
-  // TODO: fix
-  //   it('works with additional stats from getActorAddtionalStatsArray()', () => {
-  //     // Re-mock with a custom additional stat
-  //     vi.doMock('../../src/utils/foundryActions', () => ({
-  //       getActorAddtionalStatsArray: () => ['CustomStat:'],
-  //     }));
-  //     const mod = await import('../../src/parser/getSections');
+  //TODO: fix
+  it('works with additional stats from getActorAddtionalStatsArray()', () => {
+    // Re-mock with a custom additional stat
+    vi.mock('../../src/utils/foundryActions', () => ({
+      getActorAddtionalStatsArray: () => ['CustomStat:', 'CustomStat 2:'],
+    }));
 
-  //     const input = `Attributes: d8\nCustomStat: foo bar\nSkills: d6`;
-  //     const result = mod.getSections(input);
-  //     expect(result).toHaveLength(3);
-  //     expect(result.some(r => r.startsWith('CustomStat'))).toBe(true);
-  //   });
+    const input = `Attributes: d8\nCustomStat: foo bar\nCustomStat 2: baz qux\nSkills: d6`;
+    const result = getSections(input);
+    expect(result).toHaveLength(4);
+    expect(result.some(r => r.startsWith('CustomStat'))).toBe(true);
+  });
 });
