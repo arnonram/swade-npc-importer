@@ -1,6 +1,7 @@
 import copy from '@guanghechen/rollup-plugin-copy';
 import { RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
+import livereload from 'rollup-plugin-livereload';
 
 const banner = `/**
 * SWADE Stat Block Importer
@@ -17,7 +18,7 @@ const bundle: RollupOptions = {
   output: {
     dir: distDirectory,
     format: 'es',
-    sourcemap: true,
+    sourcemap: process.env.CI ? false : true,
     assetFileNames: '[name].[ext]',
     banner: banner,
   },
@@ -31,12 +32,15 @@ const bundle: RollupOptions = {
         },
       ],
     }),
-    // process.env.DEV &&
-    //   livereload({
-    //     watch: distDirectory,
-    //     exts: ['js'],
-    //     extraExts: [],
-    //   }),
+    ...(process.env.DEV
+      ? [
+          livereload({
+            watch: distDirectory,
+            exts: ['js'],
+            extraExts: [],
+          }),
+        ]
+      : []),
   ],
 };
 

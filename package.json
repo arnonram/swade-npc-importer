@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup -c --configPlugin @rollup/plugin-typescript",
-    "build:watch": "rollup -cw --configPlugin @rollup/plugin-typescript",
+    "build:watch": "yarn clean && rollup -cw --configPlugin @rollup/plugin-typescript",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
-    "prepare": "husky"
+    "prepare": "husky",
+    "clean": "rm -rf dist"
   },
   "author": "Arnon Ram",
   "license": "ISC",
