@@ -67,7 +67,8 @@ Some _Prototype Token_ options may be set by default
 ## How it does it and what's supported
 
 1. The statblock is prased by searching for all supported attributes/traits/items/etc..
-   - Any _Additional Stats (Actors)_ which were added through the SWADE System Settings are: searched for, added, and enabled
+   - Any _Additional Stats (Actors)_ which were added through the SWADE System Settings are: searched for, added, and enabled.
+     - Only number, text, or die stats are parsed
    - Traits/Item means: skills, Edges, Hindrances, Special Abilities, Gear, Powers, etc..
 2. Every trait/item is searched for throughout all Item Compendiums in the selected Package (See [NPC Importer Settings](#some-configurations))
 3. If the triat/item is found in a Compendium then it is copied and updated to the Actor; If not found, then a new one will be created for the Actor only (no new compendium entry is created)
