@@ -67,3 +67,9 @@ export function lowerCaseShishKebab(string: string): string {
 export function removeEmptyArrayProp(arr: string[]): string[] {
   return arr.filter(str => /[a-zA-Z]/.test(str));
 }
+
+export const cleanKeyName = (key: string) =>
+  key
+    .replace(/^@([aehw]|sa)/, '')
+    .toLowerCase()
+    .trim();
