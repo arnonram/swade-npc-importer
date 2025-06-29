@@ -1,5 +1,3 @@
-// Utility functions for dialog rendering
-
 /**
  * Returns 'checked' if setValue equals htmlValue, otherwise returns an empty string.
  */
