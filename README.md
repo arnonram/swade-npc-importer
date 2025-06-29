@@ -8,7 +8,7 @@ A Savage Worlds Adventure Edition stat block importer for [Foundry VTT](https://
 
 ### :exclamation: **Please Note**
 
-1. If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer will not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefined`.
+1. If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer _might_ not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefined`.
 
    To solve this either:
 
