@@ -1,4 +1,4 @@
-name: tests
+name: CI
 
 on:
   pull_request:
@@ -28,6 +28,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: test
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,7 +40,7 @@ jobs:
       - run: yarn build
       - name: Zip module
         working-directory: ./
-        run: zip -r ./module.zip ./dist/*
+        run: yarn pack
       - name: upload module
         uses: actions/upload-artifact@v4
         with:
