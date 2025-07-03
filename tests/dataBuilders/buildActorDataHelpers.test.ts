@@ -1,8 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as helpers from '../../src/dataBuilders/buildActorDataHelpers';
 import * as foundryActions from '../../src/utils/foundryActions';
-import { settingCalculateAdditionalWounds } from '../../src/global';
-import { calculateBennies } from '../../src/dataBuilders/buildActorDataHelpers';
+import {
+  calculateBennies,
+  checkBruteEdge,
+} from '../../src/dataBuilders/buildActorDataHelpers';
 
 const {
   calculateIgnoredWounds,
@@ -19,18 +21,18 @@ describe('buildActorDataHelpers', () => {
       [
         {
           specialabilities: {
-            Undead: '',
-            Construct: '',
-            Elemental: '',
-            Other: '',
+            Undead: 'undead ability',
+            Construct: 'construct ability',
+            Elemental: 'elemental ability',
+            Other: 'other ability',
           },
         },
         true,
         3,
       ],
-      [{ specialabilities: { Undead: '' } }, true, 1],
-      [{ specialabilities: { Other: '' } }, true, 0],
-      [{ specialabilities: { Undead: '' } }, false, 0],
+      [{ specialabilities: { Undead: 'undead ability' } }, true, 1],
+      [{ specialabilities: { Other: 'other ability' } }, true, 0],
+      [{ specialabilities: { Undead: 'undead ability' } }, false, 0],
     ])('returns %i for %j with setting %j', (parsed, setting, expected) => {
       vi.spyOn(foundryActions, 'getModuleSettings').mockReturnValue(setting);
       expect(calculateIgnoredWounds(parsed as any)).toBe(expected);
@@ -283,5 +285,51 @@ describe('buildActorDataHelpers', () => {
         expect(result).toEqual(expected);
       },
     );
+  });
+
+  describe('checkBruteEdge', () => {
+    it('sets athletics attribute to strength if Brute edge and Athletics skill are present', () => {
+      const items = [
+        { name: 'Brute', system: {} },
+        {
+          name: 'Athletics',
+          system: { attribute: 'agility' },
+        },
+      ];
+      const result = checkBruteEdge(items);
+      expect(result.find(i => i.name === 'Athletics').system.attribute).toBe(
+        'strength',
+      );
+    });
+
+    it('does not change attribute if Brute edge is missing', () => {
+      const items = [
+        {
+          name: 'Athletics',
+          system: { attribute: 'agility' },
+        },
+      ];
+      const result = checkBruteEdge(items);
+      expect(result.find(i => i.name === 'Athletics').system.attribute).toBe(
+        'agility',
+      );
+    });
+
+    it('does not change anything if Athletics skill is missing', () => {
+      const items = [
+        { name: 'Brute', system: {} },
+        { name: 'OtherSkill', system: { attribute: 'smarts' } },
+      ];
+      const result = checkBruteEdge(items);
+      expect(result.find(i => i.name === 'OtherSkill').system.attribute).toBe(
+        'smarts',
+      );
+    });
+
+    it('returns the original array if neither Brute nor Athletics are present', () => {
+      const items = [{ name: 'OtherSkill', system: { attribute: 'smarts' } }];
+      const result = checkBruteEdge(items);
+      expect(result).toEqual(items);
+    });
   });
 });

@@ -236,3 +236,14 @@ export function findRunningMod(parsedData: ParsedActor) {
 
   return mod;
 }
+
+export function checkBruteEdge(actorItems: any[]) {
+  const bruteName = foundryI18nLocalize('npcImporter.parser.Brute');
+  const athleticsName = foundryI18nLocalize('npcImporter.parser.Athletics');
+  const hasBrute = actorItems.some(item => item.name === bruteName);
+  const athletics = actorItems.find(item => item.name === athleticsName);
+  if (hasBrute && athletics) {
+    athletics.system.attribute = 'strength';
+  }
+  return actorItems;
+}

@@ -3,6 +3,7 @@ import { specialAbilitiesParser } from './buildActorItemsSpecialAbilities';
 import { itemGearBuilder } from './buildActorGear';
 import { ParsedActor } from '../types/importedActor';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
+import { checkBruteEdge } from './buildActorDataHelpers';
 
 export async function buildActorItems(parsedData: ParsedActor) {
   const [skills, edges, hindrances, powers, specialAbilities, gear] =
@@ -28,15 +29,4 @@ export async function buildActorItems(parsedData: ParsedActor) {
 
 function postProcessChecks(actorItems: any[]) {
   return checkBruteEdge(actorItems);
-}
-
-function checkBruteEdge(actorItems: any[]) {
-  const bruteName = foundryI18nLocalize('npcImporter.parser.Brute');
-  const athleticsName = foundryI18nLocalize('npcImporter.parser.Athletics');
-  const hasBrute = actorItems.some(item => item.name === bruteName);
-  const athletics = actorItems.find(item => item.name === athleticsName);
-  if (hasBrute && athletics) {
-    athletics.system.attribute = 'strength';
-  }
-  return actorItems;
 }
