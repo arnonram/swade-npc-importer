@@ -16,7 +16,7 @@ export async function getGear(
   const gearRegex = new RegExp(`${gearLabel}:`, 'i');
 
   const foundGearLine = sections.find(line => gearRegex.test(line));
-  if (!foundGearLine) return { Gear: {} };
+  if (!foundGearLine) return {};
 
   const rawGear = foundGearLine
     .replace(gearRegex, '')

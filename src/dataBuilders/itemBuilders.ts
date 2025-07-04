@@ -58,11 +58,9 @@ export async function skillBuilder(
 
 export async function weaponBuilder(props: WeaponBuilderProps): Promise<any> {
   const dmg = props.weaponDamage
+    .replace('.', '')
     ?.replace(
-      new RegExp(
-        `${foundryI18nLocalize('npcImporter.parser.Str')}.|${foundryI18nLocalize('npcImporter.parser.Str')}`,
-        'gi',
-      ),
+      new RegExp(`${foundryI18nLocalize('npcImporter.parser.Str')}`, 'gi'),
       '@str',
     )
     .replace(foundryI18nLocalize('npcImporter.parser.dice'), 'd');

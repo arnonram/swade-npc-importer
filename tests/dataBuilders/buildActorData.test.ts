@@ -37,7 +37,7 @@ describe('buildActorData', () => {
       pace: 6,
       biography: 'A test biography',
       powerpoints: 10,
-      specialabilities: {},
+      specialAbilities: {},
       edges: [],
       hindrances: [],
     };

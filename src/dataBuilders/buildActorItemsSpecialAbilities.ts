@@ -78,13 +78,8 @@ function parseItemByPrefix(
 export async function specialAbilitiesParser(
   specialAbilitiesData: Record<string, string> | undefined,
 ): Promise<any[]> {
-  const meleeDamageRegex = new RegExp(
-    `${foundryI18nLocalize('npcImporter.parser.Str')}\.|${foundryI18nLocalize('npcImporter.parser.Str')}(\s?[\+\-]\s?(\d+)?X?(\d+)?){0,}`.replace(
-      'X',
-      foundryI18nLocalize('npcImporter.parser.dice'),
-    ),
-    'gi',
-  );
+  // Regex: matches Str, Str., Str+4, Str -2, Str+d6, Str+2d8, Str + 1d6, Str+d4 (case-insensitive)
+  const meleeDamageRegex = /str\.?\s*([+\-]\s*((\d+)?d\d+|\d+))?/i;
   if (!specialAbilitiesData) return [];
   let specialAbilitiesItems: any[] = [];
   if (!getModuleSettings(settingModifiedSpecialAbs)) {
@@ -97,27 +92,16 @@ export async function specialAbilitiesParser(
     } else {
       specialAbilitiesItems = await Promise.all(
         Object.entries(specialAbilitiesData).map(async ([elem, desc]) => {
+          elem = elem.toLocaleLowerCase().trim();
           if (
-            elem
-              .toLocaleLowerCase()
-              .startsWith(
-                foundryI18nLocalize(
-                  'npcImporter.parser.Armor',
-                ).toLocaleLowerCase(),
-              )
+            elem.startsWith(
+              foundryI18nLocalize(
+                'npcImporter.parser.Armor',
+              ).toLocaleLowerCase(),
+            )
           ) {
             return parseArmorAbility(elem, desc);
-          } else if (
-            (meleeDamageRegex.test(desc) ||
-              new RegExp(
-                foundryI18nLocalize('npcImporter.regex.dice'),
-                'i',
-              ).test(desc)) &&
-            elem.toLocaleLowerCase() !==
-              foundryI18nLocalize(
-                'npcImporter.parser.Speed',
-              ).toLocaleLowerCase()
-          ) {
+          } else if (isWeaponAbility(elem, desc, meleeDamageRegex)) {
             return parseWeaponAbility(elem, desc, meleeDamageRegex);
           } else {
             return abilityBuilder(elem, desc);
@@ -141,4 +125,23 @@ export async function specialAbilitiesParser(
     );
   }
   return specialAbilitiesItems.filter(Boolean);
+}
+
+function isWeaponAbility(
+  elem: string,
+  desc: string,
+  meleeDamageRegex: RegExp,
+): boolean {
+  const isMeleeOrDice =
+    meleeDamageRegex.test(desc) ||
+    new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i').test(desc);
+
+  const isSpeed =
+    elem ===
+    foundryI18nLocalize('npcImporter.parser.Speed').toLocaleLowerCase();
+  const hasRunningDie = desc.includes(
+    foundryI18nLocalize('npcImporter.parser.RunningDie').toLocaleLowerCase(),
+  );
+
+  return isMeleeOrDice && !isSpeed && !hasRunningDie;
 }

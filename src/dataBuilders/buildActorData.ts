@@ -33,11 +33,6 @@ export const buildActorData = async function (
       modifier: 0, // TODO
     },
     size: parsedData.size,
-    speed: {
-      runningDie: findRunningDie(parsedData),
-      runningMod: findRunningMod(parsedData),
-      value: parsedData.pace,
-    },
   };
 
   system.details = {
@@ -56,7 +51,7 @@ export const buildActorData = async function (
     max: calculateWoundMod(
       parsedData.size,
       isWildCard,
-      parsedData.specialabilities,
+      parsedData.specialAbilities,
     ),
     ignored: calculateIgnoredWounds(parsedData),
   };

@@ -7,6 +7,7 @@ export function getSections(clipData: string): string[] {
   const inputData = clipData
     .replace(/(\r\n|\n|\r)/gm, ' ')
     .replace('/ ', '/')
+    .replace(/\u00AD/g, '') // Remove soft hyphens
     .replace(/[−–]/gi, '-');
   const indexes = getSectionsIndex(inputData);
   if (indexes.length === 0) {

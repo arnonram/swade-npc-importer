@@ -20,7 +20,7 @@ describe('buildActorDataHelpers', () => {
     it.each([
       [
         {
-          specialabilities: {
+          specialAbilities: {
             Undead: 'undead ability',
             Construct: 'construct ability',
             Elemental: 'elemental ability',
@@ -30,9 +30,9 @@ describe('buildActorDataHelpers', () => {
         true,
         3,
       ],
-      [{ specialabilities: { Undead: 'undead ability' } }, true, 1],
-      [{ specialabilities: { Other: 'other ability' } }, true, 0],
-      [{ specialabilities: { Undead: 'undead ability' } }, false, 0],
+      [{ specialAbilities: { Undead: 'undead ability' } }, true, 1],
+      [{ specialAbilities: { Other: 'other ability' } }, true, 0],
+      [{ specialAbilities: { Undead: 'undead ability' } }, false, 0],
     ])('returns %i for %j with setting %j', (parsed, setting, expected) => {
       vi.spyOn(foundryActions, 'getModuleSettings').mockReturnValue(setting);
       expect(calculateIgnoredWounds(parsed as any)).toBe(expected);
@@ -43,7 +43,7 @@ describe('buildActorDataHelpers', () => {
     it.each([
       [
         {
-          specialabilities: {
+          specialAbilities: {
             Undead: 'undead ability',
             Construct: 'construct ability',
           },
@@ -51,9 +51,9 @@ describe('buildActorDataHelpers', () => {
         },
         6,
       ],
-      [{ specialabilities: { Undead: 'undead ability' }, edges: [] }, 2],
-      [{ specialabilities: {}, edges: ['Combat Reflexes'] }, 2],
-      [{ specialabilities: {}, edges: [] }, 0],
+      [{ specialAbilities: { Undead: 'undead ability' }, edges: [] }, 2],
+      [{ specialAbilities: {}, edges: ['Combat Reflexes'] }, 2],
+      [{ specialAbilities: {}, edges: [] }, 0],
     ])('returns %i for %j', (parsed, expected) => {
       expect(findUnshakeBonus(parsed as any)).toBe(expected);
     });
@@ -63,17 +63,17 @@ describe('buildActorDataHelpers', () => {
     it.each([
       [
         {
-          specialabilities: {
+          specialAbilities: {
             Undead: 'undead ability',
           },
           edges: ['Brawler', 'Bruiser'],
         },
         4,
       ],
-      [{ specialabilities: {}, edges: [] }, 0],
-      [{ specialabilities: {}, edges: ['Brawny'] }, 1],
-      [{ specialabilities: {}, edges: ['Brawler', 'Brawny'] }, 2],
-      [{ specialabilities: {}, edges: ['Brawler', 'Brawny', 'Bruiser'] }, 3],
+      [{ specialAbilities: {}, edges: [] }, 0],
+      [{ specialAbilities: {}, edges: ['Brawny'] }, 1],
+      [{ specialAbilities: {}, edges: ['Brawler', 'Brawny'] }, 2],
+      [{ specialAbilities: {}, edges: ['Brawler', 'Brawny', 'Bruiser'] }, 3],
     ])('returns %i for %j', (parsed, expected) => {
       expect(toughnessBonus(parsed as any)).toBe(expected);
     });
@@ -126,9 +126,9 @@ describe('buildActorDataHelpers', () => {
   });
 
   describe('findRunningDie', () => {
-    it('returns die from specialabilities if Speed present', () => {
+    it('returns die from specialAbilities if Speed present', () => {
       const parsed = {
-        specialabilities: {
+        specialAbilities: {
           Speed: 'd8',
         },
         edges: [],
@@ -139,13 +139,13 @@ describe('buildActorDataHelpers', () => {
     });
     it('returns increased die if Fleet-Footed edge present', () => {
       const parsed = {
-        specialabilities: {},
+        specialAbilities: {},
         edges: ['Fleet-Footed'],
       };
       expect(findRunningDie(parsed as any)).toBe(8);
     });
     it('returns default die if nothing matches', () => {
-      const parsed = { specialabilities: {}, edges: [] };
+      const parsed = { specialAbilities: {}, edges: [] };
       expect(findRunningDie(parsed as any)).toBe(6);
     });
   });

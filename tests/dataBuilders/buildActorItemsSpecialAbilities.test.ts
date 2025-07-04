@@ -175,6 +175,6 @@ describe('specialAbilitiesParser', () => {
     const data = { Speed: 'Str+d6' };
     const result = await specialAbilitiesParser(data);
     expect(result[0].type).toBe(ItemType.ABILITY);
-    expect(result[0].name).toBe('Speed');
+    expect(result[0].name).toBe('speed');
   });
 });

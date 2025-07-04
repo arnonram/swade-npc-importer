@@ -56,7 +56,7 @@ export function calculateBennies(isWildCard: boolean, actorType: string) {
 export function calculateWoundMod(
   size: number = 0,
   isWildCard: boolean,
-  specialAbs: Record<string, any>,
+  specialAbs?: Record<string, string>,
 ) {
   let baseWounds = isWildCard ? 3 : 0;
 
@@ -94,7 +94,7 @@ export function calculateIgnoredWounds(parsedData: ParsedActor) {
   ];
 
   let total = 0;
-  for (const key in parsedData.specialabilities) {
+  for (const key in parsedData.specialAbilities) {
     const cleaned = cleanKeyName(key);
     if (relevant.includes(cleaned)) total += 1;
   }
@@ -112,7 +112,7 @@ export function findUnshakeBonus(parsedData: ParsedActor) {
   ];
 
   let total = 0;
-  for (const key in parsedData.specialabilities) {
+  for (const key in parsedData.specialAbilities) {
     if (specialAbilitiesConferringUnshakeBonus.includes(cleanKeyName(key)))
       total += 2;
   }
@@ -141,7 +141,7 @@ export function toughnessBonus(parsedData: ParsedActor) {
   ];
 
   let total = 0;
-  for (const key in parsedData.specialabilities) {
+  for (const key in parsedData.specialAbilities) {
     if (specialAbilitiesConferringToughness.includes(cleanKeyName(key)))
       total += 2;
   }
@@ -185,34 +185,46 @@ export function initiativeMod(parsedData: ParsedActor) {
 
 export function findRunningDie(parsedData: ParsedActor) {
   let die = 6;
+  if (!parsedData.specialAbilities) return die;
 
-  try {
-    for (const key in parsedData.specialabilities) {
-      if (
-        cleanKeyName(key) ===
-        foundryI18nLocalize('npcImporter.parser.Speed').toLowerCase()
-      ) {
-        const match = parsedData.specialabilities[key].match(
-          new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
-        );
-        if (match?.[0]) {
-          return parseInt(match[0].replace(/[a-z]/i, ''));
-        }
+  for (const key in parsedData.specialAbilities) {
+    if (
+      cleanKeyName(key) ===
+      foundryI18nLocalize('npcImporter.parser.Speed').toLowerCase()
+    ) {
+      const match = parsedData.specialAbilities[key].match(
+        new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
+      );
+      if (match?.[0]) {
+        return parseInt(match[0].replace(/[a-z]/i, ''));
       }
     }
 
-    parsedData.edges?.forEach(edge => {
-      if (
-        edge
-          .toLowerCase()
-          .includes(
-            foundryI18nLocalize('npcImporter.parser.FleetFooted').toLowerCase(),
-          )
-      ) {
-        die += 2;
+    if (
+      parsedData.specialAbilities[key].includes(
+        foundryI18nLocalize('npcImporter.parser.RunningDie').toLowerCase(),
+      )
+    ) {
+      const match = parsedData.specialAbilities[key].match(
+        new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
+      );
+      if (match?.[0]) {
+        die = parseInt(match[0].replace(/[a-z]/i, ''));
       }
-    });
-  } catch {}
+    }
+  }
+
+  parsedData.edges?.forEach(edge => {
+    if (
+      edge
+        .toLowerCase()
+        .includes(
+          foundryI18nLocalize('npcImporter.parser.FleetFooted').toLowerCase(),
+        )
+    ) {
+      die += 2;
+    }
+  });
 
   return die;
 }

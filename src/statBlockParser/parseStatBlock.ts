@@ -52,11 +52,13 @@ export async function statBlockParser(
       );
     }
 
-    Logger.info(`Parsed data: ${JSON.stringify(importedActor, null, 4)}`);
+    Logger.info('Parsed data', importedActor);
     return importedActor;
   } catch (error) {
-    Logger.error('Failed to parse:', error);
     foundryUiError(foundryI18nLocalize('npcImporter.parser.NotValidStablock'));
-    return {} as ParsedActor;
+    throw new Error(
+      foundryI18nLocalize('npcImporter.parser.NotValidStablock'),
+      error,
+    );
   }
 }

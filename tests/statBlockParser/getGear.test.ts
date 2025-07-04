@@ -68,6 +68,6 @@ describe('getGear()', () => {
 
   it('returns empty Gear object if no matching gear section', async () => {
     const result = await getGear(['Attributes: Agility d6']);
-    expect(result).toEqual({ Gear: {} });
+    expect(result).toEqual({});
   });
 });

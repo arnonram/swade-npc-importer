@@ -69,6 +69,7 @@
   "npcImporter.parser.Shooting": "Shooting",
   "npcImporter.parser.CombatReflexes": "combat reflexes",
   "npcImporter.parser.FleetFooted": "Fleet-Footed",
+  "npcImporter.parser.RunningDie": "running die",
   "npcImporter.parser.Hesitant": "Hesitant",
   "npcImporter.parser.LevelHeaded": "Level Headed",
   "npcImporter.parser.LevelHeadedImp": "Level Headed (Imp)",

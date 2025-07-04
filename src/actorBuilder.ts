@@ -99,5 +99,7 @@ async function generateSwadeActorData(
     };
   }
 
+  Logger.debug('Final actor data:', finalActor);
+
   return finalActor;
 }
