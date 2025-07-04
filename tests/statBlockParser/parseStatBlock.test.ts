@@ -5,7 +5,7 @@ import {
   settingBulletPointIcons,
   settingModifiedSpecialAbs,
 } from '../../src/global';
-import * as getSectionsModule from '../../src/statBlockParser/getSections';
+import * as foundryWrappers from '../../src/utils/foundryWrappers';
 
 // Example statblock for integration testing
 const exampleStatBlock = `
@@ -145,16 +145,13 @@ describe('statBlockParser integration', () => {
     expect(result).toEqual(expectedParsedActor);
   });
 
-  it('returns an empty object and calls foundryUiError on error', async () => {
-    const getSectionsSpy = vi
-      .spyOn(getSectionsModule, 'getSections')
-      .mockImplementation(() => {
-        throw new Error('fail');
-      });
-    const result = await statBlockParser('bad input');
-    expect(result).toEqual({});
-    //@ts-ignore
-    expect(globalThis.ui.notifications.error).toHaveBeenCalled();
-    getSectionsSpy.mockRestore();
+  it('should throw an error and call foundryUiError on invalid input', async () => {
+    const foundryUiErrorSpy = vi.spyOn(foundryWrappers, 'foundryUiError');
+    const expectedError = foundryWrappers.foundryI18nLocalize(
+      'npcImporter.parser.NotValidStablock',
+    );
+
+    await expect(statBlockParser('bad input')).rejects.toThrow(expectedError);
+    expect(foundryUiErrorSpy).toHaveBeenCalledWith(expectedError);
   });
 });
