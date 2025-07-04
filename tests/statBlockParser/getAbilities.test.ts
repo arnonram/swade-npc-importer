@@ -11,7 +11,6 @@ import {
 } from '../../src/global';
 
 beforeEach(() => {
-  // Mock getModuleSettings
   vi.spyOn(foundryActions, 'getModuleSettings').mockImplementation(key => {
     if (key === settingModifiedSpecialAbs) return false;
     if (key === settingBulletPointIcons) return '•|\\*';
@@ -50,7 +49,6 @@ describe('getAbilityList', () => {
   });
 
   it('parses @-based syntax if modified special abilities enabled', () => {
-    // Update mock to enable @-split
     vi.spyOn(foundryActions, 'getModuleSettings').mockImplementation(key => {
       if (key === settingModifiedSpecialAbs) return true;
       return '';

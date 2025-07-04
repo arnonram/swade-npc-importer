@@ -29,7 +29,7 @@ describe('getSystemDefinedStats', () => {
   });
 
   it('handles malformed input gracefully', () => {
-    const sections = ['Rank Veteran']; // missing colon
+    const sections = ['Rank Veteran'];
     const result = getSystemDefinedStats(sections);
     expect(result).toEqual({});
   });

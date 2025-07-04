@@ -32,11 +32,9 @@ describe('getSections', () => {
     const input = `Attributes: Strength d8\r\nSkills: Fighting d6\nGear: sword / armor`;
     const result = getSections(input);
     expect(result).toHaveLength(3);
-    expect(result[2]).toContain('armor'); // replaced '/ ' with '/'
+    expect(result[2]).toContain('armor');
   });
-  //TODO: fix
   it('works with additional stats from getActorAddtionalStatsArray()', () => {
-    // Re-mock with a custom additional stat
     vi.mock('../../src/utils/foundryActions', () => ({
       getActorAddtionalStatsArray: () => ['CustomStat:', 'CustomStat 2:'],
     }));

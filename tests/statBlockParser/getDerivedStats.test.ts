@@ -8,7 +8,6 @@ import {
 
 import { describe, expect, it, vi } from 'vitest';
 
-// Mock getBonus
 vi.mock('../../src/utils/parserBuilderHelpers', () => ({
   getBonus: vi.fn((desc: string, _key: string) => {
     const match = desc.match(/Power\s*Points\s*[:\-]?\s*(\d+)/i);
