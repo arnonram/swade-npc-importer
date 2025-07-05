@@ -1,6 +1,6 @@
 {
   "name": "swade-npc-importer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Import stat blocks for SWADE",
   "author": "Arnon Ram",
   "license": "LGPL-3.0-or-later",
