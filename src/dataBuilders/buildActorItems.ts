@@ -2,7 +2,6 @@ import * as itemBuilder from './itemBuilders';
 import { specialAbilitiesParser } from './buildActorItemsSpecialAbilities';
 import { itemGearBuilder } from './buildActorGear';
 import { ParsedActor } from '../types/importedActor';
-import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { checkBruteEdge } from './buildActorDataHelpers';
 
 export async function buildActorItems(parsedData: ParsedActor) {

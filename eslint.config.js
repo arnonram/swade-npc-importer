@@ -70,8 +70,6 @@ export default defineConfig([
         { selector: ['objectLiteralProperty', 'typeProperty'], format: null },
         { selector: 'import', format: ['camelCase', 'PascalCase'] },
       ],
-      // You may need to install and configure this plugin for deprecation rule
-      // 'deprecation/deprecation': 'warn',
     },
     ignores: ['dist/*'],
   },

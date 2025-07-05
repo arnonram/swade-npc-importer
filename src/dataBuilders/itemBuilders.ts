@@ -1,6 +1,5 @@
 import {
   getItemFromCompendium,
-  getSpecificAdditionalStat,
   getSystemCoreSkills,
 } from '../utils/foundryActions';
 import { capitalizeEveryWord } from '../utils/textUtils';

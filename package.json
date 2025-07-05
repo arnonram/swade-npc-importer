@@ -10,13 +10,13 @@
     "build:watch": "yarn clean && rollup -cw --configPlugin @rollup/plugin-typescript",
     "test": "vitest run --coverage",
     "test:watch": "vitest",
-    "prepare": "husky",
     "clean": "rm -rf dist",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "pack": "cd dist && zip -r ../module.zip ./"
+    "pack": "cd dist && zip -r ../module.zip ./",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@guanghechen/rollup-plugin-copy": "^6.0.7",
@@ -30,10 +30,10 @@
     "@vitest/ui": "^3.2.4",
     "eslint": "^9.30.1",
     "happy-dom": "^18.0.1",
-    "husky": "^9.1.7",
+    "husky": ">=6",
     "jsdom": "^26.1.0",
+    "lint-staged": ">=10",
     "prettier": "^3.5.3",
-    "pretty-quick": "^4.2.2",
     "rollup": "^4.44.1",
     "rollup-plugin-livereload": "^2.0.5",
     "typescript": "^5.8.3",
@@ -46,5 +46,9 @@
   "bugs": {
     "url": "https://github.com/arnonram/swade-npc-importer/issues"
   },
-  "homepage": "https://github.com/arnonram/swade-npc-importer#readme"
+  "homepage": "https://github.com/arnonram/swade-npc-importer#readme",
+  "lint-staged": {
+    "*.ts": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
+  }
 }
