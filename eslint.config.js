@@ -71,6 +71,6 @@ export default defineConfig([
         { selector: 'import', format: ['camelCase', 'PascalCase'] },
       ],
     },
-    ignores: ['dist/*'],
+    ignores: ['dist/*', 'bin/*'],
   },
 ]);

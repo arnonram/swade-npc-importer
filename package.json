@@ -11,11 +11,12 @@
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "clean": "rm -rf dist",
-    "lint": "eslint src --ext .ts",
+    "lint:check": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
-    "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "format:fix": "prettier --write .",
     "pack": "cd dist && zip -r ../module.zip ./",
+    "update:module": "node bin/update-module.cjs",
     "prepare": "husky install"
   },
   "devDependencies": {
