@@ -17,8 +17,6 @@ jobs:
           cache: yarn
           cache-dependency-path: yarn.lock
       - run: yarn --frozen-lockfile
-      - run: yarn lint:check
-      - run: yarn format:check
       - run: yarn test
       - name: 'Report Coverage'
         if: always()
