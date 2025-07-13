@@ -18,7 +18,6 @@ jobs:
           cache: yarn
           cache-dependency-path: yarn.lock
       - run: yarn --frozen-lockfile
-      - run: yarn update:module
       - run: yarn build
       - run: yarn pack
       - name: Create Release
