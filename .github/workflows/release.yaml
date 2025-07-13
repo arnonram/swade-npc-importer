@@ -1,9 +1,7 @@
 name: Mod Builder
 
 on:
-  push:
-    tags:
-      - 'v*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -29,4 +27,4 @@ jobs:
           prerelease: false
           token: ${{secrets.GITHUB_TOKEN}}
           generateReleaseNotes: true
-          artifacts: ./module.zip, ./module.json
+          artifacts: ./module.zip, ./dist/module.json

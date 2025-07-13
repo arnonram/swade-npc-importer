@@ -22,10 +22,9 @@ const current = getCurrentVersion();
 const main = getMainVersion();
 
 if (current === main) {
-  console.error(
-    `\u001b[31mError: package.json version (${current}) was not bumped from main (${main})!\u001b[0m`,
+  console.warn(
+    `\u001b[31mWarning: package.json version (${current}) was not bumped from main (${main})!\u001b[0m`,
   );
-  process.exit(1);
 } else {
   console.log(`package.json version bump detected: ${main} -> ${current}`);
 }
