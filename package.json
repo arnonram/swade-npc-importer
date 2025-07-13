@@ -15,7 +15,7 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "format:check": "prettier --check .",
     "format:fix": "prettier --write .",
-    "pack": "cd dist && zip -r ../module.zip ./",
+    "zip-module": "cd dist && zip -r ../module.zip ./",
     "update:module": "node bin/update-module.cjs",
     "prepare": "husky"
   },

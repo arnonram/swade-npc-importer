@@ -19,7 +19,7 @@ jobs:
           cache-dependency-path: yarn.lock
       - run: yarn --frozen-lockfile
       - run: yarn build
-      - run: yarn pack
+      - run: yarn zip-module
       - name: Create Release
         id: create-release
         uses: ncipollo/release-action@v1

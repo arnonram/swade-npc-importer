@@ -39,9 +39,7 @@ jobs:
           cache-dependency-path: yarn.lock
       - run: yarn --frozen-lockfile
       - run: yarn build
-      - name: Zip module
-        working-directory: ./
-        run: yarn pack
+      - run: yarn zip-module
       - name: upload module
         uses: actions/upload-artifact@v4
         with:
