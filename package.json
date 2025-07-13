@@ -17,7 +17,7 @@
     "format:fix": "prettier --write .",
     "pack": "cd dist && zip -r ../module.zip ./",
     "update:module": "node bin/update-module.cjs",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "devDependencies": {
     "@guanghechen/rollup-plugin-copy": "^6.0.7",
