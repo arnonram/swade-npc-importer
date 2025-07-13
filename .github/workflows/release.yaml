@@ -1,3 +1,6 @@
+# Need to run this manually to build the module and upload it to a release
+# NOTE: must create Release manually first!
+
 name: Mod Builder
 
 on:
@@ -18,13 +21,11 @@ jobs:
       - run: yarn --frozen-lockfile
       - run: yarn build
       - run: yarn zip-module
-      - name: Create Release
-        id: create-release
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          draft: false
-          prerelease: false
-          token: ${{secrets.GITHUB_TOKEN}}
-          generateReleaseNotes: true
-          artifacts: ./module.zip, ./dist/module.json
+      - name: Get build version
+        id: get_version
+        run: echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+      - name: Upload files to release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload "v${{ env.version }}" ./module.zip ./dist/module.json --clobber
