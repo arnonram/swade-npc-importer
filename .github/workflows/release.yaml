@@ -1,6 +1,3 @@
-# Need to run this manually to build the module and upload it to a release
-# NOTE: must create Release manually first!
-
 name: Mod Builder
 
 on:
