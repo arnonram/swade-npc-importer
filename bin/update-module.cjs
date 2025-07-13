@@ -22,6 +22,10 @@ moduleJson.download = `https://github.com/arnonram/swade-npc-importer/releases/d
 moduleJson.readme = `https://github.com/arnonram/swade-npc-importer/tree/v${version}#swade-npc-importer`;
 
 // Write back to module.json
-fs.writeFileSync(MODULE_JSON, JSON.stringify(moduleJson, null, 2) + '\n', 'utf8');
+fs.writeFileSync(
+  MODULE_JSON,
+  JSON.stringify(moduleJson, null, 2) + '\n',
+  'utf8',
+);
 
 console.log(`Updated module.json to version ${version}`);
