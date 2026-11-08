@@ -22,6 +22,14 @@ vi.mock('../src/dataBuilders/buildActorItems', () => ({
 vi.mock('../src/dataBuilders/buildActorToken', () => ({
   buildActorToken: vi.fn().mockResolvedValue({}),
 }));
+vi.mock('../src/utils/foundryActions', async () => {
+  const actual = await vi.importActual<any>('../src/utils/foundryActions');
+  return {
+    ...actual,
+    getFolderId: vi.fn().mockReturnValue('folderId'),
+    getImporterModuleData: vi.fn().mockReturnValue({}),
+  };
+});
 
 describe('buildActor', () => {
   const mockSetAllPacks = vi.fn();
@@ -68,15 +76,6 @@ describe('buildActor', () => {
     mockLoggerInfo.mockReset();
     mockFoundryI18nLocalize.mockReset();
     mockFoundryUiError.mockReset();
-  });
-
-  vi.mock('../src/utils/foundryActions', async () => {
-    const actual = await vi.importActual<any>('../src/utils/foundryActions');
-    return {
-      ...actual,
-      getFolderId: vi.fn().mockReturnValue('folderId'),
-      getImporterModuleData: vi.fn().mockReturnValue({}),
-    };
   });
 
   it('should show error if statblock is empty and clipboard fails', async () => {
