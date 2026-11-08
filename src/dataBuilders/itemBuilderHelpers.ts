@@ -126,8 +126,11 @@ export function buildItemObject({
   img: string;
   system: any;
 }): any {
+  // Never reuse the compendium _id: two items from the same entry would collide and one is dropped.
+  const source = { ...(item ?? {}) };
+  delete source._id;
   return {
-    ...(item ?? {}),
+    ...source,
     type,
     name,
     img: item?.img ?? img,

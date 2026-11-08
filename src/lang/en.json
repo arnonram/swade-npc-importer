@@ -38,6 +38,8 @@
   "npcImporter.parser.Hindrances": "Hindrances",
   "npcImporter.parser.Edges": "Edges",
   "npcImporter.parser.Powers": "Powers",
+  "npcImporter.parser.Spells": "Spells",
+  "npcImporter.parser.Various": "Various",
   "npcImporter.parser.Pace": "Pace",
   "npcImporter.parser.Parry": "Parry",
   "npcImporter.parser.Cover": "Cover",

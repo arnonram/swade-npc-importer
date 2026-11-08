@@ -81,7 +81,9 @@ async function generateSwadeActorData(
   parsedData: ParsedActor,
   importSettings: ImportSettings,
 ): Promise<SwadeActorToImport> {
-  const { actorType, saveFolder, isWildCard, tokenSettings } = importSettings;
+  const { actorType, saveFolder, tokenSettings } = importSettings;
+  // A Wild Card symbol in the stat block overrides the dialog's default.
+  const isWildCard = importSettings.isWildCard || parsedData.wildCard === true;
   const finalActor: SwadeActorToImport = {
     name: parsedData.name,
     type: actorType,

@@ -129,6 +129,17 @@ describe('itemBuilders', () => {
     expect(result[0].name).toBe('Clumsy');
   });
 
+  it('hindranceBuilder keeps the note after an em dash, without the dash', async () => {
+    const result = await itemBuilders.hindranceBuilder([
+      'Vow (Major— serve the order)',
+      'Obligation (Major — Serve Lord)',
+    ]);
+    expect(result.map(r => [r.name, r.system.major])).toEqual([
+      ['Vow (Serve The Order)', true],
+      ['Obligation (Serve Lord)', true],
+    ]);
+  });
+
   it('powerBuilder builds power items', async () => {
     const result = await itemBuilders.powerBuilder(['Bolt']);
     expect(result[0].type).toBe(ItemType.POWER);

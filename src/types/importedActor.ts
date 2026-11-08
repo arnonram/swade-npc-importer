@@ -1,5 +1,7 @@
 export interface ParsedActor {
   name: string;
+  /** Stat block name carried the PDF's Wild Card symbol. */
+  wildCard?: boolean;
   biography?: string;
   attributes: Attributes;
   skills?: Record<string, ImportedDie>;

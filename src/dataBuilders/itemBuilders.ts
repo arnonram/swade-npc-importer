@@ -278,6 +278,7 @@ export async function hindranceBuilder(hindrances: string[]): Promise<any[]> {
       ).test(hindranceName);
       hindranceName = hindranceName
         .replace(majorMinor, '')
+        .replace(/\(\s*[—–-]\s*/, '(') // "Vow (Major— serve...)" leaves "(— serve...)"
         .replace('()', '')
         .trim();
       const item = await checkforItem(hindranceName, ItemType.HINDRANCE);

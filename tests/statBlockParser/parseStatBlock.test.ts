@@ -33,6 +33,7 @@ children.
 
 const expectedParsedActor: ParsedActor = {
   name: 'Test Npc',
+  wildCard: false,
   biography:
     'A test NPC for integration testing. He is just a random thing cobbled together to test the parser.<br/>',
   attributes: {

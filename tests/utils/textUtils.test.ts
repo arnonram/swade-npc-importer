@@ -4,6 +4,9 @@ import {
   specialAbilitiesLink,
   removeMultipleWhitespaces,
   swidLookupKey,
+  matchesSwid,
+  slashNameVariants,
+  joinBrokenLines,
   splitAndTrim,
   lowerCaseShishKebab,
   removeEmptyArrayProp,
@@ -116,5 +119,66 @@ describe('removeEmptyArrayProp', () => {
 
   it('removes empty or space-only strings', () => {
     expect(removeEmptyArrayProp([' ', '', 'abc'])).toEqual(['abc']);
+  });
+});
+
+describe('matchesSwid', () => {
+  it.each([
+    ['Boost/Lower Trait', 'boostlower-trait'],
+    ['Light/Darkness', 'light-darkness'],
+    ['Detect/Conceal Arcana', 'detectconceal-arcana'],
+    ['Improved Frenzy', 'improved-frenzy'],
+  ])('matches "%s" to "%s"', (name, swid) => {
+    expect(matchesSwid(name, swid)).toBe(true);
+  });
+
+  it('does not match different items', () => {
+    expect(matchesSwid('Light', 'light-darkness')).toBe(false);
+  });
+});
+
+describe('slashNameVariants', () => {
+  it('expands a shared suffix', () => {
+    expect(slashNameVariants('Boost/Lower Trait')).toEqual([
+      'Boost Trait',
+      'Lower Trait',
+    ]);
+    expect(slashNameVariants('Detect/Conceal Arcana')).toEqual([
+      'Detect Arcana',
+      'Conceal Arcana',
+    ]);
+  });
+
+  it('splits plain alternatives', () => {
+    expect(slashNameVariants('Light / Darkness')).toEqual([
+      'Light',
+      'Darkness',
+    ]);
+  });
+
+  it('returns nothing for names without a slash', () => {
+    expect(slashNameVariants('Bolt')).toEqual([]);
+  });
+});
+
+describe('joinBrokenLines', () => {
+  it('rejoins words hyphenated across a line break', () => {
+    expect(
+      joinBrokenLines('Arcane Background (Any Magic-\nBased), Fleet-\n Footed'),
+    ).toBe('Arcane Background (Any Magic-Based), Fleet-Footed');
+  });
+
+  it('removes soft hyphens', () => {
+    expect(joinBrokenLines('Intimi\u00addation d8, Intimi\u00ad\ndation')).toBe(
+      'Intimidation d8, Intimidation',
+    );
+  });
+
+  it('rejoins a slash at the end of a line', () => {
+    expect(joinBrokenLines('boost/\nlower Trait')).toBe('boost/lower Trait');
+  });
+
+  it('keeps ordinary line breaks', () => {
+    expect(joinBrokenLines('Pace: 6;\nParry: 5')).toBe('Pace: 6;\nParry: 5');
   });
 });

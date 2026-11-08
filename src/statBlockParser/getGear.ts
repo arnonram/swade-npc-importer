@@ -12,16 +12,9 @@ const gearParsingRegex = /([A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi
 export async function getGear(
   sections: string[],
 ): Promise<Record<string, any>> {
-  const gearLabel = foundryI18nLocalize('npcImporter.parser.Gear') || 'Gear';
-  const gearRegex = new RegExp(`${gearLabel}:`, 'i');
-
-  const foundGearLine = sections.find(line => gearRegex.test(line));
-  if (!foundGearLine) return {};
-
-  const rawGear = foundGearLine
-    .replace(gearRegex, '')
-    .replace(newLineRegex, ' ')
-    .trim();
+  const gearText = getGearText(sections);
+  if (!gearText) return {};
+  const rawGear = gearText.list;
 
   // Extract matches using the global regex
   let matches = [...rawGear.matchAll(gearParsingRegex)].map(m => m[0].trim());
@@ -31,6 +24,44 @@ export async function getGear(
   const characterGear = matches.length > 0 ? matches : [rawGear];
 
   return parseGear(characterGear);
+}
+
+/**
+ * Text after the gear list, e.g. "Anyone struck by a balefire weapon... catches fire."
+ */
+export function getGearNotes(sections: string[]): string | undefined {
+  return getGearText(sections)?.notes || undefined;
+}
+
+/**
+ * Splits the gear section into the item list and any sentences that follow it.
+ * The list ends at the first period outside parentheses that starts a new sentence.
+ */
+function getGearText(
+  sections: string[],
+): { list: string; notes: string } | undefined {
+  const gearLabel = foundryI18nLocalize('npcImporter.parser.Gear') || 'Gear';
+  const gearRegex = new RegExp(`${gearLabel}:`, 'i');
+  const foundGearLine = sections.find(line => gearRegex.test(line));
+  if (!foundGearLine) return undefined;
+
+  const text = foundGearLine
+    .replace(gearRegex, '')
+    .replace(newLineRegex, ' ')
+    .trim();
+  let depth = 0;
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === '(') depth++;
+    if (text[i] === ')') depth = Math.max(0, depth - 1);
+    if (
+      text[i] === '.' &&
+      depth === 0 &&
+      /^\s+\p{Lu}/u.test(text.slice(i + 1))
+    ) {
+      return { list: text.slice(0, i), notes: text.slice(i + 1).trim() };
+    }
+  }
+  return { list: text, notes: '' };
 }
 
 /**
