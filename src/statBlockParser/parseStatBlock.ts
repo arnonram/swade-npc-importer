@@ -2,7 +2,7 @@ import { ParsedActor } from '../types/importedActor';
 import { getSections } from './getSections';
 import { getBio, getName } from './getNameAndDesc';
 import { getAttributes, getSkills } from './getTraits';
-import { getListStat, ListType } from './getListsStats';
+import { getListStat, getProsePowers, ListType } from './getListsStats';
 import { AbilityType, getAbilityList } from './getAbilities';
 import { getGear } from './getGear';
 import { getSystemDefinedStats } from './getSystemStats';
@@ -23,9 +23,11 @@ export async function statBlockParser(
     Logger.info('Starting statblock parsing');
 
     const sections = getSections(rawStatBlock);
+    const prosePowers = getProsePowers(sections);
+    const biography = getBio(rawStatBlock, sections);
     let importedActor: ParsedActor = {
       name: getName(rawStatBlock),
-      biography: getBio(rawStatBlock, sections),
+      biography: prosePowers ? `${biography}<hr>${prosePowers}` : biography,
       attributes: getAttributes(sections),
       skills: getSkills(sections),
       pace: getDerivedStats(sections, DerivedStatType.Pace),
@@ -34,7 +36,7 @@ export async function statBlockParser(
       powerPoints: getDerivedStats(sections, DerivedStatType.PowerPoints),
       edges: getListStat(sections, ListType.Edges),
       hindrances: getListStat(sections, ListType.Hindrances),
-      powers: getListStat(sections, ListType.Powers),
+      powers: prosePowers ? [] : getListStat(sections, ListType.Powers),
       specialAbilities: getAbilityList(sections, AbilityType.SpecialAbilities),
       superPowers: getAbilityList(sections, AbilityType.SuperPowers),
       gear: await getGear(sections),

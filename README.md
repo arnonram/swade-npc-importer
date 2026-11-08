@@ -33,19 +33,20 @@ The Importer basically searches for patterns in the text, so that means paying a
 
 0. Go to [Settings](#some-configurations) and look around:
 
-   - Under **_Select Item Compendiums_** mark any Compendium you wish NPC Importer to use (not selecting anyting will cycle through all compendiums and use the first relevant entry)
+   - In the **_Compendiums Selector_** mark any Package or Compendium you wish NPC Importer to use (not selecting anything will cycle through all compendiums and use the first relevant entry)
    - Set up any other default values you might want
 
-1. Copy the desired statblock (ctr/cmd + c, into the clipboard)
-2. Click on the NPC Importer button at the buttom of the **Actors Directory**
+1. Copy the desired statblock (ctrl/cmd + c)
+2. Click on the **Stat Block Importer** button at the bottom of the **Actors Directory**
 
    ![NPC Importer Button](./readme_images/ActorImporterButton.png)
 
-3. Choose desired options & Click Import!
+3. Paste the statblock into the text box (or leave it empty to read it straight from the clipboard), choose the Actor and Token options, and click **Import!**
 
    ![NPC Importer Dialogue](./readme_images/ActorImportDialogue.png)
 
-4. In case an Actor with the same name already exists, then you have some options
+4. In case an Actor with the same name already exists, you can import it under a different name, override the existing Actor, or cancel
+
    ![NPC Importer Dialogue](./readme_images/WhatToDoDialogue.png)
 
 ## Some configurations
@@ -60,7 +61,7 @@ It is highly recommended to choose the Package and/or Item Compendiums you wish 
 
 Some _Prototype Token_ options may be set by default
 
-![Compendiums Selector](./readme_images/NpcImporterSettingsTokenSettings.png)
+![Token Settings](./readme_images/NpcImporterSettingsTokenSettings.png)
 
 ---
 

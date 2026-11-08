@@ -37,9 +37,7 @@ async function whatToDo(
         <label for="newName">${foundryI18nLocalize(
           'npcImporter.HTML.ChangeName',
         )}:</label>
-        <input type="text" id="newName" name="newName" value="${
-          actorData.name ?? ''
-        }">
+        <input type="text" id="newName" name="newName" autofocus>
     </div>
     <br/>
     `;
@@ -56,10 +54,10 @@ async function whatToDo(
       {
         action: 'import',
         label: foundryI18nLocalize('npcImporter.HTML.Rename'),
-        callback: async () => {
+        callback: async (_event: Event, button: HTMLButtonElement) => {
           try {
-            const newNameInput = document.querySelector(
-              '#newName',
+            const newNameInput = button.form?.elements.namedItem(
+              'newName',
             ) as HTMLInputElement | null;
             if (!newNameInput) {
               foundryUiInfo(
@@ -108,16 +106,12 @@ async function whatToDo(
     ],
   });
 
-  dialog.render({ force: true });
-
-  // Focus the input field when the dialog is rendered
-  setTimeout(() => {
-    const newNameInput = document.querySelector(
-      '#newName',
-    ) as HTMLInputElement | null;
-    if (newNameInput) {
-      newNameInput.focus();
-      newNameInput.select();
-    }
-  }, 100);
+  await dialog.render({ force: true });
+  // Set via DOM, not markup, so names with quotes or HTML stay intact.
+  const newNameInput =
+    dialog.element.querySelector<HTMLInputElement>('#newName');
+  if (newNameInput) {
+    newNameInput.value = actorData.name ?? '';
+    newNameInput.select();
+  }
 }

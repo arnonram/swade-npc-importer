@@ -3,7 +3,7 @@
   "npcImporter.HTML.ImportTitle": "Akteursimporter",
   "npcImporter.HTML.Import": "Import starten",
   "npcImporter.HTML.Cancel": "Abbruch",
-  "npcImporter.HTML.ImportDesc": "Importiert den Werteblock aus der Zwischenablage",
+  "npcImporter.HTML.ImportDesc": "Füge unten einen Werteblock ein oder lass das Feld leer, um ihn aus der Zwischenablage zu lesen.",
   "npcImporter.HTML.ActorType": "Typ",
   "npcImporter.HTML.Wildcard": "Wildcard",
   "npcImporter.HTML.Disposition": "Gesinnung",
@@ -22,7 +22,7 @@
   "npcImporter.HTML.VisionRadius": "Sichtwinkel",
   "npcImporter.HTML.VisionAngleLable": "Grad (360 wenn leer)",
   "npcImporter.HTML.Save": " Speichern",
-  "npcImporter.HTML.Firefox": "Kopiere den Werteblock nur dann in dieses Feld,wenn du entweder Firefox, den Foundry Client, oder eine http Verbindung verwendest.",
+  "npcImporter.HTML.Firefox": "Füge den Werteblock hier ein (erforderlich in Firefox, im Foundry-Desktop-Client oder über http)",
 
   "npcImporter.regex.dice": "(\\d+)?W(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "W",

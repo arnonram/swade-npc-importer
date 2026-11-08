@@ -3,7 +3,7 @@ import {
   capitalizeEveryWord,
   specialAbilitiesLink,
   removeMultipleWhitespaces,
-  splitAndSort,
+  swidLookupKey,
   splitAndTrim,
   lowerCaseShishKebab,
   removeEmptyArrayProp,
@@ -16,10 +16,10 @@ vi.stubGlobal('game', {
     [
       'swade-core-rules.swade-specialabilities',
       {
-        contents: [
-          { name: 'Fear', link: '@UUID[abc123]' },
-          { name: 'Dark Vision', link: '@UUID[xyz789]' },
-          { name: 'Size -1', link: '@UUID[sizeLink]' },
+        index: [
+          { name: 'Fear', uuid: 'abc123' },
+          { name: 'Dark Vision', uuid: 'xyz789' },
+          { name: 'Size -1', uuid: 'sizeLink' },
         ],
       },
     ],
@@ -32,7 +32,7 @@ describe('capitalize', () => {
   });
 
   it('preserves internal punctuation', () => {
-    expect(capitalize("this's fine")).toBe("This's Fine");
+    expect(capitalize('this\'s fine')).toBe('This\'s Fine');
   });
 });
 
@@ -45,8 +45,8 @@ describe('capitalizeEveryWord', () => {
 
 describe('specialAbilitiesLink', () => {
   it('returns a valid link for a matching name', () => {
-    expect(specialAbilitiesLink('Fear')).toBe('@UUID[abc123]');
-    expect(specialAbilitiesLink('Size -1')).toBe('@UUID[sizeLink]');
+    expect(specialAbilitiesLink('Fear')).toBe('@UUID[abc123]{Fear}');
+    expect(specialAbilitiesLink('Size -1')).toBe('@UUID[sizeLink]{Size -1}');
   });
 
   it('returns an empty string when nothing matches', () => {
@@ -65,23 +65,31 @@ describe('removeMultipleWhitespaces', () => {
   });
 });
 
-describe('splitAndSort', () => {
-  it('splits on space/comma and sorts', () => {
-    expect(splitAndSort('Magic, Stealth Fighting')).toEqual([
-      'fighting',
-      'magic',
-      'stealth',
-    ]);
+describe('swidLookupKey', () => {
+  it.each([
+    ['Improved Frenzy', 'improved-frenzy'],
+    ['Holy/Unholy Warrior', 'holyunholy-warrior'],
+    ['Can\'t Swim', 'cant-swim'],
+    ['H&K MP5 Magazine', 'hk-mp5-magazine'],
+    ['Laser Battery, Rifle / SMG', 'laser-battery-rifle-smg'],
+    ['Arcane Background (Magic)', 'arcane-background-magic'],
+    ['Fleet-Footed', 'fleet-footed'],
+  ])('matches name "%s" to swid "%s"', (name, swid) => {
+    expect(swidLookupKey(name)).toBe(swidLookupKey(swid));
   });
 
-  it('handles redundant spaces and casing', () => {
-    expect(splitAndSort('  STR  , Agility')).toEqual(['agility', 'str']);
+  it('ignores word order', () => {
+    expect(swidLookupKey('Frenzy Improved')).toBe(
+      swidLookupKey('improved-frenzy'),
+    );
+  });
+
+  it('keeps different items apart', () => {
+    expect(swidLookupKey('Frenzy')).not.toBe(swidLookupKey('improved-frenzy'));
   });
 });
 
 describe('splitAndTrim', () => {
-  const newLineRegex = /\n/g;
-
   it('splits using a separator and trims', () => {
     expect(splitAndTrim('foo\nbar\nbaz', /\n/)).toEqual(['foo', 'bar', 'baz']);
   });

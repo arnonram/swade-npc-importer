@@ -33,6 +33,7 @@ describe('actorImporter', () => {
         api: {
           DialogV2: vi.fn().mockImplementation(() => ({
             render: vi.fn(),
+            element: { querySelector: vi.fn() },
           })),
         },
       },
@@ -67,5 +68,25 @@ describe('actorImporter', () => {
     const actorData = { name: 'Test Actor' } as SwadeActorToImport;
     await actorImporter(actorData);
     expect(global.foundry.applications.api.DialogV2).toHaveBeenCalled();
+  });
+
+  it('prefills the rename field with names containing quotes or markup', async () => {
+    mockGetActorId.mockReturnValue('existing-id');
+    const name = 'Grug "The Boss" <b>';
+    const input = { value: '', select: vi.fn() };
+    vi.mocked(global.foundry.applications.api.DialogV2).mockImplementation(
+      () =>
+        ({
+          render: vi.fn(),
+          element: { querySelector: vi.fn(() => input) },
+        }) as any,
+    );
+    await actorImporter({ name } as SwadeActorToImport);
+
+    const { content } = vi.mocked(global.foundry.applications.api.DialogV2).mock
+      .calls[0][0] as { content: string };
+    expect(content).not.toContain(name);
+    expect(input.value).toBe(name);
+    expect(input.select).toHaveBeenCalled();
   });
 });

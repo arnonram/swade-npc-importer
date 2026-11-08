@@ -4,7 +4,7 @@
   "npcImporter.HTML.StatBlockImporterTitle": "Import de stat block",
   "npcImporter.HTML.Import": "Importer!",
   "npcImporter.HTML.Cancel": "Annuler",
-  "npcImporter.HTML.ImportDesc": "Importer un statblock depuis le presse papier",
+  "npcImporter.HTML.ImportDesc": "Collez un statblock ci-dessous, ou laissez vide pour le lire depuis le presse-papier.",
   "npcImporter.HTML.ActorType": "Type d'Acteur",
   "npcImporter.HTML.Wildcard": "Joker",
   "npcImporter.HTML.Disposition": "Disposition",
@@ -23,7 +23,7 @@
   "npcImporter.HTML.VisionRadius": "Angle de vision",
   "npcImporter.HTML.VisionAngleLable": "Degrés (360 par défaut)",
   "npcImporter.HTML.Save": " Enregistrer",
-  "npcImporter.HTML.Firefox": "Paste statblock here if you're using Firefox, Foundry Client, or are over http...",
+  "npcImporter.HTML.Firefox": "Collez le statblock ici (requis avec Firefox, le client de bureau Foundry ou en http)",
 
   "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "d",

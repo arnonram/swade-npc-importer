@@ -24,7 +24,7 @@ vi.mock('../../src/dataBuilders/itemBuilderHelpers', async () => {
       effects: { toJSON: () => ['fx'] },
       flags: { flag: true },
     })),
-    generateDescription: vi.fn((desc, item) => desc || 'desc'),
+    generateDescription: vi.fn((desc, _item) => desc || 'desc'),
     checkEquipedStatus: vi.fn(() => 4),
   };
 });

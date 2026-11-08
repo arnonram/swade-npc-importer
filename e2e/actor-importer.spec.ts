@@ -5,7 +5,7 @@
 // import fs from 'fs';
 // import { cleanActor } from './utils/cleanup';
 // import { FoundryApp } from './utils/foundry-pom';
-// import { ActoryType, Disposition, Languages, users } from './utils/enums';
+// import { ActoryType, Disposition, Languages, Users } from './utils/enums';
 
 // const expectedPath = `${__dirname}/testData/expected/`;
 
@@ -23,7 +23,7 @@
 
 //     const page = await context.newPage();
 //     foundryApp = new FoundryApp(page);
-//     await foundryApp.login(users.GM);
+//     await foundryApp.login(Users.GM);
 //   });
 
 //   test.afterEach(async () => {

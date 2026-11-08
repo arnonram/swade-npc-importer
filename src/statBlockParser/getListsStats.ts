@@ -10,6 +10,27 @@ export function getListStat(sections: string[], labelKey: ListType): string[] {
   return line ? handleSpecialCharacters(line) : [];
 }
 
+// Longest core power names are 2-3 words (e.g. "Boost/Lower Trait"); trappings in parentheses don't count.
+const maxPowerNameWords = 4;
+
+/**
+ * Some stat blocks describe powers in a sentence instead of listing them.
+ * Returns that Powers text, or undefined if the section is a regular list.
+ */
+export function getProsePowers(sections: string[]): string | undefined {
+  const label = `${foundryI18nLocalize('npcImporter.parser.Powers') || ListType.Powers}:`;
+  const line = sections.find(x => x.startsWith(label));
+  if (!line) return undefined;
+  const isProse = handleSpecialCharacters(line).some(
+    power =>
+      power
+        .replace(/\(.*\)/, '')
+        .trim()
+        .split(/\s+/).length > maxPowerNameWords,
+  );
+  return isProse ? line.replace(newLineRegex, ' ').trim() : undefined;
+}
+
 function cleanLine(line: string): string {
   return line
     .slice(line.indexOf(':') + 1)
