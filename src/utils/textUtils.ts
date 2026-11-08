@@ -52,6 +52,47 @@ export function swidLookupKey(text: string): string {
     .join('-');
 }
 
+/**
+ * True when an item name and a SWADE swid refer to the same item.
+ * SWADE builds slash names inconsistently ("Boost/Lower Trait" -> "boostlower-trait",
+ * "Light / Darkness" -> "light-darkness"), so also compare with all separators removed.
+ */
+export function matchesSwid(name: string, swid: string): boolean {
+  const compact = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
+  return (
+    swidLookupKey(name) === swidLookupKey(swid) ||
+    compact(name) === compact(swid)
+  );
+}
+
+/**
+ * Names covered by a combined "A/B" item, so a stat block naming only one half can match it.
+ * "Boost/Lower Trait" -> ["Boost Trait", "Lower Trait"]; "Light / Darkness" -> ["Light", "Darkness"].
+ */
+export function slashNameVariants(name: string): string[] {
+  if (!name.includes('/')) return [];
+  const parts = name.split(/\s*\/\s*/).map(p => p.trim());
+  const lastWords = parts[parts.length - 1].split(/\s+/);
+  const sharedSuffix =
+    lastWords.length > 1 && parts.slice(0, -1).every(p => !p.includes(' '))
+      ? lastWords.slice(1).join(' ')
+      : '';
+  return parts.map((p, i) =>
+    sharedSuffix && i < parts.length - 1 ? `${p} ${sharedSuffix}` : p,
+  );
+}
+
+/**
+ * Undoes line-break artifacts from text copied out of a PDF:
+ * soft hyphens, words hyphenated across lines ("Fleet-\nFooted"), and "boost/\nlower".
+ */
+export function joinBrokenLines(text: string): string {
+  return text
+    .replace(/\u00ad\s*/g, '')
+    .replace(/(\p{L})-[ \t]*\r?\n[ \t]*(?=\p{L})/gu, '$1-')
+    .replace(/\/[ \t]*\r?\n[ \t]*/g, '/');
+}
+
 export function splitAndTrim(
   stringToSplit: string,
   separator: string | RegExp,

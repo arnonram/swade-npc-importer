@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   getListStat,
-  getProsePowers,
+  getProseList,
   ListType,
 } from '../../src/statBlockParser/getListsStats';
 
@@ -23,8 +23,7 @@ describe('getListStat', () => {
     const result = getListStat(sections, ListType.Powers);
     expect(result).toEqual([
       'Arcane protection',
-      'Detect',
-      'Conceal Arcana',
+      'Detect/Conceal Arcana',
       'Bolt',
     ]);
   });
@@ -41,6 +40,46 @@ describe('getListStat', () => {
     expect(result).toEqual(['Alertness', 'Quick', 'Brave']);
   });
 
+  it('keeps slash names whole, including across line breaks', () => {
+    const sections = [
+      'Powers: Arcane protection, blast, boost/\nlower Trait, light / darkness',
+    ];
+    expect(getListStat(sections, ListType.Powers)).toEqual([
+      'Arcane protection',
+      'blast',
+      'boost/lower Trait',
+      'light/darkness',
+    ]);
+  });
+
+  it('drops a leading "and"/"or" from the last item', () => {
+    const sections = ['Powers: light/darkness, and protection.'];
+    expect(getListStat(sections, ListType.Powers)).toEqual([
+      'light/darkness',
+      'protection',
+    ]);
+  });
+
+  it('keeps a dash note with its item instead of producing an empty entry', () => {
+    const sections = [
+      'Hindrances: Code of Honor, Loyal,\nObligation (Major) — Serve Lord',
+    ];
+    expect(getListStat(sections, ListType.Hindrances)).toEqual([
+      'Code of Honor',
+      'Loyal',
+      'Obligation (Major — Serve Lord)',
+    ]);
+  });
+
+  it('reads a "Spells:" section as powers', () => {
+    const sections = ['Spells: Barrier, beast friend, stun.'];
+    expect(getListStat(sections, ListType.Powers)).toEqual([
+      'Barrier',
+      'beast friend',
+      'stun',
+    ]);
+  });
+
   it('handles new lines in line', () => {
     const sections = ['Powers: Bolt,\nDetect Arcana,\nInvisibility'];
     const result = getListStat(sections, ListType.Powers);
@@ -48,12 +87,12 @@ describe('getListStat', () => {
   });
 });
 
-describe('getProsePowers', () => {
+describe('getProseList', () => {
   it('returns the Powers text when it is a sentence, not a list', () => {
     const sections = [
       'Powers: As magical beings, Jinni have access to all spells, or as the Game Master\ndeems appropriate.',
     ];
-    expect(getProsePowers(sections)).toBe(
+    expect(getProseList(sections, ListType.Powers)).toBe(
       'Powers: As magical beings, Jinni have access to all spells, or as the Game Master deems appropriate.',
     );
   });
@@ -62,10 +101,42 @@ describe('getProsePowers', () => {
     const sections = [
       'Powers: Bolt (fire, ice and lightning), Boost/Lower Trait, Environmental Protection',
     ];
-    expect(getProsePowers(sections)).toBeUndefined();
+    expect(getProseList(sections, ListType.Powers)).toBeUndefined();
   });
 
   it('returns undefined when there is no Powers section', () => {
-    expect(getProsePowers(['Edges: Berserk'])).toBeUndefined();
+    expect(getProseList(['Edges: Berserk'], ListType.Powers)).toBeUndefined();
+  });
+
+  it('treats "Various" hindrances as text, not a list', () => {
+    expect(getProseList(['Hindrances: Various'], ListType.Hindrances)).toBe(
+      'Hindrances: Various',
+    );
+    expect(
+      getProseList(
+        ['Hindrances: Various, but Arrogant or Suspicious are common'],
+        ListType.Hindrances,
+      ),
+    ).toBe('Hindrances: Various, but Arrogant or Suspicious are common');
+    expect(
+      getProseList(['Hindrances: Greedy, Mean'], ListType.Hindrances),
+    ).toBeUndefined();
+  });
+});
+
+describe('names and markers found in the Fantasy Companion', () => {
+  it('keeps a period inside a name', () => {
+    expect(
+      getListStat(
+        ['Edges: Humiliate, Mr. Fix It, Quick, Retort.'],
+        ListType.Edges,
+      ),
+    ).toEqual(['Humiliate', 'Mr. Fix It', 'Quick', 'Retort']);
+  });
+
+  it('treats "Varies" hindrances as text, not a list', () => {
+    expect(getProseList(['Hindrances: Varies'], ListType.Hindrances)).toBe(
+      'Hindrances: Varies',
+    );
   });
 });

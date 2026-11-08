@@ -14,7 +14,18 @@ function extractNameAndDescription(rawData: string): string[] {
  */
 export function getName(rawData: string): string {
   const lines = extractNameAndDescription(rawData);
-  return capitalizeEveryWord((lines[0] || '').trim());
+  const name = (lines[0] || '').trim();
+  return capitalizeEveryWord(
+    hasWildCardMarker(rawData) ? name.replace(wildCardMarker, '') : name,
+  );
+}
+
+// The Wild Card symbol in SWADE PDFs copies as a "D" before an all-caps name: "D CHIEFTAIN".
+const wildCardMarker = /^D\s+(?=[^a-z]+$)/;
+
+export function hasWildCardMarker(rawData: string): boolean {
+  const firstLine = (extractNameAndDescription(rawData)[0] || '').trim();
+  return wildCardMarker.test(firstLine);
 }
 
 /**

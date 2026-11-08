@@ -4,7 +4,7 @@ import {
   settingCompsToUse,
   settingActiveCompendiums,
 } from '../global';
-import { swidLookupKey } from './textUtils';
+import { matchesSwid, slashNameVariants } from './textUtils';
 import { SwadeActorToImport } from '../types/importedActor';
 
 import { Logger } from './logger';
@@ -42,15 +42,22 @@ export async function getItemFromCompendium(
   itemName: string,
   expectedType: ItemType,
 ): Promise<any> {
-  const itemKebab = swidLookupKey(itemName);
   for (const pack of allPacks) {
     try {
-      const resultId = pack.index.contents.find(
-        (it: any) =>
-          it.type === expectedType &&
-          typeof it.system?.swid === 'string' &&
-          swidLookupKey(it.system.swid) === itemKebab,
+      const candidates = pack.index.contents.filter(
+        (it: any) => it.type === expectedType,
       );
+      let resultId = candidates.find(
+        (it: any) =>
+          typeof it.system?.swid === 'string' &&
+          matchesSwid(itemName, it.system.swid),
+      );
+      // Stat blocks may name half of a combined power: "boost Trait" for "Boost/Lower Trait".
+      if (resultId === undefined && expectedType === ItemType.POWER) {
+        resultId = candidates.find((it: any) =>
+          slashNameVariants(it.name).some(v => matchesSwid(itemName, v)),
+        );
+      }
 
       if (resultId !== undefined) {
         const foundItem = await pack.getDocument(resultId['_id']);
@@ -59,7 +66,7 @@ export async function getItemFromCompendium(
         }
       }
     } catch (error) {
-      Logger.error(`Error when searching for ${itemKebab}:`, error);
+      Logger.error(`Error when searching for ${itemName}:`, error);
     }
   }
 

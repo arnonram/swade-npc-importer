@@ -56,6 +56,17 @@ describe('itemBuilderHelpers', () => {
     expect(checkEquipedStatus({ description: '', notes: '' })).toBe(4);
   });
 
+  it('buildItemObject does not copy the compendium _id', () => {
+    const item = buildItemObject({
+      item: { _id: 'abc123', name: 'Vow', system: {} },
+      type: ItemType.HINDRANCE,
+      name: 'Vow',
+      img: 'img.svg',
+      system: {},
+    });
+    expect(item).not.toHaveProperty('_id');
+  });
+
   it('buildItemObject merges fields correctly', () => {
     const item = buildItemObject({
       item: {

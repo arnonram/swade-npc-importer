@@ -196,4 +196,15 @@ describe('specialAbilitiesParser', () => {
       ['claws', ItemType.WEAPON],
     ]);
   });
+
+  it('does not treat a capitalised "Running die" as a weapon', async () => {
+    const { getModuleSettings } = await import(
+      '../../src/utils/foundryActions'
+    );
+    (getModuleSettings as any).mockImplementation(() => false);
+    const result = await specialAbilitiesParser({
+      'Fleet Footed': 'Running die d10.',
+    });
+    expect(result[0].type).toBe(ItemType.ABILITY);
+  });
 });

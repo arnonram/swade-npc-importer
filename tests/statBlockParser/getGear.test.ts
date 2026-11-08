@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { getGear } from '../../src/statBlockParser/getGear';
+import { getGear, getGearNotes } from '../../src/statBlockParser/getGear';
 
 vi.mock('../../src/global', async mod => ({
   ...mod,
@@ -80,5 +80,32 @@ describe('getGear()', () => {
   it('returns empty Gear object if no matching gear section', async () => {
     const result = await getGear(['Attributes: Agility d6']);
     expect(result).toEqual({});
+  });
+});
+
+describe('getGearNotes / sentences after the gear list', () => {
+  const sections = [
+    'Gear: Demonic plate armor (+4), balefire\nlongsword (Str+d8, AP 2), balefire whip\n(Str+d4, Reach 3). Anyone struck by a\nbalefire weapon, whether injured or not, catches fire.',
+  ];
+
+  it('keeps the sentence out of the gear items', async () => {
+    const gear = await getGear(sections);
+    expect(Object.keys(gear)).toEqual([
+      'Demonic plate armor',
+      'balefire longsword',
+      'balefire whip',
+    ]);
+  });
+
+  it('returns the sentence as notes', () => {
+    expect(getGearNotes(sections)).toBe(
+      'Anyone struck by a balefire weapon, whether injured or not, catches fire.',
+    );
+  });
+
+  it('returns undefined when the gear section is only a list', () => {
+    expect(
+      getGearNotes(['Gear: Short spear (Str+d4), sling.']),
+    ).toBeUndefined();
   });
 });

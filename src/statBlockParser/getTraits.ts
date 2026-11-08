@@ -4,6 +4,18 @@ import { splitAndTrim } from '../utils/textUtils';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { buildTraitDie } from './parserBuilderHelpers';
 
+/**
+ * Some books drop the comma between traits ("Agility d6 Smarts d8");
+ * add it back after a die that is directly followed by the next trait's name.
+ */
+function separateTraits(text: string): string {
+  const dice = foundryI18nLocalize('npcImporter.parser.dice') || 'd';
+  return text.replace(
+    new RegExp(`(\\b${dice}\\d+(?:\\s*[+\\-−]\\s*\\d+)?)\\s+(?=\\p{Lu})`, 'gu'),
+    '$1, ',
+  );
+}
+
 export function getAttributes(sections: string[]): Attributes {
   const attrLabel =
     foundryI18nLocalize('npcImporter.parser.Attributes') || 'Attributes';
@@ -14,7 +26,7 @@ export function getAttributes(sections: string[]): Attributes {
   const isAnimal = attrSection.includes('(A)');
   attrSection = attrSection.replace('(A)', '');
   const attributes = splitAndTrim(
-    attrSection.replace(attrTranslation, ''),
+    separateTraits(attrSection.replace(attrTranslation, '')),
     ',',
   );
 
@@ -59,7 +71,7 @@ export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
   );
   const skillsSection = sections.find(x => x.match(trait));
   let skills = skillsSection
-    ? splitAndTrim(skillsSection.replace(trait, ''), ',')
+    ? splitAndTrim(separateTraits(skillsSection.replace(trait, '')), ',')
     : [];
   let skillsDict: { [key: string]: ImportedDie } = {};
   skills.forEach(singleTrait => {

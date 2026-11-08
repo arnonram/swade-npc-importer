@@ -26,6 +26,7 @@ function getSectionsIndex(inputData: string): number[] {
     `${game?.i18n?.localize('npcImporter.parser.Hindrances')}:`,
     `${game?.i18n?.localize('npcImporter.parser.Edges')}:`,
     `${game?.i18n?.localize('npcImporter.parser.Powers')}:`,
+    `${game?.i18n?.localize('npcImporter.parser.Spells')}:`,
     `${game?.i18n?.localize('npcImporter.parser.Pace')}:`,
     `${game?.i18n?.localize('npcImporter.parser.Parry')}:`,
     `${game?.i18n?.localize('npcImporter.parser.Toughness')}:`,
