@@ -134,7 +134,6 @@ describe('buildActorDataHelpers', () => {
         edges: [],
       };
       vi.spyOn(foundryActions, 'getModuleSettings').mockReturnValue(true);
-      vi.spyOn(RegExp.prototype, 'test').mockReturnValue(true);
       expect(findRunningDie(parsed as any)).toBe(8);
     });
     it('returns increased die if Fleet-Footed edge present', () => {

@@ -7,7 +7,7 @@ export default defineConfig({
     include: ['tests/**/*.test.ts'],
     setupFiles: ['./tests/vitest.setup.ts'],
     coverage: {
-      include: ['src/*'],
+      include: ['src/**/*.ts'],
       reportsDirectory: '.coverage',
       reporter: ['text', 'json-summary', 'lcov'],
       reportOnFailure: true,
