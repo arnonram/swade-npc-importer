@@ -23,9 +23,9 @@ export function getProseList(
   const line = findSection(sections, labelKey);
   if (!line) return undefined;
   const items = handleSpecialCharacters(line);
-  const various = foundryI18nLocalize(
-    'npcImporter.parser.Various',
-  ).toLowerCase();
+  const various = foundryI18nLocalize('npcImporter.parser.Various')
+    .toLowerCase()
+    .split('|');
   const isProse =
     items.some(
       item =>
@@ -33,7 +33,7 @@ export function getProseList(
           .replace(/\(.*\)/, '')
           .trim()
           .split(/\s+/).length > maxItemNameWords,
-    ) || items[0]?.toLowerCase() === various;
+    ) || various.includes(items[0]?.toLowerCase());
   return isProse ? line.replace(newLineRegex, ' ').trim() : undefined;
 }
 
@@ -69,7 +69,7 @@ function handleSpecialCharacters(line: string): string[] {
     .replace(/\)\s*[—–]\s*([^,()]+)/g, (_match, note) => ` — ${note.trim()})`);
   if (data.length > 1) {
     const matches = data.match(
-      /([A-Za-zÀ-ÖØ-öø-ÿ0-9!\-’'/ ]+)(\(([^\)]+)\))?/gi,
+      /([A-Za-zÀ-ÖØ-öø-ÿ0-9!.\-’'/ ]+)(\(([^\)]+)\))?/gi,
     );
     return matches
       ? matches.map(s => s.trim().replace(/^(and|or)\s+/i, '')).filter(Boolean)

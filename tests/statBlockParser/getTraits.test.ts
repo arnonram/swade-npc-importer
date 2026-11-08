@@ -61,3 +61,29 @@ describe('getSkills', () => {
     });
   });
 });
+
+describe('missing commas between traits (as printed in some books)', () => {
+  it('still reads every attribute', () => {
+    const attrs = getAttributes([
+      'Attributes: Agility d6 Smarts d8, Spirit d10, Strength d12+8, Vigor d12',
+    ]);
+    expect(attrs.agility.die.sides).toBe(6);
+    expect(attrs.smarts.die.sides).toBe(8);
+    expect(attrs.strength.die.modifier).toBe(8);
+  });
+
+  it('still reads every skill', () => {
+    const skills = getSkills([
+      'Skills: Athletics d8, Fighting d10, Intimidation d12 Notice d10, Stealth d8+2 Persuasion d4',
+    ]);
+    expect(Object.keys(skills)).toEqual([
+      'athletics',
+      'fighting',
+      'intimidation',
+      'notice',
+      'stealth',
+      'persuasion',
+    ]);
+    expect(skills.stealth.modifier).toBe(2);
+  });
+});

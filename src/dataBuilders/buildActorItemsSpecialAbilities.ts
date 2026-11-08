@@ -140,9 +140,11 @@ function isWeaponAbility(
   const isSpeed =
     elem ===
     foundryI18nLocalize('npcImporter.parser.Speed').toLocaleLowerCase();
-  const hasRunningDie = desc.includes(
-    foundryI18nLocalize('npcImporter.parser.RunningDie').toLocaleLowerCase(),
-  );
+  const hasRunningDie = desc
+    .toLocaleLowerCase()
+    .includes(
+      foundryI18nLocalize('npcImporter.parser.RunningDie').toLocaleLowerCase(),
+    );
 
   return isMeleeOrDice && !isSpeed && !hasRunningDie;
 }

@@ -21,13 +21,15 @@ A Savage Worlds Adventure Edition stat block importer for [Foundry VTT](https://
 
 ---
 
-## Just a heads up about statsblocks
+## Just a heads up about statsblocks (aka Known Issues)
 
 The **_SWADE Stat Block Importer_** works with the official statblock as seen in any Pinnacle products (SWADE Core, Deadlands, etc..) and defined in the [Pinnacle Style Guide](https://peginc.com/store/pinnacle-style-guide-pdf/)
 
 The Importer basically searches for patterns in the text, so that means paying attention to commas, colons, etc...
 
-:warning: When copying from PDFs you'll sometime get spaces inside words (example: `Arc ane`), at this point in time, the importer will not know how to handle these.
+- **Words with spaces inside them, copied from PDFs.** Some PDFs space out letters, so copying gives text like `H i nd ra nces:`, `Pa c e`, `Ela n` or `def lection`. The importer can't tell these apart from separate words: a broken label (`H i nd ra nces:`, `Pa c e`) means that whole section is skipped, and a broken name won't be matched to its compendium entry. Fix the spacing in the text box before importing.
+
+- **Special Abilities with dice may be imported as weapons.** Any Special Ability whose description contains dice is treated as an attack, so abilities like _"summon 1d6 demonic soldiers"_ or _"remains dead for 1d4 rounds"_ become weapons. To control this, either enable **_Use modified Special Abilities_** and mark the ability with `@sa` (or `@w` for a real attack), or enable **_Set all as Special Abilities_**.
 
 ## How to use it...
 

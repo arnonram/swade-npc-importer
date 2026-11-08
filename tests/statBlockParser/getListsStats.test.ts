@@ -123,3 +123,20 @@ describe('getProseList', () => {
     ).toBeUndefined();
   });
 });
+
+describe('names and markers found in the Fantasy Companion', () => {
+  it('keeps a period inside a name', () => {
+    expect(
+      getListStat(
+        ['Edges: Humiliate, Mr. Fix It, Quick, Retort.'],
+        ListType.Edges,
+      ),
+    ).toEqual(['Humiliate', 'Mr. Fix It', 'Quick', 'Retort']);
+  });
+
+  it('treats "Varies" hindrances as text, not a list', () => {
+    expect(getProseList(['Hindrances: Varies'], ListType.Hindrances)).toBe(
+      'Hindrances: Varies',
+    );
+  });
+});
