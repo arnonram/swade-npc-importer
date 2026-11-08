@@ -27,7 +27,6 @@ export async function statBlockParser(
     const biography = getBio(rawStatBlock, sections);
     let importedActor: ParsedActor = {
       name: getName(rawStatBlock),
-      // Prose powers can't become power items; keep the text in the biography.
       biography: prosePowers ? `${biography}<hr>${prosePowers}` : biography,
       attributes: getAttributes(sections),
       skills: getSkills(sections),

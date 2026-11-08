@@ -14,8 +14,7 @@ export function getListStat(sections: string[], labelKey: ListType): string[] {
 const maxPowerNameWords = 4;
 
 /**
- * Some stat blocks describe powers in a sentence instead of listing them
- * ("Jinni have access to all spells, or as the Game Master deems appropriate").
+ * Some stat blocks describe powers in a sentence instead of listing them.
  * Returns that Powers text, or undefined if the section is a regular list.
  */
 export function getProsePowers(sections: string[]): string | undefined {
