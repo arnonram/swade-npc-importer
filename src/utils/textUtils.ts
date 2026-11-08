@@ -19,12 +19,11 @@ export function specialAbilitiesLink(specAbName: string): string | null {
     .replace(/[\−\-+]? [0-9]/, '')
     .trim();
   try {
-    return (
-      game.packs
-        ?.get('swade-core-rules.swade-specialabilities')
-        ?.contents.find((x: { name: string }) => x.name.includes(cleanedName))
-        ?.link || ''
-    );
+    // Use the index: pack.contents only holds documents already loaded.
+    const entry = game.packs
+      ?.get('swade-core-rules.swade-specialabilities')
+      ?.index.find(x => !!x.name?.includes(cleanedName));
+    return entry ? `@UUID[${entry.uuid}]{${entry.name}}` : '';
   } catch (error) {
     Logger.error(
       `Error finding special ability link for "${cleanedName}":`,
@@ -37,13 +36,20 @@ export function specialAbilitiesLink(specAbName: string): string | null {
 export const removeMultipleWhitespaces = (text: string): string =>
   text.replace(/\s+/g, ' ');
 
-export function splitAndSort(text: string): string[] {
-  let arr = text
-    .split(/[\s,]+/)
-    .map(x => x.toLowerCase().trim())
-    .sort();
-
-  return removeEmptyArrayProp(arr);
+/**
+ * Normalizes an item name or SWADE swid into a comparable key:
+ * lowercase, punctuation dropped (as SWADE does when building swids),
+ * words sorted so word order does not matter.
+ * e.g. "Holy/Unholy Warrior" and "holyunholy-warrior" give the same key.
+ */
+export function swidLookupKey(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .split(/[\s-]+/)
+    .filter(Boolean)
+    .sort()
+    .join('-');
 }
 
 export function splitAndTrim(

@@ -32,6 +32,17 @@ describe('getGear()', () => {
     });
   });
 
+  it('parses weapon stats written with colons', async () => {
+    const result = await getGear([
+      'Gear: Sling (Range: 4/8/16, Damage: Str+d4), Crossbow (Range: 15/30/60, Damage: 2d6, Shots: 1)',
+    ]);
+
+    expect(result).toEqual({
+      Sling: { range: '4/8/16', damage: 'Str+d4' },
+      Crossbow: { range: '15/30/60', damage: '2d6', shots: '1' },
+    });
+  });
+
   it('parses armor gear', async () => {
     const result = await getGear([
       'Gear: Leather Armor (+2 Armor), Sunglasses',

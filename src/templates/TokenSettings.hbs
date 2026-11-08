@@ -1,7 +1,7 @@
-<form autocomplete='off'>
+<div class='standard-form'>
   <div class='form-group'>
     <label>{{localize 'TOKEN.FIELDS.disposition.label'}}:</label>
-    <select id='disposition' name='disposition'>
+    <select id='disposition' name='disposition' data-dtype='Number'>
       <option name='HOSTILE' value='-1' {{this.dispositionHostile.selected}}>
         {{localize 'TOKEN.DISPOSITION.HOSTILE'}}
       </option>
@@ -19,7 +19,7 @@
   <br />
   <div class='form-group'>
     <label>{{localize 'TOKEN.FIELDS.displayName.label'}}:</label>
-    <select id='displayName' name='displayName'>
+    <select id='displayName' name='displayName' data-dtype='Number'>
       <option
         name='DISPLAY_NONE'
         value='0'
@@ -101,4 +101,4 @@
   <button type='submit' name='submit'>
     <i class='far fa-save'>{{localize 'npcImporter.HTML.Save'}}</i>
   </button>
-</form>
+</div>

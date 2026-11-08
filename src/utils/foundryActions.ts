@@ -4,7 +4,7 @@ import {
   settingCompsToUse,
   settingActiveCompendiums,
 } from '../global';
-import { splitAndSort } from './textUtils';
+import { swidLookupKey } from './textUtils';
 import { SwadeActorToImport } from '../types/importedActor';
 
 import { Logger } from './logger';
@@ -42,20 +42,15 @@ export async function getItemFromCompendium(
   itemName: string,
   expectedType: ItemType,
 ): Promise<any> {
-  const item = splitAndSort(itemName);
-  const itemKebab = item.join('-');
+  const itemKebab = swidLookupKey(itemName);
   for (const pack of allPacks) {
     try {
-      let resultId: any = '';
-      if (expectedType === ItemType.WEAPON) {
-        resultId = pack.index.contents.find(it => it.system.swid === itemKebab);
-        // ?? pack.index.contents.find(it => it.system.swid.includes(item[0]));
-      } else {
-        resultId = pack.index.contents.find(
-          it =>
-            typeof it.system.swid === 'string' && it.system.swid === itemKebab,
-        );
-      }
+      const resultId = pack.index.contents.find(
+        (it: any) =>
+          it.type === expectedType &&
+          typeof it.system?.swid === 'string' &&
+          swidLookupKey(it.system.swid) === itemKebab,
+      );
 
       if (resultId !== undefined) {
         const foundItem = await pack.getDocument(resultId['_id']);
@@ -72,8 +67,9 @@ export async function getItemFromCompendium(
 }
 
 export function getAllActiveCompendiums(): string[] {
-  let packs = getModuleSettings(settingPackageToUse);
-  let comps = getModuleSettings(settingCompsToUse);
+  const packs: string[] = getModuleSettings(settingPackageToUse);
+  // Copy: game.settings.get returns the cached value, pushing into it mutates the setting.
+  const comps: string[] = [...getModuleSettings(settingCompsToUse)];
 
   if (packs.length + comps.length === 0) {
     if (!game.packs) {
@@ -216,17 +212,15 @@ export async function deleteActor(actorId: string): Promise<void> {
 
 export async function deleteAllActors(): Promise<void> {
   if (!game.actors) return;
-  const allActors = game.actors.map((x: any) => x.data._id);
+  const allActors = game.actors.map((x: any) => x.id);
   await Actor.deleteDocuments(allActors);
 }
 
 export function getAllActorFolders(): string[] {
-  if (!game.folders?._source) return [];
-  return game.folders._source
-    .filter((x: any) => x.type === 'Actor')
-    .map((folder: any) => {
-      return `${folder.name}`;
-    });
+  if (!game.folders) return [];
+  return game.folders
+    .filter(folder => folder.type === 'Actor')
+    .map(folder => `${folder.name}`);
 }
 
 export function getFolderId(folderName: string): string {

@@ -33,11 +33,11 @@ vi.mock('../../src/dataBuilders/itemBuilders', async () => {
 });
 
 vi.mock('../../src/utils/foundryActions', () => ({
-  getModuleSettings: vi.fn(key => false),
+  getModuleSettings: vi.fn(_key => false),
 }));
 
 vi.mock('../../src/statBlockParser/parserBuilderHelpers', () => ({
-  getArmorBonus: (name: string) => 2,
+  getArmorBonus: (_name: string) => 2,
 }));
 
 describe('specialAbilitiesParser', () => {
@@ -176,5 +176,24 @@ describe('specialAbilitiesParser', () => {
     const result = await specialAbilitiesParser(data);
     expect(result[0].type).toBe(ItemType.ABILITY);
     expect(result[0].name).toBe('speed');
+  });
+  it('only treats a standalone "Str" damage notation as a weapon', async () => {
+    const { getModuleSettings } = await import(
+      '../../src/utils/foundryActions'
+    );
+    (getModuleSettings as any).mockImplementation(() => false);
+    const data = {
+      'Variable Size': 'Each point of Size gain gives them +1 Strength.',
+      Servitude: 'Once the period elapses strives to destroy its captor.',
+      'Bite/Claws': 'Str+d6.',
+      Claws: 'Str.',
+    };
+    const result = await specialAbilitiesParser(data);
+    expect(result.map(r => [r.name ?? r.weaponName, r.type])).toEqual([
+      ['variable size', ItemType.ABILITY],
+      ['servitude', ItemType.ABILITY],
+      ['bite/claws', ItemType.WEAPON],
+      ['claws', ItemType.WEAPON],
+    ]);
   });
 });

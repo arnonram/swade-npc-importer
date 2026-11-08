@@ -118,14 +118,13 @@ function weaponParser(weapon: string[]): Record<string, any> {
     ) {
       weaponStats['shots'] = stat
         .replace(foundryI18nLocalize('npcImporter.parser.Shots'), '')
+        .replace(/^\s*:/, '')
         .trim();
-    } else if (/^[A-Za-z]+/.test(stat)) {
-      const match = stat.match(/^[A-Za-z]+/);
-      if (match && match[0]) {
-        const statName = match[0];
-        weaponStats[statName.toLowerCase().trim()] = stat
-          .replace(statName, '')
-          .trim();
+    } else {
+      // "Range 4/8/16" or "Range: 4/8/16"
+      const match = stat.match(/^([A-Za-z]+)\s*:?\s*(.*)$/);
+      if (match) {
+        weaponStats[match[1].toLowerCase()] = match[2].trim();
       }
     }
   }

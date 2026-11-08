@@ -165,8 +165,6 @@ describe('buildActorDataHelpers', () => {
 
   describe('calculateWoundMod', () => {
     const { calculateWoundMod } = helpers;
-    const Resilient = 'Resilient';
-    const VeryResilient = 'Very Resilient';
 
     it.each([
       [0, false, {}, false, 0],

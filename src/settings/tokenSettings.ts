@@ -3,78 +3,59 @@ import {
   updateModuleSetting,
   getModuleSettings,
 } from '../utils/foundryActions';
-import { foundryI18nLocalize } from '../utils/foundryWrappers';
 
-export default class TokenSettings extends FormApplication {
-  constructor(object = {}, options = {}) {
-    super(object, options);
-  }
-
-  static override get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      id: `${thisModule}.tokenSettings`,
-      title: foundryI18nLocalize('npcImporter.settings.TokenSettings'),
-      template: 'modules/swade-npc-importer/templates/TokenSettings.hbs',
+export default class TokenSettings extends foundry.applications.api.HandlebarsApplicationMixin(
+  foundry.applications.api.ApplicationV2,
+) {
+  static override DEFAULT_OPTIONS = {
+    id: `${thisModule}-tokenSettings`,
+    tag: 'form',
+    window: {
+      title: 'npcImporter.settings.TokenSettings',
+    },
+    position: {
       width: 400,
+    },
+    form: {
+      handler: TokenSettings.#onSubmit,
       closeOnSubmit: true,
-    });
-  }
+    },
+  };
 
-  override async getData() {
+  static override PARTS = {
+    form: {
+      template: 'modules/swade-npc-importer/templates/TokenSettings.hbs',
+    },
+  };
+
+  override async _prepareContext(): Promise<any> {
     const currentTokenValues = getModuleSettings(settingToken);
+    const selected = (current: unknown, value: number) =>
+      current == value ? 'selected' : '';
+    const disposition = currentTokenValues.disposition;
+    const displayName = currentTokenValues.displayName;
     return {
-      dispositionHostile: {
-        value: 'HOSTILE',
-        selected: currentTokenValues.disposition == -1 ? 'selected' : '',
-      },
-      dispositionNeutral: {
-        value: 'NEUTRAL',
-        selected: currentTokenValues.disposition == 0 ? 'selected' : '',
-      },
-      dispositionFriendly: {
-        value: 'FRIENDLY',
-        selected: currentTokenValues.disposition == 1 ? 'selected' : '',
-      },
-      dispositionSecret: {
-        value: 'SECRET',
-        selected: currentTokenValues.disposition == -2 ? 'selected' : '',
-      },
-      displayNameDISPLAY_NONE: {
-        value: 'DISPLAY_NONE',
-        selected: currentTokenValues.displayName == 0 ? 'selected' : '',
-      },
-      displayNameDISPLAY_CONTROL: {
-        value: 'DISPLAY_CONTROL',
-        selected: currentTokenValues.displayName == 10 ? 'selected' : '',
-      },
-      displayNameDISPLAY_OWNER_HOVER: {
-        value: 'DISPLAY_OWNER_HOVER',
-        selected: currentTokenValues.displayName == 20 ? 'selected' : '',
-      },
-      displayNameDISPLAY_HOVER: {
-        value: 'DISPLAY_HOVER',
-        selected: currentTokenValues.displayName == 30 ? 'selected' : '',
-      },
-      displayNameDISPLAY_OWNER: {
-        value: 'DISPLAY_OWNER',
-        selected: currentTokenValues.displayName == 40 ? 'selected' : '',
-      },
-      displayNameDISPLAY_ALWAYS: {
-        value: 'DISPLAY_ALWAYS',
-        selected: currentTokenValues.displayName == 50 ? 'selected' : '',
-      },
-      vision: {
-        checked: currentTokenValues.vision ? 'checked' : '',
-      },
+      dispositionHostile: { selected: selected(disposition, -1) },
+      dispositionNeutral: { selected: selected(disposition, 0) },
+      dispositionFriendly: { selected: selected(disposition, 1) },
+      dispositionSecret: { selected: selected(disposition, -2) },
+      displayNameDISPLAY_NONE: { selected: selected(displayName, 0) },
+      displayNameDISPLAY_CONTROL: { selected: selected(displayName, 10) },
+      displayNameDISPLAY_OWNER_HOVER: { selected: selected(displayName, 20) },
+      displayNameDISPLAY_HOVER: { selected: selected(displayName, 30) },
+      displayNameDISPLAY_OWNER: { selected: selected(displayName, 40) },
+      displayNameDISPLAY_ALWAYS: { selected: selected(displayName, 50) },
+      vision: { checked: currentTokenValues.vision ? 'checked' : '' },
       visionRange: currentTokenValues.visionRange ?? 0,
       visionAngle: currentTokenValues.visionAngle ?? 360,
     };
   }
 
-  override async _updateObject(
-    event: Event,
-    formData: Record<string, unknown>,
-  ) {
-    await updateModuleSetting(settingToken, formData);
+  static async #onSubmit(
+    _event: Event | SubmitEvent,
+    _form: HTMLFormElement,
+    formData: { object: Record<string, unknown> },
+  ): Promise<void> {
+    await updateModuleSetting(settingToken, formData.object);
   }
 }

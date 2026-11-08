@@ -36,17 +36,21 @@ Hooks.on('ready', async () => {
   }
 });
 
-Hooks.on('renderActorDirectory', async (app: any, html: any, _data: any) => {
+Hooks.on('renderActorDirectory', (_app: any, html: HTMLElement) => {
   if (canCreateActor()) {
-    const npcImporterButton = $(
-      `<button id="StatBlockImporterButton" style="width: calc(100% - 8px);"><i class="fas fa-align-left"></i>${foundryI18nLocalize(
-        'npcImporter.HTML.StatBlockImporterTitle',
-      )}</button>`,
-    );
+    const footer = html.querySelector('.directory-footer');
+    if (!footer || footer.querySelector('#StatBlockImporterButton')) return;
 
-    $(html).find('.directory-footer').append(npcImporterButton);
+    const npcImporterButton = document.createElement('button');
+    npcImporterButton.type = 'button';
+    npcImporterButton.id = 'StatBlockImporterButton';
+    npcImporterButton.style.width = 'calc(100% - 8px)';
+    npcImporterButton.innerHTML = `<i class="fas fa-align-left"></i>${foundryI18nLocalize(
+      'npcImporter.HTML.StatBlockImporterTitle',
+    )}`;
+    footer.append(npcImporterButton);
 
-    npcImporterButton.on('click', async () => {
+    npcImporterButton.addEventListener('click', async () => {
       new foundry.applications.api.DialogV2({
         window: {
           title: foundryI18nLocalize('npcImporter.HTML.ImportTitle'),
@@ -61,60 +65,27 @@ Hooks.on('renderActorDirectory', async (app: any, html: any, _data: any) => {
             action: 'importActor',
             label: foundryI18nLocalize('npcImporter.HTML.Import'),
             default: true,
-            callback: async (_html: any) => {
+            callback: async (_event: Event, button: HTMLButtonElement) => {
               try {
-                let importSettings: ImportSettings = {
-                  actorType:
-                    (
-                      document.querySelector(
-                        'input[name="actorType"]:checked',
-                      ) as HTMLInputElement | null
-                    )?.value ?? '',
-                  isWildCard: !!(
-                    document.getElementById(
-                      'swade-stat-imp-isWildCard',
-                    ) as HTMLInputElement | null
-                  )?.checked,
+                const fields = button.form!.elements;
+                const value = (name: string): string =>
+                  (fields.namedItem(name) as HTMLInputElement | RadioNodeList)
+                    ?.value ?? '';
+                const checked = (name: string): boolean =>
+                  !!(fields.namedItem(name) as HTMLInputElement | null)
+                    ?.checked;
+                const importSettings: ImportSettings = {
+                  actorType: value('actorType'),
+                  isWildCard: checked('isWildcard'),
                   tokenSettings: {
-                    disposition: parseInt(
-                      (
-                        document.querySelector(
-                          'input[name="disposition"]:checked',
-                        ) as HTMLInputElement | null
-                      )?.value ?? '0',
-                    ),
-                    vision: !!(
-                      document.getElementById(
-                        'swade-stat-imp-vision',
-                      ) as HTMLInputElement | null
-                    )?.checked,
-                    visionRange: parseInt(
-                      (
-                        document.querySelector(
-                          'input[name="visionRange"]',
-                        ) as HTMLInputElement | null
-                      )?.value ?? '0',
-                    ),
-                    visionAngle: parseInt(
-                      (
-                        document.querySelector(
-                          'input[name="visionAngle"]',
-                        ) as HTMLInputElement | null
-                      )?.value ?? '360',
-                    ),
+                    disposition: parseInt(value('disposition') || '0'),
+                    vision: checked('vision'),
+                    visionRange: parseInt(value('visionRange') || '0'),
+                    visionAngle: parseInt(value('visionAngle') || '360'),
                   },
-                  saveFolder:
-                    (
-                      document.getElementById(
-                        'swade-stat-imp-save-folder',
-                      ) as HTMLInputElement | null
-                    )?.value ?? '',
+                  saveFolder: value('save-folder'),
                 };
-                const statBlock = (
-                  document.getElementById('statBlock') as
-                    | HTMLInputElement
-                    | undefined
-                )?.value;
+                const statBlock = value('statBlock');
                 await buildActor(importSettings, statBlock);
               } catch (err) {
                 Logger.error('Import failed:', err);

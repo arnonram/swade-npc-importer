@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { getListStat, ListType } from '../../src/statBlockParser/getListsStats';
+import {
+  getListStat,
+  getProsePowers,
+  ListType,
+} from '../../src/statBlockParser/getListsStats';
 
 describe('getListStat', () => {
   it('extracts hindrances list from sections', () => {
@@ -38,8 +42,30 @@ describe('getListStat', () => {
   });
 
   it('handles new lines in line', () => {
-    const sections = [`Powers: Bolt,\nDetect Arcana,\nInvisibility`];
+    const sections = ['Powers: Bolt,\nDetect Arcana,\nInvisibility'];
     const result = getListStat(sections, ListType.Powers);
     expect(result).toEqual(['Bolt', 'Detect Arcana', 'Invisibility']);
+  });
+});
+
+describe('getProsePowers', () => {
+  it('returns the Powers text when it is a sentence, not a list', () => {
+    const sections = [
+      'Powers: As magical beings, Jinni have access to all spells, or as the Game Master\ndeems appropriate.',
+    ];
+    expect(getProsePowers(sections)).toBe(
+      'Powers: As magical beings, Jinni have access to all spells, or as the Game Master deems appropriate.',
+    );
+  });
+
+  it('returns undefined for a regular powers list, including trappings', () => {
+    const sections = [
+      'Powers: Bolt (fire, ice and lightning), Boost/Lower Trait, Environmental Protection',
+    ];
+    expect(getProsePowers(sections)).toBeUndefined();
+  });
+
+  it('returns undefined when there is no Powers section', () => {
+    expect(getProsePowers(['Edges: Berserk'])).toBeUndefined();
   });
 });

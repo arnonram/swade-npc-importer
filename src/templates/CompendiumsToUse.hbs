@@ -1,11 +1,11 @@
-<form autocomplete='off'>
+<div class='standard-form'>
   <h2 class='modal-header'>{{localize 'npcImporter.settings.SelectPacks'}}</h2>
   <p><em>{{localize 'npcImporter.settings.SelectPacksInfo'}}</em></p>
   {{#each packs}}
     <input
       type='checkbox'
       name='pack.{{this.name}}'
-      value='{${this.name}}'
+      value='{{this.name}}'
       {{this.checked}}
     />
     <label>{{this.name}}</label><br />
@@ -27,4 +27,4 @@
   <button type='submit' name='submit'>
     <i class='far fa-save'>{{localize 'npcImporter.HTML.Save'}}</i>
   </button>
-</form>
+</div>

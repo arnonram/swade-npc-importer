@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { ActoryType, Disposition, Languages, users } from './enums';
+import { ActoryType, Disposition, Languages, Users } from './enums';
 import fs from 'fs';
 
 const inputPath = `${__dirname}/../testData/input/`;
@@ -16,7 +16,7 @@ export class FoundryApp {
     await this.page.goto('http://localhost:30000');
   }
 
-  async login(user: users) {
+  async login(user: Users) {
     await this.goto();
     await this.page.locator('[name="userid"]').selectOption(user);
     await this.page.locator('[name=join]').click();
@@ -65,15 +65,15 @@ export class FoundryApp {
   }
 
   async toggleFolderState() {
-    await this.page.locator(`text="Test Folder"`).click({ force: true });
+    await this.page.locator('text="Test Folder"').click({ force: true });
   }
 
   async deleteFolder() {
     await this.gotoActorsTab();
     await this.page
-      .locator(`text="Test Folder"`)
+      .locator('text="Test Folder"')
       .click({ button: 'right', force: true });
-    await this.page.locator(`text="Delete All"`).click();
+    await this.page.locator('text="Delete All"').click();
     await this.page.locator('button[data-button=yes]').click();
   }
 
