@@ -69,7 +69,7 @@ function handleSpecialCharacters(line: string): string[] {
     .replace(/\)\s*[—–]\s*([^,()]+)/g, (_match, note) => ` — ${note.trim()})`);
   if (data.length > 1) {
     const matches = data.match(
-      /([A-Za-zÀ-ÖØ-öø-ÿ0-9!.\-’'/ ]+)(\(([^\)]+)\))?/gi,
+      /([A-Za-zÀ-ÖØ-öø-ÿ0-9!.\-’'/ ]+)(\(([^)]+)\))?/gi,
     );
     return matches
       ? matches.map(s => s.trim().replace(/^(and|or)\s+/i, '')).filter(Boolean)

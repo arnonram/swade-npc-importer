@@ -1,5 +1,5 @@
 import { settingAutoCalcSize, settingToken } from '../global';
-import { ParsedActor, TokenSettings } from '../types/importedActor';
+import type { ParsedActor, TokenSettings } from '../types/importedActor';
 import { getModuleSettings } from '../utils/foundryActions';
 
 export async function buildActorToken(
@@ -7,7 +7,7 @@ export async function buildActorToken(
   tokenSettings: TokenSettings,
 ) {
   var token: any = {};
-  token.displayName = parseInt(getModuleSettings(settingToken).displayName);
+  token.displayName = parseInt(getModuleSettings(settingToken).displayName, 10);
   token.disposition = tokenSettings.disposition;
 
   const squares = calculateTokenDimensions(parsedData.size ?? 0);
@@ -48,10 +48,10 @@ function calculateScale(size: number) {
   if (size >= 0) {
     return 1;
   }
-  if (size == -1) {
+  if (size === -1) {
     return 0.85;
   }
-  if (size == -2 || size == -3) {
+  if (size === -2 || size === -3) {
     return 0.75;
   }
   if (size <= -4) {

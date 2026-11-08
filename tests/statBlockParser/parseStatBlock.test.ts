@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { statBlockParser } from '../../src/statBlockParser/parseStatBlock';
-import { ParsedActor } from '../../src/types/importedActor';
+import type { ParsedActor } from '../../src/types/importedActor';
 import {
   settingBulletPointIcons,
   settingModifiedSpecialAbs,

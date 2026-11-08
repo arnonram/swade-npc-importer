@@ -1,129 +1,38 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.6.6/schema.json",
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git",
-    "useIgnoreFile": true
-  },
-  "files": {
-    "includes": ["**", "!!**/dist", "!src/module.json"]
-  },
-  "formatter": {
-    "indentStyle": "space",
-    "indentWidth": 2,
-    "lineWidth": 80
-  },
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": { "includes": ["**", "!src/module.json"] },
+  "assist": { "enabled": false },
+  "formatter": { "indentStyle": "space" },
   "javascript": {
-    "formatter": {
-      "quoteStyle": "single",
-      "arrowParentheses": "asNeeded"
-    },
+    "formatter": { "quoteStyle": "single", "arrowParentheses": "asNeeded" },
     "globals": ["game"]
   },
-  "assist": {
-    "enabled": false
-  },
+  "yaml": { "formatter": { "quoteStyle": "single" } },
   "linter": {
-    "includes": ["**/*.ts", "!bin"],
     "rules": {
-      "preset": "none",
+      "complexity": { "noStaticOnlyClass": "off" },
       "correctness": {
-        "noUnusedVariables": "error"
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error"
       },
-      "suspicious": {
-        "noTsIgnore": "warn"
-      },
+      "suspicious": { "noExplicitAny": "off" },
       "style": {
+        "noNonNullAssertion": "off",
         "useNamingConvention": {
           "level": "error",
           "options": {
             "strictCase": false,
             "conventions": [
+              { "selector": { "kind": "objectLiteralMember" }, "match": ".*" },
               {
-                "selector": {
-                  "kind": "classProperty",
-                  "modifiers": ["static"]
-                },
-                "formats": ["CONSTANT_CASE"]
-              },
-              {
-                "selector": {
-                  "kind": "classMember"
-                },
-                "formats": ["camelCase", "PascalCase"]
-              },
-              {
-                "selector": {
-                  "kind": "typeMember"
-                },
-                "match": ".*"
-              },
-              {
-                "selector": {
-                  "kind": "objectLiteralMember"
-                },
-                "match": ".*"
-              },
-              {
-                "selector": {
-                  "kind": "enumMember"
-                },
+                "selector": { "kind": "enumMember" },
                 "formats": ["PascalCase", "CONSTANT_CASE"]
-              },
-              {
-                "selector": {
-                  "kind": "typeLike"
-                },
-                "formats": ["PascalCase"]
-              },
-              {
-                "selector": {
-                  "kind": "importAlias"
-                },
-                "formats": ["camelCase", "PascalCase"]
-              },
-              {
-                "selector": {
-                  "kind": "importNamespace"
-                },
-                "formats": ["camelCase", "PascalCase"]
-              },
-              {
-                "selector": {
-                  "kind": "variable"
-                },
-                "match": "_?(.*)",
-                "formats": ["camelCase"]
-              },
-              {
-                "selector": {
-                  "kind": "function"
-                },
-                "match": "_?(.*)",
-                "formats": ["camelCase"]
-              },
-              {
-                "selector": {
-                  "kind": "functionParameter"
-                },
-                "match": "_?(.*)",
-                "formats": ["camelCase"]
-              },
-              {
-                "selector": {
-                  "kind": "any"
-                },
-                "formats": ["camelCase"]
               }
             ]
           }
         }
       }
-    }
-  },
-  "yaml": {
-    "formatter": {
-      "quoteStyle": "single"
     }
   }
 }

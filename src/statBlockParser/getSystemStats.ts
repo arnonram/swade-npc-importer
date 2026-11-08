@@ -7,7 +7,7 @@ export function getSystemDefinedStats(sections: string[]): Record<string, any> {
   const systemStats: Record<string, any> = {};
 
   for (const key in additionalStats) {
-    if (!Object.prototype.hasOwnProperty.call(additionalStats, key)) continue;
+    if (!Object.hasOwn(additionalStats, key)) continue;
 
     const { label, dtype } = additionalStats[key];
     const sectionLine = sections.find(line => line.startsWith(label));

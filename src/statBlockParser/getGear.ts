@@ -4,7 +4,7 @@ import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { getBonus, getArmorBonus } from './parserBuilderHelpers';
 import { BonusType } from '../types/enums';
 
-const gearParsingRegex = /([A-Za-zÀ-ÖØ-öø-ÿ0-9 \.\-]+)(\(([^()]+)\))?,?/gi;
+const gearParsingRegex = /([A-Za-zÀ-ÖØ-öø-ÿ0-9 .-]+)(\(([^()]+)\))?,?/gi;
 
 /**
  * Parses the gear section from stat block sections.
@@ -80,7 +80,7 @@ function parseGear(gearArray: string[]): Record<string, any> {
 
     // Normal gear
     if (splitGear.length === 1) {
-      let normalGear = splitGear[0].replace(/[.,]$/, '');
+      const normalGear = splitGear[0].replace(/[.,]$/, '');
       if (normalGear !== '.') {
         gearDict[normalGear.trim()] = null;
       }
@@ -128,7 +128,6 @@ function parseGear(gearArray: string[]): Record<string, any> {
       gearDict[splitGear[0].trim()] = {
         armorBonus: getArmorBonus(splitGear[1]),
       };
-      continue;
     }
   }
   return gearDict;
@@ -147,7 +146,7 @@ function weaponParser(weapon: string[]): Record<string, any> {
         .toLowerCase()
         .includes(foundryI18nLocalize('npcImporter.parser.Shots').toLowerCase())
     ) {
-      weaponStats['shots'] = stat
+      weaponStats.shots = stat
         .replace(foundryI18nLocalize('npcImporter.parser.Shots'), '')
         .replace(/^\s*:/, '')
         .trim();

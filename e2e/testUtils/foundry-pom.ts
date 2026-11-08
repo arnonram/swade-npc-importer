@@ -1,6 +1,6 @@
-import { Page } from '@playwright/test';
-import { ActoryType, Disposition, Languages, Users } from './enums';
-import fs from 'fs';
+import type { Page } from '@playwright/test';
+import type { ActoryType, Disposition, Languages, Users } from './enums';
+import fs from 'node:fs';
 
 const inputPath = `${__dirname}/../testData/input/`;
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // This script updates the module.json file with the latest version from package.json in all places where it is used.
 
-const fs = require('fs');
-const path = require('path');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const PACKAGE_JSON = path.join(__dirname, '../package.json');
 const MODULE_JSON = path.join(__dirname, '../src/module.json');
@@ -24,7 +24,7 @@ moduleJson.readme = `https://github.com/arnonram/swade-npc-importer/tree/v${vers
 // Write back to module.json
 fs.writeFileSync(
   MODULE_JSON,
-  JSON.stringify(moduleJson, null, 2) + '\n',
+  `${JSON.stringify(moduleJson, null, 2)}\n`,
   'utf8',
 );
 

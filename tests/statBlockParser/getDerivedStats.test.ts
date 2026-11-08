@@ -10,8 +10,8 @@ import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('../../src/utils/parserBuilderHelpers', () => ({
   getBonus: vi.fn((desc: string, _key: string) => {
-    const match = desc.match(/Power\s*Points\s*[:\-]?\s*(\d+)/i);
-    return match ? parseInt(match[1]) : undefined;
+    const match = desc.match(/Power\s*Points\s*[:-]?\s*(\d+)/i);
+    return match ? parseInt(match[1], 10) : undefined;
   }),
 }));
 

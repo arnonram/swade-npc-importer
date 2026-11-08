@@ -10,13 +10,13 @@ export function capitalizeEveryWord(input: string): string {
     .split(' ')
     .map(word => capitalize(word.toLowerCase()))
     .join(' ')
-    .replace(/[\-\()][a-z]| [a-z]/g, match => match.toUpperCase());
+    .replace(/[-()][a-z]| [a-z]/g, match => match.toUpperCase());
 }
 
 export function specialAbilitiesLink(specAbName: string): string | null {
   const cleanedName = specAbName
     .split('(')[0]
-    .replace(/[\−\-+]? [0-9]/, '')
+    .replace(/[−\-+]? [0-9]/, '')
     .trim();
   try {
     // Use the index: pack.contents only holds documents already loaded.
@@ -97,7 +97,7 @@ export function splitAndTrim(
   stringToSplit: string,
   separator: string | RegExp,
 ): string[] {
-  let arr = stringToSplit
+  const arr = stringToSplit
     .split(separator)
     .map(item => item.replace(newLineRegex, ' ').trim())
     .filter(item => item.length > 0);

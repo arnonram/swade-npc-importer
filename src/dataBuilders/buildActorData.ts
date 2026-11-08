@@ -1,5 +1,5 @@
 import { getModuleSettings } from '../utils/foundryActions';
-import { ParsedActor } from '../types/importedActor';
+import type { ParsedActor } from '../types/importedActor';
 import { settingAutoCalcToughness } from '../global';
 import {
   generateAttributes,
@@ -13,11 +13,11 @@ import {
   calculateBennies,
 } from './buildActorDataHelpers';
 
-export const buildActorData = async function (
+export const buildActorData = async (
   parsedData: ParsedActor,
   isWildCard: boolean,
   actorType: string,
-) {
+) => {
   const system: any = {};
 
   system.attributes = generateAttributes(parsedData);

@@ -6,6 +6,7 @@
     "moduleResolution": "bundler",
     "target": "esnext",
     "module": "esnext",
+    "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
     "strictNullChecks": true,
     "esModuleInterop": true,

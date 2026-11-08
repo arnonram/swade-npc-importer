@@ -7,7 +7,7 @@ import {
   settingToken,
 } from './global';
 import { NpcImporterSettings } from './settings/npcImporterSettings';
-import { ImportSettings } from './types/importedActor';
+import type { ImportSettings } from './types/importedActor';
 import {
   getModuleSettings,
   getAllActorFolders,
@@ -78,10 +78,10 @@ Hooks.on('renderActorDirectory', (_app: any, html: HTMLElement) => {
                   actorType: value('actorType'),
                   isWildCard: checked('isWildcard'),
                   tokenSettings: {
-                    disposition: parseInt(value('disposition') || '0'),
+                    disposition: parseInt(value('disposition') || '0', 10),
                     vision: checked('vision'),
-                    visionRange: parseInt(value('visionRange') || '0'),
-                    visionAngle: parseInt(value('visionAngle') || '360'),
+                    visionRange: parseInt(value('visionRange') || '0', 10),
+                    visionAngle: parseInt(value('visionAngle') || '360', 10),
                   },
                   saveFolder: value('save-folder'),
                 };

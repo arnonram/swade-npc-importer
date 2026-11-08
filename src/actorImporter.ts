@@ -1,5 +1,5 @@
 import { getActorId, deleteActor, importActor } from './utils/foundryActions';
-import { SwadeActorToImport } from './types/importedActor';
+import type { SwadeActorToImport } from './types/importedActor';
 import { Logger } from './utils/logger';
 import { foundryI18nLocalize, foundryUiInfo } from './utils/foundryWrappers';
 
@@ -10,7 +10,7 @@ export async function actorImporter(
     Logger.warn('actorImporter: Missing actor name.');
     return;
   }
-  let actorId = getActorId(actorDataToImport.name);
+  const actorId = getActorId(actorDataToImport.name);
   if (!actorId) {
     await safeImport(actorDataToImport);
   } else {
@@ -31,7 +31,7 @@ async function whatToDo(
   actorData: SwadeActorToImport,
   actorId: string,
 ): Promise<void> {
-  let actorExists = `
+  const actorExists = `
     ${foundryI18nLocalize('npcImporter.HTML.ActorExistText')}
     <div class="form-group-dialog newName" >
         <label for="newName">${foundryI18nLocalize(
@@ -65,7 +65,7 @@ async function whatToDo(
               );
               return;
             }
-            let newName = newNameInput.value;
+            const newName = newNameInput.value;
             Logger.info(`Import with new name: ${newName}`);
             actorData.name = newName;
             await safeImport(actorData);

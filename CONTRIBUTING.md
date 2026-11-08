@@ -34,4 +34,4 @@ Thank you for considering contributing to this project! Your help is appreciated
 
 ---
 
-By contributing, you agree that your contributions will be licensed under the GNU General Public License v3.0 (GPLv3).
+By contributing, you agree that your contributions will be licensed under the GNU General Public License v3.0 or later (GPL-3.0-or-later).

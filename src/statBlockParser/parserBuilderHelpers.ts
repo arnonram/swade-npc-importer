@@ -1,7 +1,7 @@
-import { BonusType } from '../types/enums';
+import type { BonusType } from '../types/enums';
 import { foundryI18nLocalize } from '../../src/utils/foundryWrappers';
 import { armorModRegex } from '../global';
-import { ImportedDie } from 'src/types/importedActor';
+import type { ImportedDie } from 'src/types/importedActor';
 
 /**
  * Extracts melee damage from an ability description.
@@ -13,7 +13,7 @@ export function getMeleeDamage(abilityDescription: string): string {
   const meleeDamageRegex = new RegExp(meleeDamagePattern, 'gi');
 
   const match = abilityDescription.match(meleeDamageRegex);
-  let damage = match?.toString().replace(/\.$/, '').toLowerCase() ?? '';
+  const damage = match?.toString().replace(/\.$/, '').toLowerCase() ?? '';
   return `@${damage}`;
 }
 
@@ -22,8 +22,8 @@ export function getMeleeDamage(abilityDescription: string): string {
  */
 export function getArmorBonus(data: string): number {
   const match = data.match(armorModRegex)?.[0];
-  const num = parseInt(match ?? '0');
-  return isNaN(num) ? 0 : num;
+  const num = parseInt(match ?? '0', 10);
+  return Number.isNaN(num) ? 0 : num;
 }
 
 /**
@@ -40,7 +40,7 @@ export function getBonus(
     new RegExp(`([+-]?\\d+)\\s*${label}|${label}:?\\s*([+-]?\\d+)`, 'i'),
   );
   const rawNum = match?.[1] || match?.[2];
-  const parsed = rawNum ? parseInt(rawNum) : undefined;
+  const parsed = rawNum ? parseInt(rawNum, 10) : undefined;
 
   return Number.isNaN(parsed) ? undefined : parsed;
 }

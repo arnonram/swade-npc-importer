@@ -20,12 +20,12 @@ export function getSize(abilities: Record<string, string>): number {
   for (const ability of Object.keys(abilities)) {
     if (ability.toLowerCase().includes(sizeLabel)) {
       const parts = ability
-        .replace(new RegExp('@([aehw]|sa)?'), '')
+        .replace(/@([aehw]|sa)?/, '')
         .trim()
         .split(' ');
       if (parts.length > 1) {
-        const num = parseInt(parts[1]);
-        return isNaN(num) ? 0 : num;
+        const num = parseInt(parts[1], 10);
+        return Number.isNaN(num) ? 0 : num;
       }
     }
   }
@@ -47,8 +47,8 @@ export function powerPointsFromSpecialAbility(
 function getStatNumber(data: string): number {
   const parts = data.split(':');
   if (parts.length < 2) return 0;
-  const num = parseInt(parts[1].replace(';', '').trim());
-  return isNaN(num) ? 0 : num;
+  const num = parseInt(parts[1].replace(';', '').trim(), 10);
+  return Number.isNaN(num) ? 0 : num;
 }
 
 export function getToughness(data: string[]) {
@@ -60,8 +60,8 @@ export function getToughness(data: string[]) {
   if (toughnessData) {
     const match = toughnessData.match(/(\d+)\s*(?:\((\d+)\))?\s*;?/);
     if (match) {
-      const value = parseInt(match[1]);
-      const armor = match[2] ? parseInt(match[2]) : 0;
+      const value = parseInt(match[1], 10);
+      const armor = match[2] ? parseInt(match[2], 10) : 0;
       return { value, modifier: 0, armor };
     }
   }

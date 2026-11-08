@@ -3,7 +3,7 @@ import { actorImporter } from '../src/actorImporter';
 import * as foundryActions from '../src/utils/foundryActions';
 import * as logger from '../src/utils/logger';
 import * as foundryWrappers from '../src/utils/foundryWrappers';
-import { SwadeActorToImport } from '../src/types/importedActor';
+import type { SwadeActorToImport } from '../src/types/importedActor';
 
 describe('actorImporter', () => {
   const mockImport = vi.fn();
@@ -31,12 +31,12 @@ describe('actorImporter', () => {
     global.foundry = {
       applications: {
         api: {
-          DialogV2: vi.fn().mockImplementation(function () {
-            return {
-              render: vi.fn(),
-              element: { querySelector: vi.fn() },
-            };
-          }),
+          DialogV2: vi.fn(
+            class {
+              render = vi.fn();
+              element = { querySelector: vi.fn() };
+            },
+          ),
         },
       },
     } as any;
@@ -77,12 +77,10 @@ describe('actorImporter', () => {
     const name = 'Grug "The Boss" <b>';
     const input = { value: '', select: vi.fn() };
     vi.mocked(global.foundry.applications.api.DialogV2).mockImplementation(
-      function () {
-        return {
-          render: vi.fn(),
-          element: { querySelector: vi.fn(() => input) },
-        } as any;
-      },
+      class {
+        render = vi.fn();
+        element = { querySelector: vi.fn(() => input) };
+      } as any,
     );
     await actorImporter({ name } as SwadeActorToImport);
 

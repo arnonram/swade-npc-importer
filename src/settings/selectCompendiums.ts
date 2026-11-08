@@ -11,7 +11,7 @@ import {
   settingCompsToUse,
   settingActiveCompendiums,
 } from '../global';
-import { SettingsData } from '../types/settingsData';
+import type { SettingsData } from '../types/settingsData';
 
 export default class SelectCompendiums extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2,

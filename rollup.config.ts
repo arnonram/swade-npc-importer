@@ -1,5 +1,5 @@
 import copy from '@guanghechen/rollup-plugin-copy';
-import { RollupOptions } from 'rollup';
+import type { RollupOptions } from 'rollup';
 import typescript from '@rollup/plugin-typescript';
 import livereload from 'rollup-plugin-livereload';
 
@@ -18,7 +18,7 @@ const bundle: RollupOptions = {
   output: {
     dir: distDirectory,
     format: 'es',
-    sourcemap: process.env.CI ? false : true,
+    sourcemap: !process.env.CI,
     assetFileNames: '[name].[ext]',
     banner: banner,
   },
