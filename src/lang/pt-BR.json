@@ -3,7 +3,7 @@
   "npcImporter.HTML.ImportTitle": "Importador de NPC",
   "npcImporter.HTML.Import": "Importar!",
   "npcImporter.HTML.Cancel": "Cancelar",
-  "npcImporter.HTML.ImportDesc": "Importar dados da ficha da área de transferência",
+  "npcImporter.HTML.ImportDesc": "Cole a ficha abaixo ou deixe em branco para lê-la da área de transferência.",
   "npcImporter.HTML.ActorType": "Tipo de Ator",
   "npcImporter.HTML.Wildcard": "Carta Selvagem",
   "npcImporter.HTML.Disposition": "Disposição",
@@ -21,7 +21,7 @@
   "npcImporter.HTML.VisionRadius": "Raio de visão",
   "npcImporter.HTML.VisionAngleLable": "Graus (360 predefinição)",
   "npcImporter.HTML.Save": " Salvar",
-  "npcImporter.HTML.Firefox": "Paste statblock here if you're using Firefox, Foundry Client, or are over http...",
+  "npcImporter.HTML.Firefox": "Cole a ficha aqui (obrigatório no Firefox, no cliente desktop do Foundry ou via http)",
 
   "npcImporter.regex.dice": "(\\d+)?d(\\d+)([\\+\\-]\\d+)?",
   "npcImporter.parser.dice": "d",

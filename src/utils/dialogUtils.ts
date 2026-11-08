@@ -6,6 +6,13 @@ export function isChecked(setValue: any, htmlValue: any): string {
 }
 
 /**
+ * Returns 'selected' if setValue loosely equals optionValue, otherwise an empty string.
+ */
+export function isSelected(setValue: any, optionValue: any): string {
+  return setValue == optionValue ? 'selected' : '';
+}
+
+/**
  * Returns 'selected' if lastFolder equals folderName, otherwise returns an empty string.
  */
 export function isLastSavedFolder(lastFolder: any, folderName: any): string {

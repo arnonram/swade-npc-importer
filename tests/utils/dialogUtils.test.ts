@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   isChecked,
+  isSelected,
   isLastSavedFolder,
   buildFolderOptions,
 } from '../../src/utils/dialogUtils';
@@ -30,16 +31,27 @@ describe('dialogUtils', () => {
     });
   });
 
+  describe('isSelected', () => {
+    it('returns "selected" when values match, including number vs string', () => {
+      expect(isSelected(-1, '-1')).toBe('selected');
+      expect(isSelected(0, 0)).toBe('selected');
+    });
+
+    it('returns empty string when values differ', () => {
+      expect(isSelected(1, -1)).toBe('');
+    });
+  });
+
   describe('buildFolderOptions', () => {
     it('returns options with correct selected', () => {
       const html = buildFolderOptions('foo', ['foo', 'bar']);
-      expect(html).toContain("<option value='' >--</option>");
+      expect(html).toContain('<option value=\'\' >--</option>');
       expect(html).toContain('<option value="foo" selected>foo</option>');
       expect(html).toContain('<option value="bar" >bar</option>');
     });
     it('returns options with -- selected if lastSave is empty', () => {
       const html = buildFolderOptions('', ['foo']);
-      expect(html).toContain("<option value='' selected>--</option>");
+      expect(html).toContain('<option value=\'\' selected>--</option>');
     });
   });
 });

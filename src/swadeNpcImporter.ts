@@ -16,7 +16,7 @@ import {
 } from './utils/foundryActions';
 import { foundryI18nLocalize, foundryUiError } from './utils/foundryWrappers';
 import { Logger } from './utils/logger';
-import { buildFolderOptions, isChecked } from './utils/dialogUtils';
+import { buildFolderOptions, isChecked, isSelected } from './utils/dialogUtils';
 
 function canCreateActor(): boolean {
   return !!(
@@ -51,13 +51,13 @@ Hooks.on('renderActorDirectory', (_app: any, html: HTMLElement) => {
     footer.append(npcImporterButton);
 
     npcImporterButton.addEventListener('click', async () => {
-      new foundry.applications.api.DialogV2({
+      const dialog = await new foundry.applications.api.DialogV2({
         window: {
           title: foundryI18nLocalize('npcImporter.HTML.ImportTitle'),
           resizable: true,
         },
         position: {
-          width: 400,
+          width: 460,
         },
         content: await importerDialog(),
         buttons: [
@@ -101,6 +101,14 @@ Hooks.on('renderActorDirectory', (_app: any, html: HTMLElement) => {
           },
         ],
       }).render({ force: true });
+      // DialogV2 strips the placeholder attribute from its content, so set it after rendering.
+      const statBlockInput =
+        dialog.element.querySelector<HTMLTextAreaElement>('#statBlock');
+      if (statBlockInput) {
+        statBlockInput.placeholder = foundryI18nLocalize(
+          'npcImporter.HTML.Firefox',
+        );
+      }
     });
   }
 });
@@ -139,8 +147,8 @@ async function importerDialog(): Promise<string> {
     saveFolderLabel: foundryI18nLocalize('npcImporter.HTML.SaveFolder'),
     folderOptions,
     statBlockLabel: foundryI18nLocalize('npcImporter.HTML.StatBlock'),
-    firefoxLabel: foundryI18nLocalize('npcImporter.HTML.Firefox'),
     isChecked,
+    isSelected,
   };
 
   // Render Handlebars template
