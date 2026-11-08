@@ -5,7 +5,7 @@ import {
   settingActiveCompendiums,
 } from '../global';
 import { matchesSwid, slashNameVariants } from './textUtils';
-import { SwadeActorToImport } from '../types/importedActor';
+import type { SwadeActorToImport } from '../types/importedActor';
 
 import { Logger } from './logger';
 import {
@@ -60,7 +60,7 @@ export async function getItemFromCompendium(
       }
 
       if (resultId !== undefined) {
-        const foundItem = await pack.getDocument(resultId['_id']);
+        const foundItem = await pack.getDocument(resultId._id);
         if (foundItem.type === expectedType) {
           return foundItem;
         }
@@ -83,7 +83,7 @@ export function getAllActiveCompendiums(): string[] {
       return [];
     }
     return game.packs
-      ?.filter((comp: any) => comp?.documentName == 'Item')
+      ?.filter((comp: any) => comp?.documentName === 'Item')
       .map((comp: any) => comp?.collection)
       .filter(Boolean);
   } else {
@@ -100,8 +100,8 @@ export function getAllActiveCompendiums(): string[] {
 
 export function getAllItemCompendiums(): string[] {
   if (!game.packs) return [];
-  let comps = game.packs
-    ?.filter((comp: any) => comp?.documentName == 'Item')
+  const comps = game.packs
+    ?.filter((comp: any) => comp?.documentName === 'Item')
     .map((comp: any) => comp?.collection)
     .filter(Boolean);
   return Array.from(comps);
@@ -109,7 +109,7 @@ export function getAllItemCompendiums(): string[] {
 
 export function getAllPackageNames(): string[] {
   if (!game.packs) return [];
-  let uniquePackages = new Set(
+  const uniquePackages = new Set(
     game.packs
       ?.filter((comp: any) => comp?.metadata?.type === 'Item')
       .map((comp: any) => `${comp?.metadata?.packageName}`)
@@ -120,10 +120,10 @@ export function getAllPackageNames(): string[] {
 
 export function getSpecificAdditionalStat(additionalStatName: string): any {
   //@ts-expect-error foundry-types
-  let additionalStats = game.settings?.get('swade', 'settingFields')?.actor;
+  const additionalStats = game.settings?.get('swade', 'settingFields')?.actor;
   for (const stat in additionalStats) {
     if (
-      additionalStats[stat].label.toLowerCase() ==
+      additionalStats[stat].label.toLowerCase() ===
       additionalStatName.toLowerCase()
     ) {
       return additionalStats[stat];
@@ -132,10 +132,10 @@ export function getSpecificAdditionalStat(additionalStatName: string): any {
 }
 
 export function getActorAddtionalStatsArray(): string[] {
-  let actorAdditionalStats = getActorAddtionalStats();
-  let stats: string[] = [];
+  const actorAdditionalStats = getActorAddtionalStats();
+  const stats: string[] = [];
   for (const key in actorAdditionalStats) {
-    if (actorAdditionalStats.hasOwnProperty(key)) {
+    if (Object.hasOwn(actorAdditionalStats, key)) {
       const element = actorAdditionalStats[key];
       stats.push(`${element.label}:`);
     }
@@ -254,7 +254,7 @@ export function getImporterModuleData(): {
   importDate: Date;
 } {
   //@ts-expect-error foundry-types
-  const { title, id, version } = game.modules?.get(thisModule);
+  const { title, id, version } = game.modules.get(thisModule);
   return {
     app: title,
     id,

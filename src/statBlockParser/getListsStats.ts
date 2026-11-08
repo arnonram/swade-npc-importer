@@ -37,10 +37,12 @@ export function getProseList(
   return isProse ? line.replace(newLineRegex, ' ').trim() : undefined;
 }
 
-/** Section labels for a list; powers are sometimes listed as "Spells:". */
+/** Section labels for a list; powers are sometimes listed as "Spells:" or "Miracles:". */
 function sectionLabels(labelKey: ListType): string[] {
   const keys =
-    labelKey === ListType.Powers ? [ListType.Powers, 'Spells'] : [labelKey];
+    labelKey === ListType.Powers
+      ? [ListType.Powers, 'Spells', 'Miracles']
+      : [labelKey];
   return keys.map(
     key => `${foundryI18nLocalize(`npcImporter.parser.${key}`) || key}:`,
   );
@@ -69,7 +71,7 @@ function handleSpecialCharacters(line: string): string[] {
     .replace(/\)\s*[—–]\s*([^,()]+)/g, (_match, note) => ` — ${note.trim()})`);
   if (data.length > 1) {
     const matches = data.match(
-      /([A-Za-zÀ-ÖØ-öø-ÿ0-9!.\-’'/ ]+)(\(([^\)]+)\))?/gi,
+      /([A-Za-zÀ-ÖØ-öø-ÿ0-9!.\-’'/ ]+)(\(([^)]+)\))?/gi,
     );
     return matches
       ? matches.map(s => s.trim().replace(/^(and|or)\s+/i, '')).filter(Boolean)

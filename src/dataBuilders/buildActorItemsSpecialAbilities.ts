@@ -80,7 +80,7 @@ export async function specialAbilitiesParser(
 ): Promise<any[]> {
   // Regex: matches Str, Str., Str+4, Str -2, Str+d6, Str+2d8, Str + 1d6, Str+d4 (case-insensitive)
   // \b keeps it from matching inside words like "Strength" or "destroy".
-  const meleeDamageRegex = /\bstr\b\.?\s*([+\-]\s*((\d+)?d\d+|\d+))?/i;
+  const meleeDamageRegex = /\bstr\b\.?\s*([+-]\s*((\d+)?d\d+|\d+))?/i;
   if (!specialAbilitiesData) return [];
   let specialAbilitiesItems: any[] = [];
   if (!getModuleSettings(settingModifiedSpecialAbs)) {

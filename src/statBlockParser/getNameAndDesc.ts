@@ -39,7 +39,7 @@ export function getBio(rawData: string, sections: string[]): string {
       const trimmed = line.trim();
       return trimmed
         ? trimmed.endsWith('.')
-          ? trimmed + '<br/>'
+          ? `${trimmed}<br/>`
           : trimmed
         : '';
     })

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { buildActorToken } from '../../src/dataBuilders/buildActorToken';
-import { ParsedActor, TokenSettings } from '../../src/types/importedActor';
+import type { ParsedActor, TokenSettings } from '../../src/types/importedActor';
 import { getModuleSettings } from '../../src/utils/foundryActions';
 
 // Mocks

@@ -13,7 +13,7 @@ import {
   getImporterModuleData,
   getFolderId,
 } from './utils/foundryActions';
-import {
+import type {
   SwadeActorToImport,
   ParsedActor,
   ImportSettings,

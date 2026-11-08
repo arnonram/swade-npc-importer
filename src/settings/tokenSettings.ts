@@ -31,6 +31,7 @@ export default class TokenSettings extends foundry.applications.api.HandlebarsAp
   override async _prepareContext(): Promise<any> {
     const currentTokenValues = getModuleSettings(settingToken);
     const selected = (current: unknown, value: number) =>
+      // biome-ignore lint/suspicious/noDoubleEquals: stored setting may be a string
       current == value ? 'selected' : '';
     const disposition = currentTokenValues.disposition;
     const displayName = currentTokenValues.displayName;

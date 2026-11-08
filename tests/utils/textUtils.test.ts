@@ -35,7 +35,7 @@ describe('capitalize', () => {
   });
 
   it('preserves internal punctuation', () => {
-    expect(capitalize('this\'s fine')).toBe('This\'s Fine');
+    expect(capitalize("this's fine")).toBe("This's Fine");
   });
 });
 
@@ -72,7 +72,7 @@ describe('swidLookupKey', () => {
   it.each([
     ['Improved Frenzy', 'improved-frenzy'],
     ['Holy/Unholy Warrior', 'holyunholy-warrior'],
-    ['Can\'t Swim', 'cant-swim'],
+    ["Can't Swim", 'cant-swim'],
     ['H&K MP5 Magazine', 'hk-mp5-magazine'],
     ['Laser Battery, Rifle / SMG', 'laser-battery-rifle-smg'],
     ['Arcane Background (Magic)', 'arcane-background-magic'],

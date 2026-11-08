@@ -1,4 +1,4 @@
-import { ParsedActor } from '../types/importedActor';
+import type { ParsedActor } from '../types/importedActor';
 import { getSections } from './getSections';
 import { getBio, getName, hasWildCardMarker } from './getNameAndDesc';
 import { getAttributes, getSkills } from './getTraits';

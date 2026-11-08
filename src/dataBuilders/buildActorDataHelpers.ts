@@ -2,7 +2,7 @@ import {
   getActorAddtionalStats,
   getModuleSettings,
 } from '../utils/foundryActions';
-import { ParsedActor } from '../types/importedActor';
+import type { ParsedActor } from '../types/importedActor';
 import {
   settingCalculateAdditionalWounds,
   settingCalculateIgnoredWounds,
@@ -196,7 +196,7 @@ export function findRunningDie(parsedData: ParsedActor) {
         new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
       );
       if (match?.[0]) {
-        return parseInt(match[0].replace(/[a-z]/i, ''));
+        return parseInt(match[0].replace(/[a-z]/i, ''), 10);
       }
     }
 
@@ -209,7 +209,7 @@ export function findRunningDie(parsedData: ParsedActor) {
         new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
       );
       if (match?.[0]) {
-        die = parseInt(match[0].replace(/[a-z]/i, ''));
+        die = parseInt(match[0].replace(/[a-z]/i, ''), 10);
       }
     }
   }

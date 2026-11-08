@@ -1,5 +1,5 @@
 import { Logger } from '../utils/logger';
-import { Attributes, ImportedDie } from '../types/importedActor';
+import type { Attributes, ImportedDie } from '../types/importedActor';
 import { splitAndTrim } from '../utils/textUtils';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { buildTraitDie } from './parserBuilderHelpers';
@@ -65,15 +65,15 @@ export function getAttributes(sections: string[]): Attributes {
 }
 
 export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
-  let trait = new RegExp(
+  const trait = new RegExp(
     `${foundryI18nLocalize('npcImporter.parser.Skills')}:`,
     'i',
   );
   const skillsSection = sections.find(x => x.match(trait));
-  let skills = skillsSection
+  const skills = skillsSection
     ? splitAndTrim(separateTraits(skillsSection.replace(trait, '')), ',')
     : [];
-  let skillsDict: { [key: string]: ImportedDie } = {};
+  const skillsDict: { [key: string]: ImportedDie } = {};
   skills.forEach(singleTrait => {
     const matchResult = singleTrait.match(
       new RegExp(foundryI18nLocalize('npcImporter.regex.dice'), 'i'),
@@ -85,8 +85,8 @@ export function getSkills(sections: string[]): { [key: string]: ImportedDie } {
       return;
     }
 
-    let diceAndMod = matchResult ? matchResult[0].toString() : '';
-    let traitName = singleTrait
+    const diceAndMod = matchResult ? matchResult[0].toString() : '';
+    const traitName = singleTrait
       .replace(diceAndMod, '')
       .trim()
       .replace(' )', ')');

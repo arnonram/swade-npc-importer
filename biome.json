@@ -1,0 +1,38 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.6/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": { "includes": ["**", "!src/module.json"] },
+  "assist": { "enabled": false },
+  "formatter": { "indentStyle": "space" },
+  "javascript": {
+    "formatter": { "quoteStyle": "single", "arrowParentheses": "asNeeded" },
+    "globals": ["game"]
+  },
+  "yaml": { "formatter": { "quoteStyle": "single" } },
+  "linter": {
+    "rules": {
+      "complexity": { "noStaticOnlyClass": "off" },
+      "correctness": {
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error"
+      },
+      "suspicious": { "noExplicitAny": "off" },
+      "style": {
+        "noNonNullAssertion": "off",
+        "useNamingConvention": {
+          "level": "error",
+          "options": {
+            "strictCase": false,
+            "conventions": [
+              { "selector": { "kind": "objectLiteralMember" }, "match": ".*" },
+              {
+                "selector": { "kind": "enumMember" },
+                "formats": ["PascalCase", "CONSTANT_CASE"]
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

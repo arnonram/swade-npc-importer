@@ -3,7 +3,7 @@ import {
   getSystemCoreSkills,
 } from '../utils/foundryActions';
 import { capitalizeEveryWord } from '../utils/textUtils';
-import { WeaponBuilderProps } from '../types/actorToImport';
+import type { WeaponBuilderProps } from '../types/actorToImport';
 import { Logger } from '../utils/logger';
 import { foundryI18nLocalize } from '../utils/foundryWrappers';
 import { ItemType } from '../../src/types/enums';
@@ -320,7 +320,7 @@ export async function powerBuilder(powers: string[]): Promise<any[]> {
           ItemType.POWER,
         );
       }
-      let system = item?.system ? structuredClone(item.system) : {};
+      const system = item?.system ? structuredClone(item.system) : {};
       if (powerTrapping) {
         system.trapping = powerTrapping[1];
       }

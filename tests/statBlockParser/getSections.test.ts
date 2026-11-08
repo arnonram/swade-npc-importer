@@ -27,19 +27,29 @@ describe('getSections', () => {
     expect(sections[6]).toMatch(/^Gear:/);
   });
 
+  it('splits a "Miracles:" section off the gear before it', () => {
+    const sections = getSections(
+      'Attributes: Spirit d10\nGear: Staff (Str+d4), holy\nsymbol.\nMiracles: Deflection, healing. Power Points: 15.',
+    );
+    expect(sections).toContain('Gear: Staff (Str+d4), holy symbol.');
+    expect(sections).toContain('Miracles: Deflection, healing.');
+  });
+
   it('trims and returns empty if no valid labels found', () => {
     const badInput = 'This has no valid keywords like Attributes or Skills';
     expect(() => getSections(badInput)).toThrow('Not a valid statblock');
   });
 
   it('can handle newline, carriage return, and slash spacing issues', () => {
-    const input = 'Attributes: Strength d8\r\nSkills: Fighting d6\nGear: sword / armor';
+    const input =
+      'Attributes: Strength d8\r\nSkills: Fighting d6\nGear: sword / armor';
     const result = getSections(input);
     expect(result).toHaveLength(3);
     expect(result[2]).toContain('armor');
   });
   it('works with additional stats from getActorAddtionalStatsArray()', () => {
-    const input = 'Attributes: d8\nCustomStat: foo bar\nCustomStat 2: baz qux\nSkills: d6';
+    const input =
+      'Attributes: d8\nCustomStat: foo bar\nCustomStat 2: baz qux\nSkills: d6';
     const result = getSections(input);
     expect(result).toHaveLength(4);
     expect(result.some(r => r.startsWith('CustomStat'))).toBe(true);

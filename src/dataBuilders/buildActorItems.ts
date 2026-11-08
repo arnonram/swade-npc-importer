@@ -1,7 +1,7 @@
 import * as itemBuilder from './itemBuilders';
 import { specialAbilitiesParser } from './buildActorItemsSpecialAbilities';
 import { itemGearBuilder } from './buildActorGear';
-import { ParsedActor } from '../types/importedActor';
+import type { ParsedActor } from '../types/importedActor';
 import { checkBruteEdge } from './buildActorDataHelpers';
 
 export async function buildActorItems(parsedData: ParsedActor) {

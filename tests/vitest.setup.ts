@@ -7,14 +7,14 @@ vi.mock('../src/utils/foundryWrappers', () => ({
   foundryUiError: (msg: string) => globalThis.ui.notifications.error(msg),
 }));
 
-//@ts-ignore
+//@ts-expect-error
 globalThis.game = {
   i18n: {
     localize: (key: string) => en[key] || key,
   },
 };
 
-//@ts-ignore
+//@ts-expect-error
 globalThis.ui = {
   notifications: {
     info: vi.fn(),

@@ -168,12 +168,12 @@ describe('buildActorDataHelpers', () => {
     it.each([
       [0, false, {}, false, 0],
       [0, true, {}, false, 3],
-      [0, true, { ['Resilient']: '' }, true, 4],
+      [0, true, { Resilient: '' }, true, 4],
       [4, true, {}, true, 4],
       [8, true, {}, true, 5],
       [12, true, {}, true, 6],
-      [4, true, { ['Resilient']: '' }, true, 5],
-      [4, true, { ['Very Resilient']: '' }, true, 6],
+      [4, true, { Resilient: '' }, true, 5],
+      [4, true, { 'Very Resilient': '' }, true, 6],
     ])(
       'size=%i, isWildCard=%j, specialAbs=%j, setting=%j => %i',
       (size, isWildCard, specialAbs, setting, expected) => {

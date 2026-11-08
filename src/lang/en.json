@@ -39,6 +39,7 @@
   "npcImporter.parser.Edges": "Edges",
   "npcImporter.parser.Powers": "Powers",
   "npcImporter.parser.Spells": "Spells",
+  "npcImporter.parser.Miracles": "Miracles",
   "npcImporter.parser.Various": "Various|Varies",
   "npcImporter.parser.Pace": "Pace",
   "npcImporter.parser.Parry": "Parry",

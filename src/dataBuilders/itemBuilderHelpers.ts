@@ -52,7 +52,7 @@ export function generateDescription(
   itemData: { name: string; system: { description: any } },
   isSpecialAbility?: boolean,
 ): string {
-  let desc;
+  let desc: string | undefined;
   if (description && isSpecialAbility && itemData?.name) {
     desc = `${description.trim()}<br>${specialAbilitiesLink(itemData.name)}`;
   }
@@ -101,7 +101,10 @@ export async function checkforItem(
 
   if (isEmpty(itemFromCompendium.system)) {
     itemFromCompendium = await getItemFromCompendium(
-      itemName.split('(')[0].replace(new RegExp('[+-]?\\d'), '').trim(),
+      itemName
+        .split('(')[0]
+        .replace(/[+-]?\d/, '')
+        .trim(),
       itemType,
     );
   }

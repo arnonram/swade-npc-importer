@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "Import stat blocks for SWADE",
   "author": "Arnon Ram",
-  "license": "LGPL-3.0-or-later",
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "build": "yarn update:module && rollup -c --configPlugin @rollup/plugin-typescript",
@@ -11,30 +11,25 @@
     "test": "vitest run --coverage",
     "test:watch": "vitest",
     "clean": "rm -rf dist",
-    "lint:check": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix",
-    "format:check": "prettier --check .",
-    "format:fix": "prettier --write .",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
     "zip-module": "cd dist && zip -r ../module.zip ./",
     "update:module": "node bin/update-module.cjs",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.6",
     "@guanghechen/rollup-plugin-copy": "^6.1.0",
     "@playwright/test": "^1.65.0",
     "@rollup/plugin-typescript": "^12.3.1",
     "@types/fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
-    "@typescript-eslint/eslint-plugin": "^8.72.1",
-    "@typescript-eslint/parser": "^8.72.1",
     "@vitest/browser": "^5.1.0",
     "@vitest/coverage-v8": "5.1.0",
     "@vitest/ui": "^5.1.0",
-    "eslint": "^10.14.0",
     "happy-dom": "^21.0.4",
     "husky": ">=6",
     "jsdom": "^31.0.0",
     "lint-staged": ">=17.6.0",
-    "prettier": "^3.9.10",
     "rollup": "^4.68.0",
     "rollup-plugin-livereload": "^2.0.5",
     "tslib": "^2.9.1",
@@ -51,7 +46,6 @@
   },
   "homepage": "https://github.com/arnonram/swade-npc-importer#readme",
   "lint-staged": {
-    "*.ts": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
+    "*": "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true"
   }
 }

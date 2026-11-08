@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // This script checks if the package.json version is different from master.
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+const { execSync } = require('node:child_process');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const PACKAGE_JSON = path.join(__dirname, '../package.json');
 
