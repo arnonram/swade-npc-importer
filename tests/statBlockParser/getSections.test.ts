@@ -33,13 +33,15 @@ describe('getSections', () => {
   });
 
   it('can handle newline, carriage return, and slash spacing issues', () => {
-    const input = 'Attributes: Strength d8\r\nSkills: Fighting d6\nGear: sword / armor';
+    const input =
+      'Attributes: Strength d8\r\nSkills: Fighting d6\nGear: sword / armor';
     const result = getSections(input);
     expect(result).toHaveLength(3);
     expect(result[2]).toContain('armor');
   });
   it('works with additional stats from getActorAddtionalStatsArray()', () => {
-    const input = 'Attributes: d8\nCustomStat: foo bar\nCustomStat 2: baz qux\nSkills: d6';
+    const input =
+      'Attributes: d8\nCustomStat: foo bar\nCustomStat 2: baz qux\nSkills: d6';
     const result = getSections(input);
     expect(result).toHaveLength(4);
     expect(result.some(r => r.startsWith('CustomStat'))).toBe(true);

@@ -11,7 +11,6 @@ A Savage Worlds Adventure Edition stat block importer for [Foundry VTT](https://
 1. If you are running Foundry as self-hosted, and with the HTTP protocol, then the Importer _might_ not be able to read the data from the clipboard (this is security realted stuff). It will usually be represented by the following error in the browser console: `Cannot read property 'readText' of undefined`.
 
    To solve this either:
-
    - Set your hosted Foundry to work with HTTPS, or
    - Set the `Insecure origins treated as secure` flag in your browser (or equivalent) appropriatly ([see here for an explanation](https://github.com/arnonram/swade-npc-importer/issues/42#issuecomment-773385058))
 
@@ -34,7 +33,6 @@ The Importer basically searches for patterns in the text, so that means paying a
 ## How to use it...
 
 0. Go to [Settings](#some-configurations) and look around:
-
    - In the **_Compendiums Selector_** mark any Package or Compendium you wish NPC Importer to use (not selecting anything will cycle through all compendiums and use the first relevant entry)
    - Set up any other default values you might want
 
@@ -90,7 +88,6 @@ Some _Prototype Token_ options may be set by default
 - **Toughness**
   - Set Auto-calculate to `false` by default
 - **Bennies**
-
   - Bennies are set according to the table below.
   - **_Note:_** Edges/Hindrances affecting bennies are not taken into account
 
@@ -102,7 +99,6 @@ Some _Prototype Token_ options may be set by default
   | Character  |    Yes    |         3/3         |
 
 - **Gear**
-
   - _Equipped_ by default
   - Weapons (melee & ranged)
     - If weapon does not have Range, then related skill will be _Fighting_
@@ -112,7 +108,6 @@ Some _Prototype Token_ options may be set by default
   - Gear
 
 - **Special Abilities**
-
   - Search for "Armor" and/or any damage attack (lines with Str., Str+d\*, or dice formulas).
     - You may select from the settings to not search for these special items, and then they will all be listed as Special Abilities Items
   - Lists all others as Special Abilities Items
@@ -122,10 +117,8 @@ Some _Prototype Token_ options may be set by default
   - Ignore wounds & Unshake bonuses for: construct, undead, elemental, combat reflexes
   - List them all in the actors' description with links to Compendium rules (if using the core-swade Compendium pack)
   - See [NPC Importer Settings](#some-configurations) for further manipulation of the statblock.
-
     - This options allows users who have set Special Abilities as Eges in their World to link them, as well as
     - Forcing the Importer to consider some Spcial Abilities as specific Items => For example: this means that you can add a `@a` to force the Importer to consider the special ability as Armor. The existing options are:
-
       - `@e` => Edge;
       - `@h` => Hinrance;
       - `@w` => Weapom;

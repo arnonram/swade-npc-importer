@@ -5,18 +5,15 @@ Thank you for considering contributing to this project! Your help is appreciated
 ## How to Contribute
 
 - **Bug Reports & Feature Requests:**
-
   - Please use [GitHub Issues](https://github.com/arnonram/swade-npc-importer/issues) to report bugs or suggest features.
 
 - **Pull Requests:**
-
   - Fork the repository and create your branch from `main`.
   - Add your changes and tests.
   - Ensure all tests pass (`yarn test`).
   - Submit a pull request with a clear description of your changes.
 
 - **Translations:**
-
   - To add or improve language support, edit or add files in `src/lang/` and submit a pull request.
 
 - **Documentation:**
@@ -24,7 +21,7 @@ Thank you for considering contributing to this project! Your help is appreciated
 
 ## Code Style
 
-- Use Prettier for formatting (`yarn prettier`).
+- Use Biome for linting and formatting (`yarn lint`, or `yarn lint:fix` to apply fixes).
 - Follow the existing code style and structure.
 - Write clear, concise commit messages.
 

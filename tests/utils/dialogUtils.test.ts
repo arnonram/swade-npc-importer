@@ -45,13 +45,13 @@ describe('dialogUtils', () => {
   describe('buildFolderOptions', () => {
     it('returns options with correct selected', () => {
       const html = buildFolderOptions('foo', ['foo', 'bar']);
-      expect(html).toContain('<option value=\'\' >--</option>');
+      expect(html).toContain("<option value='' >--</option>");
       expect(html).toContain('<option value="foo" selected>foo</option>');
       expect(html).toContain('<option value="bar" >bar</option>');
     });
     it('returns options with -- selected if lastSave is empty', () => {
       const html = buildFolderOptions('', ['foo']);
-      expect(html).toContain('<option value=\'\' selected>--</option>');
+      expect(html).toContain("<option value='' selected>--</option>");
     });
   });
 });
