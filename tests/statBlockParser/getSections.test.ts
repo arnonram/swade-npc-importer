@@ -27,6 +27,14 @@ describe('getSections', () => {
     expect(sections[6]).toMatch(/^Gear:/);
   });
 
+  it('splits a "Miracles:" section off the gear before it', () => {
+    const sections = getSections(
+      'Attributes: Spirit d10\nGear: Staff (Str+d4), holy\nsymbol.\nMiracles: Deflection, healing. Power Points: 15.',
+    );
+    expect(sections).toContain('Gear: Staff (Str+d4), holy symbol.');
+    expect(sections).toContain('Miracles: Deflection, healing.');
+  });
+
   it('trims and returns empty if no valid labels found', () => {
     const badInput = 'This has no valid keywords like Attributes or Skills';
     expect(() => getSections(badInput)).toThrow('Not a valid statblock');

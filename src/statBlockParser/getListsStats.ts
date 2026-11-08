@@ -37,10 +37,12 @@ export function getProseList(
   return isProse ? line.replace(newLineRegex, ' ').trim() : undefined;
 }
 
-/** Section labels for a list; powers are sometimes listed as "Spells:". */
+/** Section labels for a list; powers are sometimes listed as "Spells:" or "Miracles:". */
 function sectionLabels(labelKey: ListType): string[] {
   const keys =
-    labelKey === ListType.Powers ? [ListType.Powers, 'Spells'] : [labelKey];
+    labelKey === ListType.Powers
+      ? [ListType.Powers, 'Spells', 'Miracles']
+      : [labelKey];
   return keys.map(
     key => `${foundryI18nLocalize(`npcImporter.parser.${key}`) || key}:`,
   );

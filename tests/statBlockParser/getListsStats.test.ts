@@ -71,6 +71,15 @@ describe('getListStat', () => {
     ]);
   });
 
+  it('reads a "Miracles:" section as powers', () => {
+    const sections = ['Miracles: Deflection, healing, light/darkness.'];
+    expect(getListStat(sections, ListType.Powers)).toEqual([
+      'Deflection',
+      'healing',
+      'light/darkness',
+    ]);
+  });
+
   it('reads a "Spells:" section as powers', () => {
     const sections = ['Spells: Barrier, beast friend, stun.'];
     expect(getListStat(sections, ListType.Powers)).toEqual([
