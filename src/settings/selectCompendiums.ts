@@ -21,9 +21,11 @@ export default class SelectCompendiums extends foundry.applications.api.Handleba
     tag: 'form',
     window: {
       title: 'npcImporter.settings.CompendiumsSelector',
+      resizable: true,
     },
     position: {
-      width: 300,
+      width: 420,
+      height: 600,
     },
     form: {
       handler: SelectCompendiums.#onSubmit,
@@ -34,6 +36,7 @@ export default class SelectCompendiums extends foundry.applications.api.Handleba
   static override PARTS = {
     form: {
       template: 'modules/swade-npc-importer/templates/CompendiumsToUse.hbs',
+      scrollable: ['.scrollable'],
     },
   };
 

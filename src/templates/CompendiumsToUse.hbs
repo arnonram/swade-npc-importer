@@ -1,30 +1,29 @@
-<div class='standard-form'>
-  <h2 class='modal-header'>{{localize 'npcImporter.settings.SelectPacks'}}</h2>
-  <p><em>{{localize 'npcImporter.settings.SelectPacksInfo'}}</em></p>
-  {{#each packs}}
-    <input
-      type='checkbox'
-      name='pack.{{this.name}}'
-      value='{{this.name}}'
-      {{this.checked}}
-    />
-    <label>{{this.name}}</label><br />
-  {{/each}}
-
-  <h2 class='modal-header'>
-    {{localize 'npcImporter.settings.SelectCompendiums'}}
-  </h2>
-  {{#each comps}}
-    <input
-      type='checkbox'
-      name='comp.{{this.name}}'
-      value='{{this.name}}'
-      {{this.checked}}
-    />
-    <label>{{this.name}}</label><br />
-  {{/each}}
-  <br />
-  <button type='submit' name='submit'>
-    <i class='far fa-save'>{{localize 'npcImporter.HTML.Save'}}</i>
-  </button>
+<div class='standard-form' style='flex: 1; min-height: 0'>
+  <div class='standard-form scrollable' style='flex: 1; min-height: 0'>
+    <fieldset>
+      <legend>{{localize 'npcImporter.settings.SelectPacks'}}</legend>
+      <p class='hint'>{{localize 'npcImporter.settings.SelectPacksInfo'}}</p>
+      {{#each packs}}
+        <label class='checkbox'>
+          <input type='checkbox' name='pack.{{this.name}}' {{this.checked}} />
+          {{this.name}}
+        </label>
+      {{/each}}
+    </fieldset>
+    <fieldset>
+      <legend>{{localize 'npcImporter.settings.SelectCompendiums'}}</legend>
+      {{#each comps}}
+        <label class='checkbox'>
+          <input type='checkbox' name='comp.{{this.name}}' {{this.checked}} />
+          {{this.name}}
+        </label>
+      {{/each}}
+    </fieldset>
+  </div>
+  <footer class='form-footer'>
+    <button type='submit'>
+      <i class='fa-solid fa-floppy-disk'></i>
+      {{localize 'npcImporter.HTML.Save'}}
+    </button>
+  </footer>
 </div>

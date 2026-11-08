@@ -16,7 +16,6 @@
       </option>
     </select>
   </div>
-  <br />
   <div class='form-group'>
     <label>{{localize 'TOKEN.FIELDS.displayName.label'}}:</label>
     <select id='displayName' name='displayName' data-dtype='Number'>
@@ -98,7 +97,10 @@
       />
     </div>
   </div>
-  <button type='submit' name='submit'>
-    <i class='far fa-save'>{{localize 'npcImporter.HTML.Save'}}</i>
-  </button>
+  <footer class='form-footer'>
+    <button type='submit'>
+      <i class='fa-solid fa-floppy-disk'></i>
+      {{localize 'npcImporter.HTML.Save'}}
+    </button>
+  </footer>
 </div>
