@@ -38,7 +38,8 @@ export async function statBlockParser(
       .join('<hr>');
     let importedActor: ParsedActor = {
       name: getName(rawStatBlock),
-      biography: prosePowers ? `${biography}<hr>${prosePowers}` : biography,
+      wildCard: hasWildCardMarker(rawStatBlock),
+      biography,
       attributes: getAttributes(sections),
       skills: getSkills(sections),
       pace: getDerivedStats(sections, DerivedStatType.Pace),

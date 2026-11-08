@@ -13,8 +13,8 @@ export function getListStat(sections: string[], labelKey: ListType): string[] {
 const maxItemNameWords = 4;
 
 /**
- * Some stat blocks describe powers in a sentence instead of listing them.
- * Returns that Powers text, or undefined if the section is a regular list.
+ * Some stat blocks describe powers or hindrances in a sentence instead of listing them.
+ * Returns that section's text, or undefined if the section is a regular list.
  */
 export function getProseList(
   sections: string[],
