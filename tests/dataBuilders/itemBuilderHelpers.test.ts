@@ -15,7 +15,7 @@ vi.mock('../../src/utils/foundryActions', () => ({
     name,
     type,
     system: { description: 'desc', notes: 'notes' },
-    effects: { toJSON: () => ['effect'] },
+    effects: ['effect'],
     flags: { flag: true },
   })),
 }));
@@ -72,7 +72,7 @@ describe('itemBuilderHelpers', () => {
       item: {
         name: 'Sword',
         system: { description: 'desc' },
-        effects: { toJSON: () => ['fx'] },
+        effects: ['fx'],
         flags: { flag: true },
       },
       type: ItemType.WEAPON,

@@ -62,7 +62,7 @@ export async function getItemFromCompendium(
       if (resultId !== undefined) {
         const foundItem = await pack.getDocument(resultId._id);
         if (foundItem.type === expectedType) {
-          return foundItem;
+          return foundItem.toObject();
         }
       }
     } catch (error) {

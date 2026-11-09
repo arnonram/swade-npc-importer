@@ -21,7 +21,7 @@ vi.mock('../../src/dataBuilders/itemBuilderHelpers', async () => {
         equippable: true,
         equipStatus: 3,
       },
-      effects: { toJSON: () => ['fx'] },
+      effects: ['fx'],
       flags: { flag: true },
     })),
     generateDescription: vi.fn((desc, _item) => desc || 'desc'),
@@ -177,7 +177,7 @@ describe('itemBuilders', () => {
                 notes: 'note',
                 additionalStats: { foo: 1 },
               },
-              effects: { toJSON: () => ['e1'] },
+              effects: ['e1'],
               flags: { bar: 2 },
             };
           return undefined;

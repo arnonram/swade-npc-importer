@@ -43,7 +43,7 @@ export async function skillBuilder(
               modifier: skillData.modifier,
             },
           },
-          effects: item?.effects?.toJSON() ?? [],
+          effects: item?.effects ?? [],
           flags: item?.flags ?? {},
         };
       } catch (error) {
