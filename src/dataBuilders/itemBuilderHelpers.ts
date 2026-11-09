@@ -138,7 +138,7 @@ export function buildItemObject({
     name,
     img: item?.img ?? img,
     system: { ...(item?.system ?? {}), ...system },
-    effects: item?.effects?.toJSON() ?? [],
+    effects: item?.effects ?? [],
     flags: item?.flags ?? {},
   };
 }
