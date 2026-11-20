@@ -1,5 +1,5 @@
-# Need to run this manually to build the module and upload it to a release
-# NOTE: must create Release manually first!
+# Push a tag like v1.2.3 to build the module and publish a release.
+# The version comes from the tag; package.json/module.json keep a placeholder.
 
 name: Mod Builder
 
@@ -22,10 +22,13 @@ jobs:
           cache: yarn
           cache-dependency-path: yarn.lock
       - run: yarn --frozen-lockfile
+      - name: Set version from tag
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          echo "version=$version" >> "$GITHUB_ENV"
+          npm pkg set version="$version"
       - run: yarn build
       - run: yarn zip-module
-      - name: Get Version
-        run: echo "version=$(jq -r .version package.json)" >> $GITHUB_ENV
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
