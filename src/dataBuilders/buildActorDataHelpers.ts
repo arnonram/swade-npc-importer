@@ -14,7 +14,7 @@ import { cleanKeyName } from '../../src/utils/textUtils';
 export function generateAttributes(parsedData: ParsedActor) {
   const attributes = { ...parsedData.attributes };
   const bonus = findUnshakeBonus(parsedData);
-  if (bonus !== undefined) {
+  if (attributes.spirit) {
     attributes.spirit.unShakeBonus = bonus;
   }
   return attributes;

@@ -11,29 +11,38 @@ export function getAbilityList(
   sections: string[],
   abilityType: AbilityType,
 ): Record<string, string> {
-  const abilityLine = sections.find(x =>
-    x.includes(`${foundryI18nLocalize(`npcImporter.parser.${abilityType}`)}:`),
-  );
+  const headers = abilityHeaderRegexes(abilityType);
+  const abilityLine = sections.find(x => headers.some(r => r.test(x)));
 
   if (!abilityLine) {
     return {};
   }
 
-  return getAbilities(
-    abilityLine
-      .replace(
-        `${foundryI18nLocalize(`npcImporter.parser.${abilityType}`)}:`,
-        '',
-      )
-      .trim(),
-  );
+  const header = headers.find(r => r.test(abilityLine)) as RegExp;
+  return getAbilities(abilityLine.replace(header, '').trim());
+}
+
+/**
+ * Header patterns for an ability section: "Special Abilities:" (any case),
+ * or the colonless all-caps "SPECIAL ABILITIES" used by some books.
+ * Mixed-case without colon is not a header (e.g. the edge "Super Powers (30)").
+ */
+export function abilityHeaderRegexes(abilityType: AbilityType): RegExp[] {
+  const label = foundryI18nLocalize(`npcImporter.parser.${abilityType}`);
+  return [
+    new RegExp(`${label}:`, 'i'),
+    new RegExp(`${label.toUpperCase()}(?=\\s|$)`),
+  ];
 }
 
 function getAbilities(data: string): Record<string, string> {
   const modifiedSpecialAbs = getModuleSettings(settingModifiedSpecialAbs);
-  const delimiter = modifiedSpecialAbs
-    ? /@/
-    : new RegExp(getModuleSettings(settingBulletPointIcons), 'ig');
+  // PDF symbol-font bullets (e.g. Wingdings) paste as C1 control or
+  // Private Use Area chars, which never occur in real text.
+  const bullets = [getModuleSettings(settingBulletPointIcons), pdfSymbolBullets]
+    .filter(Boolean)
+    .join('|');
+  const delimiter = modifiedSpecialAbs ? /@/ : new RegExp(bullets, 'ig');
   const lines = splitAndTrim(data, delimiter);
   const abilities: Record<string, string> = {};
 
@@ -50,6 +59,8 @@ function getAbilities(data: string): Record<string, string> {
 
   return abilities;
 }
+
+const pdfSymbolBullets = '[\\u0080-\\u009F\\uE000-\\uF8FF]';
 
 export enum AbilityType {
   SpecialAbilities = 'SpecialAbilities',

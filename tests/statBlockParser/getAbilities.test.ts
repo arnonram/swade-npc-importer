@@ -73,4 +73,14 @@ describe('getAbilityList', () => {
       Flight: 'Fly fast',
     });
   });
+
+  it('splits on PDF symbol-font bullets not listed in the setting', () => {
+    const input = [
+      'Special Abilities: \uF06E Dodge -2 (2): -2 to be hit. \u0090 Parry +2 (2): Training.',
+    ];
+    expect(getAbilityList(input, AbilityType.SpecialAbilities)).toEqual({
+      'Dodge -2 (2)': '-2 to be hit.',
+      'Parry +2 (2)': 'Training.',
+    });
+  });
 });

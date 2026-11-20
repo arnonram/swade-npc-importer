@@ -87,10 +87,14 @@ export function slashNameVariants(name: string): string[] {
  * soft hyphens, words hyphenated across lines ("Fleet-\nFooted"), and "boost/\nlower".
  */
 export function joinBrokenLines(text: string): string {
-  return text
-    .replace(/\u00ad\s*/g, '')
-    .replace(/(\p{L})-[ \t]*\r?\n[ \t]*(?=\p{L})/gu, '$1-')
-    .replace(/\/[ \t]*\r?\n[ \t]*/g, '/');
+  return (
+    text
+      .replace(/\u00ad\s*/g, '')
+      // "Intim-\nidation" is a split word; "Magic-\nBased" is a hyphenated compound.
+      .replace(/(\p{L})-[ \t]*\r?\n[ \t]*(?=\p{Ll})/gu, '$1')
+      .replace(/(\p{L})-[ \t]*\r?\n[ \t]*(?=\p{L})/gu, '$1-')
+      .replace(/\/[ \t]*\r?\n[ \t]*/g, '/')
+  );
 }
 
 export function splitAndTrim(

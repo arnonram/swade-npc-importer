@@ -168,6 +168,12 @@ describe('joinBrokenLines', () => {
     ).toBe('Arcane Background (Any Magic-Based), Fleet-Footed');
   });
 
+  it('drops a line-break hyphen inside a word (lowercase continuation)', () => {
+    expect(joinBrokenLines('Intim-\nidation d8, Thiev-\nery d10')).toBe(
+      'Intimidation d8, Thievery d10',
+    );
+  });
+
   it('removes soft hyphens', () => {
     expect(joinBrokenLines('Intimi\u00addation d8, Intimi\u00ad\ndation')).toBe(
       'Intimidation d8, Intimidation',
