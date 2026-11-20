@@ -30,7 +30,12 @@ Thank you for considering contributing to this project! Your help is appreciated
 1. Clone the repo
 2. Install dependencies: `yarn`
 3. Run tests: `yarn test`
-4. Build: `yarn build` or `yarn build:wacth`
+4. Build: `yarn build` or `yarn build:watch`
+
+## Versioning & Releases
+
+- Don't bump the version in `package.json` or `src/module.json`. Both hold a `0.0.0-dev` placeholder.
+- Releases are cut by pushing a `vX.Y.Z` tag on `main` (maintainers only). The release workflow takes the version from the tag, builds the module and publishes the GitHub release with `module.zip` and `module.json`.
 
 ---
 
