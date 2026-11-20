@@ -59,6 +59,14 @@ describe('buildActorDataHelpers', () => {
     });
   });
 
+  describe('generateAttributes', () => {
+    it('does not throw when no attributes were parsed', () => {
+      expect(
+        helpers.generateAttributes({ attributes: {}, edges: [] } as any),
+      ).toEqual({});
+    });
+  });
+
   describe('toughnessBonus', () => {
     it.each([
       [

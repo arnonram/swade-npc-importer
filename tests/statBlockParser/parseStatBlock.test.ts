@@ -156,3 +156,34 @@ describe('statBlockParser integration', () => {
     expect(foundryUiErrorSpy).toHaveBeenCalledWith(expectedError);
   });
 });
+
+describe('colonless all-caps ability headers (Super Powers Companion style)', () => {
+  const arrowhead = `Arrowhead
+Attributes: Agility d12, Smarts d6, Spirit d6,
+Strength d8, Vigor d8
+Skills: Athletics d6, Shooting d12+4
+Pace: 6; Parry: 10; Toughness: 8 (2)
+Edges: Alertness, Dead Shot, Super Powers (30)
+Gear: Combat armor (+2*), compound bow
+(Range 12/24/48, Damage Str+d6, AP 1; or
+as ranged attack, see below).
+SPECIAL ABILITIES
+• Awareness (2): Ignores 3 points of a foe’s
+attack penalties. Device (Sensors and
+HUD in helmet).
+• Parry +2 (2): Training.
+• Super Skill (6): Fighting +2, Shooting +4.`;
+
+  it('parses SPECIAL ABILITIES as special abilities, not biography', async () => {
+    const result = await statBlockParser(arrowhead);
+    expect(result.specialAbilities).toEqual({
+      'Awareness (2)':
+        'Ignores 3 points of a foe’s attack penalties. Device (Sensors and HUD in helmet).',
+      'Parry +2 (2)': 'Training.',
+      'Super Skill (6)': 'Fighting +2, Shooting +4.',
+    });
+    expect(result.biography).toBe('');
+    expect(result.edges).toContain('Super Powers (30)');
+    expect(result.superPowers).toEqual({});
+  });
+});

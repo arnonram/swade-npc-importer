@@ -1,4 +1,5 @@
 import { getActorAddtionalStatsArray } from '../utils/foundryActions';
+import { AbilityType, abilityHeaderRegexes } from './getAbilities';
 
 /**
  * Splits a statblock string into its sections based on known labels.
@@ -33,18 +34,22 @@ function getSectionsIndex(inputData: string): number[] {
     `${game?.i18n?.localize('npcImporter.parser.Toughness')}:`,
     `${game?.i18n?.localize('npcImporter.parser.PowerPoints')}:`,
     `${game?.i18n?.localize('npcImporter.parser.Gear')}:`,
-    `${game?.i18n?.localize('npcImporter.parser.SpecialAbilities')}:`,
-    `${game?.i18n?.localize('npcImporter.parser.SuperPowers')}:`,
     `${game?.i18n?.localize('npcImporter.parser.Conviction')}:`,
   ];
 
-  const allStats = allStatBlockEntities.concat(getActorAddtionalStatsArray());
+  const allStats = allStatBlockEntities
+    .concat(getActorAddtionalStatsArray())
+    .map(element => new RegExp(element, 'i'))
+    .concat(
+      abilityHeaderRegexes(AbilityType.SpecialAbilities),
+      abilityHeaderRegexes(AbilityType.SuperPowers),
+    );
   const sectionsIndex: number[] = [];
   allStats.forEach(element => {
-    const index = inputData.search(new RegExp(element, 'i'));
+    const index = inputData.search(element);
     if (index >= 0) {
       sectionsIndex.push(index);
     }
   });
-  return sectionsIndex.sort((a, b) => a - b);
+  return [...new Set(sectionsIndex)].sort((a, b) => a - b);
 }
