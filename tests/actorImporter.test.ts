@@ -14,6 +14,7 @@ describe('actorImporter', () => {
   const mockLoggerError = vi.fn();
   const mockFoundryI18nLocalize = vi.fn(x => x);
   const mockFoundryUiInfo = vi.fn();
+  const mockFoundryUiError = vi.fn();
 
   beforeEach(() => {
     vi.spyOn(foundryActions, 'importActor').mockImplementation(mockImport);
@@ -27,6 +28,9 @@ describe('actorImporter', () => {
     );
     vi.spyOn(foundryWrappers, 'foundryUiInfo').mockImplementation(
       mockFoundryUiInfo,
+    );
+    vi.spyOn(foundryWrappers, 'foundryUiError').mockImplementation(
+      mockFoundryUiError,
     );
     global.foundry = {
       applications: {
@@ -48,12 +52,16 @@ describe('actorImporter', () => {
     mockLoggerError.mockReset();
     mockFoundryI18nLocalize.mockReset();
     mockFoundryUiInfo.mockReset();
+    mockFoundryUiError.mockReset();
   });
 
   it('should warn and return if actor name is missing', async () => {
     await actorImporter({} as SwadeActorToImport);
     expect(mockLoggerWarn).toHaveBeenCalledWith(
       'actorImporter: Missing actor name.',
+    );
+    expect(mockFoundryUiError).toHaveBeenCalledWith(
+      'npcImporter.parser.MissingName',
     );
     expect(mockImport).not.toHaveBeenCalled();
   });

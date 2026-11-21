@@ -52,6 +52,7 @@ Hooks.on('renderActorDirectory', (_app: any, html: HTMLElement) => {
 
     npcImporterButton.addEventListener('click', async () => {
       const dialog = await new foundry.applications.api.DialogV2({
+        classes: ['npc-importer-dialog'],
         window: {
           title: foundryI18nLocalize('npcImporter.HTML.ImportTitle'),
           resizable: true,
