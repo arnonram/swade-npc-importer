@@ -6,8 +6,16 @@ import { foundryI18nLocalize, foundryUiInfo } from './utils/foundryWrappers';
 export async function actorImporter(
   actorDataToImport: SwadeActorToImport,
 ): Promise<void> {
-  if (!actorDataToImport.name) {
-    Logger.warn('actorImporter: Missing actor name.');
+  if (!actorDataToImport.name?.trim()) {
+    const name = await askForName();
+    if (name === null) {
+      foundryUiInfo(
+        foundryI18nLocalize('npcImporter.HTML.ActorNotImportedMsg'),
+      );
+      return;
+    }
+    // Re-run so an empty submission asks again and a duplicate name is caught.
+    await actorImporter({ ...actorDataToImport, name });
     return;
   }
   const actorId = getActorId(actorDataToImport.name);
@@ -16,6 +24,39 @@ export async function actorImporter(
   } else {
     await whatToDo(actorDataToImport, actorId);
   }
+}
+
+/**
+ * Asks for a name when the stat block has none.
+ * Resolves to the entered name, or null if the dialog was cancelled or closed.
+ */
+async function askForName(): Promise<string | null> {
+  return foundry.applications.api.DialogV2.prompt({
+    window: {
+      title: foundryI18nLocalize('npcImporter.HTML.ActorImporter'),
+    },
+    position: {
+      width: 400,
+    },
+    content: `
+    <div class="form-group stacked">
+        <label for="actorName">${foundryI18nLocalize(
+          'npcImporter.HTML.EnterName',
+        )}</label>
+        <input type="text" id="actorName" name="actorName" autofocus>
+    </div>
+    `,
+    ok: {
+      label: foundryI18nLocalize('npcImporter.HTML.Import'),
+      callback: (_event: Event, button: HTMLButtonElement) =>
+        (
+          button.form?.elements.namedItem(
+            'actorName',
+          ) as HTMLInputElement | null
+        )?.value.trim() ?? '',
+    },
+    rejectClose: false,
+  });
 }
 
 async function safeImport(actorData: SwadeActorToImport) {

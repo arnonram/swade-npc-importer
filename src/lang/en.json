@@ -126,5 +126,6 @@
   "npcImporter.HTML.ActorImportError": "Failed to import actor (see console for errors)",
   "npcImporter.HTML.NameInputMissing": "Name input field is missing. Please try again.",
   "npcImporter.parser.ClipboardPermissionError": "Clipboard access denied. Please allow clipboard permissions or paste the statblock manually.",
-  "npcImporter.parser.BuildActorError": "Failed to build actor. See console for details."
+  "npcImporter.parser.BuildActorError": "Failed to build actor. See console for details.",
+  "npcImporter.HTML.EnterName": "No name found in the stat block. Enter a name for the actor:"
 }
