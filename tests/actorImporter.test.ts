@@ -14,6 +14,7 @@ describe('actorImporter', () => {
   const mockLoggerError = vi.fn();
   const mockFoundryI18nLocalize = vi.fn(x => x);
   const mockFoundryUiInfo = vi.fn();
+  const mockPrompt = vi.fn();
 
   beforeEach(() => {
     vi.spyOn(foundryActions, 'importActor').mockImplementation(mockImport);
@@ -31,11 +32,14 @@ describe('actorImporter', () => {
     global.foundry = {
       applications: {
         api: {
-          DialogV2: vi.fn(
-            class {
-              render = vi.fn();
-              element = { querySelector: vi.fn() };
-            },
+          DialogV2: Object.assign(
+            vi.fn(
+              class {
+                render = vi.fn();
+                element = { querySelector: vi.fn() };
+              },
+            ),
+            { prompt: mockPrompt },
           ),
         },
       },
@@ -48,13 +52,41 @@ describe('actorImporter', () => {
     mockLoggerError.mockReset();
     mockFoundryI18nLocalize.mockReset();
     mockFoundryUiInfo.mockReset();
+    mockPrompt.mockReset();
   });
 
-  it('should warn and return if actor name is missing', async () => {
+  it('asks for a name when the actor name is missing, then imports', async () => {
+    mockGetActorId.mockReturnValue(undefined);
+    mockPrompt.mockResolvedValueOnce('Nameless Goblin');
+    const actorData = { name: '' } as SwadeActorToImport;
+    await actorImporter(actorData);
+    expect(mockPrompt).toHaveBeenCalledTimes(1);
+    expect(mockImport).toHaveBeenCalledWith({ name: 'Nameless Goblin' });
+  });
+
+  it('does not import when the name prompt is cancelled', async () => {
+    mockPrompt.mockResolvedValueOnce(null);
     await actorImporter({} as SwadeActorToImport);
-    expect(mockLoggerWarn).toHaveBeenCalledWith(
-      'actorImporter: Missing actor name.',
+    expect(mockImport).not.toHaveBeenCalled();
+    expect(mockFoundryUiInfo).toHaveBeenCalledWith(
+      'npcImporter.HTML.ActorNotImportedMsg',
     );
+  });
+
+  it('asks again when an empty name is submitted', async () => {
+    mockGetActorId.mockReturnValue(undefined);
+    mockPrompt.mockResolvedValueOnce('   ').mockResolvedValueOnce('Grug');
+    await actorImporter({} as SwadeActorToImport);
+    expect(mockPrompt).toHaveBeenCalledTimes(2);
+    expect(mockImport).toHaveBeenCalledWith({ name: 'Grug' });
+  });
+
+  it('checks for duplicates after a name is entered', async () => {
+    mockGetActorId.mockReturnValue('existing-id');
+    mockPrompt.mockResolvedValueOnce('Grug');
+    await actorImporter({} as SwadeActorToImport);
+    expect(mockGetActorId).toHaveBeenCalledWith('Grug');
+    expect(global.foundry.applications.api.DialogV2).toHaveBeenCalled();
     expect(mockImport).not.toHaveBeenCalled();
   });
 

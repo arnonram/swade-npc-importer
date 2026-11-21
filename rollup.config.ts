@@ -10,7 +10,7 @@ const banner = `/**
 
 const srcDirectory = 'src';
 const distDirectory = 'dist';
-const staticFiles = ['templates', 'lang', 'module.json'];
+const staticFiles = ['templates', 'lang', 'styles', 'module.json'];
 
 const bundle: RollupOptions = {
   strictDeprecations: true,

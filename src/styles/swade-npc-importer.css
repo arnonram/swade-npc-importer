@@ -1,0 +1,13 @@
+/* Let the importer dialog body scroll when the window is resized smaller,
+   keeping the footer buttons visible. Foundry's .window-content is an
+   overflow-hidden flex column, so the form and its content must be allowed
+   to shrink below their natural height. */
+.application.npc-importer-dialog .dialog-form {
+  min-height: 0;
+}
+
+.application.npc-importer-dialog .dialog-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
